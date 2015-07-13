@@ -7,6 +7,7 @@ var BrowserWindow = require('browser-window');
 require('crash-reporter').start();
 
 var mainWindow = null;
+var settingsWindow = null;
 var appIcon = null;
 
 app.on('window-all-closed', function() {
@@ -38,6 +39,22 @@ function createMainWindow() {
   });
 }
 
+function createSettingsWindow() {
+  settingsWindow = new BrowserWindow({
+    width: 640,
+    height: 480,
+    frame: false,
+    resizable: false
+  });
+
+  settingsWindow.loadUrl('file://' + __dirname + '/public/settings.html');
+
+  settingsWindow.on('closed', function() {
+    settingsWindow = null;
+    mainWindow.focus();
+  });
+}
+
 function createTaryIcon() {
   appIcon = new Tray(__dirname+ '/icon_tray.png');
   var taryContextMenu = new Menu();
@@ -53,6 +70,14 @@ function createTaryIcon() {
     label: 'Open development tools', 
     click: function() { 
       mainWindow.openDevTools();
+    } 
+  }));
+  
+  taryContextMenu.append(new MenuItem({ 
+    label: 'Settings', 
+    click: function() {
+      mainWindow.focus();
+      createSettingsWindow();
     } 
   }));
   

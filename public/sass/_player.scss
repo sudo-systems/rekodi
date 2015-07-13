@@ -1,0 +1,60 @@
+$header_config: (
+  height: 170px,
+  status_height: 125px
+);
+
+body#player {
+  background: #282828;
+  
+  header {
+    @include backgroundGradientVertical(#595959, #333333);
+    border-bottom: 1px solid #464646;
+    min-height: map-get($header_config, height);
+
+    #playerStatus {
+      min-height: map-get($header_config, status_height);
+
+      h1.idle {
+        line-height: map-get($header_config, status_height);
+        color: #221E1F;
+        letter-spacing: 8px;
+        text-align: center;
+        font-size: 46px;
+        font-weight: 300;
+        margin: 0;
+        padding: 0;
+        @include textShadow(0 0 2px, #4C4E4F);
+      }
+    }
+
+    #controls {
+      border-top: 1px solid $highlight_color;
+      text-align: center;
+      
+      ul {
+        font-size: 0;
+      }
+      
+      li {
+        text-align: center;
+        line-height: 45px;
+        font-size: 20px;
+        width: 46px;
+        display: inline-block;
+        cursor: pointer;
+      }
+      
+      li:first-of-type, 
+      li:last-of-type {
+        width: 26px;
+      }
+      
+      li:hover,
+      li:active,
+      li.active {
+        color: #E6802E;
+        @include transitionAll();
+      }
+    }
+  }
+}

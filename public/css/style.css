@@ -24,7 +24,6 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  background: #282828;
   color: #6C6C6C;
   font-family: "Quicksand", arial, sans-serif;
   font-size: 14px;
@@ -507,6 +506,25 @@ body {
   user-select: none;
   -webkit-user-select: none; }
 
+h2 {
+  background: #595959;
+  background: -moz-linear-gradient(top, #595959 0, #333333 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #595959), color-stop(100%, #333333));
+  background: -webkit-linear-gradient(top, #595959 0, #333333 100%);
+  background: -o-linear-gradient(top, #595959 0, #333333 100%);
+  background: -ms-linear-gradient(top, #595959 0, #333333 100%);
+  background: linear-gradient(to bottom, #595959 0, #333333 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0);
+  border-bottom: 1px solid #464646;
+  margin: 0 0 20px 0;
+  line-height: 58px;
+  font-size: 20px;
+  font-weight: 400;
+  text-align: center;
+  color: #999;
+  letter-spacing: 4px;
+  text-transform: uppercase; }
+
 section#topBar {
   position: fixed;
   top: 0;
@@ -521,13 +539,13 @@ section#topBar {
     width: 32px; }
     section#topBar .windowControls .button {
       display: inline-block;
-      line-height: 16px;
-      width: 16px;
+      line-height: 14px;
+      width: 18px;
       text-align: center;
       cursor: pointer;
-      color: #221E1F;
+      color: #888;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 12px;
       text-shadow: 0 0 1px #555;
       -moz-transition: all 0.2s ease-in-out;
       -o-transition: all 0.2s ease-in-out;
@@ -547,31 +565,58 @@ section#topBar {
     -webkit-app-region: drag;
     cursor: move; }
 
-header {
-  background: #595959;
-  background: -moz-linear-gradient(top, #595959 0, #333333 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #595959), color-stop(100%, #333333));
-  background: -webkit-linear-gradient(top, #595959 0, #333333 100%);
-  background: -o-linear-gradient(top, #595959 0, #333333 100%);
-  background: -ms-linear-gradient(top, #595959 0, #333333 100%);
-  background: linear-gradient(to bottom, #595959 0, #333333 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0);
-  border-bottom: 1px solid #464646;
-  border-top: 1px solid #595959;
-  min-height: 170px; }
-  header #playerStatus {
-    min-height: 125px; }
-    header #playerStatus h1.idle {
-      line-height: 125px;
-      color: #221E1F;
-      letter-spacing: 8px;
-      text-align: center;
-      font-size: 46px;
-      font-weight: 300;
-      margin: 0;
-      padding: 0;
-      text-shadow: 0 0 2px #4C4E4F; }
-  header #controls {
-    border-top: 1px solid #E6802E; }
+body#settings {
+  background: #EEE; }
+  body#settings #main > h2.title {
+    padding: 4px 0 0 0; }
+
+body#player {
+  background: #282828; }
+  body#player header {
+    background: #595959;
+    background: -moz-linear-gradient(top, #595959 0, #333333 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #595959), color-stop(100%, #333333));
+    background: -webkit-linear-gradient(top, #595959 0, #333333 100%);
+    background: -o-linear-gradient(top, #595959 0, #333333 100%);
+    background: -ms-linear-gradient(top, #595959 0, #333333 100%);
+    background: linear-gradient(to bottom, #595959 0, #333333 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0);
+    border-bottom: 1px solid #464646;
+    min-height: 170px; }
+    body#player header #playerStatus {
+      min-height: 125px; }
+      body#player header #playerStatus h1.idle {
+        line-height: 125px;
+        color: #221E1F;
+        letter-spacing: 8px;
+        text-align: center;
+        font-size: 46px;
+        font-weight: 300;
+        margin: 0;
+        padding: 0;
+        text-shadow: 0 0 2px #4C4E4F; }
+    body#player header #controls {
+      border-top: 1px solid #E6802E;
+      text-align: center; }
+      body#player header #controls ul {
+        font-size: 0; }
+      body#player header #controls li {
+        text-align: center;
+        line-height: 45px;
+        font-size: 20px;
+        width: 46px;
+        display: inline-block;
+        cursor: pointer; }
+      body#player header #controls li:first-of-type,
+      body#player header #controls li:last-of-type {
+        width: 26px; }
+      body#player header #controls li:hover,
+      body#player header #controls li:active,
+      body#player header #controls li.active {
+        color: #E6802E;
+        -moz-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+        -webkit-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out; }
 
 /*# sourceMappingURL=style.css.map */

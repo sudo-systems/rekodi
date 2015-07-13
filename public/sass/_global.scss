@@ -4,6 +4,19 @@ body {
   -webkit-user-select: none;
 }
 
+h2 {
+  @include backgroundGradientVertical(#595959, #333333);
+  border-bottom: 1px solid #464646;
+  margin: 0 0 20px 0;
+  line-height: 58px;
+  font-size: 20px;
+  font-weight: 400;
+  text-align: center;
+  color: #999;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
 section#topBar {
   position: fixed;
   top: 0;
@@ -20,13 +33,13 @@ section#topBar {
 
     .button {
       display: inline-block;
-      line-height: 16px;
-      width: 16px;
+      line-height: 14px;
+      width: 18px;
       text-align: center;
       cursor: pointer;
-      color: #221E1F;
+      color: #888;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 12px;
       @include textShadow(0 0 1px, #555);
       @include transitionAll();
     }
