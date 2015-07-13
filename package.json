@@ -6,7 +6,7 @@
     "start": "electron ."
   },
   "dependencies": {
-    "xbmc-event-client": "0.0.2"
+    "xbmc-event-client": "^0.0.2"
   },
   "devDependencies": {
     "electron-prebuilt": "^0.29.2"
