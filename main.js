@@ -28,10 +28,15 @@ function createMainWindow() {
     frame: false,
     resizable: false,
     title: 'ReKODI',
-    icon: __dirname+ '/icon.png'
+    icon: __dirname+ '/icon.png',
+    show: false
   });
   
   mainWindow.loadUrl('file://' +__dirname+ '/public/player.html');
+  
+  mainWindow.webContents.on('did-finish-load', function() {
+    mainWindow.show();
+  });
 
   mainWindow.on('closed', function() {
     mainWindow = null;
