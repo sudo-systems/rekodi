@@ -625,18 +625,28 @@ body#player {
       background: #262626;
       border-bottom: 1px solid #222;
       margin-bottom: -1px; }
+      body#player section#tabsWrapper nav ul {
+        position: relative;
+        font-size: 0; }
       body#player section#tabsWrapper nav li {
         cursor: pointer;
         line-height: 40px;
-        margin: 0 10px;
-        width: 24px;
+        width: 44px;
         text-align: center;
         display: inline-block;
         font-size: 18px;
         border-bottom: 1px solid transparent; }
+      body#player section#tabsWrapper nav li:hover {
+        color: #EEE; }
       body#player section#tabsWrapper nav li.active {
-        border-bottom: 1px solid #E6802E;
         color: #E6802E; }
+      body#player section#tabsWrapper nav li.magic-line {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 1px;
+        background: #E6802E; }
     body#player section#tabsWrapper .\_inliner {
       font-size: 0rem;
       letter-spacing: -.31em;

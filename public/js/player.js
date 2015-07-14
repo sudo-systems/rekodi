@@ -51,13 +51,42 @@ $(document).ready(function() {
     kodiEventClient.remotePress($(this).attr('data-button'));
   });
   
+  var navElement, leftPos, newWidth, mainNav = $('#player nav > ul');
+
+  mainNav.append('<li class="magic-line"></li>');
+  var magicLine = $('#player nav .magic-line');
+
+  magicLine
+    .css('left', $('#player nav li.active').position().left)
+    .data('origLeft', magicLine.position().left)
+    .data('origWidth', magicLine.width());
+
+  $('#player nav li').hover(function() {
+    navElement = $(this);
+    leftPos = navElement.position().left;
+    newWidth = navElement.width();
+    magicLine.stop().animate({
+      left: leftPos,
+      width: newWidth
+    });
+  }, function() {
+    magicLine.stop().animate({
+      left: magicLine.data('origLeft'),
+      width: magicLine.data('origWidth')
+    });    
+  });
+  
   $('#tabsWrapper nav li').on('click', function(e) {
     e.preventDefault();
     $('#tabsWrapper nav li').removeClass('active');
     $(this).addClass('active');
     
     var index = $(this).index();
-    console.log(index);
     $('#tabsWrapper .tabs').attr('data-tab', index);
-});
+    
+    magicLine
+      .css('left', $('#player nav li.active').position().left)
+      .data('origLeft', magicLine.position().left)
+      .data('origWidth', magicLine.width());
+  });
 });
