@@ -33,19 +33,21 @@ section#topBar {
     .button {
       display: inline-block;
       line-height: 16px;
-      width: 20px;
+      width: 16px;
       text-align: center;
-      color: #888;
-      font-weight: bold;
-      font-size: 14px;
-      @include textShadow(0 0 1px, #555);
-      @include transitionAll();
+      color: #333;
+      font-weight: normal;
+      font-size: 12px;
     }
 
     .button:hover {
-      color: #777;
-      @include textShadow(0 0 10px, #000);
-      @include transitionAll();
+      color: #FFF;
+      @include transitionAll(0.15s);
+      @include scale(1.15);
+    }
+    
+    .button:active {
+      @include scale(1.0);
     }
   }
   

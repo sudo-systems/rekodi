@@ -539,23 +539,28 @@ section#topBar {
     section#topBar .windowControls .button {
       display: inline-block;
       line-height: 16px;
-      width: 20px;
+      width: 16px;
       text-align: center;
-      color: #888;
-      font-weight: bold;
-      font-size: 14px;
-      text-shadow: 0 0 1px #555;
-      -moz-transition: all 0.2s ease-in-out;
-      -o-transition: all 0.2s ease-in-out;
-      -webkit-transition: all 0.2s ease-in-out;
-      transition: all 0.2s ease-in-out; }
+      color: #333;
+      font-weight: normal;
+      font-size: 12px; }
     section#topBar .windowControls .button:hover {
-      color: #777;
-      text-shadow: 0 0 10px #000;
-      -moz-transition: all 0.2s ease-in-out;
-      -o-transition: all 0.2s ease-in-out;
-      -webkit-transition: all 0.2s ease-in-out;
-      transition: all 0.2s ease-in-out; }
+      color: #FFF;
+      -moz-transition: all 0.15s ease-in-out;
+      -o-transition: all 0.15s ease-in-out;
+      -webkit-transition: all 0.15s ease-in-out;
+      transition: all 0.15s ease-in-out;
+      -ms-transform: scale(1.15);
+      -webkit-transform: scale(1.15);
+      -moz-transform: scale(1.15);
+      -o-transform: scale(1.15);
+      transform: scale(1.15); }
+    section#topBar .windowControls .button:active {
+      -ms-transform: scale(1);
+      -webkit-transform: scale(1);
+      -moz-transform: scale(1);
+      -o-transform: scale(1);
+      transform: scale(1); }
   section#topBar .windowDrag {
     float: right;
     width: 450px;
