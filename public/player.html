@@ -3,15 +3,21 @@
   <head>
     <title>ReKodi</title>
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/jBox.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <script type="text/javascript" src="js/requirements.js"></script>
+    <script type="text/javascript" src="js/jBox.min.js"></script>
     <script type="text/javascript" src="js/player.js"></script>
   </head>
   <body unselectable="on" onselectstart="javascript: return false;" id="player">
     <section id="topBar">
       <div class="windowControls">
-        <div class="button close" title="Close">X</div>
-        <div class="button minimize" title="Minimize">_</div>
+        <div class="button close" title="Close">
+          <i class="fa fa-times"></i>
+        </div>
+        <div class="button minimize" title="Minimize">
+          <i class="fa fa-minus"></i>
+        </div>
       </div>
       <div class="windowDrag"></div>
     </section>
@@ -48,28 +54,28 @@
     <section id="tabsWrapper">
       <nav>
         <ul class="horizontal">
-          <li class="active">
+          <li class="active" title="Now playing">
             <i class="fa fa-play"></i>
           </li>
-          <li>
+          <li title="Playlist">
             <i class="fa fa-list-ul"></i>
           </li>
-          <li>
+          <li title="Music">
             <i class="fa fa-music"></i>
           </li>
-          <li>
+          <li title="Movies">
             <i class="fa fa-video-camera"></i>
           </li>
-          <li>
+          <li title="TV shows">
             <i class="fa fa-desktop"></i>
           </li>
-          <li>
+          <li title="Files">
             <i class="fa fa-folder-open"></i>
           </li>
-          <li>
+          <li title="Addons">
             <i class="fa fa-puzzle-piece"></i>
           </li>
-          <li>
+          <li title="Remote">
             <i class="fa fa-keyboard-o"></i>
           </li>
           <li class="magic-line"></li>

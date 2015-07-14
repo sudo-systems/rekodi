@@ -29,17 +29,15 @@ section#topBar {
     float: left;
     font-size: 0;
     white-space: nowrap;
-    width: 32px;
 
     .button {
       display: inline-block;
-      line-height: 14px;
-      width: 18px;
+      line-height: 16px;
+      width: 20px;
       text-align: center;
-      cursor: pointer;
       color: #888;
       font-weight: bold;
-      font-size: 12px;
+      font-size: 14px;
       @include textShadow(0 0 1px, #555);
       @include transitionAll();
     }
@@ -53,7 +51,7 @@ section#topBar {
   
   .windowDrag {
     float: right;
-    width: 460px;
+    width: 450px;
     height: 100%;
     -webkit-app-region: drag;
     cursor: move;

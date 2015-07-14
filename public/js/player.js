@@ -22,18 +22,9 @@ kodiEventClient.connect(function(errors, bytes) {
 });
 
 $(document).ready(function() {
-  /*$('#showRemote').on('click', function() {
-    kodiRcWindow = new BrowserWindow({
-      width: 400,
-      height: 500
-    });
-
-    kodiRcWindow.loadUrl('file://' + __dirname + '/remote.html');
-    
-    kodiRcWindow.on('closed', function() {
-      remoteWindow = null;
-    });
-  });*/
+  $('[title]').jBox('Tooltip',  {
+    animation: 'move'
+  });
   
   $('#player [data-partial]').each(function() {
     var loThis = $(this);
@@ -57,11 +48,7 @@ $(document).ready(function() {
   $('#player #topBar .windowControls .button.minimize').on('click', function() {
     mainWindow.minimize();
   });
-  
-  $('#player #controls .previous').on('click', function() {
-    mainWindow.minimize();
-  });
-  
+
   $('#player #controls li').on('click', function() {
     kodiEventClient.remotePress($(this).attr('data-button'));
   });
@@ -71,6 +58,7 @@ $(document).ready(function() {
 
   $('#tabsWrapper nav li').on('click', function(e) {
     e.preventDefault();
+    
     $('#tabsWrapper nav li').removeClass('active');
     $(this).addClass('active');
     
