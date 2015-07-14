@@ -605,19 +605,31 @@ body#player {
         text-align: center;
         line-height: 45px;
         font-size: 20px;
-        width: 46px;
-        display: inline-block; }
+        width: 42px;
+        display: inline-block;
+        -moz-transition: all 0.15 ease-in-out;
+        -o-transition: all 0.15 ease-in-out;
+        -webkit-transition: all 0.15 ease-in-out;
+        transition: all 0.15 ease-in-out; }
       body#player header #controls li:first-of-type,
       body#player header #controls li:last-of-type {
-        width: 26px; }
+        width: 28px; }
       body#player header #controls li:hover,
-      body#player header #controls li:active,
       body#player header #controls li.active {
         color: #E6802E;
-        -moz-transition: all 0.2s ease-in-out;
-        -o-transition: all 0.2s ease-in-out;
-        -webkit-transition: all 0.2s ease-in-out;
-        transition: all 0.2s ease-in-out; }
+        text-shadow: 0 0 16px #666;
+        -ms-transform: scale(1.15);
+        -webkit-transform: scale(1.15);
+        -moz-transform: scale(1.15);
+        -o-transform: scale(1.15);
+        transform: scale(1.15); }
+      body#player header #controls li:active {
+        -ms-transform: scale(1);
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        transform: scale(1);
+        text-shadow: 0 0 6px #666; }
   body#player section#tabsWrapper {
     overflow: hidden; }
     body#player section#tabsWrapper nav {

@@ -40,20 +40,26 @@ body#player {
         text-align: center;
         line-height: 45px;
         font-size: 20px;
-        width: 46px;
+        width: 42px;
         display: inline-block;
+        @include transitionAll(0.15);
       }
       
       li:first-of-type, 
       li:last-of-type {
-        width: 26px;
+        width: 28px;
       }
       
       li:hover,
-      li:active,
       li.active {
         color: #E6802E;
-        @include transitionAll();
+        @include textShadow(0 0 16px, #666);
+        @include scale(1.15);
+      }
+      
+      li:active {
+        @include scale(1.0);
+        @include textShadow(0 0 6px, #666);
       }
     }
   }
