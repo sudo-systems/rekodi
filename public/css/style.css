@@ -27,7 +27,7 @@ body {
   color: #6C6C6C;
   font-family: "Quicksand", arial, sans-serif;
   font-size: 14px;
-  font-weight: 300; }
+  font-weight: 400; }
 
 body {
   min-height: 100%; }
@@ -104,7 +104,7 @@ video {
 
 a {
   text-decoration: none;
-  font-weight: 300;
+  font-weight: 400;
   color: #FFF;
   -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
@@ -601,6 +601,7 @@ body#player {
       body#player header #controls ul {
         font-size: 0; }
       body#player header #controls li {
+        color: #FFF;
         text-align: center;
         line-height: 45px;
         font-size: 20px;
@@ -618,5 +619,73 @@ body#player {
         -o-transition: all 0.2s ease-in-out;
         -webkit-transition: all 0.2s ease-in-out;
         transition: all 0.2s ease-in-out; }
+  body#player section#tabsWrapper {
+    overflow: hidden; }
+    body#player section#tabsWrapper nav {
+      background: #262626;
+      border-bottom: 1px solid #222;
+      margin-bottom: -1px; }
+      body#player section#tabsWrapper nav li {
+        cursor: pointer;
+        line-height: 40px;
+        margin: 0 10px;
+        width: 24px;
+        text-align: center;
+        display: inline-block;
+        font-size: 18px;
+        border-bottom: 1px solid transparent; }
+      body#player section#tabsWrapper nav li.active {
+        border-bottom: 1px solid #E6802E;
+        color: #E6802E; }
+    body#player section#tabsWrapper .\_inliner {
+      font-size: 0rem;
+      letter-spacing: -.31em;
+      word-spacing: -.43em;
+      white-space: nowrap; }
+    body#player section#tabsWrapper .\_inliner > * {
+      display: inline-block;
+      *display: inline;
+      *zoom: 1;
+      font-size: 1rem;
+      letter-spacing: normal;
+      vertical-align: top;
+      word-spacing: normal;
+      white-space: normal; }
+    body#player section#tabsWrapper .tabs {
+      position: relative;
+      left: 0;
+      -moz-transition: all 0.5s ease-in-out;
+      -o-transition: all 0.5s ease-in-out;
+      -webkit-transition: all 0.5s ease-in-out;
+      transition: all 0.5s ease-in-out; }
+      body#player section#tabsWrapper .tabs h4 {
+        margin: 0 0 20px 0;
+        padding: 0;
+        line-height: 26px;
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 4px;
+        font-weight: 400;
+        color: #999;
+        border-bottom: 1px solid #333; }
+    body#player section#tabsWrapper .tabs > * {
+      width: 100%;
+      padding: 20px; }
+    body#player section#tabsWrapper .tabs[data-tab='0'] {
+      left: 0%; }
+    body#player section#tabsWrapper .tabs[data-tab='1'] {
+      left: -100%; }
+    body#player section#tabsWrapper .tabs[data-tab='2'] {
+      left: -200%; }
+    body#player section#tabsWrapper .tabs[data-tab='3'] {
+      left: -300%; }
+    body#player section#tabsWrapper .tabs[data-tab='4'] {
+      left: -400%; }
+    body#player section#tabsWrapper .tabs[data-tab='5'] {
+      left: -500%; }
+    body#player section#tabsWrapper .tabs[data-tab='6'] {
+      left: -600%; }
+    body#player section#tabsWrapper .tabs[data-tab='7'] {
+      left: -700%; }
 
 /*# sourceMappingURL=style.css.map */

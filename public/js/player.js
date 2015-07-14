@@ -50,4 +50,14 @@ $(document).ready(function() {
   $('#player #controls li').on('click', function() {
     kodiEventClient.remotePress($(this).attr('data-button'));
   });
+  
+  $('#tabsWrapper nav li').on('click', function(e) {
+    e.preventDefault();
+    $('#tabsWrapper nav li').removeClass('active');
+    $(this).addClass('active');
+    
+    var index = $(this).index();
+    console.log(index);
+    $('#tabsWrapper .tabs').attr('data-tab', index);
+});
 });
