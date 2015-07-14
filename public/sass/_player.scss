@@ -63,6 +63,11 @@ body#player {
         @include scale(1.0);
         @include textShadow(0 0 6px, #666);
       }
+      
+      li[data-button="pause"],
+      li[data-button="stop"] {
+        display: none;
+      }
     }
   }
   

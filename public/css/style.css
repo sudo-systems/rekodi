@@ -635,6 +635,9 @@ body#player {
         -o-transform: scale(1);
         transform: scale(1);
         text-shadow: 0 0 6px #666; }
+      body#player header #controls li[data-button="pause"],
+      body#player header #controls li[data-button="stop"] {
+        display: none; }
   body#player section#tabsWrapper {
     overflow: hidden; }
     body#player section#tabsWrapper nav {
