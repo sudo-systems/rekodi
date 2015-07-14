@@ -3,6 +3,8 @@ $header_config: (
   status_height: 125px
 );
 
+$number_of_tabs: 8;
+
 body#player {
   background: #282828;
   
@@ -88,7 +90,12 @@ body#player {
       
       li:hover {
         color: #EEE;
-        @include transitionAll();
+        @include transitionAll(0.15s);
+        @include scale(1.15);
+      }
+      
+      li:active {
+        @include scale(1.0);
       }
       
       li.active {
@@ -105,14 +112,14 @@ body#player {
       }
     }
 
-    .\_inliner {
+    .tabs.inline {
       font-size: 0rem;
       letter-spacing: -.31em;
       word-spacing: -.43em;
       white-space: nowrap;
     }
 
-    .\_inliner > * {
+    .tabs.inline > * {
       display: inline-block;
       *display: inline;
       *zoom: 1;
@@ -129,8 +136,8 @@ body#player {
       @include transitionAll(0.5s);
       
       h4 {
-        margin: 0 0 20px 0;
-        padding: 0;
+        margin: 0;
+        padding: 0 20px;
         line-height: 26px;
         text-transform: uppercase;
         font-size: 11px;
@@ -139,14 +146,18 @@ body#player {
         color: #999;
         border-bottom: 1px solid #333;
       }
+      
+      .content {
+        padding: 20px;
+      }
     }
     
     .tabs > * {
       width: 100%;
-      padding: 20px;
+      padding: 20px 0;
     }
     
-    @for $i from 0 through 7 {
+    @for $i from 0 through $number_of_tabs {
       .tabs[data-tab='#{$i}'] {
         left: -(100%*$i);
       }

@@ -6,7 +6,7 @@ var xec = require('xbmc-event-client');
 var mainWindow = remote.getCurrentWindow();
 
 var opts = {
-  log: true,
+  log: false,
   icontype: xec.ICON_PNG,
   //iconbuffer: fs.readFileSync('./node.png'),
   host: 'donda.nl',
@@ -35,6 +35,21 @@ $(document).ready(function() {
     });
   });*/
   
+  $('#player [data-partial]').each(function() {
+    var loThis = $(this);
+    var templatePartial = 'partials/'+$(this).attr('data-partial')+'.html';
+    
+    $.ajax({
+      url: templatePartial,
+      success: function(data) {
+        loThis.html(data);
+      },
+      error: function(error) {
+        console.error(error);
+      }
+    });
+  });
+  
   $('#player #topBar .windowControls .button.close').on('click', function() {
     mainWindow.close();
   });
@@ -50,8 +65,7 @@ $(document).ready(function() {
   $('#player #controls li').on('click', function() {
     kodiEventClient.remotePress($(this).attr('data-button'));
   });
-  
-  $('#player nav > ul').append('<li class="magic-line"></li>');
+
   var magicLine = $('#player nav .magic-line');
   magicLine.css('left', $('#player nav li.active').position().left).data('origLeft', magicLine.position().left).data('origWidth', magicLine.width());
 
@@ -69,6 +83,6 @@ $(document).ready(function() {
     magicLine.stop().animate({
       left: leftPos,
       width: newWidth
-    });
+    }, 500);
   });
 });
