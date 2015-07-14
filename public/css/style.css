@@ -606,8 +606,7 @@ body#player {
         line-height: 45px;
         font-size: 20px;
         width: 46px;
-        display: inline-block;
-        cursor: pointer; }
+        display: inline-block; }
       body#player header #controls li:first-of-type,
       body#player header #controls li:last-of-type {
         width: 26px; }
@@ -629,7 +628,6 @@ body#player {
         position: relative;
         font-size: 0; }
       body#player section#tabsWrapper nav li {
-        cursor: pointer;
         line-height: 40px;
         width: 44px;
         text-align: center;
@@ -637,7 +635,11 @@ body#player {
         font-size: 18px;
         border-bottom: 1px solid transparent; }
       body#player section#tabsWrapper nav li:hover {
-        color: #EEE; }
+        color: #EEE;
+        -moz-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+        -webkit-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out; }
       body#player section#tabsWrapper nav li.active {
         color: #E6802E; }
       body#player section#tabsWrapper nav li.magic-line {
