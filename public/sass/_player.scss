@@ -8,13 +8,33 @@ $number_of_tabs: 8;
 body#player {
   background: #282828;
   
+  .noConnectionOverlay {
+    position: absolute;
+    top: (map-get($header_config, status_height)+1);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99;
+    text-align: center;
+    
+    .message {
+      margin: 100px auto 0 auto;
+      width: 350px;
+      font-size: 16px;
+      text-align: justify;
+      text-justify: distribute;
+      color: #AAA;
+    }
+  }
+  
   header {
     @include backgroundGradientVertical(#595959, #333333);
     border-bottom: 1px solid #464646;
     min-height: map-get($header_config, height);
 
     #playerStatus {
-      min-height: map-get($header_config, status_height);
+      height: map-get($header_config, status_height);
 
       h1.idle {
         line-height: map-get($header_config, status_height);
@@ -32,6 +52,7 @@ body#player {
     #controls {
       border-top: 1px solid $highlight_color;
       text-align: center;
+      position: relative;
       
       ul {
         font-size: 0;
@@ -68,7 +89,62 @@ body#player {
       li[data-button="stop"] {
         display: none;
       }
+      
+      .volumeSliderWrapper {
+        display: inline-block;
+        position: absolute;
+        top: 22px;
+        left: 14px;
+        width: 100px;
+        font-size: 16px;
+        line-height: 16px;
+        
+        #volumeSlider {
+          background: #555;
+          height: 2px;
+
+          .handle {
+            background: #888;
+            border: 1px solid #666;
+            height: 12px;
+            width: 12px;
+            padding: 0 4px;
+            font-size: 0;
+            border-radius: 50%;
+            margin: -5px 0 0 0;
+          }
+        }
+      }
+      
+      .extraControlsWrapper {
+        position: absolute;
+        right: 6px;
+        top: 14px;
+        z-index: 2;
+        
+        li {
+          color: #888;
+          font-size: 16px;
+          line-height: 18px;
+        }
+        
+        li.heartbeat {
+          color: #C10820;
+        }
+        
+        li.heartbeat.offline {
+          color: #8A3928;
+        }
+
+        li.heartbeat.online {
+          color: #338147;
+        }
+      }
     }
+  }
+  
+  section#playbackOptions {
+    padding: 10px;
   }
   
   section#tabsWrapper {

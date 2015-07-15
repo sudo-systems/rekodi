@@ -4,13 +4,21 @@
     <title>ReKodi</title>
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="css/jBox.css" />
+    <link rel="stylesheet" type="text/css" href="css/dragdealer.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <script type="text/javascript" src="js/requirements.js"></script>
     <script type="text/javascript" src="js/jBox.min.js"></script>
-    <script type="text/javascript" src="js/status.js"></script>
+    <script type="text/javascript" src="js/dragdealer.js"></script>
+    <script type="text/javascript" src="js/kodi/status.js"></script>
     <script type="text/javascript" src="js/player.js"></script>
   </head>
   <body unselectable="on" onselectstart="javascript: return false;" id="player">
+    <div class="noConnectionOverlay">
+      <h2><i class="fa fa-heartbeat offline fs-24"></i> Not connected</h2>
+      <div class="message">
+        Please check if the Kodi machine is online and if your <a href="#" title="Open the settings screen">connection settings</a> are configured correctly.
+      </div>
+    </div>
     <section id="topBar">
       <div class="windowControls">
         <div class="button close" title="Close">
@@ -27,6 +35,11 @@
         <h1 class="idle">ReKODI</h1>
       </div>
       <div id="controls">
+        <div class="volumeSliderWrapper" title="0%">
+          <div id="volumeSlider" class="dragdealer volume">
+            <div class="handle"></div>
+          </div>
+        </div>
         <ul class="horizontal">
           <li data-button="skipprevious">
             <i class="fa fa-step-backward fs-18"></i>
@@ -50,8 +63,28 @@
             <i class="fa fa-step-forward fs-18"></i>
           </li>
         </ul>
+        <div class="extraControlsWrapper">
+          <ul class="horizontal">
+            <li>
+              <i class="fa fa-cog"></i>
+            </li>
+            <li class="heartbeat offline">
+              <i class="fa fa-heartbeat"></i>
+            </li>
+          </ul>
+        </div>
       </div>
     </header>
+    <section id="playbackOptions">
+      <ul class="horizontal">
+        <li>
+          <i class="fa fa-repeat"></i>
+        </li>
+        <li>
+          <i class="fa fa-random"></i>
+        </li>
+      </ul>
+    </section>
     <section id="tabsWrapper">
       <nav>
         <ul class="horizontal">
