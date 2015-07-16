@@ -1,5 +1,23 @@
-<h4>Music</h4>
-<div class="content">
-  Etiam vitae tortor. Nulla neque dolor, sagittis eget, iaculis quis, molestie non, velit. Quisque malesuada placerat nisl. In hac habitasse platea dictumst.
-  Pellentesque commodo eros a enim. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Cras id dui. Curabitur suscipit suscipit tellus.
-</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    new rekodiApp.tabs($('#musicTabsWrapper'));
+  });
+</script>
+
+<section class="tabsWrapper sub" id="musicTabsWrapper">
+  <nav>
+    <ul class="horizontal">
+      <li class="active" title="Library">
+        <i class="fa fa-database"></i>
+      </li>
+      <li title="Files">
+        <i class="fa fa-folder-open"></i>
+      </li>
+    </ul>
+    <div class="magic-line"></div>
+  </nav>
+  <div class="tabs inline">
+    <div data-partial="music_library"></div>
+    <div data-partial="music_files"></div>
+  </div>
+</section>

@@ -10,9 +10,8 @@ function init() {
     stopButton: $('#player #controls [data-button=stop]')
   });
   
-  rekodiApp.gui.initVisualElements();
+  new rekodiApp.tabs($('#mainTabsWrapper'));
   rekodiApp.gui.initTooltips();
-  rekodiApp.gui.loadPartials();
   
   rekodiApp.eventClient.connect(function() {
     rekodiApp.controls.init();

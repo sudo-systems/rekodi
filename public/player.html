@@ -4,11 +4,9 @@
     <title>ReKodi</title>
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="css/jBox.css" />
-    <link rel="stylesheet" type="text/css" href="css/dragdealer.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <script type="text/javascript" src="js/requirements.js"></script>
     <script type="text/javascript" src="js/jBox.min.js"></script>
-    <script type="text/javascript" src="js/dragdealer.js"></script>
     <script type="text/javascript" src="js/player.js"></script>
   </head>
   <body unselectable="on" onselectstart="javascript: return false;" id="player">
@@ -34,11 +32,6 @@
         <h1 class="idle">ReKODI</h1>
       </div>
       <div id="controls">
-        <div class="volumeSliderWrapper" title="0%">
-          <div id="volumeSlider" class="dragdealer volume">
-            <div class="handle"></div>
-          </div>
-        </div>
         <ul class="horizontal">
           <li data-button="skipprevious">
             <i class="fa fa-step-backward fs-18"></i>
@@ -84,7 +77,7 @@
         </li>
       </ul>
     </section>
-    <section id="tabsWrapper">
+    <section class="tabsWrapper" id="mainTabsWrapper">
       <nav>
         <ul class="horizontal">
           <li class="active" title="Now playing">
@@ -102,6 +95,9 @@
           <li title="TV shows">
             <i class="fa fa-desktop"></i>
           </li>
+          <li title="Photos">
+            <i class="fa fa-photo"></i>
+          </li>
           <li title="Files">
             <i class="fa fa-folder-open"></i>
           </li>
@@ -111,8 +107,8 @@
           <li title="Remote">
             <i class="fa fa-keyboard-o"></i>
           </li>
-          <li class="magic-line"></li>
         </ul>
+        <div class="magic-line"></div>
       </nav>
       <div class="tabs inline">
         <div data-partial="now_playing"></div>
@@ -120,6 +116,7 @@
         <div data-partial="music"></div>
         <div data-partial="movies"></div>
         <div data-partial="tv_shows"></div>
+        <div data-partial="photos"></div>
         <div data-partial="files"></div>
         <div data-partial="addons"></div>
         <div data-partial="remote"></div>
