@@ -1,5 +1,23 @@
-<h4>TV Shows</h4>
-<div class="content">
-  Etiam vitae tortor. Nulla neque dolor, sagittis eget, iaculis quis, molestie non, velit. Quisque malesuada placerat nisl. In hac habitasse platea dictumst.
-  Pellentesque commodo eros a enim. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Cras id dui. Curabitur suscipit suscipit tellus.
-</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    new rekodiApp.tabs($('#tvShowsTabsWrapper'));
+  });
+</script>
+
+<section class="tabsWrapper sub" id="tvShowsTabsWrapper">
+  <nav>
+    <ul class="horizontal">
+      <li class="active" title="Library">
+        <i class="fa fa-database"></i>
+      </li>
+      <li title="Video files">
+        <i class="fa fa-folder-open"></i>
+      </li>
+    </ul>
+    <div class="magic-line"></div>
+  </nav>
+  <div class="tabs inline">
+    <div data-partial="tv_shows_library"></div>
+    <div data-partial="video_files"></div>
+  </div>
+</section>
