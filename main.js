@@ -4,6 +4,7 @@ var Menu = require('menu');
 var MenuItem = require('menu-item');
 var BrowserWindow = require('browser-window');
 
+require('wiredep')({ src: 'app/index.html' });
 require('crash-reporter').start();
 
 var mainWindow = null;
@@ -32,7 +33,7 @@ function createMainWindow() {
     show: false
   });
   
-  mainWindow.loadUrl('file://' +__dirname+ '/public/player.html');
+  mainWindow.loadUrl('file://' +__dirname+ '/app/index.html');
   
   mainWindow.webContents.on('did-finish-load', function() {
     mainWindow.show();

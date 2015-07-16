@@ -1,0 +1,30 @@
+{
+  "name": "rekodi",
+  "version": "0.1.0",
+  "authors": [
+    "Bram van Oploo <bram@sudo-systems.com>"
+  ],
+  "description": "A cross platform desktop remote for Kodi/Xbmc",
+  "main": "main.js",
+  "keywords": [
+    "Kodi",
+    "Xbmc",
+    "Remote",
+    "Cross-platform"
+  ],
+  "license": "MIT",
+  "homepage": "http://git.sudo-systems.com/sudo-systems/rekodi",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "modernizr": "~2.8.3",
+    "jquery": "~2.1.4",
+    "font-awesome": "~4.3.0",
+    "bootstrap": "~3.3.5"
+  }
+}
