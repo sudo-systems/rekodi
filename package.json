@@ -14,8 +14,6 @@
     "start": "electron ."
   },
   "dependencies": {
-    "angular": "^1.4.3",
-    "angular-animate": "^1.4.3",
     "wiredep": "^2.2.2",
     "xbmc-event-client": "^0.0.2",
     "xbmc-ws": "^2.1.2"
