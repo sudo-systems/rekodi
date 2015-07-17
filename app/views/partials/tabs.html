@@ -28,12 +28,12 @@
   <div class="magic-line"></div>
 </nav>
 <div class="tabs inline">
-  <section ng-include="'views/partials/now_playing_details.html'" ng-controller="rkNowPlayingCtrl" id="nowPlayingDetails"></section>
-  <section data-partial="playlist"></section>
-  <section data-partial="music"></section>
-  <section data-partial="movies"></section>
-  <section data-partial="tv_shows"></section>
-  <section data-partial="photos"></section>
-  <section data-partial="addons"></section>
-  <section data-partial="remote"></section>
+  <section ng-include="'views/partials/tabs/now_playing_details.html'" ng-controller="rkNowPlayingCtrl" id="nowPlayingDetails"></section>
+  <section ng-include="'views/partials/tabs/playlist.html'" ng-controller="rkPlaylistCtrl" id="playlist"></section>
+  <section ng-include="'views/partials/tabs/music.html'" ng-controller="rkMusicCtrl" rk-tabs id="music"></section>
+  <section ng-include="'views/partials/tabs/movies.html'" ng-controller="rkMoviesCtrl" rk-tabs id="movies"></section>
+  <section ng-include="'views/partials/tabs/tv_shows.html'" ng-controller="rkTvShowsCtrl" rk-tabs id="tvShows"></section>
+  <section ng-include="'views/partials/tabs/photos.html'" ng-controller="rkPhotosCtrl" id="photos"></section>
+  <section ng-include="'views/partials/tabs/addons.html'" ng-controller="rkAddonsCtrl" id="addons"></section>
+  <section ng-include="'views/partials/tabs/remote.html'" ng-controller="rkRemoteCtrl" id="remote"></section>
 </div>

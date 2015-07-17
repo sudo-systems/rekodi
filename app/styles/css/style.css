@@ -713,5 +713,45 @@ section#tabs {
     left: -900%; }
   section#tabs .tabs[data-tab='10'] {
     left: -1000%; }
+  section#tabs .tabs[data-tab='11'] {
+    left: -1100%; }
+  section#tabs .tabs[data-tab='12'] {
+    left: -1200%; }
+  section#tabs .tabs[data-tab='13'] {
+    left: -1300%; }
+  section#tabs .tabs[data-tab='14'] {
+    left: -1400%; }
+  section#tabs .tabs[data-tab='15'] {
+    left: -1500%; }
+  section#tabs .tabs[data-tab='16'] {
+    left: -1600%; }
+  section#tabs .tabs[data-tab='17'] {
+    left: -1700%; }
+  section#tabs .tabs[data-tab='18'] {
+    left: -1800%; }
+  section#tabs .tabs[data-tab='19'] {
+    left: -1900%; }
+  section#tabs .tabs[data-tab='20'] {
+    left: -2000%; }
+  section#tabs .tabs[data-tab='21'] {
+    left: -2100%; }
+  section#tabs .tabs[data-tab='22'] {
+    left: -2200%; }
+  section#tabs .tabs[data-tab='23'] {
+    left: -2300%; }
+  section#tabs .tabs[data-tab='24'] {
+    left: -2400%; }
+  section#tabs .tabs[data-tab='25'] {
+    left: -2500%; }
+  section#tabs .tabs[data-tab='26'] {
+    left: -2600%; }
+  section#tabs .tabs[data-tab='27'] {
+    left: -2700%; }
+  section#tabs .tabs[data-tab='28'] {
+    left: -2800%; }
+  section#tabs .tabs[data-tab='29'] {
+    left: -2900%; }
+  section#tabs .tabs[data-tab='30'] {
+    left: -3000%; }
 
 /*# sourceMappingURL=style.css.map */

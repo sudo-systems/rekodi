@@ -1,0 +1,15 @@
+<nav>
+  <ul class="horizontal">
+    <li class="active" title="Library">
+      <i class="fa fa-database"></i>
+    </li>
+    <li title="Video files">
+      <i class="fa fa-folder-open"></i>
+    </li>
+  </ul>
+  <div class="magic-line"></div>
+</nav>
+<div class="tabs inline">
+  <div ng-include="'views/partials/tabs/movies/library.html'" id="moviesLibrary"></div>
+  <div ng-include="'views/partials/tabs/movies/files.html'" id="moviesFiles"></div>
+</div>
