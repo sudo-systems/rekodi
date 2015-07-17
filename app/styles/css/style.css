@@ -629,23 +629,23 @@ section#playbackControls {
   section#playbackControls .main li[data-button="stop"] {
     display: none; }
 
-section#tabs {
+section.tabsContainer {
   overflow: hidden; }
-  section#tabs nav {
+  section.tabsContainer nav {
     background: #262626;
     border-bottom: 1px solid #222;
     margin-bottom: -1px;
     position: relative; }
-    section#tabs nav ul {
+    section.tabsContainer nav ul {
       font-size: 0; }
-    section#tabs nav li {
+    section.tabsContainer nav li {
       line-height: 40px;
       width: 44px;
       text-align: center;
       display: inline-block;
       font-size: 18px;
       border-bottom: 1px solid transparent; }
-    section#tabs nav li:hover {
+    section.tabsContainer nav li:hover {
       color: #EEE;
       -moz-transition: all 0.15s ease-in-out;
       -o-transition: all 0.15s ease-in-out;
@@ -656,27 +656,27 @@ section#tabs {
       -moz-transform: scale(1.15);
       -o-transform: scale(1.15);
       transform: scale(1.15); }
-    section#tabs nav li:active {
+    section.tabsContainer nav li:active {
       -ms-transform: scale(1);
       -webkit-transform: scale(1);
       -moz-transform: scale(1);
       -o-transform: scale(1);
       transform: scale(1); }
-    section#tabs nav li.active {
+    section.tabsContainer nav li.active {
       color: #E6802E; }
-    section#tabs nav .magic-line {
+    section.tabsContainer nav .magic-line {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 40px;
       height: 1px;
       background: #E6802E; }
-  section#tabs .tabs.inline {
+  section.tabsContainer .tabs.inline {
     font-size: 0rem;
     letter-spacing: -.31em;
     word-spacing: -.43em;
     white-space: nowrap; }
-  section#tabs .tabs.inline > * {
+  section.tabsContainer .tabs.inline > * {
     display: inline-block;
     *display: inline;
     *zoom: 1;
@@ -685,14 +685,14 @@ section#tabs {
     vertical-align: top;
     word-spacing: normal;
     white-space: normal; }
-  section#tabs .tabs {
+  section.tabsContainer .tabs {
     position: relative;
     left: 0;
     -moz-transition: all 0.4s ease-in-out;
     -o-transition: all 0.4s ease-in-out;
     -webkit-transition: all 0.4s ease-in-out;
     transition: all 0.4s ease-in-out; }
-    section#tabs .tabs h4 {
+    section.tabsContainer .tabs h4 {
       margin: 0;
       padding: 0 20px;
       line-height: 26px;
@@ -702,71 +702,71 @@ section#tabs {
       font-weight: 400;
       color: #999;
       border-bottom: 1px solid #333; }
-    section#tabs .tabs .content {
+    section.tabsContainer .tabs .content {
       padding: 20px; }
-  section#tabs .tabs > * {
+  section.tabsContainer .tabs > * {
     width: 100%; }
-  section#tabs .tabs[data-tab='0'] {
+  section.tabsContainer .tabs[data-tab='0'] {
     left: 0%; }
-  section#tabs .tabs[data-tab='1'] {
+  section.tabsContainer .tabs[data-tab='1'] {
     left: -100%; }
-  section#tabs .tabs[data-tab='2'] {
+  section.tabsContainer .tabs[data-tab='2'] {
     left: -200%; }
-  section#tabs .tabs[data-tab='3'] {
+  section.tabsContainer .tabs[data-tab='3'] {
     left: -300%; }
-  section#tabs .tabs[data-tab='4'] {
+  section.tabsContainer .tabs[data-tab='4'] {
     left: -400%; }
-  section#tabs .tabs[data-tab='5'] {
+  section.tabsContainer .tabs[data-tab='5'] {
     left: -500%; }
-  section#tabs .tabs[data-tab='6'] {
+  section.tabsContainer .tabs[data-tab='6'] {
     left: -600%; }
-  section#tabs .tabs[data-tab='7'] {
+  section.tabsContainer .tabs[data-tab='7'] {
     left: -700%; }
-  section#tabs .tabs[data-tab='8'] {
+  section.tabsContainer .tabs[data-tab='8'] {
     left: -800%; }
-  section#tabs .tabs[data-tab='9'] {
+  section.tabsContainer .tabs[data-tab='9'] {
     left: -900%; }
-  section#tabs .tabs[data-tab='10'] {
+  section.tabsContainer .tabs[data-tab='10'] {
     left: -1000%; }
-  section#tabs .tabs[data-tab='11'] {
+  section.tabsContainer .tabs[data-tab='11'] {
     left: -1100%; }
-  section#tabs .tabs[data-tab='12'] {
+  section.tabsContainer .tabs[data-tab='12'] {
     left: -1200%; }
-  section#tabs .tabs[data-tab='13'] {
+  section.tabsContainer .tabs[data-tab='13'] {
     left: -1300%; }
-  section#tabs .tabs[data-tab='14'] {
+  section.tabsContainer .tabs[data-tab='14'] {
     left: -1400%; }
-  section#tabs .tabs[data-tab='15'] {
+  section.tabsContainer .tabs[data-tab='15'] {
     left: -1500%; }
-  section#tabs .tabs[data-tab='16'] {
+  section.tabsContainer .tabs[data-tab='16'] {
     left: -1600%; }
-  section#tabs .tabs[data-tab='17'] {
+  section.tabsContainer .tabs[data-tab='17'] {
     left: -1700%; }
-  section#tabs .tabs[data-tab='18'] {
+  section.tabsContainer .tabs[data-tab='18'] {
     left: -1800%; }
-  section#tabs .tabs[data-tab='19'] {
+  section.tabsContainer .tabs[data-tab='19'] {
     left: -1900%; }
-  section#tabs .tabs[data-tab='20'] {
+  section.tabsContainer .tabs[data-tab='20'] {
     left: -2000%; }
-  section#tabs .tabs[data-tab='21'] {
+  section.tabsContainer .tabs[data-tab='21'] {
     left: -2100%; }
-  section#tabs .tabs[data-tab='22'] {
+  section.tabsContainer .tabs[data-tab='22'] {
     left: -2200%; }
-  section#tabs .tabs[data-tab='23'] {
+  section.tabsContainer .tabs[data-tab='23'] {
     left: -2300%; }
-  section#tabs .tabs[data-tab='24'] {
+  section.tabsContainer .tabs[data-tab='24'] {
     left: -2400%; }
-  section#tabs .tabs[data-tab='25'] {
+  section.tabsContainer .tabs[data-tab='25'] {
     left: -2500%; }
-  section#tabs .tabs[data-tab='26'] {
+  section.tabsContainer .tabs[data-tab='26'] {
     left: -2600%; }
-  section#tabs .tabs[data-tab='27'] {
+  section.tabsContainer .tabs[data-tab='27'] {
     left: -2700%; }
-  section#tabs .tabs[data-tab='28'] {
+  section.tabsContainer .tabs[data-tab='28'] {
     left: -2800%; }
-  section#tabs .tabs[data-tab='29'] {
+  section.tabsContainer .tabs[data-tab='29'] {
     left: -2900%; }
-  section#tabs .tabs[data-tab='30'] {
+  section.tabsContainer .tabs[data-tab='30'] {
     left: -3000%; }
 
 /*# sourceMappingURL=style.css.map */
