@@ -20,7 +20,7 @@ angular.module('rekodiApp')
           magicLine.stop().animate({
             left: leftPos,
             width: newWidth
-          }, 500);
+          }, 400);
         });
       }
   	};

@@ -65,7 +65,7 @@ section#tabs {
   .tabs {
     position: relative;
     left: 0;
-    @include transitionAll(0.5s);
+    @include transitionAll(0.4s);
 
     h4 {
       margin: 0;
