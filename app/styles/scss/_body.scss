@@ -15,4 +15,27 @@ body {
   a:hover {
     color: map-get($body, anchor-color-hover);
   }
+  
+  .jBox-container {
+    background: #262626;
+  }
+  
+  .jBox-content {
+    padding: 3px 8px;
+    overflow: auto;
+    color: map-get($global, highlight-color);
+    font-weight: normal;
+    letter-spacing: 2px;
+    font-size: 13px;
+  }
+  
+  .jBox-Tooltip .jBox-container,
+  .jBox-Mouse .jBox-container {
+    border: 1px solid #3A3A3A;
+  }
+  
+  .jBox-pointer:after {
+    background: #262626;
+    border: 1px solid #3A3A3A;
+  }
 }
