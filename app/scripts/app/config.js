@@ -1,4 +1,6 @@
 angular.module('rekodiApp')
-  .config([function() {
-  
-  }]);
+  .config([
+    function() {
+      //rkKodiWsApiService.connectPersistent();
+    }
+  ]);

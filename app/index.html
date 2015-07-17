@@ -21,18 +21,13 @@
     <script src="../bower_components/jbox/source/jBox.min.js"></script>
  
     <!-- bower:js -->
-    <script src="../bower_components/modernizr/modernizr.js"></script>
     <script src="../bower_components/angular/angular.js"></script>
-    <script src="../bower_components/angular-animate/angular-animate.js"></script>
     <!-- endbower -->
     
+    <!-- app:rekodiApp -->
     <script src="scripts/app/app.js"></script>
     <script src="scripts/app/config.js"></script>
-    
-    <!-- app:directives -->
-    <script src="scripts/app/directives/tabs.js"></script>
-    <script src="scripts/app/directives/tooltips.js"></script>
-    <!-- end:directives -->
+    <!-- end:rekodiApp -->
     
     <!-- app:controllers -->
     <script src="scripts/app/controllers/window.js"></script>
@@ -48,6 +43,15 @@
     <script src="scripts/app/controllers/remote.js"></script>
     <script src="scripts/app/controllers/footer.js"></script>
     <!-- end:controllers -->
+    
+    <!-- app:directives -->
+    <script src="scripts/app/directives/tabs.js"></script>
+    <script src="scripts/app/directives/tooltips.js"></script>
+    <!-- end:directives -->
+    
+    <!-- app:services -->
+    <script src="scripts/app/services/kodi_ws_api.js"></script>
+    <!-- end:services -->
   </head>
 <body>
   <section ng-include="'views/partials/window_controls.html'" ng-controller="rkWindowCtrl" rk-tooltips id="windowControls"></section>
