@@ -23,7 +23,6 @@
   ],
   "dependencies": {
     "modernizr": "~2.8.3",
-    "jquery": "~2.1.4",
     "font-awesome": "~4.3.0",
     "angular": "~1.4.3",
     "angular-animate": "~1.4.3",

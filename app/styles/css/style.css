@@ -614,4 +614,104 @@ section#playbackControls {
   section#playbackControls .main li[data-button="stop"] {
     display: none; }
 
+section#tabs {
+  overflow: hidden; }
+  section#tabs nav {
+    background: #262626;
+    border-bottom: 1px solid #222;
+    margin-bottom: -1px;
+    position: relative; }
+    section#tabs nav ul {
+      font-size: 0; }
+    section#tabs nav li {
+      line-height: 40px;
+      width: 44px;
+      text-align: center;
+      display: inline-block;
+      font-size: 18px;
+      border-bottom: 1px solid transparent; }
+    section#tabs nav li:hover {
+      color: #EEE;
+      -moz-transition: all 0.15s ease-in-out;
+      -o-transition: all 0.15s ease-in-out;
+      -webkit-transition: all 0.15s ease-in-out;
+      transition: all 0.15s ease-in-out;
+      -ms-transform: scale(1.15);
+      -webkit-transform: scale(1.15);
+      -moz-transform: scale(1.15);
+      -o-transform: scale(1.15);
+      transform: scale(1.15); }
+    section#tabs nav li:active {
+      -ms-transform: scale(1);
+      -webkit-transform: scale(1);
+      -moz-transform: scale(1);
+      -o-transform: scale(1);
+      transform: scale(1); }
+    section#tabs nav li.active {
+      color: #E6802E; }
+    section#tabs nav .magic-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 1px;
+      background: #E6802E; }
+  section#tabs .tabs.inline {
+    font-size: 0rem;
+    letter-spacing: -.31em;
+    word-spacing: -.43em;
+    white-space: nowrap; }
+  section#tabs .tabs.inline > * {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    font-size: 1rem;
+    letter-spacing: normal;
+    vertical-align: top;
+    word-spacing: normal;
+    white-space: normal; }
+  section#tabs .tabs {
+    position: relative;
+    left: 0;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out; }
+    section#tabs .tabs h4 {
+      margin: 0;
+      padding: 0 20px;
+      line-height: 26px;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 4px;
+      font-weight: 400;
+      color: #999;
+      border-bottom: 1px solid #333; }
+    section#tabs .tabs .content {
+      padding: 20px; }
+  section#tabs .tabs > * {
+    width: 100%; }
+  section#tabs .tabs[data-tab='0'] {
+    left: 0%; }
+  section#tabs .tabs[data-tab='1'] {
+    left: -100%; }
+  section#tabs .tabs[data-tab='2'] {
+    left: -200%; }
+  section#tabs .tabs[data-tab='3'] {
+    left: -300%; }
+  section#tabs .tabs[data-tab='4'] {
+    left: -400%; }
+  section#tabs .tabs[data-tab='5'] {
+    left: -500%; }
+  section#tabs .tabs[data-tab='6'] {
+    left: -600%; }
+  section#tabs .tabs[data-tab='7'] {
+    left: -700%; }
+  section#tabs .tabs[data-tab='8'] {
+    left: -800%; }
+  section#tabs .tabs[data-tab='9'] {
+    left: -900%; }
+  section#tabs .tabs[data-tab='10'] {
+    left: -1000%; }
+
 /*# sourceMappingURL=style.css.map */

@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('rekodiApp')
   .controller('rkPlaybackControlsCtrl', [
     '$scope', 

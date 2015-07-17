@@ -1,1 +1,39 @@
-{{test}}
+<nav>
+  <ul class="horizontal">
+    <li class="active" title="Now playing">
+      <i class="fa fa-play"></i>
+    </li>
+    <li title="Playlist">
+      <i class="fa fa-list-ul"></i>
+    </li>
+    <li title="Music">
+      <i class="fa fa-music"></i>
+    </li>
+    <li title="Movies">
+      <i class="fa fa-video-camera"></i>
+    </li>
+    <li title="TV shows">
+      <i class="fa fa-desktop"></i>
+    </li>
+    <li title="Photos">
+      <i class="fa fa-photo"></i>
+    </li>
+    <li title="Addons">
+      <i class="fa fa-puzzle-piece"></i>
+    </li>
+    <li title="Remote">
+      <i class="fa fa-keyboard-o"></i>
+    </li>
+  </ul>
+  <div class="magic-line"></div>
+</nav>
+<div class="tabs inline">
+  <section ng-include="'views/partials/now_playing_details.html'" ng-controller="rkNowPlayingCtrl" id="nowPlayingDetails"></section>
+  <section data-partial="playlist"></section>
+  <section data-partial="music"></section>
+  <section data-partial="movies"></section>
+  <section data-partial="tv_shows"></section>
+  <section data-partial="photos"></section>
+  <section data-partial="addons"></section>
+  <section data-partial="remote"></section>
+</div>
