@@ -5,7 +5,11 @@ angular.module('rekodiApp')
       link: function(scope, element, attrs) {
         $(document).ready(function() {
           $(element).find('[title]').jBox('Tooltip',  {
-            animation: 'move'
+            animation: 'move',
+            position: {
+              x: 'center',
+              y: 'bottom'
+            }
           });
         });
       }

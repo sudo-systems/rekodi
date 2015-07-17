@@ -4,7 +4,6 @@ section.tabsContainer {
   nav {
     background: #262626;
     border-bottom: 1px solid #222;
-    margin-bottom: -1px;
     position: relative;
 
     ul {
@@ -36,7 +35,7 @@ section.tabsContainer {
 
     .magic-line {
       position: absolute; 
-      bottom: 0; 
+      bottom: -1; 
       left: 0; 
       width: 40px; 
       height: 1px; 
@@ -92,5 +91,12 @@ section.tabsContainer {
     .tabs[data-tab='#{$i}'] {
       left: -(100%*$i);
     }
+  }
+}
+
+section.tabsContainer.sub {
+  nav {
+    background: #282828;
+    border-bottom: 1px solid #343434;
   }
 }

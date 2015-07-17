@@ -17,25 +17,25 @@ body {
   }
   
   .jBox-container {
-    background: #262626;
+    background: #2E2E2E;
   }
   
   .jBox-content {
     padding: 3px 8px;
     overflow: auto;
-    color: map-get($global, highlight-color);
-    font-weight: normal;
+    color: map-get($global, text-highlight-color);
+    font-weight: 500;
     letter-spacing: 2px;
     font-size: 13px;
   }
   
   .jBox-Tooltip .jBox-container,
   .jBox-Mouse .jBox-container {
-    border: 1px solid #3A3A3A;
+    border: 1px solid #444;
   }
   
   .jBox-pointer:after {
-    background: #262626;
-    border: 1px solid #3A3A3A;
+    background: #2E2E2E;
+    border: 1px solid #444;
   }
 }
