@@ -46,6 +46,7 @@
     <script src="scripts/app/controllers/photos.js"></script>
     <script src="scripts/app/controllers/addons.js"></script>
     <script src="scripts/app/controllers/remote.js"></script>
+    <script src="scripts/app/controllers/footer.js"></script>
     <!-- end:controllers -->
   </head>
 <body>
@@ -53,6 +54,7 @@
   <section ng-include="'views/partials/now_playing.html'" ng-controller="rkNowPlayingCtrl" rk-tooltips id="nowPlaying"></section>
   <section ng-include="'views/partials/playback_controls.html'" ng-controller="rkPlaybackControlsCtrl" rk-tooltips id="playbackControls"></section>
   <section ng-include="'views/partials/tabs.html'" ng-controller="rkTabsCtrl" rk-tooltips rk-tabs class="tabsContainer" id="mainTabs"></section>
+  <section ng-include="'views/partials/footer.html'" ng-controller="rkFooterCtrl" rk-tooltips id="footer"></section>
 </body>
 </html>
     

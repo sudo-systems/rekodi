@@ -757,4 +757,26 @@ section.tabsContainer.sub nav {
   section.tabsContainer.sub nav .magic-line {
     background: #BBB; }
 
+section#footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 28px;
+  border-top: 1px solid #333;
+  padding: 0 14px; }
+  section#footer .heartbeat {
+    display: inline-block;
+    float: right;
+    font-size: 14px;
+    line-height: 28px; }
+    section#footer .heartbeat .connection-status {
+      display: inline-block;
+      padding: 0 6px 0 0;
+      color: #666; }
+  section#footer .heartbeat.offline {
+    color: #8A3928; }
+  section#footer .heartbeat.online {
+    color: #338147; }
+
 /*# sourceMappingURL=style.css.map */
