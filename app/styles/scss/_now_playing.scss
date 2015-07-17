@@ -1,0 +1,18 @@
+section#nowPlaying {
+  height: map-get($now-playing, height);
+  @include backgroundGradientVertical(#595959, #333333);
+  border-bottom: 1px solid map-get($global, highlight-color);
+  padding-top: map-get($window-controls, height);
+  
+  .inactive {
+    line-height: map-get($now-playing, height);
+    margin-top: -(map-get($window-controls, height));
+    text-align: center;
+    color: #221E1F;
+    letter-spacing: 8px;
+    text-align: center; 
+    font-size: 46px;
+    font-weight: 300;
+    @include textShadow(0 0 2px, #4C4E4F);
+  }
+}

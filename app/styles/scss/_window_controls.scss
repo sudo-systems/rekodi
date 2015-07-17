@@ -1,0 +1,42 @@
+section#windowControls {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: map-get($window-controls, height);
+ 
+  .controls {
+    padding: 5px;
+    float: left;
+    font-size: 0;
+    white-space: nowrap;
+
+    .button {
+      display: inline-block;
+      line-height:  map-get($window-controls, height);
+      width: map-get($window-controls, button-width);
+      text-align: center;
+      color: #333;
+      font-weight: normal;
+      font-size: 12px;
+    }
+
+    .button:hover {
+      color: #FFF;
+      @include transitionAll(0.15s);
+      @include scale(1.15);
+    }
+    
+    .button:active {
+      @include scale(1.0);
+    }
+  }
+  
+  .drag {
+    float: right;
+    width: 450px;
+    height: 100%;
+    -webkit-app-region: drag;
+    cursor: move;
+  }
+}

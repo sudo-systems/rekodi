@@ -1,0 +1,18 @@
+body {
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  background: map-get($body, background-color);
+  color: map-get($body, font-color);
+  font-family: map-get($body, font-family);
+  font-size: map-get($body, font-size);
+  font-weight: map-get($body, font-weight);
+  
+  a {
+    color: map-get($body, anchor-color);
+  }
+  
+  a:hover {
+    color: map-get($body, anchor-color-hover);
+  }
+}
