@@ -1,0 +1,43 @@
+section#playbackControls {
+  text-align: center;
+  border-bottom: 1px solid #464646;
+  background-color: map-get($playback-controls, background-color);
+  
+  .main {
+    ul {
+      font-size: 0;
+    }
+
+    li {
+      color: map-get($global, text-highlight-color);
+      text-align: center;
+      line-height: 45px;
+      font-size: 20px;
+      width: 42px;
+      display: inline-block;
+      @include transitionAll(0.15);
+    }
+
+    li:first-of-type, 
+    li:last-of-type {
+      width: 28px;
+    }
+
+    li:hover,
+    li.active {
+      color: map-get($global, highlight-color);
+      @include scale(1.15);
+      @include textShadow(0 0 16px, map-get($global, text-shadow-color));
+    }
+
+    li:active {
+      @include scale(1.0);
+      @include textShadow(0 0 6px, map-get($global, text-shadow-color));
+    }
+
+    li[data-button="pause"],
+    li[data-button="stop"] {
+      display: none;
+    }
+  }
+}

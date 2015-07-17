@@ -1,15 +1,17 @@
 $global: (
-  highlight-color: #E6802E
+  text-highlight-color: #FFF,
+  highlight-color: #E6802E,
+  text-shadow-color: #666
 );
 
 $body: (
   background-color: #282828,
   font-color: #6C6C6C,
-  font-family: "Quicksand, arial, sans-serif",
+  font-family: Quicksand,
   font-size: 14px,
   font-weight: 400,
-  anchor-color: #FFF,
-  anchor-color-hover: #E6802E
+  anchor-color: map-get($global, text-highlight-color),
+  anchor-color-hover: map-get($global, highlight-color)
 );
 
 $window-controls: (
@@ -19,4 +21,8 @@ $window-controls: (
 
 $now-playing: (
   height: 170px
+);
+
+$playback-controls: (
+  background-color: #333333
 );

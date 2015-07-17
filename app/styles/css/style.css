@@ -500,7 +500,7 @@ body {
   -webkit-user-select: none;
   background: #282828;
   color: #6C6C6C;
-  font-family: "Quicksand, arial, sans-serif";
+  font-family: Quicksand;
   font-size: 14px;
   font-weight: 400; }
   body a {
@@ -573,5 +573,45 @@ section#nowPlaying {
     font-size: 46px;
     font-weight: 300;
     text-shadow: 0 0 2px #4C4E4F; }
+
+section#playbackControls {
+  text-align: center;
+  border-bottom: 1px solid #464646;
+  background-color: #333333; }
+  section#playbackControls .main ul {
+    font-size: 0; }
+  section#playbackControls .main li {
+    color: #FFF;
+    text-align: center;
+    line-height: 45px;
+    font-size: 20px;
+    width: 42px;
+    display: inline-block;
+    -moz-transition: all 0.15 ease-in-out;
+    -o-transition: all 0.15 ease-in-out;
+    -webkit-transition: all 0.15 ease-in-out;
+    transition: all 0.15 ease-in-out; }
+  section#playbackControls .main li:first-of-type,
+  section#playbackControls .main li:last-of-type {
+    width: 28px; }
+  section#playbackControls .main li:hover,
+  section#playbackControls .main li.active {
+    color: #E6802E;
+    -ms-transform: scale(1.15);
+    -webkit-transform: scale(1.15);
+    -moz-transform: scale(1.15);
+    -o-transform: scale(1.15);
+    transform: scale(1.15);
+    text-shadow: 0 0 16px #666; }
+  section#playbackControls .main li:active {
+    -ms-transform: scale(1);
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+    text-shadow: 0 0 6px #666; }
+  section#playbackControls .main li[data-button="pause"],
+  section#playbackControls .main li[data-button="stop"] {
+    display: none; }
 
 /*# sourceMappingURL=style.css.map */
