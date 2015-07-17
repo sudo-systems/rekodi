@@ -6,7 +6,7 @@ section.tabsContainer {
     border-bottom: 1px solid #222;
     position: relative;
     @include boxShadow(0 4px 4px -4px, #222);
-    @include backgroundGradientVertical(#2A2A2A, #242424);
+    @include backgroundGradientVertical(#2A2A2A, #262626);
 
     ul {
       font-size: 0;
@@ -39,7 +39,7 @@ section.tabsContainer {
       position: absolute; 
       bottom: -1; 
       left: 0; 
-      width: 40px; 
+      width: 54px; 
       height: 1px; 
       background: #E6802E;
     }
@@ -98,12 +98,12 @@ section.tabsContainer {
 
 section.tabsContainer.sub {
   nav {
-    background: #282828;
+    @include backgroundGradientVertical(#262626, #2B2B2B);
     border-bottom: 1px solid #343434;
     
     li {
-      line-height: 36px;
-      width: 44px;
+      line-height: 32px;
+      width: 54px;
       font-size: 16px;
     }
     
