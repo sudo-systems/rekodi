@@ -7,6 +7,7 @@ body {
   font-family: map-get($body, font-family);
   font-size: map-get($body, font-size);
   font-weight: map-get($body, font-weight);
+  overflow: hidden;
   
   a {
     color: map-get($body, anchor-color);
@@ -37,5 +38,27 @@ body {
   .jBox-pointer:after {
     background: #2E2E2E;
     border: 1px solid #444;
+  }
+  
+  .data-list-wrapper {
+    overflow: auto;
+    height: 416px;
+    
+    li {
+      padding: 0 12px;
+      line-height: 32px;
+      border-bottom: 1px solid #333;
+      color: #999;
+      
+      i.fa {
+        margin-right: 6px;
+      }
+    }
+    
+    li:hover {
+      color: #EEE;
+      @include backgroundGradientVertical(#282828, #333);
+      border-bottom: 1px solid map-get($global, highlight-color);
+    }
   }
 }

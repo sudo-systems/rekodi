@@ -502,7 +502,8 @@ body {
   color: #6C6C6C;
   font-family: Quicksand;
   font-size: 14px;
-  font-weight: 400; }
+  font-weight: 400;
+  overflow: hidden; }
   body a {
     color: #FFF; }
   body a:hover {
@@ -522,6 +523,27 @@ body {
   body .jBox-pointer:after {
     background: #2E2E2E;
     border: 1px solid #444; }
+  body .data-list-wrapper {
+    overflow: auto;
+    height: 416px; }
+    body .data-list-wrapper li {
+      padding: 0 12px;
+      line-height: 32px;
+      border-bottom: 1px solid #333;
+      color: #999; }
+      body .data-list-wrapper li i.fa {
+        margin-right: 6px; }
+    body .data-list-wrapper li:hover {
+      color: #EEE;
+      background: #282828;
+      background: -moz-linear-gradient(top, #282828 0, #333 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #282828), color-stop(100%, #333));
+      background: -webkit-linear-gradient(top, #282828 0, #333 100%);
+      background: -o-linear-gradient(top, #282828 0, #333 100%);
+      background: -ms-linear-gradient(top, #282828 0, #333 100%);
+      background: linear-gradient(to bottom, #282828 0, #333 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0);
+      border-bottom: 1px solid #E6802E; }
 
 section#windowControls {
   position: fixed;
@@ -633,7 +655,8 @@ section#playbackControls {
     display: none; }
 
 section.tabsContainer {
-  overflow: hidden; }
+  overflow: hidden;
+  padding-bottom: 28px; }
   section.tabsContainer nav {
     background: #262626;
     border-bottom: 1px solid #222;

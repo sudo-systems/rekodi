@@ -1,5 +1,6 @@
 section.tabsContainer {
   overflow: hidden;
+  padding-bottom: map-get($footer, height);
 
   nav {
     background: #262626;
