@@ -90,9 +90,19 @@ rekodiApp.factory('rkKodiWsApiService', ['$rootScope',
         }
       }, retyInterval);
     };
+    
+    var isConnected = function() {
+      return connectionStatus.connected;
+    };
+    
+    var getConnection = function() {
+      return connectionStatus.connection;
+    };
 
     return {
-      connect: connect
+      connect: connect,
+      isConnected: isConnected,
+      getConnection: getConnection
     };
   }
 ]);
