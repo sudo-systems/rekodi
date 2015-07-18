@@ -1,65 +1,101 @@
-/*angular.module('rekodiApp')
-  .factory('rkKodiWsApiService', ['$rootScope', 
-    function($rootScope)
-    {
+rekodiApp.factory('rkKodiWsApiService', ['$rootScope', 
+  function($rootScope) {
+    var retyInterval = 2000;
+    var connectionStatus = {
+      connected: false, 
+      statusMessage: 'offline',
+      connection: null
+    };
+
+    function bindEvents(connection) {
+      /* SYSTEM EVENTS */
+      connection.System.OnQuit(function() {
+        connectionStatus = {
+          connected: false, 
+          statusMessage: 'offline',
+          connection: null
+        };
+ 
+        $rootScope.$emit('rkWsConnectionStatusChange', connectionStatus);
+      });
+
+      connection.System.OnRestart(function() {
+        connectionStatus = {
+          connected: false, 
+          statusMessage: 'rebooting',
+          connection: null
+        };
+        
+        $rootScope.$emit('rkWsConnectionStatusChange', connectionStatus);
+      });
+
+      connection.System.OnSleep(function() {
+        connectionStatus = {
+          connected: false, 
+          statusMessage: 'sleeping',
+          connection: null
+        };
+        
+        $rootScope.$emit('rkWsConnectionStatusChange', connectionStatus);
+      });
+
+      connection.System.OnWake(function() {
+        connectionStatus = {
+          connected: false, 
+          statusMessage: 'online'
+        };
+        
+        $rootScope.$emit('rkWsConnectionStatusChange', connectionStatus);
+      });
+    }
+
+    var connect = function() {
       var kodiWs = require('xbmc-ws');
-      var connected = false;
-      var statusMessage = 'offline';
-      var connection = null;
-      var retryIntervalObject = null;
       var config = {
         url: 'donda.nl',
         port: 9090
       };
-
-      var connect = function() {
-        kodiWs(config.url, config.port).then(function(link) {
-          connection = link;
-          connected = true;
-          statusMessage = 'online';
-          $rootScope.$emit('rkWsConnectionStatusChange', {
-            connected: true, 
-            statusMessage: 'online'
-          });
-        },
-        function(error) {
-          connection = null;
-          connected = false;
-          statusMessage = 'offline';
-          $rootScope.$emit('rkWsConnectionStatusChange', {
-            connected: false,
-            statusMessage: 'offline'
-          });
-        });
-      };
       
-      var connectPersistent = function() {
-        var retyInterval = 5000;
+      kodiWs(config.url, config.port).then(function(link) {
+        connectionStatus = {
+          connected: true, 
+          statusMessage: 'online',
+          connection: link
+        };
+        
+        bindEvents(connectionStatus.connection);
+        $rootScope.$emit('rkWsConnectionStatusChange', connectionStatus);
+      },
+      function(error) {
+        connectionStatus = {
+          connected: false, 
+          statusMessage: 'offline',
+          connection: null
+        };
+        
+        $rootScope.$emit('rkWsConnectionStatusChange', connectionStatus);
+      });
+    };
 
-        retryIntervalObject = setInterval(function() {
-          if(connection === null) {
-            connect();
-          }
-        }, retyInterval);
-      };
+    var connectPersistent = function(immmediately) {
+      immmediately = (immmediately === undefined)? true : immmediately;
       
-      return {
-        connect: connect,
-        connectPersistent: connectPersistent,
-        connected: connected,
-        connection: connection,
-        statusMessage: statusMessage
-      };
-    }
-  ]);*/
+      if(immmediately) {
+        connect();
+      }
 
-angular.module('rekodiApp')
-  .factory('rkKodiWsApiService', [
-    function()
-    {
-      return {
-        test: 'test'
-      };
-    }
-  ]);
+      setInterval(function() {
+        if(connectionStatus.connection === null) {
+          console.log('retry');
+          connect();
+        }
+      }, retyInterval);
+    };
+
+    return {
+      connect: connect,
+      connectPersistent: connectPersistent
+    };
+  }
+]);
 

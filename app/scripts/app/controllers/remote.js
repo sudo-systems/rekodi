@@ -1,7 +1,5 @@
-angular.module('rekodiApp')
-  .controller('rkRemoteCtrl', [
-    '$scope', 
-    function($scope) {
-      $scope.test = 'Remote';
-    }
-  ]);
+rekodiApp.controller('rkRemoteCtrl', ['$scope', 
+  function($scope) {
+    $scope.test = 'Remote';
+  }
+]);

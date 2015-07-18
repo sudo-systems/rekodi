@@ -1,4 +1,4 @@
-<div class="heartbeat offline">
-  <span class="connection-status">offline</span>
+<div class="heartbeat" ng-class="connected ? 'online' : 'offline'">
+  <span class="connection-status" ng-bind="statusMessage"></span>
   <i class="fa fa-heartbeat"></i>
 </div>

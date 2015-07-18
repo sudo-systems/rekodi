@@ -1,7 +1,5 @@
-angular.module('rekodiApp')
-  .controller('rkAddonsCtrl', [
-    '$scope', 
-    function($scope) {
-      $scope.test = 'Addons';
-    }
-  ]);
+rekodiApp.controller('rkAddonsCtrl', ['$scope', 
+  function($scope) {
+    $scope.test = 'Addons';
+  }
+]);

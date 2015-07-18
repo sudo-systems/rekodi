@@ -1,3 +1,1 @@
-angular.module('rekodiApp', [
-  //'rkKodiWsApiService'
-]);
+var rekodiApp = angular.module('rekodiApp', []);

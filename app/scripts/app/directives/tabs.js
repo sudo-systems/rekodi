@@ -1,5 +1,5 @@
-angular.module('rekodiApp')
-  .directive('rkTabs', function() {
+rekodiApp.directive('rkTabs', [
+  function() {
   	return {
       restrict: 'A',
       link: function(scope, element, attrs) {
@@ -24,4 +24,5 @@ angular.module('rekodiApp')
         });
       }
   	};
-  });
+  }
+]);
