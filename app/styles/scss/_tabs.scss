@@ -20,6 +20,7 @@ section.tabsContainer {
       display: inline-block;
       font-size: 18px;
       border-bottom: 1px solid transparent;
+      @include transitionAll(map-get($global, transition-speed));
     }
 
     li:hover {

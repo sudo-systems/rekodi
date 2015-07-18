@@ -16,7 +16,7 @@ section#playbackControls {
       font-size: 20px;
       width: 42px;
       display: inline-block;
-      @include transitionAll(0.15);
+      @include transitionAll(map-get($global, transition-speed));
     }
 
     li:first-of-type, 
