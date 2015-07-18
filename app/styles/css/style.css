@@ -795,10 +795,10 @@ section.tabsContainer {
         text-overflow: ellipsis; }
         section.tabsContainer .data-list-wrapper li .label i.fa {
           margin-right: 6px;
-          -moz-transition: all 0.5s ease-in-out;
-          -o-transition: all 0.5s ease-in-out;
-          -webkit-transition: all 0.5s ease-in-out;
-          transition: all 0.5s ease-in-out; }
+          -moz-transition: all 0.3s ease-in-out;
+          -o-transition: all 0.3s ease-in-out;
+          -webkit-transition: all 0.3s ease-in-out;
+          transition: all 0.3s ease-in-out; }
       section.tabsContainer .data-list-wrapper li .controls {
         width: 50px;
         float: right;
@@ -834,12 +834,23 @@ section.tabsContainer {
       section.tabsContainer .data-list-wrapper li:hover .label i.fa {
         color: #E6802E;
         margin-right: 12px;
-        -moz-transition: all 0.5s ease-in-out;
-        -o-transition: all 0.5s ease-in-out;
-        -webkit-transition: all 0.5s ease-in-out;
-        transition: all 0.5s ease-in-out; }
+        -moz-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        -webkit-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+        -ms-transform: scale(1.5);
+        -webkit-transform: scale(1.5);
+        -moz-transform: scale(1.5);
+        -o-transform: scale(1.5);
+        transform: scale(1.5); }
       section.tabsContainer .data-list-wrapper li:hover .controls {
         display: inline-block; }
+    section.tabsContainer .data-list-wrapper li:active .label i.fa {
+      -ms-transform: scale(1.2);
+      -webkit-transform: scale(1.2);
+      -moz-transform: scale(1.2);
+      -o-transform: scale(1.2);
+      transform: scale(1.2); }
 
 section.tabsContainer.sub nav {
   background: #262626;

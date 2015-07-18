@@ -121,7 +121,7 @@ section.tabsContainer {
         
         i.fa {
           margin-right: 6px;
-          @include transitionAll(.5s);
+          @include transitionAll(.3s);
         }
       }
       
@@ -156,12 +156,21 @@ section.tabsContainer {
         i.fa {
           color: map-get($global, highlight-color);
           margin-right: 12px;
-          @include transitionAll(.5s);
+          @include transitionAll(.3s);
+          @include scale(1.5);
         }
       }
       
       .controls {
         display: inline-block;
+      }
+    }
+    
+    li:active {
+      .label {
+        i.fa {
+          @include scale(1.2);
+        }
       }
     }
   }
