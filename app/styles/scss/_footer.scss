@@ -6,7 +6,7 @@ section#footer {
   height: map-get($footer, height);
   line-height: (map-get($footer, height) - 3px);
   border-top: 1px solid #333;
-  padding: 0 12px;
+  padding: 0 map-get($global, window-padding);
   color: #999;
   @include backgroundGradientVertical(#2B2B2B, #262626);
   

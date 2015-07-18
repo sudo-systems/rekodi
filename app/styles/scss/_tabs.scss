@@ -102,7 +102,7 @@ section.tabsContainer {
     height: 416px;
     
     li {
-      padding: 0 12px;
+      padding: 0 map-get($global, window-padding);
       line-height: 32px;
       border-bottom: 1px solid #333;
       color: #999;
@@ -120,6 +120,7 @@ section.tabsContainer {
         
         i.fa {
           margin-right: 6px;
+          @include transitionAll(.5s);
         }
       }
       
@@ -147,12 +148,14 @@ section.tabsContainer {
     
     li:hover {
       color: #EEE;
-      @include backgroundGradientVertical(#282828, #333);
+      @include backgroundGradientVertical(#242424, #2A2A2A);
       border-bottom: 1px solid map-get($global, highlight-color);
       
       .label {
         i.fa {
           color: map-get($global, highlight-color);
+          margin-right: 12px;
+          @include transitionAll(.5s);
         }
       }
       

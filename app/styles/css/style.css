@@ -793,7 +793,11 @@ section.tabsContainer {
         overflow: hidden;
         text-overflow: ellipsis; }
         section.tabsContainer .data-list-wrapper li .label i.fa {
-          margin-right: 6px; }
+          margin-right: 6px;
+          -moz-transition: all 0.5s ease-in-out;
+          -o-transition: all 0.5s ease-in-out;
+          -webkit-transition: all 0.5s ease-in-out;
+          transition: all 0.5s ease-in-out; }
       section.tabsContainer .data-list-wrapper li .controls {
         width: 50px;
         float: right;
@@ -817,17 +821,22 @@ section.tabsContainer {
           transform: scale(1); }
     section.tabsContainer .data-list-wrapper li:hover {
       color: #EEE;
-      background: #282828;
-      background: -moz-linear-gradient(top, #282828 0, #333 100%);
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #282828), color-stop(100%, #333));
-      background: -webkit-linear-gradient(top, #282828 0, #333 100%);
-      background: -o-linear-gradient(top, #282828 0, #333 100%);
-      background: -ms-linear-gradient(top, #282828 0, #333 100%);
-      background: linear-gradient(to bottom, #282828 0, #333 100%);
+      background: #242424;
+      background: -moz-linear-gradient(top, #242424 0, #2A2A2A 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #242424), color-stop(100%, #2A2A2A));
+      background: -webkit-linear-gradient(top, #242424 0, #2A2A2A 100%);
+      background: -o-linear-gradient(top, #242424 0, #2A2A2A 100%);
+      background: -ms-linear-gradient(top, #242424 0, #2A2A2A 100%);
+      background: linear-gradient(to bottom, #242424 0, #2A2A2A 100%);
       filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0);
       border-bottom: 1px solid #E6802E; }
       section.tabsContainer .data-list-wrapper li:hover .label i.fa {
-        color: #E6802E; }
+        color: #E6802E;
+        margin-right: 12px;
+        -moz-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        -webkit-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out; }
       section.tabsContainer .data-list-wrapper li:hover .controls {
         display: inline-block; }
 
