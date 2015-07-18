@@ -49,7 +49,7 @@ rekodiApp.factory('rkKodiWsApiService', ['$rootScope',
       });
     }
 
-    var connect = function() {
+    function createConnection() {
       var kodiWs = require('xbmc-ws');
       var config = {
         url: 'donda.nl',
@@ -77,24 +77,22 @@ rekodiApp.factory('rkKodiWsApiService', ['$rootScope',
       });
     };
 
-    var connectPersistent = function(immmediately) {
+    var connect = function(immmediately) {
       immmediately = (immmediately === undefined)? true : immmediately;
       
       if(immmediately) {
-        connect();
+        createConnection();
       }
 
       setInterval(function() {
         if(connectionStatus.connection === null) {
-          console.log('retry');
-          connect();
+          createConnection();
         }
       }, retyInterval);
     };
 
     return {
-      connect: connect,
-      connectPersistent: connectPersistent
+      connect: connect
     };
   }
 ]);
