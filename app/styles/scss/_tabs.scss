@@ -134,6 +134,7 @@ section.tabsContainer {
         
         i.fa {
           width: 22px;
+          @include transitionAll(.3s);
         }
         
         i.fa:hover {
