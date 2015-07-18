@@ -90,3 +90,10 @@ $border_radius_htc: url("./border-radius.htc");
     @content;
   }
 }
+
+@mixin fadeInAndOut($interval: 1s) {
+  -webkit-animation: flickerAnimation $interval infinite;
+  -moz-animation: flickerAnimation $interval infinite;
+  -o-animation: flickerAnimation $interval infinite;
+  animation: flickerAnimation $interval infinite;
+}

@@ -20,25 +20,30 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$timeout', 'rkKodiWsApiService',
     };
     
     $scope.getSourcesData = function() {
-        kodiWsApiConnection = rkKodiWsApiService.getConnection();
-        var promise = kodiWsApiConnection.Files.GetSources({
-          media: 'music',
-          sort: {
-            order: 'ascending',
-            method: 'label'
-          }
-        });
-        
-        promise.then(function(data) {
-          sourcePaths = [];
-          
-          for(var i=0; i<data.sources.length; i++) {
-            sourcePaths[i] = data.sources[i].file;
-          }
+      $scope.$root.$emit('rkStartLoading');
+   
+      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      var promise = kodiWsApiConnection.Files.GetSources({
+        media: 'music',
+        sort: {
+          order: 'ascending',
+          method: 'label'
+        }
+      });
 
-          $scope.filesData = data.sources;
-          $scope.$apply();
-        }, function(error) {});
+      promise.then(function(data) {
+        sourcePaths = [];
+
+        for(var i=0; i<data.sources.length; i++) {
+          sourcePaths[i] = data.sources[i].file;
+        }
+
+        $scope.filesData = data.sources;
+        $scope.$apply();
+        $scope.$root.$emit('rkStopLoading');
+      }, function(error) {
+        $scope.$root.$emit('rkStopLoading');
+      });
     };
     
     $scope.getDirectoryData = function(directory) {
@@ -47,6 +52,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$timeout', 'rkKodiWsApiService',
         return;
       }
 
+      $scope.$root.$emit('rkStartLoading');
       var directoryUp = directory.split('/').slice(0, -2).join('/')+'/';
       
       for(var key in sourcePaths) {
@@ -74,19 +80,18 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$timeout', 'rkKodiWsApiService',
           file: directoryUp
         });
         $scope.$apply();
-      }, function(error) {});
+        $scope.$root.$emit('rkStopLoading');
+      }, function(error) {
+        $scope.$root.$emit('rkStopLoading');
+      });
     };
-    
-    $scope.getData = function() {
-      $scope.getSourcesData();
-    };
-    
+
     $scope.$root.$on('rkWsConnectionStatusChange', function(event, data) {
       if(data.connected) {
         $scope.getSourcesData();
       }
       else {
-        $scope.sourcesData = {};
+        $scope.filesData = {};
       }
     });
     
