@@ -5,20 +5,21 @@ section#footer {
   right: 0;
   height: map-get($footer, height);
   line-height: (map-get($footer, height) - 3px);
-  border-top: 1px solid #333;
+  border-top: 1px solid #444;
   padding: 0 map-get($global, window-padding);
   color: #999;
-  @include backgroundGradientVertical(#2B2B2B, #262626);
+  font-size: 13px;
+  @include backgroundGradientVertical(#2C2C2C, #393939);
+  @include boxShadow(0 -4px 4px -4px, #222);
   
   .heartbeat {
     display: inline-block;
     float: right;
-    font-size: 12px;
+    font-size: 14px;
     
     .connection-status {
       display: inline-block;
       padding: 0 3px 0 0;
-      font-size: 14px;
       color: #999;
     }
   }
@@ -35,5 +36,10 @@ section#footer {
     display: none;
     float: left;
     @include fadeInAndOut(1.5s);
+  }
+  
+  .playback-indicator {
+    display: none;
+    float: left;
   }
 }

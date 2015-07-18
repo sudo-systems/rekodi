@@ -1,15 +1,15 @@
 rekodiApp.controller('rkMusicCtrl', ['$scope', '$timeout', 'rkKodiWsApiService',
   function($scope, $timeout, rkKodiWsApiService) {
-    $scope.libraryData = {};
-    $scope.filesData = {};
+    $scope.library = {};
+    $scope.files = {};
     var sourcePaths = [];
     var kodiWsApiConnection = null;
     
-    $scope.getLibraryData = function() {
+    $scope.getLibrary = function() {
       
     };
     
-    $scope.getSourcesData = function() {
+    $scope.getSources = function() {
       $scope.$root.$emit('rkStartLoading');
    
       kodiWsApiConnection = rkKodiWsApiService.getConnection();
@@ -28,7 +28,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$timeout', 'rkKodiWsApiService',
           sourcePaths[i] = data.sources[i].file;
         }
 
-        $scope.filesData = data.sources;
+        $scope.files = data.sources;
         $scope.$apply();
         $scope.$root.$emit('rkStopLoading');
       }, function(error) {
@@ -36,9 +36,9 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$timeout', 'rkKodiWsApiService',
       });
     };
     
-    $scope.getDirectoryData = function(directory) {
+    $scope.getDirectory = function(directory) {
       if(directory === 'LOAD_SOURCES') {
-        $scope.getSourcesData();
+        $scope.getSources();
         return;
       }
 
@@ -63,8 +63,8 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$timeout', 'rkKodiWsApiService',
 
       promise.then(function(data) {
         data.files = (data.files === undefined)? [] : data.files;
-        $scope.filesData = data.files;
-        $scope.filesData.unshift({
+        $scope.files = data.files;
+        $scope.files.unshift({
           label: '..',
           filetype: 'directory',
           file: directoryUp
@@ -76,7 +76,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$timeout', 'rkKodiWsApiService',
       });
     };
     
-    $scope.playEntry = function(entry, type) {
+    $scope.play = function(entry, type) {
       var options = {
         item: {}
       };
@@ -86,28 +86,55 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$timeout', 'rkKodiWsApiService',
       kodiWsApiConnection = rkKodiWsApiService.getConnection();
       var promise = kodiWsApiConnection.Player.Open(options);
       
+      
       promise.then(function(data) {
-        console.log(data);
+        if(data === 'OK') {
+          emitPlaybackNotification(entry, type);
+        }
       }, function(error){
         console.log(error);
       });
     };
 
     $scope.$root.$on('rkWsConnectionStatusChange', function(event, data) {
-      if(data.connected) {
-        $scope.getSourcesData();
-      }
-      else {
-        $scope.filesData = {};
+      if(!data.connected) {
+        $scope.files = {};
       }
     });
     
-    $scope.$evalAsync(function() { 
+    function emitPlaybackNotification(entry, type) {
+      var fileName = 'of ';
+      
+      if(type === 'file'){
+        fileName += '"' +entry.substring(entry.lastIndexOf('/')+1, entry.lastIndexOf('.'))+ '"';
+      }
+      else if(type === 'directory') {
+        var parts = entry.split('/');
+        fileName += 'directory "' +parts[(parts.length-2)]+ '"';
+      }
+      else {
+        fileName = '';
+      }
+      
+      $scope.$root.$emit('rkPlaybackStart', {
+        message: 'Playback ' +fileName+ ' started'
+      });
+    }
+    
+    /*$scope.$evalAsync(function() { 
       if(rkKodiWsApiService.isConnected()) {
         $timeout(function() {
-          $scope.getSourcesData();
+          $scope.getSources();
         });
       }
-    });
+    });*/
+    
+    $scope.init = function() {
+      if($.isEmptyObject($scope.files)) {
+        $timeout(function() {
+          $scope.getSources();
+        });
+      }
+    };
   }
 ]);

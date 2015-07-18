@@ -1,5 +1,7 @@
 rekodiApp.controller('rkTabsCtrl', ['$scope', 
   function($scope) {
-    $scope.test = 'Tabs';
+    $scope.initTab = function(tabSelector) {
+      angular.element($(tabSelector)).scope().init();
+    };
   }
 ]);
