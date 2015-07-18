@@ -5,16 +5,6 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$timeout', 'rkKodiWsApiService',
     var sourcePaths = [];
     var kodiWsApiConnection = null;
     
-    function isLoadSources(directory) {
-      for(var key in sourcePaths) {
-        if(sourcePaths[key].indexOf(directory) > -1 && directory.length <= sourcePaths[key].length) {
-          return true;
-        }
-      }
-      
-      return false;
-    }
-    
     $scope.getLibraryData = function() {
       
     };
@@ -83,6 +73,23 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$timeout', 'rkKodiWsApiService',
         $scope.$root.$emit('rkStopLoading');
       }, function(error) {
         $scope.$root.$emit('rkStopLoading');
+      });
+    };
+    
+    $scope.playEntry = function(entry, type) {
+      var options = {
+        item: {}
+      };
+      
+      options.item[type] = entry;
+
+      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      var promise = kodiWsApiConnection.Player.Open(options);
+      
+      promise.then(function(data) {
+        console.log(data);
+      }, function(error){
+        console.log(error);
       });
     };
 
