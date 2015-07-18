@@ -6,6 +6,7 @@ section#footer {
   height: 28px;
   border-top: 1px solid #333;
   padding: 0 14px;
+  @include backgroundGradientVertical(#2B2B2B, #262626);
   
   .heartbeat {
     display: inline-block;
@@ -17,6 +18,7 @@ section#footer {
       display: inline-block;
       padding: 0 6px 0 0;
       color: #666;
+      font-size: 14px;
     }
   }
   

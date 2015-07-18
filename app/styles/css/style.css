@@ -653,7 +653,7 @@ section.tabsContainer {
       font-size: 0; }
     section.tabsContainer nav li {
       line-height: 48px;
-      width: 54px;
+      width: 62.5px;
       text-align: center;
       display: inline-block;
       font-size: 18px;
@@ -764,7 +764,15 @@ section#footer {
   right: 0;
   height: 28px;
   border-top: 1px solid #333;
-  padding: 0 14px; }
+  padding: 0 14px;
+  background: #2B2B2B;
+  background: -moz-linear-gradient(top, #2B2B2B 0, #262626 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #2B2B2B), color-stop(100%, #262626));
+  background: -webkit-linear-gradient(top, #2B2B2B 0, #262626 100%);
+  background: -o-linear-gradient(top, #2B2B2B 0, #262626 100%);
+  background: -ms-linear-gradient(top, #2B2B2B 0, #262626 100%);
+  background: linear-gradient(to bottom, #2B2B2B 0, #262626 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0); }
   section#footer .heartbeat {
     display: inline-block;
     float: right;
@@ -773,7 +781,8 @@ section#footer {
     section#footer .heartbeat .connection-status {
       display: inline-block;
       padding: 0 6px 0 0;
-      color: #666; }
+      color: #666;
+      font-size: 14px; }
   section#footer .heartbeat.offline {
     color: #8A3928; }
   section#footer .heartbeat.online {
