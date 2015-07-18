@@ -96,6 +96,71 @@ section.tabsContainer {
       left: -(100%*$i);
     }
   }
+  
+  .data-list-wrapper {
+    overflow: auto;
+    height: 416px;
+    
+    li {
+      padding: 0 12px;
+      line-height: 32px;
+      border-bottom: 1px solid #333;
+      color: #999;
+      white-space: nowrap;
+      overflow: hidden;
+      @include transitionAll(map-get($global, transition-speed));
+      
+      .label {
+        float: left;
+        display: inline-block;
+        width: 426px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        
+        i.fa {
+          margin-right: 6px;
+        }
+      }
+      
+      .controls {
+        width: 50px;
+        float: right;
+        display: none;
+        text-align: right;
+        color: #AAA;
+        
+        i.fa {
+          width: 22px;
+        }
+        
+        i.fa:hover {
+          color: map-get($global, highlight-color);
+          @include scale(1.15);
+        }
+        
+        i.fa:active {
+          @include scale(1.0);
+        }
+      }
+    }
+    
+    li:hover {
+      color: #EEE;
+      @include backgroundGradientVertical(#282828, #333);
+      border-bottom: 1px solid map-get($global, highlight-color);
+      
+      .label {
+        i.fa {
+          color: map-get($global, highlight-color);
+        }
+      }
+      
+      .controls {
+        display: inline-block;
+      }
+    }
+  }
 }
 
 section.tabsContainer.sub {

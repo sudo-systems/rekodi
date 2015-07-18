@@ -39,31 +39,4 @@ body {
     background: #2E2E2E;
     border: 1px solid #444;
   }
-  
-  .data-list-wrapper {
-    overflow: auto;
-    height: 416px;
-    
-    li {
-      padding: 0 12px;
-      line-height: 32px;
-      border-bottom: 1px solid #333;
-      color: #999;
-      @include transitionAll(map-get($global, transition-speed));
-      
-      i.fa {
-        margin-right: 6px;
-      }
-    }
-    
-    li:hover {
-      color: #EEE;
-      @include backgroundGradientVertical(#282828, #333);
-      border-bottom: 1px solid map-get($global, highlight-color);
-      
-      i.fa {
-        color: map-get($global, highlight-color);
-      }
-    }
-  }
 }

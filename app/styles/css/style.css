@@ -523,33 +523,6 @@ body {
   body .jBox-pointer:after {
     background: #2E2E2E;
     border: 1px solid #444; }
-  body .data-list-wrapper {
-    overflow: auto;
-    height: 416px; }
-    body .data-list-wrapper li {
-      padding: 0 12px;
-      line-height: 32px;
-      border-bottom: 1px solid #333;
-      color: #999;
-      -moz-transition: all 0.2s ease-in-out;
-      -o-transition: all 0.2s ease-in-out;
-      -webkit-transition: all 0.2s ease-in-out;
-      transition: all 0.2s ease-in-out; }
-      body .data-list-wrapper li i.fa {
-        margin-right: 6px; }
-    body .data-list-wrapper li:hover {
-      color: #EEE;
-      background: #282828;
-      background: -moz-linear-gradient(top, #282828 0, #333 100%);
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #282828), color-stop(100%, #333));
-      background: -webkit-linear-gradient(top, #282828 0, #333 100%);
-      background: -o-linear-gradient(top, #282828 0, #333 100%);
-      background: -ms-linear-gradient(top, #282828 0, #333 100%);
-      background: linear-gradient(to bottom, #282828 0, #333 100%);
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0);
-      border-bottom: 1px solid #E6802E; }
-      body .data-list-wrapper li:hover i.fa {
-        color: #E6802E; }
 
 section#windowControls {
   position: fixed;
@@ -770,6 +743,65 @@ section.tabsContainer {
     left: -700%; }
   section.tabsContainer .tabs[data-tab='8'] {
     left: -800%; }
+  section.tabsContainer .data-list-wrapper {
+    overflow: auto;
+    height: 416px; }
+    section.tabsContainer .data-list-wrapper li {
+      padding: 0 12px;
+      line-height: 32px;
+      border-bottom: 1px solid #333;
+      color: #999;
+      white-space: nowrap;
+      overflow: hidden;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      -webkit-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out; }
+      section.tabsContainer .data-list-wrapper li .label {
+        float: left;
+        display: inline-block;
+        width: 426px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
+        section.tabsContainer .data-list-wrapper li .label i.fa {
+          margin-right: 6px; }
+      section.tabsContainer .data-list-wrapper li .controls {
+        width: 50px;
+        float: right;
+        display: none;
+        text-align: right;
+        color: #AAA; }
+        section.tabsContainer .data-list-wrapper li .controls i.fa {
+          width: 22px; }
+        section.tabsContainer .data-list-wrapper li .controls i.fa:hover {
+          color: #E6802E;
+          -ms-transform: scale(1.15);
+          -webkit-transform: scale(1.15);
+          -moz-transform: scale(1.15);
+          -o-transform: scale(1.15);
+          transform: scale(1.15); }
+        section.tabsContainer .data-list-wrapper li .controls i.fa:active {
+          -ms-transform: scale(1);
+          -webkit-transform: scale(1);
+          -moz-transform: scale(1);
+          -o-transform: scale(1);
+          transform: scale(1); }
+    section.tabsContainer .data-list-wrapper li:hover {
+      color: #EEE;
+      background: #282828;
+      background: -moz-linear-gradient(top, #282828 0, #333 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #282828), color-stop(100%, #333));
+      background: -webkit-linear-gradient(top, #282828 0, #333 100%);
+      background: -o-linear-gradient(top, #282828 0, #333 100%);
+      background: -ms-linear-gradient(top, #282828 0, #333 100%);
+      background: linear-gradient(to bottom, #282828 0, #333 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0);
+      border-bottom: 1px solid #E6802E; }
+      section.tabsContainer .data-list-wrapper li:hover .label i.fa {
+        color: #E6802E; }
+      section.tabsContainer .data-list-wrapper li:hover .controls {
+        display: inline-block; }
 
 section.tabsContainer.sub nav {
   background: #262626;

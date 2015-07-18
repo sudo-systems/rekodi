@@ -1,9 +1,15 @@
 <div class="data-list-wrapper">
   <ul class="vertical">
-    <li ng-repeat="entry in filesData" ng-click="getDirectoryData(entry.file)">
-      <i class="fa fa-folder" ng-show="!entry.filetype || entry.filetype === 'directory'"></i>
-      <i class="fa fa-music" ng-show="entry.filetype === 'file'"></i>
-      {{entry.label}}
+    <li ng-repeat="entry in filesData" class="clearfix">
+      <div class="label" ng-click="getDirectoryData(entry.file)">
+        <i class="fa fa-folder" ng-show="!entry.filetype || entry.filetype === 'directory'"></i>
+        <i class="fa fa-music" ng-show="entry.filetype === 'file'"></i>
+        {{entry.label}}
+      </div>
+      <div class="controls" ng-if="entry.filetype && entry.label !== '..'">
+        <i class="fa fa-play" ng-show="entry.filetype === 'file' || entry.filetype === 'directory'" title="Play"></i>
+        <i class="fa fa-list-ul" ng-show="entry.filetype === 'file'" title="Add to playlist"></i>
+      </div>
     </li>
   </ul>
 </div>
