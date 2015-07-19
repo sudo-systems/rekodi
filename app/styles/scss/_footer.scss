@@ -17,7 +17,7 @@ section#footer {
     display: inline-block;
   }
   
-  i.fa {
+  i.mdi {
     font-size: 14px;
   }
   
@@ -29,7 +29,7 @@ section#footer {
       margin-right: 3px;
     }
     
-    i.fa {
+    i.mdi {
       @include transitionAll(map-get($global, transition-speed));
     }
   }
@@ -38,7 +38,7 @@ section#footer {
   }
   
   .heartbeat.online {
-    i.fa {
+    i.mdi {
       color: map-get($global, highlight-color);
       @include heartbeatAnimation();
     }

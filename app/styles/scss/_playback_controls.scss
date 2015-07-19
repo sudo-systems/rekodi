@@ -16,18 +16,14 @@ section#playbackControls {
       font-size: 20px;
       width: 42px;
       display: inline-block;
+      font-size: 30px;
       @include transitionAll(map-get($global, transition-speed));
-    }
-
-    li:first-of-type, 
-    li:last-of-type {
-      width: 28px;
     }
 
     li:hover,
     li.active {
       color: map-get($global, highlight-color);
-      @include scale(1.15);
+      @include scale(1.25);
       @include textShadow(0 0 16px, map-get($global, text-shadow-color));
     }
 

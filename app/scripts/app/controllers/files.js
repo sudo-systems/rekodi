@@ -58,6 +58,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
       });
 
       promise.then(function(data) {
+        console.dir(data);
         data.files = (data.files === undefined)? [] : data.files;
         $scope.files = data.files;
         $scope.files.unshift({

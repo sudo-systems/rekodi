@@ -2,13 +2,13 @@
   <ul class="vertical">
     <li ng-repeat="entry in files" class="clearfix">
       <div class="label" ng-click="entry.filetype === 'file'? play(entry.file, entry.filetype) : getDirectory(entry.file)">
-        <i class="fa fa-folder" ng-show="!entry.filetype || entry.filetype === 'directory'"></i>
-        <i class="fa fa-music" ng-show="entry.filetype === 'file'"></i>
+        <i class="mdi mdi-folder" ng-show="!entry.filetype || entry.filetype === 'directory'"></i>
+        <i class="mdi mdi-movie" ng-show="entry.filetype === 'file'"></i>
         {{entry.label}}
       </div>
       <div class="controls" ng-if="entry.filetype && entry.label !== '..'">
-        <i class="fa fa-play" ng-show="entry.filetype === 'file' || entry.filetype === 'directory'" title="Play" ng-click="play(entry.file, entry.filetype)"></i>
-        <i class="fa fa-plus" ng-show="entry.filetype === 'file'" title="Add to playlist"></i>
+        <i class="mdi mdi-play-box-outline" ng-show="entry.filetype === 'file' || entry.filetype === 'directory'" title="Play" ng-click="play(entry.file, entry.filetype)"></i>
+        <i class="mdi mdi-playlist-plus" ng-show="entry.filetype === 'file'" title="Add to playlist"></i>
       </div>
     </li>
   </ul>

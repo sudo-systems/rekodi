@@ -30,7 +30,9 @@ $playback-controls: (
 );
 
 $tabs: (
-  number-of-tabs: 8
+  number-of-tabs: 8,
+  tab-width: 62.5px,
+  sub-tab-width: 40px
 );
 
 $footer: (

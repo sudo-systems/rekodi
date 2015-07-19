@@ -15,11 +15,11 @@ section.tabsContainer {
     }
 
     li {
-      line-height: 48px;
-      width: 62.5px;
+      line-height: 40px;
+      width: map-get($tabs, tab-width);
       text-align: center;
       display: inline-block;
-      font-size: 18px;
+      font-size: 24px;
       border-bottom: 1px solid transparent;
       @include transitionAll(map-get($global, transition-speed));
     }
@@ -42,7 +42,7 @@ section.tabsContainer {
       position: absolute; 
       bottom: -1; 
       left: 0; 
-      width: 54px; 
+      width: map-get($tabs, tab-width); 
       height: 1px; 
       background: #E6802E;
     }
@@ -119,8 +119,9 @@ section.tabsContainer {
         overflow: hidden;
         text-overflow: ellipsis;
         
-        i.fa {
+        i.mdi {
           margin-right: 6px;
+          font-size: 20px;
           @include transitionAll(.3s);
         }
       }
@@ -132,17 +133,18 @@ section.tabsContainer {
         text-align: right;
         color: #AAA;
         
-        i.fa {
+        i.mdi {
           width: 22px;
+          font-size: 18px;
           @include transitionAll(.3s);
         }
         
-        i.fa:hover {
+        i.mdi:hover {
           color: map-get($global, highlight-color);
           @include scale(1.15);
         }
         
-        i.fa:active {
+        i.mdi:active {
           @include scale(1.0);
         }
       }
@@ -154,12 +156,12 @@ section.tabsContainer {
       border-bottom: 1px solid map-get($global, highlight-color);
       
       .label {
-        i.fa {
+        i.mdi {
           color: map-get($global, highlight-color);
-          @include transitionAll(.3s);
-          @include scale(1.5);
-          padding-left: 3px;
-          margin-right: 9px;
+          @include transitionAll(.2s);
+          @include scale(1.3);
+          padding-left: 2px;
+          margin-right: 10px;
         }
       }
       
@@ -170,7 +172,7 @@ section.tabsContainer {
     
     li:active {
       .label {
-        i.fa {
+        i.mdi {
           @include scale(1.2);
         }
       }
@@ -184,8 +186,8 @@ section.tabsContainer.sub {
     border-bottom: 1px solid #343434;
     
     li {
-      line-height: 32px;
-      width: 54px;
+      line-height: 30px;
+      width: map-get($tabs, sub-tab-width); 
       font-size: 16px;
     }
     
@@ -195,6 +197,7 @@ section.tabsContainer.sub {
     
     .magic-line {
       background: #BBB;
+      width: map-get($tabs, sub-tab-width); 
     }
   }
 }

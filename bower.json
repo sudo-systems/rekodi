@@ -24,6 +24,7 @@
   "dependencies": {
     "font-awesome": "~4.3.0",
     "angular": "~1.4.3",
-    "jbox": "~0.3.2"
+    "jbox": "~0.3.2",
+    "mdi": "~1.1.70"
   }
 }
