@@ -66,11 +66,13 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
       promise.then(function(data) {
         data.files = (data.files === undefined)? [] : data.files;
         $scope.files = data.files;
+        
         $scope.files.unshift({
           label: '..',
           filetype: 'directory',
           file: directoryUp
         });
+        
         $scope.$apply();
         $scope.$root.$emit('rkStopLoading');
         rkTooltipsService.apply($($element).find('.data-list-wrapper'));

@@ -159,7 +159,7 @@ section.tabsContainer {
       .label {
         float: left;
         display: inline-block;
-        width: 426px;
+        width: 456px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -172,7 +172,7 @@ section.tabsContainer {
       }
       
       .controls {
-        width: 50px;
+        width: 80px;
         float: right;
         display: none;
         text-align: right;
@@ -201,6 +201,8 @@ section.tabsContainer {
       border-bottom: 1px solid map-get($global, highlight-color);
       
       .label {
+        width: 396px;
+        
         i.mdi {
           color: map-get($global, highlight-color);
           @include transitionAll(.2s);

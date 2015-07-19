@@ -6,7 +6,8 @@
     <li ng-repeat="entry in files | filter:filterList" class="clearfix">
       <div class="label" ng-click="entry.filetype === 'file'? play(entry.file, entry.filetype) : getDirectory(entry.file)">
         <i class="mdi mdi-folder" ng-show="!entry.filetype || entry.filetype === 'directory'"></i>
-        <i class="mdi mdi-file-video" ng-show="entry.filetype === 'file'"></i>
+        <i class="mdi mdi-file-video" ng-show="entry.filetype === 'file' && !entry.type"></i>
+        <i class="mdi mdi-file-video" ng-show="entry.type === "></i>
         {{entry.label}}
       </div>
       <div class="controls" ng-if="entry.filetype && entry.label !== '..'">
