@@ -10,7 +10,7 @@
         {{entry.label}}
       </div>
       <div class="controls" ng-if="entry.filetype && entry.label !== '..'">
-        <i class="mdi mdi-information-outline" ng-show="entry.type === 'movie'" title="MOVIE INFO"></i>
+        <i class="mdi mdi-information-outline" ng-show="entry.plotoutline" title="Show movie info"></i>
         <i class="mdi mdi-play-box-outline" ng-show="entry.filetype === 'file' || entry.filetype === 'directory'" title="Play" ng-click="play(entry.file, entry.filetype)"></i>
         <i class="mdi mdi-playlist-plus" ng-show="entry.filetype === 'file'" title="Add to playlist"></i>
       </div>

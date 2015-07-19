@@ -571,21 +571,20 @@ body {
   body a:hover {
     color: #E6802E; }
   body .jBox-container {
-    background: #2E2E2E; }
+    background: #EEE; }
   body .jBox-content {
     padding: 3px 8px;
     overflow: auto;
-    color: #FFF;
+    color: #000;
     font-weight: 500;
-    letter-spacing: 2px;
-    font-size: 13px;
+    font-size: 14px;
     white-space: nowrap; }
   body .jBox-Tooltip .jBox-container,
   body .jBox-Mouse .jBox-container {
-    border: 1px solid #444; }
+    border: 1px solid #AAA; }
   body .jBox-pointer:after {
-    background: #2E2E2E;
-    border: 1px solid #444; }
+    background: #EEE;
+    border: 1px solid #AAA; }
 
 section#windowControls {
   position: fixed;

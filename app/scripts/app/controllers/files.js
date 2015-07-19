@@ -37,8 +37,6 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     };
     
     $scope.getDirectory = function(directory) {
-      $scope.clearFilter();
-
       if(directory === 'LOAD_SOURCES') {
         $scope.getSources();
         return;
@@ -46,6 +44,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
 
       $scope.$root.$emit('rkStartLoading');
       var directoryUp = directory.split('/').slice(0, -2).join('/')+'/';
+      var fields = [];
       
       for(var key in sourcePaths) {
         if(sourcePaths[key].indexOf(directoryUp) > -1 && directoryUp.length < sourcePaths[key].length) {
@@ -53,17 +52,23 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         }
       }
       
+      if($scope.type === 'video') {
+        fields = ['year', 'rating', 'fanart', 'trailer', 'tagline', 'plot', 'plotoutline', 'runtime', 'season', 'episode', 'showtitle', 'thumbnail', 'resume', 'tvshowid'];
+      }
+      
       kodiWsApiConnection = rkKodiWsApiService.getConnection();
       var promise = kodiWsApiConnection.Files.GetDirectory({
         directory: directory,
         media: $scope.type,
+        properties: fields,
         sort: {
-            order: 'ascending',
-            method: 'label'
-          }
+          order: 'ascending',
+          method: 'label'
+        }
       });
 
       promise.then(function(data) {
+        $scope.clearFilter();
         data.files = (data.files === undefined)? [] : data.files;
         $scope.files = data.files;
         
