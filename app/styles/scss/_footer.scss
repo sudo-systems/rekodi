@@ -8,7 +8,7 @@ section#footer {
   border-top: 1px solid #444;
   padding: 0 map-get($global, window-padding);
   color: #777;
-  font-size: 13px;
+  font-size: 12px;
   @include backgroundGradientVertical(#2C2C2C, #393939);
   @include boxShadow(0 -4px 4px -4px, #222);
   @include transitionAll(map-get($global, transition-speed));
@@ -28,17 +28,18 @@ section#footer {
     .message {
       margin-right: 3px;
     }
+    
+    i.fa {
+      @include transitionAll(map-get($global, transition-speed));
+    }
   }
   
   .heartbeat.offline {
-    i.fa {
-      color: #8A3928;
-    }
   }
   
   .heartbeat.online {
     i.fa {
-      color: #338147;
+      color: map-get($global, highlight-color);
       @include heartbeatAnimation();
     }
   }
