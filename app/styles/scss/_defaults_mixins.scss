@@ -97,3 +97,10 @@ $border_radius_htc: url("./border-radius.htc");
   -o-animation: flickerAnimation $interval infinite;
   animation: flickerAnimation $interval infinite;
 }
+
+@mixin heartbeatAnimation($interval: 1s) {
+  -webkit-animation: heartBeat $interval ease-out infinite;
+	-moz-animation: heartBeat $interval ease-out infinite;
+	-ms-animation: heartBeat $interval ease-out infinite;
+	animation: heartBeat $interval ease-out infinite;
+}

@@ -1,5 +1,5 @@
-rekodiApp.controller('rkFooterCtrl', ['$scope', '$timeout',
-  function($scope, $timeout) {
+rekodiApp.controller('rkFooterCtrl', ['$scope', '$element', '$timeout', 'rkTooltipsService',
+  function($scope, $element, $timeout, rkTooltipsService) {
     $scope.connected = false;
     $scope.statusMessage = 'offline';
     $scope.playbackMessage = '';
@@ -8,6 +8,15 @@ rekodiApp.controller('rkFooterCtrl', ['$scope', '$timeout',
       $timeout(function() {
         $scope.connected = data.connected;
         $scope.statusMessage = data.statusMessage;
+        $scope.$apply();
+        
+        rkTooltipsService.applySingle(
+          $('#footer .heartbeat'), {
+            x: 'center',
+            y: 'top'
+          }, 
+          $scope.statusMessage
+        );
       });
     });
     
@@ -24,15 +33,18 @@ rekodiApp.controller('rkFooterCtrl', ['$scope', '$timeout',
     });
     
     $scope.$root.$on('rkPlaybackStart', function(event, data) {
+      var fadeOutTimeout = null;
       $scope.playbackMessage = data.message;
+      $scope.$apply();
       
       $timeout(function() {
+        clearTimeout(fadeOutTimeout);
         $('#footer .playback-indicator').stop().fadeIn(500).css('display', 'inline-block');
-        
-        setTimeout(function() {
-          $('#footer .playback-indicator').stop().fadeOut(1500);
-        }, 20000);
       });
+
+      fadeOutTimeout = setTimeout(function() {
+        $('#footer .playback-indicator').stop().fadeOut(1500);
+      }, 20000);
     });
   }
 ]);

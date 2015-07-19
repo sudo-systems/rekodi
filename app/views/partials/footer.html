@@ -4,6 +4,6 @@
 <div class="playback-indicator">
   <i class="fa fa-play"></i> <span class="message">{{playbackMessage}}</span>
 </div>
-<div class="heartbeat" ng-class="connected ? 'online' : 'offline'">
-  <span class="connection-status" ng-bind="statusMessage"></span> <i class="fa fa-heartbeat"></i>
+<div class="heartbeat" ng-class="connected? 'online' : 'offline'" title="{{statusMessage}}">
+  <i class="fa fa-heartbeat"></i>
 </div>

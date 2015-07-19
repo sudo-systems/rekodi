@@ -156,9 +156,10 @@ section.tabsContainer {
       .label {
         i.fa {
           color: map-get($global, highlight-color);
-          margin-right: 12px;
           @include transitionAll(.3s);
           @include scale(1.5);
+          padding-left: 3px;
+          margin-right: 9px;
         }
       }
       

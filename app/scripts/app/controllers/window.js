@@ -1,16 +1,18 @@
-rekodiApp.controller('rkWindowCtrl', ['$scope', 
-  function($scope) {
+rekodiApp.controller('rkWindowCtrl', ['$scope', '$element', 'rkTooltipsService',
+  function($scope, $element, rkTooltipsService) {
     var remote = require('remote');
     var mainWindow = remote.getCurrentWindow();
     
     $scope.close = function() {
-      console.log('close');
       mainWindow.close();
     };
     
     $scope.minimize = function() {
-      console.log('minimize');
       mainWindow.minimize();
     };
+    
+    $scope.$evalAsync(function() {
+      rkTooltipsService.apply($($element));
+    });
   }
 ]);

@@ -1,5 +1,5 @@
-rekodiApp.controller('rkMusicCtrl', ['$scope', '$timeout', 'rkKodiWsApiService',
-  function($scope, $timeout, rkKodiWsApiService) {
+rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService',
+  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService) {
     $scope.library = {};
     $scope.files = {};
     var sourcePaths = [];
@@ -71,6 +71,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$timeout', 'rkKodiWsApiService',
         });
         $scope.$apply();
         $scope.$root.$emit('rkStopLoading');
+        rkTooltipsService.apply($($element).find('.data-list-wrapper'));
       }, function(error) {
         $scope.$root.$emit('rkStopLoading');
       });
@@ -121,13 +122,9 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$timeout', 'rkKodiWsApiService',
       });
     }
     
-    /*$scope.$evalAsync(function() { 
-      if(rkKodiWsApiService.isConnected()) {
-        $timeout(function() {
-          $scope.getSources();
-        });
-      }
-    });*/
+    $scope.$evalAsync(function() {
+      
+    });
     
     $scope.init = function() {
       if($.isEmptyObject($scope.files)) {

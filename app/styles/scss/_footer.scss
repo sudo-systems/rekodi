@@ -7,29 +7,40 @@ section#footer {
   line-height: (map-get($footer, height) - 3px);
   border-top: 1px solid #444;
   padding: 0 map-get($global, window-padding);
-  color: #999;
+  color: #777;
   font-size: 13px;
   @include backgroundGradientVertical(#2C2C2C, #393939);
   @include boxShadow(0 -4px 4px -4px, #222);
+  @include transitionAll(map-get($global, transition-speed));
+  
+  .message {
+    display: inline-block;
+  }
+  
+  i.fa {
+    font-size: 14px;
+  }
   
   .heartbeat {
     display: inline-block;
     float: right;
-    font-size: 14px;
     
-    .connection-status {
-      display: inline-block;
-      padding: 0 3px 0 0;
-      color: #999;
+    .message {
+      margin-right: 3px;
     }
   }
   
   .heartbeat.offline {
-    color: #8A3928;
+    i.fa {
+      color: #8A3928;
+    }
   }
   
   .heartbeat.online {
-    color: #338147;
+    i.fa {
+      color: #338147;
+      @include heartbeatAnimation();
+    }
   }
   
   .loading-indicator {
