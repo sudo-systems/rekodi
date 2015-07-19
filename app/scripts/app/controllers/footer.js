@@ -34,16 +34,25 @@ rekodiApp.controller('rkFooterCtrl', ['$scope', '$element', '$timeout', 'rkToolt
     
     $scope.$root.$on('rkPlaybackStart', function(event, data) {
       var fadeOutTimeout = null;
+      var playbackIndicator = $('#footer .playback-indicator');
       $scope.playbackMessage = data.message;
       $scope.$apply();
       
       $timeout(function() {
         clearTimeout(fadeOutTimeout);
-        $('#footer .playback-indicator').stop().fadeIn(500).css('display', 'inline-block');
+        playbackIndicator.stop().fadeIn(500).css('display', 'inline-block');
+        
+        rkTooltipsService.applySingle(
+          playbackIndicator, {
+            x: 'center',
+            y: 'top'
+          }, 
+          data.tooltipContent
+        );
       });
 
       fadeOutTimeout = setTimeout(function() {
-        $('#footer .playback-indicator').stop().fadeOut(1500);
+        playbackIndicator.stop().fadeOut(1500);
       }, 20000);
     });
   }

@@ -47,10 +47,12 @@ section#footer {
     display: none;
     float: left;
     @include fadeInAndOut(1.5s);
+    margin-right: 6px;
   }
   
   .playback-indicator {
     display: none;
     float: left;
+    margin-right: 6px;
   }
 }

@@ -38,10 +38,7 @@ rekodiApp.factory('rkTooltipsService', ['$rootScope', '$timeout',
       }
 
       $timeout(function() {
-        var jboxElement = element.jBox('Tooltip');
-        jboxElement.destroy();
-        
-        element.jBox('Tooltip',  options);
+        var jboxElement = element.jBox('Tooltip',  options);
       });
     }
 
