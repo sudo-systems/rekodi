@@ -6,16 +6,16 @@
     <li title="Playlist">
       <i class="fa fa-list-ul"></i>
     </li>
-    <li title="Music" ng-click="initTab('#music')">
+    <li title="Music" ng-click="initTab('#musicFiles')">
       <i class="fa fa-music"></i>
     </li>
-    <li title="Movies">
+    <li title="Movies" ng-click="initTab('#moviesFiles')">
       <i class="fa fa-video-camera"></i>
     </li>
-    <li title="TV shows">
+    <li title="TV shows" ng-click="initTab('#tvShowsFiles')">
       <i class="fa fa-desktop"></i>
     </li>
-    <li title="Photos">
+    <li title="Photos" ng-click="initTab('#photos')">
       <i class="fa fa-photo"></i>
     </li>
     <li title="Addons">
@@ -30,10 +30,10 @@
 <div class="tabs inline">
   <section ng-include="'views/partials/tabs/now_playing_details.html'" ng-controller="rkNowPlayingCtrl" rk-tooltips id="nowPlayingDetails" class="tabsContainer"></section>
   <section ng-include="'views/partials/tabs/playlist.html'" ng-controller="rkPlaylistCtrl" rk-tooltips id="playlist" class="tabsContainer"></section>
-  <section ng-include="'views/partials/tabs/music.html'" ng-controller="rkMusicCtrl" rk-tooltips rk-tabs id="music" class="tabsContainer sub"></section>
-  <section ng-include="'views/partials/tabs/movies.html'" ng-controller="rkMoviesCtrl" rk-tooltips rk-tabs id="movies" class="tabsContainer sub"></section>
-  <section ng-include="'views/partials/tabs/tv_shows.html'" ng-controller="rkTvShowsCtrl" rk-tooltips rk-tabs id="tvShows" class="tabsContainer sub"></section>
-  <section ng-include="'views/partials/tabs/photos.html'" ng-controller="rkPhotosCtrl" rk-tooltips id="photos" class="tabsContainer"></section>
+  <section ng-include="'views/partials/tabs/music.html'" rk-tooltips rk-tabs id="music" class="tabsContainer sub"></section>
+  <section ng-include="'views/partials/tabs/movies.html'" rk-tooltips rk-tabs id="movies" class="tabsContainer sub"></section>
+  <section ng-include="'views/partials/tabs/tv_shows.html'" rk-tooltips rk-tabs id="tvShows" class="tabsContainer sub"></section>
+  <section ng-include="'views/partials/tabs/photos.html'" ng-controller="rkFilesCtrl" ng-init="type='pictures'" rk-tooltips id="photos" class="tabsContainer"></section>
   <section ng-include="'views/partials/tabs/addons.html'" ng-controller="rkAddonsCtrl" rk-tooltips id="addons" class="tabsContainer"></section>
   <section ng-include="'views/partials/tabs/remote.html'" ng-controller="rkRemoteCtrl" rk-tooltips id="remote" class="tabsContainer"></section>
 </div>
