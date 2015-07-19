@@ -4,7 +4,7 @@ section#footer {
   bottom: 0;
   right: 0;
   height: map-get($footer, height);
-  line-height: (map-get($footer, height) - 3px);
+  line-height: map-get($footer, height);
   border-top: 1px solid #444;
   padding: 0 map-get($global, window-padding);
   color: #777;
@@ -18,7 +18,7 @@ section#footer {
   }
   
   i.mdi {
-    font-size: 14px;
+    font-size: 16px;
   }
   
   .heartbeat {

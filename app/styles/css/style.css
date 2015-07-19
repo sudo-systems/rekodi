@@ -659,30 +659,31 @@ section#playbackControls {
     color: #FFF;
     text-align: center;
     line-height: 45px;
-    font-size: 20px;
     width: 42px;
     display: inline-block;
-    font-size: 30px;
+    font-size: 32px;
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     -webkit-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out; }
+  section#playbackControls .main li[data-button="play"],
+  section#playbackControls .main li[data-button="pause"],
+  section#playbackControls .main li[data-button="stop"] {
+    font-size: 36px; }
   section#playbackControls .main li:hover,
   section#playbackControls .main li.active {
     color: #E6802E;
-    -ms-transform: scale(1.25);
-    -webkit-transform: scale(1.25);
-    -moz-transform: scale(1.25);
-    -o-transform: scale(1.25);
-    transform: scale(1.25);
-    text-shadow: 0 0 16px #666; }
+    -ms-transform: scale(1.15);
+    -webkit-transform: scale(1.15);
+    -moz-transform: scale(1.15);
+    -o-transform: scale(1.15);
+    transform: scale(1.15); }
   section#playbackControls .main li:active {
     -ms-transform: scale(1);
     -webkit-transform: scale(1);
     -moz-transform: scale(1);
     -o-transform: scale(1);
-    transform: scale(1);
-    text-shadow: 0 0 6px #666; }
+    transform: scale(1); }
   section#playbackControls .main li[data-button="pause"],
   section#playbackControls .main li[data-button="stop"] {
     display: none; }
@@ -911,7 +912,7 @@ section#footer {
   bottom: 0;
   right: 0;
   height: 32px;
-  line-height: 29px;
+  line-height: 32px;
   border-top: 1px solid #444;
   padding: 0 12px;
   color: #777;
@@ -934,7 +935,7 @@ section#footer {
   section#footer .message {
     display: inline-block; }
   section#footer i.mdi {
-    font-size: 14px; }
+    font-size: 16px; }
   section#footer .heartbeat {
     display: inline-block;
     float: right; }
