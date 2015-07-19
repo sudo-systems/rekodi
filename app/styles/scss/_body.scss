@@ -9,6 +9,14 @@ body {
   font-weight: map-get($body, font-weight);
   overflow: hidden;
   
+  input,
+  textarea {
+    font-family: map-get($body, font-family);
+    font-size: map-get($body, font-size);
+    font-weight: map-get($body, font-weight);
+    font-family: MaterialDesignIcons;
+  }
+  
   a {
     color: map-get($body, anchor-color);
   }

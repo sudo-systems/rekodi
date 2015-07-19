@@ -2,6 +2,9 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
   function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService) {
     $scope.files = {};
     $scope.type = '';
+    $scope.filter = {
+      value: ''
+    };
     var sourcePaths = [];
     var kodiWsApiConnection = null;
 
@@ -27,12 +30,15 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         $scope.files = data.sources;
         $scope.$apply();
         $scope.$root.$emit('rkStopLoading');
+        rkTooltipsService.apply($($element).find('.data-list-wrapper'));
       }, function(error) {
         $scope.$root.$emit('rkStopLoading');
       });
     };
     
     $scope.getDirectory = function(directory) {
+      $scope.clearFilter();
+
       if(directory === 'LOAD_SOURCES') {
         $scope.getSources();
         return;
@@ -58,7 +64,6 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
       });
 
       promise.then(function(data) {
-        console.dir(data);
         data.files = (data.files === undefined)? [] : data.files;
         $scope.files = data.files;
         $scope.files.unshift({
@@ -92,6 +97,14 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
       }, function(error){
         console.log(error);
       });
+    };
+    
+    $scope.filterList = function(entry) {
+      return (entry.label.toLowerCase().indexOf($scope.filter.value.toLowerCase()) > -1 || entry.label === '..');
+    };
+    
+    $scope.clearFilter = function() {
+      $scope.filter.value = '';
     };
 
     $scope.$root.$on('rkWsConnectionStatusChange', function(event, data) {

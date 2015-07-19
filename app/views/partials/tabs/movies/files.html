@@ -1,6 +1,9 @@
 <div class="data-list-wrapper">
+  <div class="options">
+    <i class="mdi mdi-settings"></i> <input type="text" class="filter" ng-model="filter.value" placeholder="filter" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+  </div>
   <ul class="vertical">
-    <li ng-repeat="entry in files" class="clearfix">
+    <li ng-repeat="entry in files | filter:filterList" class="clearfix">
       <div class="label" ng-click="entry.filetype === 'file'? play(entry.file, entry.filetype) : getDirectory(entry.file)">
         <i class="mdi mdi-folder" ng-show="!entry.filetype || entry.filetype === 'directory'"></i>
         <i class="mdi mdi-movie" ng-show="entry.filetype === 'file'"></i>
