@@ -806,7 +806,11 @@ section.tabsContainer {
         text-align: right;
         color: #AAA; }
         section.tabsContainer .data-list-wrapper li .controls i.fa {
-          width: 22px; }
+          width: 22px;
+          -moz-transition: all 0.3s ease-in-out;
+          -o-transition: all 0.3s ease-in-out;
+          -webkit-transition: all 0.3s ease-in-out;
+          transition: all 0.3s ease-in-out; }
         section.tabsContainer .data-list-wrapper li .controls i.fa:hover {
           color: #E6802E;
           -ms-transform: scale(1.15);

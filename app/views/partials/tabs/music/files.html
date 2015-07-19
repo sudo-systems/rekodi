@@ -8,7 +8,7 @@
       </div>
       <div class="controls" ng-if="entry.filetype && entry.label !== '..'">
         <i class="fa fa-play" ng-show="entry.filetype === 'file' || entry.filetype === 'directory'" title="Play" ng-click="play(entry.file, entry.filetype)"></i>
-        <i class="fa fa-list-ul" ng-show="entry.filetype === 'file'" title="Add to playlist"></i>
+        <i class="fa fa-plus" ng-show="entry.filetype === 'file'" title="Add to playlist"></i>
       </div>
     </li>
   </ul>
