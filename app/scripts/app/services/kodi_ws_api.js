@@ -63,6 +63,10 @@ rekodiApp.factory('rkKodiWsApiService', ['$rootScope',
           connection: link
         };
         
+        connectionStatus.connection.on('error', function(error) {
+          alert(error);
+        });
+        
         bindEvents(connectionStatus.connection);
         $rootScope.$emit('rkWsConnectionStatusChange', connectionStatus);
       },

@@ -1,6 +1,6 @@
 rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService',
   function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService) {
-    $scope.files = {};
+    $scope.files = [];
     $scope.type = '';
     $scope.filter = {
       value: ''
@@ -9,31 +9,34 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     var kodiWsApiConnection = null;
 
     $scope.getSources = function() {
-      $scope.$root.$emit('rkStartLoading');
-   
       kodiWsApiConnection = rkKodiWsApiService.getConnection();
-      var promise = kodiWsApiConnection.Files.GetSources({
-        media: $scope.type,
-        sort: {
-          order: 'ascending',
-          method: 'label'
-        }
-      });
 
-      promise.then(function(data) {
-        sourcePaths = [];
+      if(kodiWsApiConnection) {
+        $scope.$root.$emit('rkStartLoading');
+        
+        var promise = kodiWsApiConnection.Files.GetSources({
+          media: $scope.type,
+          sort: {
+            order: 'ascending',
+            method: 'label'
+          }
+        });
 
-        for(var i=0; i<data.sources.length; i++) {
-          sourcePaths[i] = data.sources[i].file;
-        }
+        promise.then(function(data) {
+          sourcePaths = [];
 
-        $scope.files = data.sources;
-        $scope.$apply();
-        $scope.$root.$emit('rkStopLoading');
-        rkTooltipsService.apply($($element).find('.data-list-wrapper'));
-      }, function(error) {
-        $scope.$root.$emit('rkStopLoading');
-      });
+          for(var i=0; i<data.sources.length; i++) {
+            sourcePaths[i] = data.sources[i].file;
+          }
+
+          $scope.files = objectToArray(data.sources);
+          $scope.$apply();
+          $scope.$root.$emit('rkStopLoading');
+          rkTooltipsService.apply($($element).find('.data-list-wrapper'));
+        }, function(error) {
+          $scope.$root.$emit('rkStopLoading');
+        });
+      }
     };
     
     $scope.getDirectory = function(directory) {
@@ -42,48 +45,52 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         return;
       }
 
-      $scope.$root.$emit('rkStartLoading');
-      var directoryUp = directory.split('/').slice(0, -2).join('/')+'/';
-      var fields = [];
-      
-      for(var key in sourcePaths) {
-        if(sourcePaths[key].indexOf(directoryUp) > -1 && directoryUp.length < sourcePaths[key].length) {
-          directoryUp = 'LOAD_SOURCES';
-        }
-      }
-      
-      if($scope.type === 'video') {
-        fields = ['year', 'rating', 'fanart', 'trailer', 'tagline', 'plot', 'plotoutline', 'runtime', 'season', 'episode', 'showtitle', 'thumbnail', 'resume', 'tvshowid'];
-      }
-      
       kodiWsApiConnection = rkKodiWsApiService.getConnection();
-      var promise = kodiWsApiConnection.Files.GetDirectory({
-        directory: directory,
-        media: $scope.type,
-        properties: fields,
-        sort: {
-          order: 'ascending',
-          method: 'label'
-        }
-      });
+      
+      if(kodiWsApiConnection) {
+        $scope.$root.$emit('rkStartLoading');
+        var directoryUp = directory.split('/').slice(0, -2).join('/')+'/';
+        var fields = [];
 
-      promise.then(function(data) {
-        $scope.clearFilter();
-        data.files = (data.files === undefined)? [] : data.files;
-        $scope.files = data.files;
+        for(var key in sourcePaths) {
+          if(sourcePaths[key].indexOf(directoryUp) > -1 && directoryUp.length < sourcePaths[key].length) {
+            directoryUp = 'LOAD_SOURCES';
+          }
+        }
+
+        if($scope.type === 'video') {
+          fields = ['year', 'rating', 'fanart', 'trailer', 'tagline', 'plot', 'plotoutline', 'runtime', 'season', 'episode', 'showtitle', 'thumbnail', 'resume', 'tvshowid'];
+        }
         
-        $scope.files.unshift({
-          label: '..',
-          filetype: 'directory',
-          file: directoryUp
+        var promise = kodiWsApiConnection.Files.GetDirectory({
+          directory: directory,
+          media: $scope.type,
+          properties: fields,
+          sort: {
+            order: 'ascending',
+            method: 'label'
+          }
         });
-        
-        $scope.$apply();
-        $scope.$root.$emit('rkStopLoading');
-        rkTooltipsService.apply($($element).find('.data-list-wrapper'));
-      }, function(error) {
-        $scope.$root.$emit('rkStopLoading');
-      });
+
+        promise.then(function(data) {
+          $scope.clearFilter();
+          data.files = (data.files === undefined)? [] : data.files;
+          $scope.files = objectToArray(data.files);
+          var dirUp = [
+            label = '..',
+            filetype = 'directory',
+            file = directoryUp
+          ];
+
+          $scope.files.unshift(dirUp);
+
+          $scope.$apply();
+          $scope.$root.$emit('rkStopLoading');
+          rkTooltipsService.apply($($element).find('.data-list-wrapper'));
+        }, function(error) {
+          $scope.$root.$emit('rkStopLoading');
+        });
+      }
     };
     
     $scope.play = function(entry, type) {
@@ -116,9 +123,36 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
 
     $scope.$root.$on('rkWsConnectionStatusChange', function(event, data) {
       if(!data.connected) {
-        $scope.files = {};
+        $scope.files = [];
       }
     });
+    
+    function objectToArray(obj) {
+      if(obj === null) {
+        return null;
+      }
+      
+      var newArray = [];
+      
+      if(typeof obj === 'object') {
+        obj = $.map(obj, function(value, index) {
+            return [value];
+        });
+      } 
+      
+      if(obj.constructor === Array) {
+          newArray = array();
+          
+          for(var key in obj) {
+              newArray[key] = object_to_array(obj[key]);
+          }
+      }
+      else {
+        newArray = obj;
+      } 
+      
+      return newArray;       
+    }
     
     function emitPlaybackNotification(entry, type) {
       var fileName = 'of ';
