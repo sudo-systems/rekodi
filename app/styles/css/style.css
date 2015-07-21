@@ -1008,11 +1008,13 @@ section#footer {
   section#footer .loading-indicator {
     display: none;
     float: left;
-    -webkit-animation: flickerAnimation 1.5s infinite;
-    -moz-animation: flickerAnimation 1.5s infinite;
-    -o-animation: flickerAnimation 1.5s infinite;
-    animation: flickerAnimation 1.5s infinite;
-    margin-right: 6px; }
+    -webkit-animation: flickerAnimation 1s infinite;
+    -moz-animation: flickerAnimation 1s infinite;
+    -o-animation: flickerAnimation 1s infinite;
+    animation: flickerAnimation 1s infinite;
+    margin-right: 6px;
+    color: #AAA;
+    font-size: 13px; }
   section#footer .playback-indicator {
     display: none;
     float: left;

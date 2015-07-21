@@ -47,8 +47,10 @@ section#footer {
   .loading-indicator {
     display: none;
     float: left;
-    @include fadeInAndOut(1.5s);
+    @include fadeInAndOut(1s);
     margin-right: 6px;
+    color: #AAA;
+    font-size: 13px;
   }
   
   .playback-indicator {
