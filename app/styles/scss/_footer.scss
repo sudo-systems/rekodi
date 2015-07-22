@@ -7,16 +7,13 @@ section#footer {
   line-height: map-get($footer, height);
   border-top: 1px solid #444;
   padding: 0 map-get($global, window-padding);
-  color: #777;
+  color: #CCC;
   font-size: 12px;
+  white-space: nowrap;
   @include backgroundGradientVertical(#2C2C2C, #393939);
   @include boxShadow(0 -4px 4px -4px, #222);
   @include transitionAll(map-get($global, transition-speed));
-  
-  .message {
-    display: inline-block;
-  }
-  
+
   i.mdi {
     font-size: 16px;
   }
@@ -24,10 +21,8 @@ section#footer {
   .heartbeat {
     display: inline-block;
     float: right;
-    
-    .message {
-      margin-right: 3px;
-    }
+    text-align: right;
+    width: 19px;
     
     i.mdi {
       @include transitionAll(map-get($global, transition-speed));
@@ -44,18 +39,34 @@ section#footer {
     }
   }
   
-  .loading-indicator {
+  .indicator {
     display: none;
     float: left;
-    @include fadeInAndOut(1s);
     margin-right: 6px;
-    color: #AAA;
-    font-size: 13px;
+    
+    i.mdi {
+      width: 24px;
+      float: left;
+      line-height: map-get($footer, height);
+      display: inline-block;
+    }
+    
+    .message {
+      display: inline-block;
+      width: 420px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      float: right;
+    }
   }
   
-  .playback-indicator {
-    display: none;
-    float: left;
-    margin-right: 6px;
+  .indicator.loading {
+    @include fadeInAndOut(1s);
+    font-size: 13px;
+  }
+
+  .indicator.error {
+    color: #EB4F4B;
   }
 }

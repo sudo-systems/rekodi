@@ -968,8 +968,9 @@ section#footer {
   line-height: 32px;
   border-top: 1px solid #444;
   padding: 0 12px;
-  color: #777;
+  color: #CCC;
   font-size: 12px;
+  white-space: nowrap;
   background: #2C2C2C;
   background: -moz-linear-gradient(top, #2C2C2C 0, #393939 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #2C2C2C), color-stop(100%, #393939));
@@ -985,15 +986,13 @@ section#footer {
   -o-transition: all 0.2s ease-in-out;
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out; }
-  section#footer .message {
-    display: inline-block; }
   section#footer i.mdi {
     font-size: 16px; }
   section#footer .heartbeat {
     display: inline-block;
-    float: right; }
-    section#footer .heartbeat .message {
-      margin-right: 3px; }
+    float: right;
+    text-align: right;
+    width: 19px; }
     section#footer .heartbeat i.mdi {
       -moz-transition: all 0.2s ease-in-out;
       -o-transition: all 0.2s ease-in-out;
@@ -1005,19 +1004,29 @@ section#footer {
     -moz-animation: heartBeat 1s ease-out infinite;
     -ms-animation: heartBeat 1s ease-out infinite;
     animation: heartBeat 1s ease-out infinite; }
-  section#footer .loading-indicator {
+  section#footer .indicator {
     display: none;
     float: left;
+    margin-right: 6px; }
+    section#footer .indicator i.mdi {
+      width: 24px;
+      float: left;
+      line-height: 32px;
+      display: inline-block; }
+    section#footer .indicator .message {
+      display: inline-block;
+      width: 420px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      float: right; }
+  section#footer .indicator.loading {
     -webkit-animation: flickerAnimation 1s infinite;
     -moz-animation: flickerAnimation 1s infinite;
     -o-animation: flickerAnimation 1s infinite;
     animation: flickerAnimation 1s infinite;
-    margin-right: 6px;
-    color: #AAA;
     font-size: 13px; }
-  section#footer .playback-indicator {
-    display: none;
-    float: left;
-    margin-right: 6px; }
+  section#footer .indicator.error {
+    color: #EB4F4B; }
 
 /*# sourceMappingURL=style.css.map */

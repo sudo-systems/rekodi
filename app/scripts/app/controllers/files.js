@@ -1,5 +1,5 @@
-rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService',
-  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService) {
+rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', 'rkEnumsService',
+  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, rkEnumsService) {
     $scope.files = [];
     $scope.type = '';
     $scope.filter = {
@@ -35,6 +35,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
           rkTooltipsService.apply($($element).find('.data-list-wrapper'));
         }, function(error) {
           $scope.$root.$emit('rkStopLoading');
+          handleError(error);
         });
       }
     };
@@ -59,7 +60,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         }
 
         if($scope.type === 'video') {
-          fields = ['year', 'rating', 'fanart', 'trailer', 'tagline', 'plot', 'plotoutline', 'runtime', 'season', 'episode', 'showtitle', 'thumbnail', 'resume', 'tvshowid'];
+          fields = ['plotoutline'];
         }
         
         var promise = kodiWsApiConnection.Files.GetDirectory({
@@ -89,27 +90,48 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
           rkTooltipsService.apply($($element).find('.data-list-wrapper'));
         }, function(error) {
           $scope.$root.$emit('rkStopLoading');
+          handleError(error);
         });
       }
     };
     
-    $scope.play = function(entry, type) {
+    $scope.play = function(entry) {
       var options = {
         item: {}
       };
       
-      options.item[type] = entry;
+      options.item[entry.filetype] = entry.file;
 
       kodiWsApiConnection = rkKodiWsApiService.getConnection();
       var promise = kodiWsApiConnection.Player.Open(options);
       
+      promise.then(function(data) {
+        if(data === 'OK') {
+          emitPlaybackNotification(entry);
+        }
+      }, function(error) {
+        handleError(error);
+      });
+    };
+    
+    $scope.addToPlaylist = function(entry) {
+      var playlistId = ($scope.type === 'music')? rkEnumsService.PlaylistId.AUDIO : rkEnumsService.PlaylistId.VIDEO;
+      var options = {
+        playlistid: playlistId,
+        item: {}
+      };
+      
+      options.item[entry.filetype] = entry.file;
+
+      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      var promise = kodiWsApiConnection.Playlist.Add(options);
       
       promise.then(function(data) {
         if(data === 'OK') {
-          emitPlaybackNotification(entry, type);
+          emitAddedToPlaylistNotification(entry);
         }
-      }, function(error){
-        console.log(error);
+      }, function(error) {
+        handleError(error);
       });
     };
     
@@ -127,14 +149,14 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
       }
     });
 
-    function emitPlaybackNotification(entry, type) {
+    function emitPlaybackNotification(entry) {
       var fileName = 'of ';
       
-      if(type === 'file'){
-        fileName += '"' +entry.substring(entry.lastIndexOf('/')+1, entry.lastIndexOf('.'))+ '"';
+      if(entry.filetype === 'file'){
+        fileName += '"' +entry.file.substring(entry.file.lastIndexOf('/')+1, entry.file.lastIndexOf('.'))+ '"';
       }
-      else if(type === 'directory') {
-        var parts = entry.split('/');
+      else if(entry.filetype === 'directory') {
+        var parts = entry.file.split('/');
         fileName += 'directory "' +parts[(parts.length-2)]+ '"';
       }
       else {
@@ -143,6 +165,33 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
       
       $scope.$root.$emit('rkPlaybackStart', {
         message: 'Playback ' +fileName+ ' started'
+      });
+    }
+    
+    function emitAddedToPlaylistNotification(entry) {
+      var fileName = '';
+      
+      if(entry.filetype === 'file'){
+        fileName = '"' +entry.file.substring(entry.file.lastIndexOf('/')+1, entry.file.lastIndexOf('.'))+ '"';
+      }
+      else if(entry.filetype === 'directory') {
+        var parts = entry.file.split('/');
+        fileName = 'Directory "' +parts[(parts.length-2)]+ '"';
+      }
+      else {
+        fileName = '"Unknow"';
+      }
+      
+      $scope.$root.$emit('rkAddedToPlaylist', {
+        message: fileName+ ' has been added to the playlist'
+      });
+    }
+    
+    function handleError(error) {
+      console.log(error.response.data.stack.message);
+      
+      $scope.$root.$emit('rkServerError', {
+        message: error.response.message+' ('+error.response.data.stack.message+': '+error.response.data.stack.name+')'
       });
     }
     
