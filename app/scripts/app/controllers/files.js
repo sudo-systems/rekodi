@@ -29,7 +29,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
             sourcePaths[i] = data.sources[i].file;
           }
 
-          $scope.files = objectToArray(data.sources);
+          $scope.files = data.sources;
           $scope.$apply();
           $scope.$root.$emit('rkStopLoading');
           rkTooltipsService.apply($($element).find('.data-list-wrapper'));
@@ -75,12 +75,12 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         promise.then(function(data) {
           $scope.clearFilter();
           data.files = (data.files === undefined)? [] : data.files;
-          $scope.files = objectToArray(data.files);
-          var dirUp = [
-            label = '..',
-            filetype = 'directory',
-            file = directoryUp
-          ];
+          $scope.files = data.files;
+          var dirUp = {
+            label: '..',
+            filetype: 'directory',
+            file: directoryUp
+          };
 
           $scope.files.unshift(dirUp);
 
@@ -126,34 +126,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         $scope.files = [];
       }
     });
-    
-    function objectToArray(obj) {
-      if(obj === null) {
-        return null;
-      }
-      
-      var newArray = [];
-      
-      if(typeof obj === 'object') {
-        obj = $.map(obj, function(value, index) {
-            return [value];
-        });
-      } 
-      
-      if(obj.constructor === Array) {
-          newArray = array();
-          
-          for(var key in obj) {
-              newArray[key] = object_to_array(obj[key]);
-          }
-      }
-      else {
-        newArray = obj;
-      } 
-      
-      return newArray;       
-    }
-    
+
     function emitPlaybackNotification(entry, type) {
       var fileName = 'of ';
       
