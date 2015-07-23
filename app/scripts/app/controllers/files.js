@@ -163,6 +163,9 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
       if(!data.connected) {
         $scope.files = [];
       }
+      else {
+        $scope.getSources();
+      }
     });
 
     function emitPlaybackNotification(entry) {

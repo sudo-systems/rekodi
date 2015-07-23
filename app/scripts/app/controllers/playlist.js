@@ -1,20 +1,31 @@
 rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', 'rkEnumsService',
   function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, rkEnumsService) {
     $scope.type = '';
-    $scope.entries = [];
+    $scope.playlistId = null;
+    $scope.items = [];
     $scope.filter = {
       value: ''
     };
     var kodiWsApiConnection = null;
     
-    $scope.getPlaylist = function() {
+    $scope.$watch('type', function() {
+      if($scope.type === 'audio') {
+        $scope.playlistId = rkEnumsService.PlaylistId.AUDIO;
+      }
+      
+      if($scope.type === 'video') {
+        $scope.playlistId = rkEnumsService.PlaylistId.VIDEO;
+      }
+    });
+    
+    $scope.get = function() {
       kodiWsApiConnection = rkKodiWsApiService.getConnection();
 
       if(kodiWsApiConnection) {
         $scope.$root.$emit('rkStartLoading');
         
         var promise = kodiWsApiConnection.Playlist.GetItems({
-          playlistid: ($scope.type === 'audio')? rkEnumsService.PlaylistId.AUDIO : rkEnumsService.PlaylistId.VIDEO
+          playlistid: $scope.playlistId
         });
 
         promise.then(function(data) {
@@ -43,10 +54,47 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKod
       });
     }
     
+    function bindEvents() {
+      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+
+      if(kodiWsApiConnection) {
+        kodiWsApiConnection.Playlist.OnAdd(function(serverData) {
+          if(serverData.data.playlistid === $scope.playlistId) {
+            $scope.get();
+          }
+        });
+        
+        kodiWsApiConnection.Playlist.OnRemove(function(serverData) {
+          if(serverData.data.playlistid === $scope.playlistId) {
+            $scope.get();
+          }
+        });
+        
+        kodiWsApiConnection.Playlist.OnClear(function(serverData) {
+          if(serverData.data.playlistid === $scope.playlistId) {
+            $scope.get();
+          }
+        });
+      }
+    }
+    
     $scope.init = function() {
       $timeout(function() {
-        $scope.getPlaylist();
+        if($.isEmptyObject($scope.items)) {
+          $scope.get();
+        };
+        
+        bindEvents();
       });
     };
+    
+    $scope.$root.$on('rkWsConnectionStatusChange', function(event, data) {
+      if(!data.connected) {
+        $scope.items = [];
+      }
+      else {
+        $scope.get();
+      }
+    });
   }
 ]);
