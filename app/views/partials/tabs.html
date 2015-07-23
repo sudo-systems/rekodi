@@ -3,19 +3,19 @@
     <li class="active" title="Now playing">
       <i class="mdi mdi-play-box-outline"></i>
     </li>
-    <li title="Playlist">
+    <li title="Playlist" ng-click="initTab(['#audioPlaylist', '#videoPlaylist'])">
       <i class="mdi mdi-view-list"></i>
     </li>
-    <li title="Music" ng-click="initTab('#musicFiles')">
+    <li title="Music" ng-click="initTab(['#musicFiles'])">
       <i class="mdi mdi-music-note"></i>
     </li>
-    <li title="Movies" ng-click="initTab('#moviesFiles')">
+    <li title="Movies" ng-click="initTab(['#moviesFiles'])">
       <i class="mdi mdi-movie"></i>
     </li>
-    <li title="TV shows" ng-click="initTab('#tvShowsFiles')">
+    <li title="TV shows" ng-click="initTab(['#tvShowsFiles'])">
       <i class="mdi mdi-television"></i>
     </li>
-    <li title="Photos" ng-click="initTab('#photos')">
+    <li title="Photos" ng-click="initTab(['#photos'])">
       <i class="mdi mdi-camera"></i>
     </li>
     <li title="Addons">
@@ -29,7 +29,7 @@
 </nav>
 <div class="tabs inline">
   <section ng-include="'views/partials/tabs/now_playing_details.html'" ng-controller="rkNowPlayingCtrl" rk-tooltips id="nowPlayingDetails" class="tabsContainer"></section>
-  <section ng-include="'views/partials/tabs/playlist.html'" ng-controller="rkPlaylistCtrl" rk-tooltips id="playlist" class="tabsContainer"></section>
+  <section ng-include="'views/partials/tabs/playlist.html'" rk-tooltips rk-tabs id="playlist" class="tabsContainer sub"></section>
   <section ng-include="'views/partials/tabs/music.html'" rk-tooltips rk-tabs id="music" class="tabsContainer sub"></section>
   <section ng-include="'views/partials/tabs/movies.html'" rk-tooltips rk-tabs id="movies" class="tabsContainer sub"></section>
   <section ng-include="'views/partials/tabs/tv_shows.html'" rk-tooltips rk-tabs id="tvShows" class="tabsContainer sub"></section>

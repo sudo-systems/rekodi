@@ -115,24 +115,40 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     };
     
     $scope.addToPlaylist = function(entry) {
-      var playlistId = ($scope.type === 'music')? rkEnumsService.PlaylistId.AUDIO : rkEnumsService.PlaylistId.VIDEO;
-      var options = {
-        playlistid: playlistId,
-        item: {}
-      };
-      
-      options.item[entry.filetype] = entry.file;
-
       kodiWsApiConnection = rkKodiWsApiService.getConnection();
-      var promise = kodiWsApiConnection.Playlist.Add(options);
       
-      promise.then(function(data) {
-        if(data === 'OK') {
-          emitAddedToPlaylistNotification(entry);
-        }
-      }, function(error) {
-        handleError(error);
-      });
+      if(kodiWsApiConnection) {
+        $scope.$root.$emit('rkStartLoading');
+        var playlistId = ($scope.type === 'music')? rkEnumsService.PlaylistId.AUDIO : rkEnumsService.PlaylistId.VIDEO;
+
+        var playlistPromise = kodiWsApiConnection.Playlist.GetItems({
+          playlistid: playlistId
+        });
+
+        playlistPromise.then(function(data) {
+          var options = {
+            playlistid: playlistId,
+            position: (data.items)? data.items.length : 0,
+            item: {}
+          };
+
+          options.item[entry.filetype] = entry.file;
+          
+          var promise = kodiWsApiConnection.Playlist.Insert(options);
+
+          promise.then(function(data) {
+            if(data === 'OK') {
+              emitAddedToPlaylistNotification(entry);
+            }
+          }, function(error) {
+            $scope.$root.$emit('rkStopLoading');
+            handleError(error);
+          });
+        }, function(error) {
+          $scope.$root.$emit('rkStopLoading');
+          handleError(error);
+        });
+      }
     };
     
     $scope.filterList = function(entry) {
@@ -188,13 +204,11 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     }
     
     function handleError(error) {
-      console.log(error.response.data.stack.message);
-      
       $scope.$root.$emit('rkServerError', {
         message: error.response.message+' ('+error.response.data.stack.message+': '+error.response.data.stack.name+')'
       });
     }
-    
+
     $scope.$evalAsync(function() {
       
     });
