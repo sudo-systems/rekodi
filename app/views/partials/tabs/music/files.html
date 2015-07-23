@@ -11,7 +11,7 @@
       </div>
       <div class="controls" ng-if="entry.filetype && entry.label !== '..'">
         <i class="mdi mdi-play-box-outline" ng-show="entry.filetype === 'file' || entry.filetype === 'directory'" title="Play" ng-click="play(entry)"></i>
-        <i class="mdi mdi-playlist-plus" ng-show="entry.filetype === 'file'" title="Add to playlist" ng-click="addToPlaylist(entry)"></i>
+        <i class="mdi mdi-playlist-plus" ng-show="entry.file !== '..'" title="Add to playlist" ng-click="addToPlaylist(entry)"></i>
       </div>
     </li>
   </ul>
