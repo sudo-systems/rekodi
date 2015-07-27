@@ -1,1 +1,3 @@
-var rekodiApp = angular.module('rekodiApp', []);
+var rekodiApp = angular.module('rekodiApp', [
+  'ngStorage'
+]);
