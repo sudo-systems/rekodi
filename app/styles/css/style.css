@@ -717,7 +717,7 @@ section.tabsContainer {
       font-size: 0; }
     section.tabsContainer nav li {
       line-height: 40px;
-      width: 62.5px;
+      width: 55.56px;
       text-align: center;
       display: inline-block;
       font-size: 24px;
@@ -749,7 +749,7 @@ section.tabsContainer {
       position: absolute;
       bottom: -1;
       left: 0;
-      width: 62.5px;
+      width: 55.56px;
       height: 1px;
       background: #E6802E; }
   section.tabsContainer .tabs.inline {
@@ -805,6 +805,8 @@ section.tabsContainer {
     left: -700%; }
   section.tabsContainer .tabs[data-tab='8'] {
     left: -800%; }
+  section.tabsContainer .tabs[data-tab='9'] {
+    left: -900%; }
   section.tabsContainer .data-list-wrapper {
     overflow: auto;
     height: 416px; }

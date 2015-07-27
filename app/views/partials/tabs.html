@@ -24,6 +24,9 @@
     <li title="Remote">
       <i class="mdi mdi-remote"></i>
     </li>
+    <li title="Settings">
+      <i class="mdi mdi-settings"></i>
+    </li>
   </ul>
   <div class="magic-line"></div>
 </nav>
@@ -36,4 +39,5 @@
   <section ng-include="'views/partials/tabs/photos.html'" ng-controller="rkFilesCtrl" ng-init="type='pictures'" rk-tooltips id="photos" class="tabsContainer"></section>
   <section ng-include="'views/partials/tabs/addons.html'" ng-controller="rkAddonsCtrl" rk-tooltips id="addons" class="tabsContainer"></section>
   <section ng-include="'views/partials/tabs/remote.html'" ng-controller="rkRemoteCtrl" rk-tooltips id="remote" class="tabsContainer"></section>
+  <section ng-include="'views/partials/tabs/settings.html'" ng-controller="rkSettingsCtrl" rk-tooltips id="settings" class="tabsContainer"></section>
 </div>
