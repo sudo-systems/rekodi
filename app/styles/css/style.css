@@ -585,6 +585,20 @@ body {
   body .jBox-pointer:after {
     background: #EEE;
     border: 1px solid #AAA; }
+  body .bodyOverlay {
+    position: fixed;
+    top: 170px;
+    left: 0;
+    right: 0;
+    bottom: 32px;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+    color: #FFF;
+    text-align: center;
+    padding-top: 100px;
+    font-size: 18px; }
+    body .bodyOverlay a {
+      color: #E6802E; }
 
 section#settings .settings-section {
   padding: 0 12px; }

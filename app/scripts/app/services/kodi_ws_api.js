@@ -1,5 +1,5 @@
-rekodiApp.factory('rkKodiWsApiService', ['$rootScope', 
-  function($rootScope) {
+rekodiApp.factory('rkKodiWsApiService', ['$rootScope', '$localStorage',
+  function($rootScope, $localStorage) {
     var retyInterval = 2000;
     var connectionStatus = {
       connected: false, 
@@ -95,6 +95,14 @@ rekodiApp.factory('rkKodiWsApiService', ['$rootScope',
       }, retyInterval);
     };
     
+    var isConfigured = function() {
+      console.dir($localStorage.settings);
+      return (!$localStorage.settings || 
+              $localStorage.settings.constructor !== Object || 
+              $localStorage.settings.serverAddress === '' ||
+              $localStorage.settings.jsonRpcPort === '')? false : true;
+    };
+    
     var isConnected = function() {
       return connectionStatus.connected;
     };
@@ -106,7 +114,8 @@ rekodiApp.factory('rkKodiWsApiService', ['$rootScope',
     return {
       connect: connect,
       isConnected: isConnected,
-      getConnection: getConnection
+      getConnection: getConnection,
+      isConfigured: isConfigured
     };
   }
 ]);

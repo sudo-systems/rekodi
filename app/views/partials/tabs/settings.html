@@ -3,11 +3,11 @@
     Connection
   </div>
   <ul class="vertical">
-    <li title="Enter the ip address or domain name of the Kodi server">
-      <label for="kodiIp">ip address</label><input type="text" placeholder="192.168.1.10" name="kodi_ip" id="kodiIp" value="" />
+    <li title="I.e. 192.168.1.10 or mydomain.com">
+      <label for="kodiIp">server address</label><input type="text" placeholder="192.168.1.10" ng-model="storage.serverAddress" name="kodi_ip" id="kodiIp" value="" />
     </li>
-    <li title="Leave at port 9090 unless changed in advancedsettings.xml">
-      <label for="kodiPort">port</label><input type="text" name="kodi_port" id="kodiPort" value="9090" />
+    <li title="Leave at 9090 unless changed in advancedsettings.xml">
+      <label for="kodiPort">port</label><input type="text" name="kodi_port" id="kodiPort" ng-model="storage.jsonRpcPort" />
     </li>
   </ul>
 </div>
