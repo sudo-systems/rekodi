@@ -1,6 +1,6 @@
 rekodiApp.controller('rkSettingsCtrl', ['$scope', '$localStorage',
   function($scope, $localStorage) {
-    $scope.storage = $localStorage.settings;
+    $scope.storage = null;
 
     function init() {
       if(!$localStorage.settings || $localStorage.settings.constructor !== Object) {
