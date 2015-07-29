@@ -16,20 +16,23 @@ section#settings {
       padding: 6px 0;
       
       label {
-        width: 100px;
+        width: 125px;
         display: inline-block;
         line-height: 26px;
         color: #999;
+        font-size: 14px;
+        text-align: right;
+        padding: 0 10px;
       }
 
       input {
-        width: 376px;
+        width: 351px;
         background: #2D2D2D;
         border: 0;
         border-bottom: 1px dotted #AAA;
         line-height: 26px; 
         color: #EEE;
-        padding: 0 10px;
+        padding: 0 10px 0 0;
       }
     }
   }

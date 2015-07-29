@@ -8,47 +8,95 @@ rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage',
       }
     };
     
+    $scope.setActive = function(tab, subTab) {
+      angular.forEach($scope.storage, function(value, key) {
+        if(key === tab) {
+          $scope.storage[key].active = true;
+          
+          if($scope.storage[key].below) {
+            angular.forEach($scope.storage[key].below, function(value2, key2) {
+              if($scope.storage[key].below[key2] === subTab) {
+                $scope.storage[key].below[key2].active = true;
+              }
+              else {
+                $scope.storage[key].below[key2].active = false;
+              }
+            });
+          }
+        }
+        else {
+          $scope.storage[key].active = false;
+          
+          if($scope.storage[key].below) {
+            angular.forEach($scope.storage[key].below, function(value3, key3) {
+                $scope.storage[key].below[key3].active = false;
+            });
+          }
+        }
+      });
+    };
+    
     function init() {
       if(!$localStorage.tabs || $localStorage.tabs.constructor !== Object) {
         $localStorage.tabs = {
           nowPlayingDetails: {
-            constoller: 'rkNowPlayingCtrl',
-            view: 'views/partials/tabs/now_playing_details.html',
-            title: 'Now playing',
-            icon: 'mdi mdi-play-box-outline',
-            active: true,
-            onClick: function(){}
+            active: true
           },
           playlist: {
-            controller: '',
-            view: 'views/partials/tabs/playlist.html',
-            title: 'Playlist',
-            icon: 'mdi mdi-view-list',
             active: false,
-            onClick: function() {
-              $scope.initTab(['#audioPlaylist', '#videoPlaylist']);
-            },
             below: {
               audioPlaylist: {
-                controller: 'rkPlaylistCtrl',
-                view: 'views/partials/tabs/playlist/audio.html',
-                title: 'Audio playlist',
-                icon: 'mdi mdi-music-note',
-                active: false,
-                onClick: function(){}
+                active: false
               },
               videoPlaylist: {
-                controller: 'rkPlaylistCtrl',
-                view: 'views/partials/tabs/playlist/video.html',
-                title: 'Video playlist',
-                icon: 'mdi mdi-video',
-                active: false,
-                onClick: function(){}
+                active: false
               }
             }
+          },
+          music: {
+            active: false,
+            below: {
+              musicLibrary: {
+                active: false
+              },
+              audioFiles: {
+                active: false
+              }
+            }
+          },
+          movies: {
+            active: false,
+            moviesLibrary: {
+              active: false
+            },
+            videoFiles: {
+              active: false
+            }
+          },
+          tvShows: {
+            tvShowsLibrary: {
+              active: false
+            },
+            videoFiles: {
+              active: false
+            }
+          },
+          photos: {
+            active: false
+          },
+          addons: {
+            active: false
+          },
+          remote: {
+            active: false
+          },
+          settings: {
+            active: false
           }
         };
       }
+      
+      $scope.storage = $localStorage.tabs;
     }
     
     init();
