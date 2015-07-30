@@ -96,7 +96,6 @@ rekodiApp.factory('rkKodiWsApiService', ['$rootScope', '$localStorage',
     };
     
     var isConfigured = function() {
-      console.dir($localStorage.settings);
       return (!$localStorage.settings || 
               $localStorage.settings.constructor !== Object || 
               $localStorage.settings.serverAddress === '' ||

@@ -10,6 +10,6 @@
   <div class="magic-line"></div>
 </nav>
 <div class="tabs inline">
-  <div ng-include="'views/partials/tabs/tv_shows/library.html'" id="tvShowsLibrary" ng-controller="rkTvShowsCtrl" class="tabsContainer"></div>
-  <div ng-include="'views/partials/tabs/tv_shows/files.html'" id="tvShowsFiles" ng-controller="rkFilesCtrl" ng-init="type='video'" class="tabsContainer"></div>
+  <div ng-include="'views/partials/tabs/tv_shows/library.html'" id="tvShowsLibrary" ng-controller="rkTvShowsCtrl" class="tabsContainer" data-level="2" ng-click="setActive($event)"></div>
+  <div ng-include="'views/partials/tabs/tv_shows/files.html'" id="tvShowsFiles" ng-controller="rkFilesCtrl" ng-init="type='video'" class="tabsContainer" data-level="2" ng-click="setActive($event)"></div>
 </div>

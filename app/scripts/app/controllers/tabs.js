@@ -8,15 +8,32 @@ rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage',
       }
     };
     
-    $scope.setActive = function(tab, subTab) {
+    $scope.setActive = function($event) {
+      var eventElementSelector = angular.element('#'+$event.target.id);
+      var elementSelector = angular.element('#'+eventElementSelector[0].attributes['rel'].value);
+      var tabLevel = parseInt(elementSelector[0].attributes['data-level'].value);
+      var tab, subTab;
+      
+      console.dir(elementSelector);
+      
+      if(tabLevel === 1) {
+        tab = $event.target.id;
+      }
+      else if(tabLevel === 2) {
+        tab = elementSelector.parents('.tabsContainer:first').attr('id');
+        subTab = $event.target.id;
+      }
+      
       angular.forEach($scope.storage, function(value, key) {
         if(key === tab) {
           $scope.storage[key].active = true;
+          $scope.storage.currentlyActiveTabId = tab;
           
           if($scope.storage[key].below) {
             angular.forEach($scope.storage[key].below, function(value2, key2) {
-              if($scope.storage[key].below[key2] === subTab) {
+              if(subTab && $scope.storage[key].below[key2] === subTab) {
                 $scope.storage[key].below[key2].active = true;
+                $scope.storage.currentlyActiveTabId = subTab;
               }
               else {
                 $scope.storage[key].below[key2].active = false;
@@ -24,74 +41,97 @@ rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage',
             });
           }
         }
-        else {
-          $scope.storage[key].active = false;
+        else if($scope.storage[key]) {
+          if($scope.storage[key].active) {
+            $scope.storage[key].active = false;
+          }
           
           if($scope.storage[key].below) {
             angular.forEach($scope.storage[key].below, function(value3, key3) {
-                $scope.storage[key].below[key3].active = false;
+              $scope.storage[key].below[key3].active = false;
             });
           }
         }
       });
     };
     
+    $scope.setDefault = function(tabPath) {
+      
+    };
+    
     function init() {
       if(!$localStorage.tabs || $localStorage.tabs.constructor !== Object) {
         $localStorage.tabs = {
+          currentlyActiveTabId: null,
           nowPlayingDetails: {
-            active: true
+            active: true,
+            isDefault: false
           },
           playlist: {
             active: false,
+            isDefault: false,
             below: {
               audioPlaylist: {
-                active: false
+                active: false,
+                isDefault: false
               },
               videoPlaylist: {
-                active: false
+                active: false,
+                isDefault: false
               }
             }
           },
           music: {
             active: false,
+            isDefault: false,
             below: {
               musicLibrary: {
-                active: false
+                active: false,
+                isDefault: false
               },
               audioFiles: {
-                active: false
+                active: false,
+                isDefault: false
               }
             }
           },
           movies: {
             active: false,
+            isDefault: false,
             moviesLibrary: {
-              active: false
+              active: false,
+              isDefault: false
             },
             videoFiles: {
-              active: false
+              active: false,
+              isDefault: false
             }
           },
           tvShows: {
             tvShowsLibrary: {
-              active: false
+              active: false,
+              isDefault: false
             },
             videoFiles: {
-              active: false
+              active: false,
+              isDefault: false
             }
           },
           photos: {
-            active: false
+            active: false,
+            isDefault: false
           },
           addons: {
-            active: false
+            active: false,
+            isDefault: false
           },
           remote: {
-            active: false
+            active: false,
+            isDefault: false
           },
           settings: {
-            active: false
+            active: false,
+            isDefault: false
           }
         };
       }

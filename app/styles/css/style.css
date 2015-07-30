@@ -619,7 +619,7 @@ section#settings .settings-section {
       color: #999;
       font-size: 14px;
       text-align: right;
-      padding: 0 10px; }
+      padding: 0 10px 0 0; }
     section#settings .settings-section li input {
       width: 351px;
       background: #2D2D2D;
@@ -627,7 +627,7 @@ section#settings .settings-section {
       border-bottom: 1px dotted #AAA;
       line-height: 26px;
       color: #EEE;
-      padding: 0 10px 0 0; }
+      padding: 0 10px; }
 
 section#windowControls {
   position: fixed;

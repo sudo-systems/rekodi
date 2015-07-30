@@ -62,13 +62,13 @@
     <!-- end:services -->
   </head>
   <body ng-controller="rkAppCtrl">
-    <!--<div id="notConfigured" class="bodyOverlay" ng-hide="isConfigured">
-      Please <a href="javascript: void(0);" title="Go to the settings tab">configure your Kodi connection</a>.
-    </div>-->
+    <div id="notConfigured" class="bodyOverlay" ng-show="!isConfigured && storage.tabs.currentlyActiveTabId !== 'settings'">
+      Please <a href="javascript: void(0);" title="Go to the settings tab" ng-click="setActiveTab('settings')">configure your Kodi connection</a>.
+    </div>
     <section ng-include="'views/partials/window_controls.html'" ng-controller="rkWindowCtrl" rk-tooltips id="windowControls"></section>
     <section ng-include="'views/partials/now_playing.html'" ng-controller="rkNowPlayingCtrl" rk-tooltips id="nowPlaying"></section>
     <section ng-include="'views/partials/playback_controls.html'" ng-controller="rkPlaybackControlsCtrl" rk-tooltips id="playbackControls"></section>
-    <section ng-include="'views/partials/tabs.html'" ng-controller="rkTabsCtrl" rk-tooltips rk-tabs class="tabsContainer" id="mainTabs"></section>
+    <section ng-include="'views/partials/tabs.html'" ng-controller="rkTabsCtrl" rk-tooltips rk-tabs class="tabsContainer" id="tabs"></section>
     <section ng-include="'views/partials/footer.html'" ng-controller="rkFooterCtrl" rk-tooltips id="footer" class="clearfix"></section>
   </body>
 </html>
