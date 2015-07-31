@@ -9,19 +9,17 @@ rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage',
     };
     
     $scope.setActive = function($event) {
-      var eventElementSelector = angular.element('#'+$event.target.id);
-      var elementSelector = angular.element('#'+eventElementSelector[0].attributes['rel'].value);
+      var elementId = $event.target.attributes.rel.value;
+      var elementSelector = angular.element('#'+elementId);
       var tabLevel = parseInt(elementSelector[0].attributes['data-level'].value);
       var tab, subTab;
       
-      console.dir(elementSelector);
-      
       if(tabLevel === 1) {
-        tab = $event.target.id;
+        tab = elementId;
       }
       else if(tabLevel === 2) {
-        tab = elementSelector.parents('.tabsContainer:first').attr('id');
-        subTab = $event.target.id;
+        tab = $(elementSelector).parents('.tabsContainer:first').attr('id');
+        subTab = elementId;
       }
       
       angular.forEach($scope.storage, function(value, key) {

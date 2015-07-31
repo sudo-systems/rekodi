@@ -62,7 +62,7 @@
     <!-- end:services -->
   </head>
   <body ng-controller="rkAppCtrl">
-    <div id="notConfigured" class="bodyOverlay" ng-show="!isConfigured && storage.tabs.currentlyActiveTabId !== 'settings'">
+    <div id="notConfigured" class="bodyOverlay" ng-show="(!storage.settings || storage.settings.serverAddress === '') && storage.tabs.currentlyActiveTabId !== 'settings'">
       Please <a href="javascript: void(0);" title="Go to the settings tab" ng-click="setActiveTab('settings')">configure your Kodi connection</a>.
     </div>
     <section ng-include="'views/partials/window_controls.html'" ng-controller="rkWindowCtrl" rk-tooltips id="windowControls"></section>

@@ -3,28 +3,28 @@
     <li class="active" title="Now playing" ng-click="setActive($event)" rel="nowPlayingDetails">
       <i class="mdi mdi-play-box-outline"></i>
     </li>
-    <li title="Playlist" ng-click="initTab(['#audioPlaylist', '#videoPlaylist'])">
+    <li title="Playlist" ng-click="initTab(['#audioPlaylist', '#videoPlaylist']); setActive($event);" rel="playlist">
       <i class="mdi mdi-view-list"></i>
     </li>
-    <li title="Music" ng-click="initTab(['#musicFiles'])">
+    <li title="Music" ng-click="initTab(['#musicFiles']); setActive($event);" rel="music">
       <i class="mdi mdi-music-note"></i>
     </li>
-    <li title="Movies" ng-click="initTab(['#moviesFiles'])">
+    <li title="Movies" ng-click="initTab(['#moviesFiles']); setActive($event);" rel="movies">
       <i class="mdi mdi-movie"></i>
     </li>
-    <li title="TV shows" ng-click="initTab(['#tvShowsFiles'])">
+    <li title="TV shows" ng-click="initTab(['#tvShowsFiles']); setActive($event);" rel="tvShows">
       <i class="mdi mdi-television"></i>
     </li>
-    <li title="Photos" ng-click="initTab(['#photos'])">
+    <li title="Photos" ng-click="initTab(['#photos']); setActive($event);" rel="photos">
       <i class="mdi mdi-camera"></i>
     </li>
-    <li title="Addons">
+    <li title="Addons" ng-click="setActive($event)" rel="addons">
       <i class="mdi mdi-puzzle"></i>
     </li>
-    <li title="Remote">
+    <li title="Remote" ng-click="setActive($event)" rel="remote">
       <i class="mdi mdi-remote"></i>
     </li>
-    <li title="Settings">
+    <li title="Settings" ng-click="setActive($event)" rel="settings">
       <i class="mdi mdi-settings"></i>
     </li>
   </ul>
