@@ -1,15 +1,15 @@
 <nav>
   <ul class="horizontal">
-    <li class="active" title="Movies library">
+    <li class="active" title="Movies library" ng-click="setActive($event)" rel="moviesLibrary" data-level="2">
       <i class="mdi mdi-database-outline"></i>
     </li>
-    <li title="Video files">
+    <li title="Video files" ng-click="setActive($event)" rel="moviesFiles" data-level="2">
       <i class="mdi mdi-folder-outline"></i>
     </li>
   </ul>
   <div class="magic-line"></div>
 </nav>
 <div class="tabs inline">
-  <div ng-include="'views/partials/tabs/movies/library.html'" id="moviesLibrary" ng-controller="rkMoviesCtrl" class="tabsContainer" data-level="2" ng-click="setActive($event)"></div>
-  <div ng-include="'views/partials/tabs/movies/files.html'" id="videoFiles" ng-controller="rkFilesCtrl" ng-init="type='video'" class="tabsContainer" data-level="2" ng-click="setActive($event)"></div>
+  <div ng-include="'views/partials/tabs/movies/library.html'" id="moviesLibrary" ng-controller="rkMoviesCtrl" class="tabsContainer"></div>
+  <div ng-include="'views/partials/tabs/movies/files.html'" id="moviesFiles" ng-controller="rkFilesCtrl" ng-init="type='video'" class="tabsContainer"></div>
 </div>

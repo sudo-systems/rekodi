@@ -2,10 +2,15 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'rkKod
   function($scope, $localStorage, $timeout, rkKodiWsApiService) {
     $scope.storage = $localStorage;
 
-    if($scope.storage.settings && $scope.storage.settings.serverAddress !== '') {
-      rkKodiWsApiService.connect();
+    if($scope.storage.settings) {
+      if($scope.storage.settings.serverAddress !== '') {
+        rkKodiWsApiService.connect();
+      }
+      else if($scope.storage.tabs && $scope.storage.tabs.currentlyActiveTab) {
+        $scope.storage.tabs.currentlyActiveTab = '';
+      }
     }
-    
+
     $scope.setActiveTab = function(tab, subTab) {
       $timeout(function() {
         angular.element('nav li[rel='+tab+']').trigger('click');

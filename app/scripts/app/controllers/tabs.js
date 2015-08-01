@@ -4,14 +4,14 @@ rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage',
     
     $scope.initTab = function(tabSelector) {
       for(var i in tabSelector) {
-        angular.element($(tabSelector[i])).scope().init();
+        angular.element(tabSelector[i]).scope().init();
       }
     };
     
     $scope.setActive = function($event) {
-      var elementId = $event.target.attributes.rel.value;
+      var elementId = $event.currentTarget.attributes['rel'].value;
+      var tabLevel = parseInt($event.currentTarget.attributes['data-level'].value);
       var elementSelector = angular.element('#'+elementId);
-      var tabLevel = parseInt(elementSelector[0].attributes['data-level'].value);
       var tab, subTab;
       
       if(tabLevel === 1) {
@@ -25,13 +25,13 @@ rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage',
       angular.forEach($scope.storage, function(value, key) {
         if(key === tab) {
           $scope.storage[key].active = true;
-          $scope.storage.currentlyActiveTabId = tab;
+          $scope.storage.currentlyActiveTab = tab;
           
           if($scope.storage[key].below) {
             angular.forEach($scope.storage[key].below, function(value2, key2) {
               if(subTab && $scope.storage[key].below[key2] === subTab) {
                 $scope.storage[key].below[key2].active = true;
-                $scope.storage.currentlyActiveTabId = subTab;
+                $scope.storage.currentlyActiveTab = subTab;
               }
               else {
                 $scope.storage[key].below[key2].active = false;
@@ -60,7 +60,7 @@ rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage',
     function init() {
       if(!$localStorage.tabs || $localStorage.tabs.constructor !== Object) {
         $localStorage.tabs = {
-          currentlyActiveTabId: null,
+          currentlyActiveTab: null,
           nowPlayingDetails: {
             active: true,
             isDefault: false
