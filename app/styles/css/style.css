@@ -565,7 +565,45 @@ body {
     font-family: Quicksand;
     font-size: 14px;
     font-weight: 400;
-    font-family: MaterialDesignIcons; }
+    font-family: MaterialDesignIcons;
+    background: #2D2D2D;
+    border: 0;
+    border-bottom: 1px dotted #AAA;
+    line-height: 26px;
+    color: #EEE;
+    padding: 0 10px; }
+  body label {
+    display: inline-block;
+    line-height: 26px;
+    color: #999;
+    font-size: 14px;
+    text-align: right;
+    padding: 0 10px 0 0; }
+  body button,
+  body input[type=submit] {
+    background: #AAA;
+    line-height: 26px;
+    color: #262626;
+    text-transform: uppercase;
+    min-width: 100px;
+    width: auto;
+    padding: 0 20px;
+    letter-spacing: 3px;
+    font-size: 11px;
+    border: 0;
+    border-bottom: 1px dotted #FFF;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out; }
+  body button:hover,
+  body input[type=submit]:hover {
+    background: #E6802E;
+    color: #FFF; }
+  body button:disabled,
+  body input[type=submit]:disabled {
+    background: #666;
+    color: #AAA; }
   body a {
     color: #FFF; }
   body a:hover {
@@ -613,21 +651,9 @@ section#settings .settings-section {
   section#settings .settings-section li {
     padding: 6px 0; }
     section#settings .settings-section li label {
-      width: 125px;
-      display: inline-block;
-      line-height: 26px;
-      color: #999;
-      font-size: 14px;
-      text-align: right;
-      padding: 0 10px 0 0; }
+      width: 125px; }
     section#settings .settings-section li input {
-      width: 351px;
-      background: #2D2D2D;
-      border: 0;
-      border-bottom: 1px dotted #AAA;
-      line-height: 26px;
-      color: #EEE;
-      padding: 0 10px; }
+      width: 351px; }
 
 section#windowControls {
   position: fixed;
@@ -1064,13 +1090,16 @@ section#footer {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      float: right; }
-  section#footer .indicator.loading {
+      float: right;
+      padding-left: 6px; }
+  section#footer .indicator.loading,
+  section#footer .indicator.connecting {
+    font-size: 13px; }
+  section#footer .indicator.blink {
     -webkit-animation: flickerAnimation 1s infinite;
     -moz-animation: flickerAnimation 1s infinite;
     -o-animation: flickerAnimation 1s infinite;
-    animation: flickerAnimation 1s infinite;
-    font-size: 13px; }
+    animation: flickerAnimation 1s infinite; }
   section#footer .indicator.error {
     color: #EB4F4B; }
 

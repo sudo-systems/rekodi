@@ -2,12 +2,17 @@
   <div class="title">
     Connection
   </div>
-  <ul class="vertical">
-    <li title="I.e. 192.168.1.10 or mydomain.com">
-      <label for="kodiIp">server address</label><input type="text" placeholder="192.168.1.10" ng-model="storage.serverAddress" name="kodi_ip" id="kodiIp" value="" />
-    </li>
-    <li title="Leave at 9090 unless changed in advancedsettings.xml">
-      <label for="kodiPort">port</label><input type="text" name="kodi_port" id="kodiPort" ng-model="storage.jsonRpcPort" />
-    </li>
-  </ul>
+  <form>
+    <ul class="vertical">
+      <li title="I.e. 192.168.1.10 or mydomain.com">
+        <label for="kodiIp">server address</label><input type="text" placeholder="192.168.1.10" ng-model="storage.serverAddress" name="kodi_ip" id="kodiIp" value="" ng-required="true" />
+      </li>
+      <li title="Leave at 9090 unless changed in advancedsettings.xml">
+        <label for="kodiPort">port</label><input type="text" name="kodi_port" id="kodiPort" ng-model="storage.jsonRpcPort" ng-required="true" />
+      </li>
+      <li class="float-right">
+        <button ng-click="connect()" ng-disabled="connectButton.disabled">{{connectButton.text}}</button>
+      </li>
+    </ul>
+  </form>
 </div>

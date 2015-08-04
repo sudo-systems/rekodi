@@ -58,12 +58,17 @@ section#footer {
       overflow: hidden;
       text-overflow: ellipsis;
       float: right;
+      padding-left: 6px;
     }
   }
   
-  .indicator.loading {
-    @include fadeInAndOut(1s);
+  .indicator.loading,
+  .indicator.connecting {
     font-size: 13px;
+  }
+  
+  .indicator.blink {
+    @include fadeInAndOut(1s);
   }
 
   .indicator.error {

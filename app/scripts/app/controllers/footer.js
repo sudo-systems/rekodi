@@ -2,6 +2,8 @@ rekodiApp.controller('rkFooterCtrl', ['$scope', '$element', '$timeout', 'rkToolt
   function($scope, $element, $timeout, rkTooltipsService) {
     $scope.connected = false;
     $scope.statusMessage = 'offline';
+    $scope.loadingMessage = 'loading...';
+    $scope.connectionMessage = '';
     $scope.playbackMessage = '';
     $scope.playlistMessage = '';
 
@@ -35,6 +37,31 @@ rekodiApp.controller('rkFooterCtrl', ['$scope', '$element', '$timeout', 'rkToolt
       });
     });
     
+    $scope.$root.$on('rkStartConnecting', function(event, data) {
+      $timeout(function() {
+        $('#footer .indicator').hide();
+        $scope.connectionMessage = data.message;
+        $('#footer .indicator.connecting').stop().addClass('blink').removeClass('error').fadeIn(150).css('display', 'inline-block');
+      });
+    });
+    
+    $scope.$root.$on('rkStopConnecting', function(event, data) {
+      $('#footer .indicator').hide();
+      $scope.connectionMessage = data.message;
+      $('#footer .indicator.connecting').stop().removeClass('blink').fadeIn(150).css('display', 'inline-block');
+      
+      if(!data.connected) {
+        $('#footer .indicator.connecting').addClass('error');
+      }
+      else {
+        $('#footer .indicator.connecting').removeClass('error');
+      }
+      
+      $timeout(function() {
+        $('#footer .indicator.connecting').stop().fadeOut(1500);
+      }, 15000);
+    });
+    
     $scope.$root.$on('rkPlaybackStart', function(event, data) {
       $scope.playbackMessage = data.message;
       $scope.$apply();
@@ -48,8 +75,6 @@ rekodiApp.controller('rkFooterCtrl', ['$scope', '$element', '$timeout', 'rkToolt
     });
     
     $scope.$root.$on('rkAddedToPlaylist', function(event, data) {
-      console.dir(data);
-      
       $scope.playlistMessage = data.message;
       $scope.$apply();
       

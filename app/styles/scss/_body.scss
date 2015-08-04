@@ -15,7 +15,50 @@ body {
     font-size: map-get($body, font-size);
     font-weight: map-get($body, font-weight);
     font-family: MaterialDesignIcons;
+    background: #2D2D2D;
+    border: 0;
+    border-bottom: 1px dotted #AAA;
+    line-height: 26px; 
+    color: #EEE;
+    padding: 0 10px;
   }
+  
+  label {
+    display: inline-block;
+    line-height: 26px;
+    color: #999;
+    font-size: 14px;
+    text-align: right;
+    padding: 0 10px 0 0;
+  }
+  
+  button,
+  input[type=submit] {
+    background: #AAA;
+    line-height: 26px;
+    color: #262626;
+    text-transform: uppercase;
+    min-width: 100px;
+    width: auto;
+    padding: 0 20px;
+    letter-spacing: 3px;
+    font-size: 11px;
+    border: 0;
+    border-bottom: 1px dotted #FFF;
+    @include transitionAll();
+  }
+  
+  button:hover,
+  input[type=submit]:hover {
+    background: map-get($global, highlight-color);
+    color: #FFF;
+  }
+  
+   button:disabled,
+   input[type=submit]:disabled {
+     background: #666;
+     color: #AAA;
+   }
   
   a {
     color: map-get($body, anchor-color);
