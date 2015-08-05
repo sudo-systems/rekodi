@@ -3,8 +3,9 @@ section#playbackControls {
   border-bottom: 1px solid #464646;
   background-color: map-get($playback-controls, background-color);
   @include boxShadow(0 4px 4px -4px, #222);
+  height: map-get($playback-controls, height);
   
-  .main {
+  .wrapper {
     ul {
       font-size: 0;
     }

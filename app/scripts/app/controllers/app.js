@@ -1,15 +1,9 @@
-rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'rkKodiWsApiService',
-  function($scope, $localStorage, $timeout, rkKodiWsApiService) {
+rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'rkKodiWsApiService', '$sessionStorage',
+  function($scope, $localStorage, $timeout, rkKodiWsApiService, $sessionStorage) {
     $scope.storage = $localStorage;
-
-    if($scope.storage.settings) {
-      if($scope.storage.settings.serverAddress !== '') {
-        rkKodiWsApiService.connect();
-      }
-      else if($scope.storage.tabs && $scope.storage.tabs.currentlyActiveTab) {
-        $scope.storage.tabs.currentlyActiveTab = '';
-      }
-    }
+    $scope.sessionStorage = $sessionStorage;
+    $scope.isConfigured = true;
+    $scope.isConnected = true;
 
     $scope.setActiveTab = function(tab, subTab) {
       $timeout(function() {
@@ -22,5 +16,37 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'rkKod
         });
       }
     };
+    
+    function setIfConnectionConfigured() {
+      $scope.isConfigured = (!$localStorage.settings ||
+        $localStorage.settings.constructor !== Object ||
+        !$localStorage.settings.serverAddress || 
+        !$localStorage.settings.jsonRpcPort || 
+        $localStorage.settings.serverAddress === '' || 
+        $localStorage.settings.jsonRpcPort === '')? false : true;
+    };
+    
+    function init() {
+      setIfConnectionConfigured();
+      rkKodiWsApiService.connect();
+      
+      if($scope.storage.tabs && $scope.storage.tabs.currentlyActiveTab) {
+        $scope.storage.tabs.currentlyActiveTab = '';
+      }
+      
+      $scope.$watchCollection(function() { 
+        return $localStorage.settings; 
+      }, function(newData, oldData) {
+        setIfConnectionConfigured();
+      });
+      
+      $scope.$watch(function() { 
+        return $sessionStorage.connectionStatus.connected; 
+      }, function(newData, oldData) {
+        $scope.isConnected = newData;
+      });
+    }
+    
+    init();
   }
 ]);

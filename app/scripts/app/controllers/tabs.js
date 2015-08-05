@@ -1,5 +1,5 @@
-rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage',
-  function($scope, $localStorage) {
+rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage', 'rkKodiWsApiService',
+  function($scope, $localStorage, rkKodiWsApiService) {
     $scope.storage = null;
     
     $scope.initTab = function(tabSelector) {

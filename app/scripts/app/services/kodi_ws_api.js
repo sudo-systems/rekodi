@@ -2,152 +2,177 @@ rekodiApp.factory('rkKodiWsApiService', ['$rootScope', '$localStorage', '$sessio
   function($rootScope, $localStorage, $sessionStorage) {
     var kodiWs = require('xbmc-ws');
     var connectingInProgress = false;
+    var connection = null;
     var retyIntervalTime = 10000;
     var retryInterval;
+    var pingIntervalTime = 5000;
+    var pingInterval;
     var connectingMessage = 'connecting...';
     var connectedMessage = 'successfully connected to Kodi';
     var connectionErrorMessage = 'could not connect to Kodi';
-    var connectionStatus = {
-      connected: false, 
-      statusMessage: 'offline',
-      connection: null
-    };
 
-    function bindEvents(connection) {
-      /* SYSTEM EVENTS */
+    function bindEvents() {
       connection.System.OnQuit(function() {
-        connectionStatus = {
-          connected: false, 
-          statusMessage: 'offline',
-          connection: null
-        };
- 
-        $rootScope.$emit('rkWsConnectionStatusChange', connectionStatus);
+        setDisconnected();
       });
 
       connection.System.OnRestart(function() {
-        connectionStatus = {
-          connected: false, 
-          statusMessage: 'rebooting',
-          connection: null
-        };
-        
-        $rootScope.$emit('rkWsConnectionStatusChange', connectionStatus);
+        setDisconnected();
+        $sessionStorage.connectionStatus.statusMessage = 'rebooting';
       });
 
       connection.System.OnSleep(function() {
-        connectionStatus = {
-          connected: false, 
-          statusMessage: 'sleeping',
-          connection: null
-        };
-        
-        $rootScope.$emit('rkWsConnectionStatusChange', connectionStatus);
+       setDisconnected();
+        $sessionStorage.connectionStatus.statusMessage = 'sleeping';
       });
 
       connection.System.OnWake(function() {
-        connectionStatus = {
-          connected: false, 
-          statusMessage: 'online'
-        };
-        
-        $rootScope.$emit('rkWsConnectionStatusChange', connectionStatus);
+        setConnected();
       });
     }
 
-    function createConnection(callback) {
+    function createConnection() {
       if(!$localStorage.settings || 
           !$localStorage.settings.serverAddress || 
           !$localStorage.settings.jsonRpcPort || 
           $localStorage.settings.serverAddress === '' || 
           $localStorage.settings.jsonRpcPort === '' || 
           connectingInProgress) {
-        connectionStatus = {
+        $sessionStorage.connectionStatus = {
+          connecting: true,
           connected: false, 
-          statusMessage: 'offline',
-          connection: null
+          statusMessage: 'offline'
         };
-        
-        callback(connectionStatus);
-        
+
+        connection = null;
+
         return;
       }
       
       connectingInProgress = true;
+      
       $rootScope.$emit('rkStartConnecting', {
         message: connectingMessage
       });
-      
-      callback = (callback && callback.constructor === Function)? callback : function() {};
 
       kodiWs($localStorage.settings.serverAddress, $localStorage.settings.jsonRpcPort).then(function(link) {
-        connectingInProgress = false;
-        
-        connectionStatus = {
-          connected: true, 
-          statusMessage: 'online',
-          connection: link
-        };
-
-        $rootScope.$emit('rkStopConnecting', {
-          message: connectedMessage
-        });
-        
-        callback(connectionStatus);
-        bindEvents(connectionStatus.connection);
-        $rootScope.$emit('rkWsConnectionStatusChange', connectionStatus);
+        setConnected(link);
+        bindEvents();
       },
       function(error) {
-        connectingInProgress = false;
-        
-        connectionStatus = {
-          connected: false, 
-          statusMessage: 'offline',
-          connection: null
-        };
-        
-        $rootScope.$emit('rkStopConnecting', {
-          message: connectionErrorMessage
-        });
-        
-        callback(connectionStatus);
-        $rootScope.$emit('rkWsConnectionStatusChange', connectionStatus);
+        setDisconnected();
       });
     };
+    
+    function setConnected(link) {
+      startPing();
+      connectingInProgress = false;
+        
+      $sessionStorage.connectionStatus = {
+        connecting: false,
+        connected: true, 
+        statusMessage: 'online'
+      };
 
-    var connect = function(immmediately, retry, callback) {
-      callback = (callback && callback.constructor === Function)? callback : function() {};
-      retry = (retry === undefined)? true : retry; 
-      immmediately = (immmediately === undefined)? true : immmediately;
-      clearInterval(retryInterval);
-      
-      if(immmediately) {
-        createConnection(callback);
+      if(link) {
+        connection = link;
+      }
+
+      $rootScope.$emit('rkStopConnecting', {
+        message: connectedMessage
+      });
+
+      $rootScope.$emit('rkWsConnectionStatusChange', $sessionStorage.connectionStatus);
+    };
+    
+    function setDisconnected() {
+      stopPing();
+      connectingInProgress = false;
+        
+      $sessionStorage.connectionStatus = {
+        connecting: false,
+        connected: false, 
+        statusMessage: 'offline'
+      };
+
+      connection = null;
+
+      $rootScope.$emit('rkStopConnecting', {
+        message: connectionErrorMessage
+      });
+
+      $rootScope.$emit('rkWsConnectionStatusChange', $sessionStorage.connectionStatus);
+    };
+    
+    function ping() {
+      if(connection === null) {
+        setDisconnected();
+        return;
       }
       
-      if(retry) {
-        retryInterval = setInterval(function() {
-          if(connectionStatus.connection === null) {
-            createConnection(callback);
-          }
-        }, retyIntervalTime);
-      }
+      connection.JSONRPC.Ping().then(function(data) {
+        if(data !== 'pong') {
+          stopPing();
+          setDisconnected();
+        }
+      }, function(error) {
+        setDisconnected();
+      });
+    };
+    
+    function startPing() {
+      stopPing();
+      
+      pingInterval = setInterval(function() {
+        ping();
+      }, pingIntervalTime);
+    };
+    
+    function stopPing() {
+      clearInterval(pingInterval);
     };
     
     var isConfigured = function() {
-      return (!$localStorage.settings || 
-              $localStorage.settings.constructor !== Object || 
-              $localStorage.settings.serverAddress === '' ||
-              $localStorage.settings.jsonRpcPort === '')? false : true;
+      return (!$localStorage.settings ||
+        $localStorage.settings.constructor !== Object ||
+        !$localStorage.settings.serverAddress || 
+        !$localStorage.settings.jsonRpcPort || 
+        $localStorage.settings.serverAddress === '' || 
+        $localStorage.settings.jsonRpcPort === '')? false : true;
+    };
+
+    var connect = function(immmediately) {
+      immmediately = (immmediately === undefined)? true : immmediately;
+      
+      if(immmediately) {
+        createConnection();
+      }
+      
+      clearInterval(retryInterval);
+      retryInterval = setInterval(function() {
+        if(connection === null) {
+          createConnection();
+        }
+      }, retyIntervalTime);
     };
     
     var isConnected = function() {
-      return connectionStatus.connected;
+      return $sessionStorage.connectionStatus.connected;
     };
     
     var getConnection = function() {
-      return connectionStatus.connection;
+      return connection;
     };
+    
+    var init = function() {
+      $sessionStorage.connectionStatus = {
+        connecting: false,
+        connected: false,
+        statusMessage: 'offline'
+      };
+    };
+    
+    init();
 
     return {
       connect: connect,
