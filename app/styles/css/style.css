@@ -741,14 +741,15 @@ section#nowPlaying {
       color: #BBB;
       height: 100px; }
       section#nowPlaying .active .details .title {
-        font-size: 18px;
+        padding-top: 6px;
+        font-size: 16px;
         font-weight: 500;
         color: #BBB;
         padding-bottom: 6px;
         text-align: right; }
         section#nowPlaying .active .details .title .name {
           color: #FFF;
-          font-size: 20px;
+          font-size: 18px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;

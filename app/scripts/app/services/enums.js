@@ -4,6 +4,10 @@ rekodiApp.factory('rkEnumsService', [
       PlaylistId: {
         AUDIO: 0,
         VIDEO: 1
+      },
+      PlayerId: {
+        AUDIO: 0,
+        VIDEO: 1
       }
     };
   }
