@@ -59,7 +59,7 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkKodiWsApiService', '$
         handleError(error);
       });
     };
-    
+
     var handleError = function(error) {
       var errorDetails = (error.response.data)? ' ('+error.response.data.stack.message+': '+error.response.data.stack.name+')' : '';
       $rootScope.$emit('rkServerError', {
@@ -91,6 +91,14 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkKodiWsApiService', '$
         }
         else {
           kodiWsApiConnection = null;
+        }
+      });
+      
+      $rootScope.$watchCollection(function() {
+        return $sessionStorage.playStatus;
+      }, function(newValue, oldValue) {
+        if(newValue.isPlaying && !oldValue.isPlaying) {
+          
         }
       });
     };

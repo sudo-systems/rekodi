@@ -3,7 +3,7 @@
     <i class="mdi mdi-settings"></i> <input type="text" class="filter" ng-model="filter.value" placeholder="filter" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
   </div>
   <ul class="vertical">
-    <li ng-repeat="entry in items | filter:filterList" class="clearfix">
+    <li ng-repeat="entry in items | filter:filterList" class="clearfix" ng-class="{playing: playStatus.item.file === entry.file}">
       <div class="label">
         <i class="mdi mdi-file-music"></i>
         {{entry.label}}

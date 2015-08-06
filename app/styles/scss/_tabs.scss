@@ -149,7 +149,7 @@ section.tabsContainer {
     
     li {
       padding: 0 map-get($global, window-padding);
-      line-height: 32px;
+      line-height: 32px !important;
       border-bottom: 1px solid #333;
       color: #999;
       white-space: nowrap;
@@ -195,7 +195,8 @@ section.tabsContainer {
       }
     }
     
-    li:hover {
+    li:hover,
+    li.playing {
       color: #EEE;
       @include backgroundGradientVertical(#242424, #2A2A2A);
       border-bottom: 1px solid map-get($global, highlight-color);
@@ -223,6 +224,10 @@ section.tabsContainer {
           @include scale(1.2);
         }
       }
+    }
+    
+    li.playing {
+      color: map-get($global, highlight-color);
     }
     
     li {

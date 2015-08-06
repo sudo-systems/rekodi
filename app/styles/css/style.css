@@ -722,7 +722,7 @@ section#nowPlaying {
     font-weight: 300;
     text-shadow: 0 0 2px #4C4E4F; }
   section#nowPlaying .active {
-    padding: 5px 12px; }
+    padding: 5px 24px; }
     section#nowPlaying .active .thumbnail {
       display: inline-block;
       float: left;
@@ -737,18 +737,18 @@ section#nowPlaying {
     section#nowPlaying .active .details {
       display: inline-block;
       float: right;
-      width: 370px;
+      width: 350px;
       color: #BBB;
       height: 100px; }
       section#nowPlaying .active .details .title {
-        font-size: 16px;
+        font-size: 18px;
         font-weight: 500;
-        color: #DDD;
-        padding-bottom: 6px; }
+        color: #BBB;
+        padding-bottom: 6px;
+        text-align: right; }
         section#nowPlaying .active .details .title .name {
           color: #FFF;
-          font-weight: bold;
-          font-size: 18px;
+          font-size: 20px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -958,7 +958,7 @@ section.tabsContainer {
         transform: scale(1); }
     section.tabsContainer .data-list-wrapper li {
       padding: 0 12px;
-      line-height: 32px;
+      line-height: 32px !important;
       border-bottom: 1px solid #333;
       color: #999;
       white-space: nowrap;
@@ -1007,7 +1007,8 @@ section.tabsContainer {
           -moz-transform: scale(1);
           -o-transform: scale(1);
           transform: scale(1); }
-    section.tabsContainer .data-list-wrapper li:hover {
+    section.tabsContainer .data-list-wrapper li:hover,
+    section.tabsContainer .data-list-wrapper li.playing {
       color: #EEE;
       background: #242424;
       background: -moz-linear-gradient(top, #242424 0, #2A2A2A 100%);
@@ -1018,9 +1019,11 @@ section.tabsContainer {
       background: linear-gradient(to bottom, #242424 0, #2A2A2A 100%);
       filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0);
       border-bottom: 1px solid #E6802E; }
-      section.tabsContainer .data-list-wrapper li:hover .label {
+      section.tabsContainer .data-list-wrapper li:hover .label,
+      section.tabsContainer .data-list-wrapper li.playing .label {
         width: 396px; }
-        section.tabsContainer .data-list-wrapper li:hover .label i.mdi {
+        section.tabsContainer .data-list-wrapper li:hover .label i.mdi,
+        section.tabsContainer .data-list-wrapper li.playing .label i.mdi {
           color: #E6802E;
           -moz-transition: all 0.2s ease-in-out;
           -o-transition: all 0.2s ease-in-out;
@@ -1033,7 +1036,8 @@ section.tabsContainer {
           transform: scale(1.3);
           padding-left: 2px;
           margin-right: 10px; }
-      section.tabsContainer .data-list-wrapper li:hover .controls {
+      section.tabsContainer .data-list-wrapper li:hover .controls,
+      section.tabsContainer .data-list-wrapper li.playing .controls {
         display: inline-block; }
     section.tabsContainer .data-list-wrapper li:active .label i.mdi {
       -ms-transform: scale(1.2);
@@ -1041,6 +1045,8 @@ section.tabsContainer {
       -moz-transform: scale(1.2);
       -o-transform: scale(1.2);
       transform: scale(1.2); }
+    section.tabsContainer .data-list-wrapper li.playing {
+      color: #E6802E; }
     section.tabsContainer .data-list-wrapper li {
       line-height: normal;
       overflow: visible; }

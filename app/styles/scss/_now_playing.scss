@@ -18,7 +18,7 @@ section#nowPlaying {
   }
   
   .active {
-    padding: 5px map-get($global, window-padding);
+    padding: 5px (map-get($global, window-padding) * 2);
     
     .thumbnail {
       display: inline-block;
@@ -38,20 +38,20 @@ section#nowPlaying {
     .details {
       display: inline-block;
       float: right;
-      width: 370px;
+      width: 350px;
       color: #BBB;
       height: 100px;
 
       .title {
-        font-size: 16px;
+        font-size: 18px;
         font-weight: 500;
-        color: #DDD;
+        color: #BBB;
         padding-bottom: 6px;
+        text-align: right;
 
         .name {
           color: #FFF;
-          font-weight: bold;
-          font-size: 18px;
+          font-size: 20px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;

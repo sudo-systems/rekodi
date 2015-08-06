@@ -1,8 +1,9 @@
-rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', 'rkEnumsService',
-  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, rkEnumsService) {
+rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', 'rkEnumsService', '$sessionStorage',
+  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, rkEnumsService, $sessionStorage) {
     $scope.type = '';
     $scope.playlistId = null;
     $scope.items = [];
+    $scope.playStatus = null;
     $scope.filter = {
       value: ''
     };
@@ -24,11 +25,10 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKod
       if(kodiWsApiConnection) {
         $scope.$root.$emit('rkStartLoading');
         
-        var promise = kodiWsApiConnection.Playlist.GetItems({
-          playlistid: $scope.playlistId
-        });
-
-        promise.then(function(data) {
+        kodiWsApiConnection.Playlist.GetItems({
+          playlistid: $scope.playlistId,
+          properties: ['file']
+        }).then(function(data) {
           $scope.items = data.items;
           $scope.$apply();
           $scope.$root.$emit('rkStopLoading');
@@ -75,6 +75,15 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKod
             $scope.get();
           }
         });
+        
+        $scope.$root.$on('rkWsConnectionStatusChange', function(event, data) {
+          if(!data.connected) {
+            $scope.items = [];
+          }
+          else {
+            $scope.get();
+          }
+        });
       }
     }
     
@@ -86,15 +95,14 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKod
         
         bindEvents();
       });
+      
+      $scope.$watchCollection(function() {
+        return $sessionStorage.playStatus;
+      }, function(newValue, oldValue) {
+        $scope.playStatus = newValue;
+      });
+      
+      $scope.playStatus = $sessionStorage.playStatus;
     };
-    
-    $scope.$root.$on('rkWsConnectionStatusChange', function(event, data) {
-      if(!data.connected) {
-        $scope.items = [];
-      }
-      else {
-        $scope.get();
-      }
-    });
   }
 ]);
