@@ -1,5 +1,5 @@
-rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage', 'rkKodiWsApiService',
-  function($scope, $localStorage, rkKodiWsApiService) {
+rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage',
+  function($scope, $localStorage) {
     $scope.storage = null;
     
     $scope.initTab = function(tabSelector) {
@@ -87,7 +87,11 @@ rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage', 'rkKodiWsApiServi
                 active: false,
                 isDefault: false
               },
-              audioFiles: {
+              musicFiles: {
+                active: false,
+                isDefault: false
+              },
+              musicAddons: {
                 active: false,
                 isDefault: false
               }
@@ -100,7 +104,11 @@ rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage', 'rkKodiWsApiServi
               active: false,
               isDefault: false
             },
-            videoFiles: {
+            moviesFiles: {
+              active: false,
+              isDefault: false
+            },
+            moviesAddons: {
               active: false,
               isDefault: false
             }
@@ -110,7 +118,11 @@ rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage', 'rkKodiWsApiServi
               active: false,
               isDefault: false
             },
-            videoFiles: {
+            tvShowsFiles: {
+              active: false,
+              isDefault: false
+            },
+            tvShowsAddons: {
               active: false,
               isDefault: false
             }

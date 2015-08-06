@@ -1,3 +1,15 @@
-<div class="inactive">
+<div class="inactive" ng-hide="playStatus.isPlaying">
   ReKodi
+</div>
+
+<div class="active audio clearfix" ng-show="playStatus.isPlaying && playStatus.playerType === 'audio'">
+  <div class="thumbnail">
+    <i class="mdi mdi-music-note"></i>
+  </div>
+  <div class="details">
+    <div class="title">
+      {{playStatus.item.displayartist}}<br />
+      <span class="name">{{playStatus.item.title}}</span>
+    </div>
+  </div>
 </div>

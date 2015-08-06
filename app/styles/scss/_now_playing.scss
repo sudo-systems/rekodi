@@ -3,6 +3,7 @@ section#nowPlaying {
   @include backgroundGradientVertical(#595959, map-get($playback-controls, background-color));
   border-bottom: 1px solid map-get($global, highlight-color);
   padding-top: map-get($window-controls, height);
+  overflow: hidden;
   
   .inactive {
     line-height: map-get($now-playing, height);
@@ -14,5 +15,50 @@ section#nowPlaying {
     font-size: 46px;
     font-weight: 300;
     @include textShadow(0 0 2px, #4C4E4F);
+  }
+  
+  .active {
+    padding: 5px map-get($global, window-padding);
+    
+    .thumbnail {
+      display: inline-block;
+      float: left;
+      height: 100px;
+      width: 100px;
+      text-align: center;
+      -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
+      transform: rotateY(35deg);
+      
+      i.mdi {
+        font-size: 100px;
+        line-height: 100px;
+      }
+    }
+    
+    .details {
+      display: inline-block;
+      float: right;
+      width: 370px;
+      color: #BBB;
+      height: 100px;
+
+      .title {
+        font-size: 16px;
+        font-weight: 500;
+        color: #DDD;
+        padding-bottom: 6px;
+
+        .name {
+          color: #FFF;
+          font-weight: bold;
+          font-size: 18px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: inline-block;
+          width: 100%;
+        }
+      }
+    }
   }
 }

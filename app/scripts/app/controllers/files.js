@@ -14,15 +14,13 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
       if(kodiWsApiConnection) {
         $scope.$root.$emit('rkStartLoading');
         
-        var promise = kodiWsApiConnection.Files.GetSources({
+        kodiWsApiConnection.Files.GetSources({
           media: $scope.type,
           sort: {
             order: 'ascending',
             method: 'label'
           }
-        });
-
-        promise.then(function(data) {
+        }).then(function(data) {
           sourcePaths = [];
 
           for(var i=0; i<data.sources.length; i++) {

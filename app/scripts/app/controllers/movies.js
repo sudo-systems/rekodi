@@ -1,6 +1,6 @@
 rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', '$localStorage',
   function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, $localStorage) {
-    $scope.library = {};
+    $scope.library = [];
     $scope.filter = {
       value: ''
     };

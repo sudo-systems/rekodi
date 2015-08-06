@@ -709,7 +709,8 @@ section#nowPlaying {
   background: linear-gradient(to bottom, #595959 0, #333 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0);
   border-bottom: 1px solid #E6802E;
-  padding-top: 18px; }
+  padding-top: 18px;
+  overflow: hidden; }
   section#nowPlaying .inactive {
     line-height: 170px;
     margin-top: -18px;
@@ -720,6 +721,39 @@ section#nowPlaying {
     font-size: 46px;
     font-weight: 300;
     text-shadow: 0 0 2px #4C4E4F; }
+  section#nowPlaying .active {
+    padding: 5px 12px; }
+    section#nowPlaying .active .thumbnail {
+      display: inline-block;
+      float: left;
+      height: 100px;
+      width: 100px;
+      text-align: center;
+      -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5)));
+      transform: rotateY(35deg); }
+      section#nowPlaying .active .thumbnail i.mdi {
+        font-size: 100px;
+        line-height: 100px; }
+    section#nowPlaying .active .details {
+      display: inline-block;
+      float: right;
+      width: 370px;
+      color: #BBB;
+      height: 100px; }
+      section#nowPlaying .active .details .title {
+        font-size: 16px;
+        font-weight: 500;
+        color: #DDD;
+        padding-bottom: 6px; }
+        section#nowPlaying .active .details .title .name {
+          color: #FFF;
+          font-weight: bold;
+          font-size: 18px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: inline-block;
+          width: 100%; }
 
 section#playbackControls {
   text-align: center;
