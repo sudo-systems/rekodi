@@ -207,8 +207,9 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     }
     
     function handleError(error) {
+      var errorDetails = (error.response.data)? ' ('+error.response.data.stack.message+': '+error.response.data.stack.name+')' : '';
       $scope.$root.$emit('rkServerError', {
-        message: error.response.message+' ('+error.response.data.stack.message+': '+error.response.data.stack.name+')'
+        message: error.response.message+errorDetails
       });
     }
 

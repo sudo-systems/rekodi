@@ -1007,6 +1007,40 @@ section.tabsContainer {
       -moz-transform: scale(1.2);
       -o-transform: scale(1.2);
       transform: scale(1.2); }
+    section.tabsContainer .data-list-wrapper li {
+      line-height: normal;
+      overflow: visible; }
+      section.tabsContainer .data-list-wrapper li .thumbnail {
+        display: inline-block;
+        padding: 5px 10px 5px 0; }
+        section.tabsContainer .data-list-wrapper li .thumbnail img {
+          width: 70px;
+          -webkit-filter: grayscale(100%);
+          -moz-transition: all 0.3s ease-in-out;
+          -o-transition: all 0.3s ease-in-out;
+          -webkit-transition: all 0.3s ease-in-out;
+          transition: all 0.3s ease-in-out; }
+      section.tabsContainer .data-list-wrapper li .details {
+        display: inline-block;
+        width: 400px;
+        font-size: 13px; }
+        section.tabsContainer .data-list-wrapper li .details td {
+          vertical-align: top;
+          white-space: normal;
+          padding: 3px; }
+        section.tabsContainer .data-list-wrapper li .details td.title h2 {
+          margin: 0;
+          color: #FFF;
+          padding-left: 3px; }
+        section.tabsContainer .data-list-wrapper li .details td.infoLabel {
+          color: #666;
+          text-align: right;
+          width: 50px;
+          padding-right: 6px; }
+        section.tabsContainer .data-list-wrapper li .details td.infoContent {
+          padding: 3px 0; }
+    section.tabsContainer .data-list-wrapper li:hover .thumbnail img {
+      -webkit-filter: grayscale(0%); }
 
 section.tabsContainer.sub nav {
   background: #262626;

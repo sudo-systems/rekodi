@@ -1,63 +1,64 @@
-rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService',
-  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService) {
+rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', '$localStorage',
+  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, $localStorage) {
     $scope.library = {};
+    $scope.filter = {
+      value: ''
+    };
     var kodiWsApiConnection = null;
     
     $scope.getLibrary = function() {
-      
-    };
-    
-    $scope.play = function(entry, type) {
-      var options = {
-        item: {}
-      };
-      
-      options.item[type] = entry;
-
       kodiWsApiConnection = rkKodiWsApiService.getConnection();
-      var promise = kodiWsApiConnection.Player.Open(options);
       
-      
-      promise.then(function(data) {
-        if(data === 'OK') {
-          emitPlaybackNotification(entry, type);
-        }
-      }, function(error){
-        console.log(error);
-      });
+      if(kodiWsApiConnection) {
+        $scope.$root.$emit('rkStartLoading');
+        
+        kodiWsApiConnection.VideoLibrary.GetMovies({
+          properties: ['thumbnail', 'year', 'rating', 'plotoutline'],
+          sort: {
+            order: 'ascending',
+            method: 'label'
+          }
+        }).then(function(data) {
+          data.movies = (data.movies === undefined)? [] : data.movies;
+          $scope.library = data.movies;
+          
+          for(var key in $scope.library) {
+            if($scope.library[key].thumbnail) {
+              var usernameAndPassword = ($localStorage.settings.password && $localStorage.settings.password !== '')? $localStorage.settings.username+':'+$localStorage.settings.password+'@' : '';
+              $scope.library[key].thumbnail = 'http://'+usernameAndPassword+$localStorage.settings.serverAddress+':'+$localStorage.settings.httpPort+'/image/'+encodeURIComponent($scope.library[key].thumbnail);
+              $scope.library[key].rating =  Math.round($scope.library[key].rating * 10 ) / 10;
+            }
+          }
+          
+          $scope.$root.$emit('rkStopLoading');
+        }, function(error) {
+          handleError(error);
+          $scope.$root.$emit('rkStopLoading');
+        });
+      }
     };
-
-    $scope.$root.$on('rkWsConnectionStatusChange', function(event, data) {
-      if(!data.connected) {
-       
-      }
-    });
     
-    function emitPlaybackNotification(entry, type) {
-      var fileName = 'of ';
-      
-      if(type === 'file'){
-        fileName += '"' +entry.substring(entry.lastIndexOf('/')+1, entry.lastIndexOf('.'))+ '"';
-      }
-      else if(type === 'directory') {
-        var parts = entry.split('/');
-        fileName += 'directory "' +parts[(parts.length-2)]+ '"';
-      }
-      else {
-        fileName = '';
-      }
-      
-      $scope.$root.$emit('rkPlaybackStart', {
-        message: 'Playback ' +fileName+ ' started'
+    $scope.filterList = function(entry) {
+      return (entry.label.toLowerCase().indexOf($scope.filter.value.toLowerCase()) > -1 || entry.label === '..');
+    };
+    
+    $scope.clearFilter = function() {
+      $scope.filter.value = '';
+    };
+    
+    function handleError(error) {
+      var errorDetails = (error.response.data)? ' ('+error.response.data.stack.message+': '+error.response.data.stack.name+')' : '';
+      $scope.$root.$emit('rkServerError', {
+        message: error.response.message+errorDetails
       });
     }
     
-    $scope.$evalAsync(function() {
-      
-    });
-    
     $scope.init = function() {
-
+      if($.isEmptyObject($scope.library)) {
+        $timeout(function() {
+          $scope.getLibrary();
+        });
+      }
     };
   }
 ]);

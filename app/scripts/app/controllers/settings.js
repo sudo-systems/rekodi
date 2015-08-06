@@ -40,7 +40,10 @@ rekodiApp.controller('rkSettingsCtrl', ['$scope', '$localStorage', 'rkKodiWsApiS
       if(!$localStorage.settings || $localStorage.settings.constructor !== Object) {
         $localStorage.settings = {
           serverAddress: '',
-          jsonRpcPort: '9090'
+          jsonRpcPort: '9090',
+          httpPort: '8080',
+          username: 'kodi',
+          password: ''
         };
       }
       

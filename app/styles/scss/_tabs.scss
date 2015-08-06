@@ -224,6 +224,59 @@ section.tabsContainer {
         }
       }
     }
+    
+    li {
+      line-height: normal;
+      overflow: visible;
+      
+      .thumbnail {
+        display: inline-block;
+        padding: 5px 10px 5px 0;
+        
+        img {
+          width: 70px;
+          -webkit-filter: grayscale(100%);
+          @include transitionAll(.3s);
+        }
+      }
+      
+      .details {
+        display: inline-block;
+        width: 400px;
+        font-size: 13px;
+        
+        td {
+          vertical-align: top;
+          white-space: normal;
+          padding: 3px;
+        }
+        
+        td.title h2 {
+          margin: 0;
+          color: #FFF;
+          padding-left: 3px;
+        }
+        
+        td.infoLabel {
+          color: #666;
+          text-align: right;
+          width: 50px;
+          padding-right: 6px;
+        }
+        
+        td.infoContent {
+          padding: 3px 0;
+        }
+      }
+    }
+    
+    li:hover {
+      .thumbnail {
+        img {
+          -webkit-filter: grayscale(0%);
+        }
+      }
+    }
   }
 }
 

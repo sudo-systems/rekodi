@@ -32,20 +32,25 @@ rekodiApp.factory('rkKodiWsApiService', ['$rootScope', '$localStorage', '$sessio
     }
 
     function createConnection() {
-      if(!$localStorage.settings || 
-          !$localStorage.settings.serverAddress || 
-          !$localStorage.settings.jsonRpcPort || 
-          $localStorage.settings.serverAddress === '' || 
-          $localStorage.settings.jsonRpcPort === '' || 
-          connectingInProgress) {
+      if(!isConfigured()) {
         $sessionStorage.connectionStatus = {
-          connecting: true,
+          connecting: false,
           connected: false, 
           statusMessage: 'offline'
         };
 
         connection = null;
-
+        return;
+      }
+      
+      if(connectingInProgress) {
+        $sessionStorage.connectionStatus = {
+          connecting: true,
+          connected: false, 
+          statusMessage: 'connecting'
+        };
+        
+        connection = null;
         return;
       }
       
