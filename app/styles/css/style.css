@@ -1047,7 +1047,8 @@ section.tabsContainer {
       -o-transform: scale(1.2);
       transform: scale(1.2); }
     section.tabsContainer .data-list-wrapper li.playing {
-      color: #E6802E; }
+      color: #E6802E;
+      border-bottom: 1px solid transparent; }
     section.tabsContainer .data-list-wrapper li {
       line-height: normal;
       overflow: visible; }

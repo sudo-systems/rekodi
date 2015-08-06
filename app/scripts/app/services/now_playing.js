@@ -22,6 +22,8 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkKodiWsApiService', '$
     };
     
     var getInfo = function(playerId) {
+      getItem(playerId);
+      
       setInterval(function() {
         if(playerId !== null && playerId !== undefined) {
           getItem(playerId);

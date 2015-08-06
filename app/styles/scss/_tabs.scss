@@ -228,6 +228,7 @@ section.tabsContainer {
     
     li.playing {
       color: map-get($global, highlight-color);
+      border-bottom: 1px solid transparent;
     }
     
     li {
