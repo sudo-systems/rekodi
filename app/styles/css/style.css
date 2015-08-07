@@ -722,39 +722,53 @@ section#nowPlaying {
     font-weight: 300;
     text-shadow: 0 0 2px #4C4E4F; }
   section#nowPlaying .active {
-    padding: 5px 24px; }
+    padding: 0px 24px; }
     section#nowPlaying .active .thumbnail {
       display: inline-block;
       float: left;
-      height: 100px;
-      width: 100px;
+      height: 110px;
+      width: 110px;
       text-align: center;
-      -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5)));
-      transform: rotateY(35deg); }
+      -webkit-perspective: 150px;
+      margin-top: 20px; }
       section#nowPlaying .active .thumbnail i.mdi {
-        font-size: 100px;
-        line-height: 100px; }
+        font-size: 90px;
+        line-height: 90px;
+        -webkit-transform: rotateY(10deg);
+        -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5))); }
+      section#nowPlaying .active .thumbnail img {
+        max-height: 100%;
+        max-width: 100%;
+        -webkit-transform: rotateY(10deg);
+        -webkit-box-reflect: below 4px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5))); }
     section#nowPlaying .active .details {
       display: inline-block;
       float: right;
-      width: 350px;
+      width: 340px;
       color: #BBB;
       height: 100px; }
       section#nowPlaying .active .details .title {
-        padding-top: 6px;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 500;
         color: #BBB;
-        padding-bottom: 6px;
+        padding-bottom: 3px;
         text-align: right; }
         section#nowPlaying .active .details .title .name {
           color: #FFF;
-          font-size: 18px;
+          font-size: 20px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
           display: inline-block;
           width: 100%; }
+      section#nowPlaying .active .details .plot {
+        overflow-y: hidden;
+        text-overflow: ellipsis;
+        text-align: justify; }
+  section#nowPlaying .active.episode .thumbnail {
+    width: 170px; }
+  section#nowPlaying .active.episode .details {
+    width: 280px; }
 
 section#playbackControls {
   text-align: center;

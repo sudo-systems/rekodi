@@ -18,41 +18,49 @@ section#nowPlaying {
   }
   
   .active {
-    padding: 5px (map-get($global, window-padding) * 2);
+    padding: 0px (map-get($global, window-padding) * 2);
     
     .thumbnail {
       display: inline-block;
       float: left;
-      height: 100px;
-      width: 100px;
+      height: 110px;
+      width: 110px;
       text-align: center;
-      -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
-      transform: rotateY(35deg);
+      -webkit-perspective: 150px;
+      margin-top: 20px;
       
       i.mdi {
-        font-size: 100px;
-        line-height: 100px;
+        font-size: 90px;
+        line-height: 90px;
+        -webkit-transform: rotateY(10deg);
+        -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
+      }
+      
+      img {
+        max-height: 100%;
+        max-width: 100%;
+        -webkit-transform: rotateY(10deg);
+        -webkit-box-reflect: below 4px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
       }
     }
     
     .details {
       display: inline-block;
       float: right;
-      width: 350px;
+      width: 340px;
       color: #BBB;
       height: 100px;
 
       .title {
-        padding-top: 6px;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 500;
         color: #BBB;
-        padding-bottom: 6px;
+        padding-bottom: 3px;
         text-align: right;
 
         .name {
           color: #FFF;
-          font-size: 18px;
+          font-size: 20px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -60,6 +68,22 @@ section#nowPlaying {
           width: 100%;
         }
       }
+      
+      .plot {
+        overflow-y: hidden;
+        text-overflow: ellipsis;
+        text-align: justify;
+      }
+    }
+  }
+  
+  .active.episode {
+    .thumbnail {
+      width: 170px;
+    }
+    
+    .details {
+      width: 280px;
     }
   }
 }

@@ -1,9 +1,9 @@
-rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkKodiWsApiService', '$sessionStorage', 'rkEnumsService',
-  function($rootScope, rkKodiWsApiService, $sessionStorage, rkEnumsService) {
+rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkKodiWsApiService', '$sessionStorage', 'rkEnumsService', '$localStorage',
+  function($rootScope, rkKodiWsApiService, $sessionStorage, rkEnumsService, $localStorage) {
     var kodiWsApiConnection = null;
     var itemProperties = [];
     itemProperties[rkEnumsService.PlayerId.AUDIO] = ['title', 'artist', 'albumartist', 'displayartist', 'album', 'track', 'year', 'genre', 'thumbnail', 'playcount', 'file', 'duration'];
-    itemProperties[rkEnumsService.PlayerId.VIDEO] = ['file'];
+    itemProperties[rkEnumsService.PlayerId.VIDEO] = ['title', 'file', 'thumbnail', 'plotoutline', 'year', 'season', 'episode', 'showtitle', 'plot'];
     
     $sessionStorage.playStatus = {
       isPlaying: false,
@@ -21,33 +21,33 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkKodiWsApiService', '$
       });
     };
     
-    var getInfo = function(playerId) {
-      getItem(playerId);
-      
+    var getInfo = function() {
       setInterval(function() {
-        if(playerId !== null && playerId !== undefined) {
-          getItem(playerId);
-        }
-        else {
-          getActivePlayer(function(playerId) {
-            if(playerId !== null) {
-              getItem(playerId);
-            }
-          });
-        }
+        getActivePlayer(function(playerId) {
+          if(playerId !== null) {
+            getItem(playerId);
+          }
+        });
       }, 1000);
     };
     
     var getItem = function(playerId) {
+
       kodiWsApiConnection.Player.GetItem({
         playerid: playerId,
         properties: itemProperties[playerId]
       }).then(function(data) {
         if(data.item) {
           if(data.item.duration) {
-            var duration = moment.duration(parseInt(data.item.duration), 'seconds');
-            data.item.duration_readable = duration.format('HH:mm:ss');
+            data.item.duration_readable = moment.duration(parseInt(data.item.duration), 'seconds');
           }
+          
+          if(data.item.thumbnail && data.item.thumbnail !== '') {
+            var usernameAndPassword = ($localStorage.settings.password && $localStorage.settings.password !== '')? $localStorage.settings.username+':'+$localStorage.settings.password+'@' : '';
+            data.item.thumbnail_url = 'http://'+usernameAndPassword+$localStorage.settings.serverAddress+':'+$localStorage.settings.httpPort+'/image/'+encodeURIComponent(data.item.thumbnail);
+          }
+          
+          console.dir(data);
           
           $sessionStorage.playStatus = {
             isPlaying: true,
@@ -83,6 +83,8 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkKodiWsApiService', '$
       $rootScope.$emit('rkServerError', {
         message: error.response.message+errorDetails
       });
+      
+      console.dir(error);
     };
     
     var init = function() {
@@ -95,8 +97,7 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkKodiWsApiService', '$
           getInfo();
           
           kodiWsApiConnection.Player.OnPlay(function(response) {
-            var playerId = (response.data)? response.data.player.playerid : null;
-            getInfo(playerId);
+            getInfo();
           });
 
           kodiWsApiConnection.Player.OnStop(function(response) {

@@ -2,14 +2,44 @@
   ReKodi
 </div>
 
-<div class="active audio clearfix" ng-show="playStatus.isPlaying && playStatus.playerType === 'audio'">
-  <div class="thumbnail">
-    <i class="mdi mdi-music-note"></i>
+<div ng-show="playStatus.isPlaying">
+  <div class="active audio clearfix" ng-show="playStatus.item.type === 'song'">
+    <div class="thumbnail">
+      <i class="mdi mdi-music-note"></i>
+    </div>
+    <div class="details">
+      <div class="title">
+        {{playStatus.item.displayartist}}<br />
+        <span class="name">{{playStatus.item.title}}</span>
+      </div>
+    </div>
   </div>
-  <div class="details">
-    <div class="title">
-      {{playStatus.item.displayartist}}<br />
-      <span class="name">{{playStatus.item.title}}</span>
+
+  <div class="active movie clearfix" ng-show="playStatus.item.type === 'movie'">
+    <div class="thumbnail">
+      <i class="mdi mdi-movie" ng-show="!playStatus.item.thumbnail_url"></i>
+      <img src="{{playStatus.item.thumbnail_url}}" alt="" ng-hide="!playStatus.item.thumbnail_url" />
+    </div>
+    <div class="details">
+      <div class="title">
+        <span class="name">{{playStatus.item.title}}</span>
+      </div>
+      <div class="plot">
+        {{playStatus.item.plotoutline}}
+      </div>
+    </div>
+  </div>
+  
+  <div class="active episode clearfix" ng-show="playStatus.item.type === 'episode'">
+    <div class="thumbnail">
+      <i class="mdi mdi-movie" ng-show="!playStatus.item.thumbnail_url"></i>
+      <img src="{{playStatus.item.thumbnail_url}}" alt="" ng-hide="!playStatus.item.thumbnail_url" />
+    </div>
+    <div class="details">
+      <div class="title">
+        {{playStatus.item.showtitle}} - s{{playStatus.item.season}}e{{playStatus.item.episode}}
+        <span class="name">{{playStatus.item.title}}</span>
+      </div>
     </div>
   </div>
 </div>
