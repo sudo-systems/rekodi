@@ -1079,7 +1079,7 @@ section.tabsContainer {
       line-height: normal;
       overflow: hidden; }
       section.tabsContainer .data-list-wrapper li .thumbnail {
-        margin: 10px 0 25px 0;
+        margin: 10px 0 20px 0;
         display: inline-block;
         float: left;
         width: 60px;
@@ -1090,6 +1090,15 @@ section.tabsContainer {
           -webkit-transform: rotateY(0deg);
           -webkit-box-reflect: below 4px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5)));
           border-radius: 3px;
+          -moz-transition: all 0.5s ease-in-out;
+          -o-transition: all 0.5s ease-in-out;
+          -webkit-transition: all 0.5s ease-in-out;
+          transition: all 0.5s ease-in-out; }
+        section.tabsContainer .data-list-wrapper li .thumbnail i.mdi {
+          font-size: 60px;
+          -webkit-filter: grayscale(100%);
+          -webkit-transform: rotateY(0deg);
+          -webkit-box-reflect: below 4px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5)));
           -moz-transition: all 0.5s ease-in-out;
           -o-transition: all 0.5s ease-in-out;
           -webkit-transition: all 0.5s ease-in-out;
@@ -1107,7 +1116,9 @@ section.tabsContainer {
         section.tabsContainer .data-list-wrapper li .details td.title h2 {
           margin: 0;
           color: #FFF;
-          padding-left: 3px; }
+          padding-left: 3px;
+          font-weight: 300;
+          font-size: 18px; }
         section.tabsContainer .data-list-wrapper li .details td.infoLabel {
           color: #666;
           text-align: right;
@@ -1115,7 +1126,8 @@ section.tabsContainer {
           padding-right: 6px; }
         section.tabsContainer .data-list-wrapper li .details td.infoContent {
           padding: 3px 0; }
-    section.tabsContainer .data-list-wrapper li:hover .thumbnail img {
+    section.tabsContainer .data-list-wrapper li:hover .thumbnail img,
+    section.tabsContainer .data-list-wrapper li:hover .thumbnail i.mdi {
       -webkit-filter: grayscale(0%);
       -webkit-transform: rotateY(25deg);
       -moz-transition: all 0.5s ease-in-out;

@@ -1,15 +1,74 @@
-<div class="options clearfix" ng-show="selectedIndex !== null">
-  index: <select name="index" ng-model="selectedIndex" class="index">
-    <option ng-repeat="indexLetter in alphabeticIndex" ng-value="{{indexLetter}}" ng-selected="indexLetter === selectedIndex">{{indexLetter}}</option>
+<div class="options">
+  <select name="index" ng-model="selectedIndex" class="index" ng-show="currentLevel ==='artists' && alphabeticLibrary.length > 0">
+    <option ng-repeat="indexLetter in alphabeticIndex" ng-value="indexLetter" ng-selected="indexLetter === selectedIndex">{{indexLetter}}</option>
   </select>
   <input type="text" class="filter" ng-model="filter.value" placeholder="filter" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
 </div>
 <div class="data-list-wrapper">
-  <ul class="vertical">
-    <li ng-repeat="entry in alphabeticLibrary[selectedIndex] | filter:filterList" class="clearfix">
+  <ul class="vertical" ng-show="currentLevel ==='artists'">
+    <li ng-repeat="artist in alphabeticLibrary[selectedIndex] | filter:filterList" class="clearfix" ng-click="getAlbums(artist)">
       <div class="label">
-        <i class="mdi mdi-human"></i>
-        {{entry.label}}
+        <i class="mdi mdi-worker"></i>
+        {{artist.label}}
+      </div>
+    </li>
+  </ul>
+  <ul class="vertical" ng-show="currentLevel === 'albums'">
+    <li ng-repeat="album in albums | filter:filterList" class="clearfix" ng-click="getSongs(album)">
+      <div class="label" ng-if="album.back">
+        <i class="mdi mdi-worker"></i>
+        {{album.label}}
+      </div>
+      <div class="thumbnail" ng-if="!album.back">
+        <div ng-if="album.thumbnail_src">
+          <img src="{{album.thumbnail_src}}" alt="" />
+        </div>
+        <i class="mdi mdi-album" ng-if="!album.thumbnail_src"></i>
+      </div>
+      <div class="details" ng-if="!album.back">
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr>
+            <td colspan="2" class="title">
+              <h2>{{album.label}}</h2>
+            </td>
+          </tr>
+          <tr ng-if="album.displayartist">
+            <td class="infoLabel">
+              artist
+            </td>
+            <td class="infoContent">
+              {{album.displayartist}}
+            </td>
+          </tr>
+          <tr ng-if="album.year">
+            <td class="infoLabel">
+              year
+            </td>
+            <td class="infoContent">
+              {{album.year}}
+            </td>
+          </tr>
+          <tr ng-if="album.display_genre">
+            <td class="infoLabel">
+              genre
+            </td>
+            <td class="infoContent">
+              {{album.display_genre}}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </li>
+  </ul>
+  <ul class="vertical" ng-show="currentLevel === 'songs'">
+    <li ng-repeat="song in songs | filter:filterList" class="clearfix" ng-click="playSong(song)">
+      <div class="label" ng-if="song.back">
+        <i class="mdi mdi-album"></i>
+        {{song.label}}
+      </div>
+      <div class="label" ng-if="!song.back">
+        <i class="mdi mdi-music-note"></i>
+        <span>{{song.track}}. </span>{{song.label}}
       </div>
     </li>
   </ul>

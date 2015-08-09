@@ -1,15 +1,27 @@
 rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', '$localStorage',
   function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, $localStorage) {
-    $scope.library = [];
+    $scope.artists = [];
+    $scope.albums = [];
+    $scope.songs = [];
     $scope.alphabeticLibrary = [];
     $scope.alphabeticIndex = [];
     $scope.selectedIndex = null;
+    $scope.currentLevel = null;
     $scope.filter = {
       value: ''
     };
     var kodiWsApiConnection = null;
     
-    $scope.getLibrary = function() {
+    $scope.getArtists = function(reload) {
+      $scope.currentLevel = 'artists';
+      reload = (reload === undefined)? true : reload;
+      
+      $scope.clearFilter();
+      
+      if(!reload) {
+        return;
+      }
+      
       kodiWsApiConnection = rkKodiWsApiService.getConnection();
       
       if(kodiWsApiConnection) {
@@ -17,29 +29,22 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         
         kodiWsApiConnection.AudioLibrary.GetArtists({
           albumartistsonly: false,
-          properties: ['thumbnail'],
           sort: {
             order: 'ascending',
             method: 'label'
           }
         }).then(function(data) {
           data.artists = (data.artists === undefined)? [] : data.artists;
-          $scope.library = data.artists;
+          $scope.artists = data.artists;
           
-          for(var key in $scope.library) {
-            $scope.library[key].elementid = 'artist_'+$scope.library[key].artistid;
-            
-            if($scope.library[key].thumbnail) {
-              $scope.library[key].thumbnail_src = getImageSrc($scope.library[key].thumbnail);
-            }
-            
-            var firstLetter = $scope.library[key].label.charAt(0).toLowerCase();
+          for(var key in $scope.artists) {
+            var firstLetter = $scope.artists[key].label.charAt(0).toLowerCase();
             
             if($scope.alphabeticLibrary[firstLetter] === undefined) {
               $scope.alphabeticLibrary[firstLetter] = [];
             }
             
-            $scope.alphabeticLibrary[firstLetter][key] = $scope.library[key];
+            $scope.alphabeticLibrary[firstLetter][key] = $scope.artists[key];
           }
           
           for (var key in $scope.alphabeticLibrary) {
@@ -55,6 +60,117 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
           handleError(error);
           $scope.$root.$emit('rkStopLoading');
         });
+      }
+    };
+    
+    $scope.getAlbums = function(artist) {
+      $scope.albums = [];
+      $scope.currentLevel = 'albums';
+      
+      $scope.clearFilter();
+
+      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      
+      if(kodiWsApiConnection) {
+        $scope.$root.$emit('rkStartLoading');
+        
+        kodiWsApiConnection.AudioLibrary.GetAlbums({
+          properties: ['thumbnail', 'year', 'genre', 'displayartist'],
+          filter: {
+            artistid: artist.artistid
+          },
+          sort: {
+            order: 'descending',
+            method: 'year'
+          }
+        }).then(function(data) {
+          data.albums = (data.albums === undefined)? [] : data.albums;
+          $scope.albums = data.albums;
+          
+          for(var key in $scope.albums) {
+            $scope.albums[key].artistid = artist.artistid;
+            
+            if($scope.albums[key].thumbnail && $scope.albums[key].thumbnail !== '') {
+              $scope.albums[key].thumbnail_src = getImageSrc($scope.albums[key].thumbnail);
+            }
+            
+            if($scope.albums[key].genre) {
+              $scope.albums[key].display_genre = $scope.albums[key].genre.join(', ');
+            }
+          }
+
+          var dirUp = {
+            label: '[back to artists] ..',
+            back: true
+          };
+
+          $scope.albums.unshift(dirUp);
+          $scope.$root.$emit('rkStopLoading');
+        }, function(error) {
+          handleError(error);
+          $scope.$root.$emit('rkStopLoading');
+        });
+      }
+    };
+    
+    $scope.getSongs = function(album, reload) {
+      $scope.songs = [];
+      $scope.currentLevel = 'songs';
+      reload = (reload === undefined)? true : reload;
+      
+      $scope.clearFilter();
+      
+      if(album.back === true) {
+        $scope.getArtists(false);
+        return;
+      }
+      
+      if(!reload) {
+        return;
+      }
+      
+      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      
+      if(kodiWsApiConnection) {
+        $scope.$root.$emit('rkStartLoading');
+        
+        kodiWsApiConnection.AudioLibrary.GetSongs({
+          properties: ['thumbnail', 'track'],
+          filter: {
+            albumid: album.albumid
+          },
+          sort: {
+            order: 'ascending',
+            method: 'track'
+          }
+        }).then(function(data) {
+          data.songs = (data.songs === undefined)? [] : data.songs;
+          $scope.songs = data.songs;
+          
+          for(var key in $scope.songs) {
+            if($scope.songs[key].thumbnail && $scope.songs[key].thumbnail !== '') {
+              $scope.songs[key].thumbnail_src = getImageSrc($scope.songs[key].thumbnail);
+            }
+          }
+          
+          var dirUp = {
+            label: '[back to albums] ..',
+            back: true,
+            artistid: album.artistid
+          };
+
+          $scope.songs.unshift(dirUp);
+          $scope.$root.$emit('rkStopLoading');
+        }, function(error) {
+          handleError(error);
+          $scope.$root.$emit('rkStopLoading');
+        });
+      }
+    };
+    
+    $scope.playSong = function(song) {
+      if(song.back === true) {
+        $scope.getAlbums(song);
       }
     };
     
@@ -81,7 +197,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     $scope.init = function() {
       if($.isEmptyObject($scope.library)) {
         $timeout(function() {
-          $scope.getLibrary();
+          $scope.getArtists();
         });
       }
     };
