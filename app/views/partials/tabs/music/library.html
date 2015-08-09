@@ -68,7 +68,7 @@
       </div>
       <div class="label" ng-if="!song.back">
         <i class="mdi mdi-music-note"></i>
-        <span>{{song.track}}. </span>{{song.label}}
+        <span ng-if="song.track">{{song.track}}. </span>{{song.label}}
       </div>
     </li>
   </ul>
