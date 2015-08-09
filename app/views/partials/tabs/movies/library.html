@@ -4,8 +4,8 @@
   </div>
   <ul class="vertical">
     <li ng-repeat="entry in library | filter:filterList" class="clearfix">
-      <div class="thumbnail">
-        <img ng-src="{{entry.thumbnail}}" alt="" />
+      <div class="thumbnail" ng-show="{{entry.thumbnail_src}}">
+        <img ng-src="{{entry.thumbnail_src}}" alt="" />
       </div>
       <div class="details">
         <table width="100%" cellspacing="0" cellpadding="0">

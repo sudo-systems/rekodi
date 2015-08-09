@@ -46,9 +46,7 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkKodiWsApiService', '$
             var usernameAndPassword = ($localStorage.settings.password && $localStorage.settings.password !== '')? $localStorage.settings.username+':'+$localStorage.settings.password+'@' : '';
             data.item.thumbnail_url = 'http://'+usernameAndPassword+$localStorage.settings.serverAddress+':'+$localStorage.settings.httpPort+'/image/'+encodeURIComponent(data.item.thumbnail);
           }
-          
-          console.dir(data);
-          
+
           $sessionStorage.playStatus = {
             isPlaying: true,
             playerType: (rkEnumsService.PlaylistId.AUDIO === playerId)? 'audio' : 'video',

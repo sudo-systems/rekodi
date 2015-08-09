@@ -24,8 +24,7 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', '$timeout', 'rkKodiW
           
           for(var key in $scope.library) {
             if($scope.library[key].thumbnail) {
-              var usernameAndPassword = ($localStorage.settings.password && $localStorage.settings.password !== '')? $localStorage.settings.username+':'+$localStorage.settings.password+'@' : '';
-              $scope.library[key].thumbnail = 'http://'+usernameAndPassword+$localStorage.settings.serverAddress+':'+$localStorage.settings.httpPort+'/image/'+encodeURIComponent($scope.library[key].thumbnail);
+              $scope.library[key].thumbnail_src = getImageSrc($scope.library[key].thumbnail);
               $scope.library[key].rating =  Math.round($scope.library[key].rating * 10 ) / 10;
             }
           }
@@ -45,6 +44,11 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', '$timeout', 'rkKodiW
     $scope.clearFilter = function() {
       $scope.filter.value = '';
     };
+    
+    function getImageSrc(specialPath) {
+      var usernameAndPassword = ($localStorage.settings.password && $localStorage.settings.password !== '')? $localStorage.settings.username+':'+$localStorage.settings.password+'@' : '';
+      return 'http://'+usernameAndPassword+$localStorage.settings.serverAddress+':'+$localStorage.settings.httpPort+'/image/'+encodeURIComponent(specialPath);
+    }
     
     function handleError(error) {
       var errorDetails = (error.response.data)? ' ('+error.response.data.stack.message+': '+error.response.data.stack.name+')' : '';

@@ -25,7 +25,7 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'rkKod
         $localStorage.settings.serverAddress === '' || 
         $localStorage.settings.jsonRpcPort === '')? false : true;
     };
-    
+
     function init() {
       setIfConnectionConfigured();
       rkKodiWsApiService.connect();
