@@ -1,7 +1,7 @@
+<div class="options">
+  <a ng-click="getLibrary()" title="Refresh"><i class="mdi mdi-refresh"></i></a><input type="text" class="filter" ng-model="filter.value" placeholder="filter" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+</div>
 <div class="data-list-wrapper">
-  <div class="options">
-    <a ng-click="getLibrary()" title="Refresh"><i class="mdi mdi-refresh"></i></a><input type="text" class="filter" ng-model="filter.value" placeholder="filter" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
-  </div>
   <ul class="vertical">
     <li ng-repeat="entry in library | filter:filterList" class="clearfix">
       <div class="thumbnail" ng-show="{{entry.thumbnail_src}}">

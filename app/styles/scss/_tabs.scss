@@ -98,54 +98,58 @@ section.tabsContainer {
     }
   }
   
-  .data-list-wrapper {
-    overflow: auto;
-    height: 416px;
-    
-    .options {
-      padding: 6px map-get($global, window-padding);
-      border-bottom: 1px solid #333;
-      background: #242424;
-      line-height: 20px;
+  .options {
+    padding: 0 map-get($global, window-padding);
+    border-bottom: 1px solid #333;
+    background: #242424;
+    line-height: 36px;
+    height: 36px;
+    font-size: 14px;
 
-      input[type="text"] {
-        background: #2A2A2A;
-        border: 0;
-        color: #FFF;
-        padding: 0 5px;
-        line-height: 20px;
-        margin: 0 3px;
-        font-size: 14px;
-        font-weight: 300;
-        letter-spacing: 1px;
-      }
-      
-      input[type="text"]::-webkit-input-placeholder {
-        color: #444;
-      }
-      
-      input[type="text"]::-webkit-input-placeholder::before { 
-        font-family: 'MaterialDesignIcons'; 
-        content: "\f3ab";
-        margin-right: 5px;
-        font-size: 16px;
-        color: #555;
-      }
-      
-      .clear-filter {
-        font-size: 16px;
-        @include transitionAll(.2s);
-      }
-      
-      .clear-filter:hover {
-        color: map-get($global, highlight-color);
-        @include scale(1.25);
-      }
-      
-      .clear-filter:active {
-        @include scale(1.0);
-      }
+    select,
+    input[type="text"] {
+      background: #2D2D2D;
+      border: 0;
+      color: #FFF;
+      padding: 0 5px;
+      line-height: 20px;
+      margin: 0 3px;
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: 1px;
+      border-radius: 0;
     }
+
+    input[type="text"].filter::-webkit-input-placeholder {
+      color: #444;
+    }
+
+    input[type="text"].filter::-webkit-input-placeholder::before { 
+      font-family: 'MaterialDesignIcons'; 
+      content: "\f3ab";
+      margin-right: 5px;
+      font-size: 14px;
+      color: #AAA;
+    }
+
+    .clear-filter {
+      font-size: 16px;
+      @include transitionAll(.2s);
+    }
+
+    .clear-filter:hover {
+      color: map-get($global, highlight-color);
+      @include scale(1.25);
+    }
+
+    .clear-filter:active {
+      @include scale(1.0);
+    }
+  }
+  
+  .data-list-wrapper {
+    overflow-y: auto;
+    height: 384px;
     
     li {
       padding: 0 map-get($global, window-padding);

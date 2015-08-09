@@ -1,8 +1,9 @@
 rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', '$localStorage',
   function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, $localStorage) {
     $scope.library = [];
-    $scope.listLimit = 100;
-    $scope.totalListLimit = $scope.listLimit;
+    $scope.alphabeticLibrary = [];
+    $scope.alphabeticIndex = [];
+    $scope.selectedIndex = null;
     $scope.filter = {
       value: ''
     };
@@ -15,25 +16,40 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         $scope.$root.$emit('rkStartLoading');
         
         kodiWsApiConnection.AudioLibrary.GetArtists({
-          albumartistsonly: true,
+          albumartistsonly: false,
           properties: ['thumbnail'],
           sort: {
             order: 'ascending',
             method: 'label'
           }
         }).then(function(data) {
-          console.dir(data);
-          
           data.artists = (data.artists === undefined)? [] : data.artists;
           $scope.library = data.artists;
           
           for(var key in $scope.library) {
             $scope.library[key].elementid = 'artist_'+$scope.library[key].artistid;
+            
             if($scope.library[key].thumbnail) {
               $scope.library[key].thumbnail_src = getImageSrc($scope.library[key].thumbnail);
             }
+            
+            var firstLetter = $scope.library[key].label.charAt(0).toLowerCase();
+            
+            if($scope.alphabeticLibrary[firstLetter] === undefined) {
+              $scope.alphabeticLibrary[firstLetter] = [];
+            }
+            
+            $scope.alphabeticLibrary[firstLetter][key] = $scope.library[key];
           }
           
+          for (var key in $scope.alphabeticLibrary) {
+            if ($scope.alphabeticLibrary.hasOwnProperty(key)) {
+              $scope.alphabeticIndex.push(key);
+            }
+          }
+          
+          $scope.selectedIndex = $scope.alphabeticIndex[0];
+
           $scope.$root.$emit('rkStopLoading');
         }, function(error) {
           handleError(error);
@@ -61,23 +77,13 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         message: error.response.message+errorDetails
       });
     }
-    
-    function setNumberOfListItems() {
-      $scope.totalListLimit += $scope.listLimit;
-    }
-    
+
     $scope.init = function() {
       if($.isEmptyObject($scope.library)) {
         $timeout(function() {
           $scope.getLibrary();
         });
       }
-      
-      $('.data-list-wrapper').on('scroll', function() {
-        if(($(this).scrollTop() + $(this).innerHeight()) === this.scrollHeight){
-          setNumberOfListItems();
-        }
-      });
     };
   }
 ]);

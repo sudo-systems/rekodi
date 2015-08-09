@@ -12,8 +12,9 @@ body {
   font-size: map-get($body, font-size);
   font-weight: map-get($body, font-weight);
   overflow: hidden;
-  
+
   input,
+  select,
   textarea {
     font-family: map-get($body, font-family);
     font-size: map-get($body, font-size);
@@ -26,7 +27,12 @@ body {
     color: #EEE;
     padding: 0 10px;
   }
-  
+
+  select {
+    position: relative;
+    min-width: 40px;
+  }
+
   label {
     display: inline-block;
     line-height: 26px;
@@ -35,7 +41,7 @@ body {
     text-align: right;
     padding: 0 10px 0 0;
   }
-  
+
   button,
   input[type=submit] {
     background: #AAA;
@@ -51,31 +57,31 @@ body {
     border-bottom: 1px dotted #FFF;
     @include transitionAll();
   }
-  
+
   button:hover,
-  input[type=submit]:hover {
+    input[type=submit]:hover {
     background: map-get($global, highlight-color);
     color: #FFF;
   }
-  
-   button:disabled,
-   input[type=submit]:disabled {
-     background: #666;
-     color: #AAA;
-   }
-  
+
+  button:disabled,
+    input[type=submit]:disabled {
+    background: #666;
+    color: #AAA;
+  }
+
   a {
     color: map-get($body, anchor-color);
   }
-  
+
   a:hover {
     color: map-get($body, anchor-color-hover);
   }
-  
+
   .jBox-container {
     background: #EEE;
   }
-  
+
   .jBox-content {
     padding: 3px 8px;
     overflow: auto;
@@ -84,17 +90,17 @@ body {
     font-size: 14px;
     white-space: nowrap;
   }
-  
+
   .jBox-Tooltip .jBox-container,
   .jBox-Mouse .jBox-container {
     border: 1px solid #AAA;
   }
-  
+
   .jBox-pointer:after {
     background: #EEE;
     border: 1px solid #AAA;
   }
-  
+
   .bodyOverlay {
     position: fixed;
     top: map-get($now-playing, height);
@@ -107,7 +113,7 @@ body {
     text-align: center;
     padding: 100px 60px;
     font-size: 18px;
-    
+
     a {
       color: map-get($global, highlight-color);
     }
