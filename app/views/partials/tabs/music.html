@@ -13,7 +13,7 @@
   <div class="magic-line"></div>
 </nav>
 <div class="tabs inline">
-  <div ng-include="'views/partials/tabs/music/library.html'" id="musicLibrary" ng-controller="rkMusicCtrl" class="tabsContainer"></div>
-  <div ng-include="'views/partials/tabs/music/files.html'" id="musicFiles" ng-controller="rkFilesCtrl" ng-init="type='music'" class="tabsContainer"></div>
-  <div ng-include="'views/partials/tabs/music/addons.html'" id="musicAddons" ng-controller="rkAddonsCtrl" ng-init="type='audio'" class="tabsContainer"></div>
+  <div ng-include="'views/partials/tabs/music/library.html'" id="musicLibrary" ng-controller="rkMusicCtrl" rk-tooltips class="tabsContainer"></div>
+  <div ng-include="'views/partials/tabs/music/files.html'" id="musicFiles" ng-controller="rkFilesCtrl" rk-tooltips ng-init="type='music'" class="tabsContainer"></div>
+  <div ng-include="'views/partials/tabs/music/addons.html'" id="musicAddons" ng-controller="rkAddonsCtrl" rk-tooltips ng-init="type='audio'" class="tabsContainer"></div>
 </div>

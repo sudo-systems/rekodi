@@ -18,7 +18,7 @@
   <div class="active movie clearfix" ng-show="playStatus.item.type === 'movie'">
     <div class="thumbnail">
       <i class="mdi mdi-movie" ng-show="!playStatus.item.thumbnail_url"></i>
-      <img src="{{playStatus.item.thumbnail_url}}" alt="" ng-hide="!playStatus.item.thumbnail_url" />
+      <img ng-src="{{playStatus.item.thumbnail_url}}" alt="" ng-hide="!playStatus.item.thumbnail_url" />
     </div>
     <div class="details">
       <div class="title">
@@ -33,7 +33,7 @@
   <div class="active episode clearfix" ng-show="playStatus.item.type === 'episode'">
     <div class="thumbnail">
       <i class="mdi mdi-movie" ng-show="!playStatus.item.thumbnail_url"></i>
-      <img src="{{playStatus.item.thumbnail_url}}" alt="" ng-hide="!playStatus.item.thumbnail_url" />
+      <img ng-src="{{playStatus.item.thumbnail_url}}" alt="" ng-hide="!playStatus.item.thumbnail_url" />
     </div>
     <div class="details">
       <div class="title">
