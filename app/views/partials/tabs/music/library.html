@@ -1,10 +1,12 @@
-<div class="options">
-  <span ng-show="currentLevel ==='artists' && alphabeticIndex.length > 0">
-    index:<select name="index" ng-model="selectedIndex" class="index" title="Select the category">
+<div class="options clearfix">
+  <div class="page-specific" ng-show="currentLevel ==='artists' && alphabeticIndex.length > 0">
+    <select name="index" ng-model="selectedIndex" class="index" title="Select the category">
       <option ng-repeat="indexLetter in alphabeticIndex" ng-value="indexLetter" ng-selected="indexLetter === selectedIndex">{{indexLetter}}</option>
     </select>
-  </span>
-  <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+  </div>
+  <div class="filter-container">
+    <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+  </div>
 </div>
 <div class="data-list-wrapper">
   <ul class="vertical" ng-show="currentLevel ==='artists'">

@@ -5,6 +5,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     $scope.currentLevel = null;
     $scope.currentArtistId = null;
     $scope.currentAlbumId = null;
+    $scope.artists = [];
     $scope.artistsCategorised = {};
     $scope.alphabeticIndex = [];
     $scope.albums = {};
@@ -14,6 +15,26 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     };
     var kodiWsApiConnection = null;
     
+    function getArtistsFromCache() {
+      if($localStorage.cache[$scope.identifier].artists) {
+        if($scope.artists.length === 0) {
+          $scope.artists = JSON.parse($localStorage.cache[$scope.identifier].artists);
+        }
+
+        if($localStorage.cache[$scope.identifier].artistsCategorised && Object.keys($scope.artistsCategorised).length === 0) {
+          $scope.artistsCategorised = JSON.parse($localStorage.cache[$scope.identifier].artistsCategorised);
+        }
+
+        if($localStorage.cache[$scope.identifier].alphabeticIndex && $scope.alphabeticIndex.length === 0) {
+          $scope.alphabeticIndex = JSON.parse($localStorage.cache[$scope.identifier].alphabeticIndex);
+        }
+
+        if($scope.alphabeticIndex.length > 0) {
+          setDefaultSelectedIndex();
+        }
+      }
+    }
+    
     function updateArtsistsCache(artists) {
       if(!$localStorage.cache[$scope.identifier].artists || $localStorage.cache[$scope.identifier].artists !== JSON.stringify(artists)) {
         processArtists(artists);
@@ -21,18 +42,6 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
       }
       
       return false;
-    }
-    
-    function getArtistsFromCache() {
-      if($localStorage.cache[$scope.identifier].artists) {
-        $scope.artists = ($localStorage.cache[$scope.identifier].artists)? JSON.parse($localStorage.cache[$scope.identifier].artists) : [];
-        $scope.artistsCategorised = ($localStorage.cache[$scope.identifier].artistsCategorised)? JSON.parse($localStorage.cache[$scope.identifier].artistsCategorised) : {};
-        $scope.alphabeticIndex = ($localStorage.cache[$scope.identifier].alphabeticIndex)? JSON.parse($localStorage.cache[$scope.identifier].alphabeticIndex) : [];
-        
-        if($scope.alphabeticIndex.length > 0) {
-          setDefaultSelectedIndex();
-        }
-      }
     }
     
     function processArtists(artists) {
@@ -109,7 +118,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     }
     
     function getAlbumsFromCache(artistId) {
-      if($localStorage.cache[$scope.identifier].albums) {
+      if($localStorage.cache[$scope.identifier].albums && (!$scope.albums[artistId] || $scope.albums[artistId].length === 0)) {
         var albumsCacheTemp = JSON.parse($localStorage.cache[$scope.identifier].albums);
         $scope.albums[artistId] = (albumsCacheTemp[artistId])? albumsCacheTemp[artistId] : [];
       }
@@ -166,7 +175,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
           data.albums = (data.albums === undefined)? [] : data.albums;
           
           if(!updateAlbumsCache(data.albums, artist.artistid)) {
-            processAlbums(data.albums, artist.artistid);
+            getAlbumsFromCache(artist.artistid);
           }
 
           $scope.$root.$emit('rkStopLoading');
@@ -178,7 +187,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     };
 
     function getSongsFromCache(songId) {
-      if($localStorage.cache[$scope.identifier].songs) {
+      if($localStorage.cache[$scope.identifier].songs && (!$scope.songs[songId] || $scope.songs[songId].length === 0)) {
         var songsCacheTemp = JSON.parse($localStorage.cache[$scope.identifier].songs);
         $scope.songs[songId] = (songsCacheTemp[songId])? songsCacheTemp[songId] : [];
       }
@@ -238,7 +247,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
           data.songs = (data.songs === undefined)? [] : data.songs;
 
           if(!updateSongsCache(data.songs, album.albumid)) {
-            processSongs(data.songs, album.albumid);
+            getSongsFromCache(album.albumid);
           }
           
           $scope.$root.$emit('rkStopLoading');

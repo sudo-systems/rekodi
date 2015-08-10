@@ -576,9 +576,6 @@ body {
     line-height: 26px;
     color: #EEE;
     padding: 0 10px; }
-  body select {
-    position: relative;
-    min-width: 40px; }
   body label {
     display: inline-block;
     line-height: 26px;
@@ -948,14 +945,19 @@ section.tabsContainer {
       color: #FFF;
       padding: 0 5px;
       line-height: 20px;
-      margin: 0 3px;
       font-size: 14px;
       font-weight: 300;
       letter-spacing: 1px;
       border-radius: 0; }
-    section.tabsContainer .options input[type="text"].filter::-webkit-input-placeholder {
+    section.tabsContainer .options .page-specific {
+      float: left; }
+    section.tabsContainer .options .filter-container {
+      float: right; }
+    section.tabsContainer .options input.filter {
+      width: 120px; }
+    section.tabsContainer .options input.filter::-webkit-input-placeholder {
       color: #444; }
-    section.tabsContainer .options input[type="text"].filter::-webkit-input-placeholder::before {
+    section.tabsContainer .options input.filter::-webkit-input-placeholder::before {
       font-family: 'MaterialDesignIcons';
       content: "\f3ab";
       margin-right: 5px;

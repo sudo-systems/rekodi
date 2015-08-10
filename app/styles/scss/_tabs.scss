@@ -113,18 +113,29 @@ section.tabsContainer {
       color: #FFF;
       padding: 0 5px;
       line-height: 20px;
-      margin: 0 3px;
       font-size: 14px;
       font-weight: 300;
       letter-spacing: 1px;
       border-radius: 0;
     }
-
-    input[type="text"].filter::-webkit-input-placeholder {
+    
+    .page-specific {
+      float: left;
+    }
+    
+    .filter-container {
+      float: right;
+    }
+    
+    input.filter {
+      width: 120px;
+    }
+    
+    input.filter::-webkit-input-placeholder {
       color: #444;
     }
 
-    input[type="text"].filter::-webkit-input-placeholder::before { 
+    input.filter::-webkit-input-placeholder::before { 
       font-family: 'MaterialDesignIcons'; 
       content: "\f3ab";
       margin-right: 5px;
