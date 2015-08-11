@@ -279,21 +279,30 @@ section.tabsContainer {
         display: inline-block;
         float: right;
         width: 410px;
-        font-size: 13px;
+        font-size: 12px;
         line-height: normal;
+        margin-bottom: 6px;
         
         td {
           vertical-align: top;
           white-space: normal;
-          padding: 3px;
         }
         
         td.title h2 {
-          margin: 0;
+          margin: 6px 0 3px 0;
           color: #FFF;
           padding-left: 3px;
           font-weight: 300;
           font-size: 18px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          @include transitionAll(map-get($global, transition-speed));
+          
+          .track {
+            font-size: 16px;
+            color: #AAA;
+          }
         }
         
         td.infoLabel {
@@ -301,22 +310,29 @@ section.tabsContainer {
           text-align: right;
           width: 50px;
           padding-right: 6px;
+          line-height: 18px;
         }
         
         td.infoContent {
-          padding: 3px 0;
+          line-height: 18px;
         }
       }
     }
     
     li:hover {
       .thumbnail {
-        
         img,
         i.mdi {
           -webkit-filter: grayscale(0%);
           -webkit-transform: rotateY(25deg);
           @include transitionAll(.5s);
+        }
+      }
+      
+      .details {
+        td.title h2 {
+          color: map-get($global, highlight-color);
+          @include transitionAll(map-get($global, transition-speed));
         }
       }
     }

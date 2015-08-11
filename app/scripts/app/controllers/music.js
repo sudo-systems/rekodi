@@ -185,6 +185,20 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         });
       }
     };
+    
+    function addCustomSongsFiels(songs) {
+      for(var key in songs) {
+        if(songs[key].thumbnail && songs[key].thumbnail !== '') {
+          songs[key].thumbnail_src = getImageSrc(songs[key].thumbnail);
+        }
+
+        if(songs[key].genre) {
+          songs[key].display_genre = songs[key].genre.join(', ');
+        }
+      }
+      
+      return songs;
+    }
 
     function getSongsFromCache(songId) {
       if($localStorage.cache[$scope.identifier].songs && (!$scope.songs[songId] || $scope.songs[songId].length === 0)) {
@@ -194,6 +208,8 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     }
     
     function updateSongsCache(songs, songId) {
+      songs = addCustomSongsFiels(songs);
+      
       if($localStorage.cache[$scope.identifier].songs) {
         var songsCacheTemp = JSON.parse($localStorage.cache[$scope.identifier].songs);
         
@@ -211,6 +227,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     }
     
     function processSongs(songs, songId) {
+      songs = addCustomSongsFiels(songs);
       var songsCacheTemp = ($localStorage.cache[$scope.identifier].songs)? JSON.parse($localStorage.cache[$scope.identifier].songs) : {};
       songsCacheTemp[songId] = songs;
       $localStorage.cache[$scope.identifier].songs = JSON.stringify(songsCacheTemp);
@@ -235,7 +252,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         $scope.$root.$emit('rkStartLoading');
         
         kodiWsApiConnection.AudioLibrary.GetSongs({
-          properties: ['thumbnail', 'track'],
+          properties: ['thumbnail', 'year', 'genre', 'displayartist', 'track', 'album', 'duration'],
           filter: {
             albumid: $scope.currentAlbumId
           },
@@ -294,7 +311,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     }
 
     $scope.init = function() {
-      if($.isEmptyObject($scope.library)) {
+      if($.isEmptyObject($scope.artists)) {
         $timeout(function() {
           $scope.getArtists();
         });

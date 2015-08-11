@@ -74,9 +74,60 @@
       </div>
     </li>
     <li ng-repeat="song in songs[currentAlbumId] | filter:filterList" class="clearfix" ng-click="playSong(song)">
-      <div class="label">
-        <i class="mdi mdi-music-note"></i>
-        <span ng-if="song.track">{{song.track}}. </span>{{song.label}}
+      <div class="thumbnail">
+        <div ng-if="song.thumbnail_src">
+          <img ng-src="{{song.thumbnail_src}}" alt="" />
+        </div>
+        <i class="mdi mdi-music-note" ng-if="!song.thumbnail_src"></i>
+      </div>
+      <div class="details">
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr>
+            <td colspan="2" class="title">
+              <h2><span class="track" ng-if="song.track">{{song.track}}. </span>{{song.label}}</h2>
+            </td>
+          </tr>
+          <tr ng-if="song.duration">
+            <td class="infoLabel">
+              duration
+            </td>
+            <td class="infoContent">
+              {{song.duration}}
+            </td>
+          </tr>
+          <tr ng-if="song.displayartist">
+            <td class="infoLabel">
+              artist
+            </td>
+            <td class="infoContent">
+              {{song.displayartist}}
+            </td>
+          </tr>
+          <tr ng-if="song.album">
+            <td class="infoLabel">
+              album
+            </td>
+            <td class="infoContent">
+              {{song.album}}
+            </td>
+          </tr>
+          <tr ng-if="song.year">
+            <td class="infoLabel">
+              year
+            </td>
+            <td class="infoContent">
+              {{song.year}}
+            </td>
+          </tr>
+          <tr ng-if="album.display_genre">
+            <td class="infoLabel">
+              genre
+            </td>
+            <td class="infoContent">
+              {{song.display_genre}}
+            </td>
+          </tr>
+        </table>
       </div>
     </li>
   </ul>

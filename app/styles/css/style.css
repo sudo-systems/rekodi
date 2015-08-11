@@ -1109,25 +1109,36 @@ section.tabsContainer {
         display: inline-block;
         float: right;
         width: 410px;
-        font-size: 13px;
-        line-height: normal; }
+        font-size: 12px;
+        line-height: normal;
+        margin-bottom: 6px; }
         section.tabsContainer .data-list-wrapper li .details td {
           vertical-align: top;
-          white-space: normal;
-          padding: 3px; }
+          white-space: normal; }
         section.tabsContainer .data-list-wrapper li .details td.title h2 {
-          margin: 0;
+          margin: 6px 0 3px 0;
           color: #FFF;
           padding-left: 3px;
           font-weight: 300;
-          font-size: 18px; }
+          font-size: 18px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          -moz-transition: all 0.2s ease-in-out;
+          -o-transition: all 0.2s ease-in-out;
+          -webkit-transition: all 0.2s ease-in-out;
+          transition: all 0.2s ease-in-out; }
+          section.tabsContainer .data-list-wrapper li .details td.title h2 .track {
+            font-size: 16px;
+            color: #AAA; }
         section.tabsContainer .data-list-wrapper li .details td.infoLabel {
           color: #666;
           text-align: right;
           width: 50px;
-          padding-right: 6px; }
+          padding-right: 6px;
+          line-height: 18px; }
         section.tabsContainer .data-list-wrapper li .details td.infoContent {
-          padding: 3px 0; }
+          line-height: 18px; }
     section.tabsContainer .data-list-wrapper li:hover .thumbnail img,
     section.tabsContainer .data-list-wrapper li:hover .thumbnail i.mdi {
       -webkit-filter: grayscale(0%);
@@ -1136,6 +1147,12 @@ section.tabsContainer {
       -o-transition: all 0.5s ease-in-out;
       -webkit-transition: all 0.5s ease-in-out;
       transition: all 0.5s ease-in-out; }
+    section.tabsContainer .data-list-wrapper li:hover .details td.title h2 {
+      color: #E6802E;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      -webkit-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out; }
 
 section.tabsContainer.sub nav {
   background: #262626;
