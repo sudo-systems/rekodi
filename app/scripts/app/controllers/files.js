@@ -71,7 +71,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     function getFilesFromCache(index) {
       if(!$scope.files[index]) {
         $scope.files[index] = rkCacheService.get({
-          key: 'sources',
+          key: 'files',
           index: index
         });
       }
