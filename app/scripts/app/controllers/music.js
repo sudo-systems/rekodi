@@ -17,6 +17,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     function getArtistsFromCache() {
       if(Object.keys($scope.artistsCategorised).length === 0) {
         $scope.artistsCategorised = rkCacheService.get({key: 'artistsCategorised'});
+        console.log('from cache');
       }
 
       if($scope.artistsIndex.length === 0) {
@@ -275,14 +276,10 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     }
 
     $scope.init = function() {
-      $timeout(function() {
-        rkCacheService.setCategory($scope.identifier);
-      });
+      rkCacheService.setCategory($scope.identifier);
       
       if($.isEmptyObject($scope.artists)) {
-        $timeout(function() {
-          $scope.getArtists();
-        });
+        $scope.getArtists();
       }
     };
   }

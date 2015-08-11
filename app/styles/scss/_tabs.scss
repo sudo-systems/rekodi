@@ -169,12 +169,12 @@ section.tabsContainer {
       color: #999;
       white-space: nowrap;
       overflow: hidden;
+      position: relative;
       @include transitionAll(map-get($global, transition-speed));
       
       .label {
         float: left;
-        display: inline-block;
-        width: 456px;
+        display: block;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -187,14 +187,20 @@ section.tabsContainer {
       }
       
       .controls {
-        width: 80px;
-        float: right;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
         display: none;
-        text-align: right;
-        color: #AAA;
+        color: #FFF;
+        text-align: center;
+        @include backgroundGradientVertical(#2A2A2A, #242424);
+        padding: 0 8px;
+        border-left: 1px solid #333;
+        opacity: 0.7;
         
         i.mdi {
-          width: 22px;
+          width: 26px;
           font-size: 18px;
           @include transitionAll(.3s);
         }
