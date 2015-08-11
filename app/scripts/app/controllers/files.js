@@ -1,5 +1,5 @@
-rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', 'rkEnumsService', '$attrs', '$localStorage', 'rkCacheService',
-  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, rkEnumsService, $attrs, $localStorage, rkCacheService) {
+rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', 'rkEnumsService', '$attrs', 'rkCacheService',
+  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, rkEnumsService, $attrs, rkCacheService) {
     $scope.identifier = $attrs.id;
     $scope.files = {};
     $scope.sources = [];
@@ -269,18 +269,12 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     });
     
     $scope.init = function() {
+      rkCacheService.setCategory($scope.identifier);
+      
       if($.isEmptyObject($scope.sources)) {
         $timeout(function() {
           $scope.getSources();
         });
-      }
-      
-      if(!$localStorage.cache) {
-        $localStorage.cache = {};
-      }
-      
-      if(!$localStorage.cache[$scope.identifier]) {
-        $localStorage.cache[$scope.identifier] = {};
       }
     };
   }
