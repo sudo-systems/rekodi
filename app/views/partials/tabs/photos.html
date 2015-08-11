@@ -1,15 +1,29 @@
-<div class="options">
-  <i class="mdi mdi-settings"></i> <input type="text" class="filter" ng-model="filter.value" placeholder="filter" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+<div class="options clearfix">
+  <div class="page-specific">
+    <a ng-click="getSources()" title="Back to photo sources"><i class="mdi mdi-home"></i></a> 
+  </div>
+  <div class="filter-container">
+    <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+  </div>
 </div>
 <div class="data-list-wrapper">
   <ul class="vertical">
-    <li ng-repeat="entry in files | filter:filterList" class="clearfix">
-      <div class="label" ng-click="entry.filetype === 'file'? play(entry.file, entry.filetype) : getDirectory(entry.file)">
-        <i class="mdi mdi-folder" ng-show="!entry.filetype || entry.filetype === 'directory'"></i>
-        <i class="mdi mdi-file-image" ng-show="entry.filetype === 'file'"></i>
-        {{entry.label}}
+    <li ng-repeat="source in sources | filter:filterList" class="clearfix" ng-show="currentLevel === 'sources'">
+      <div class="label" ng-click="getDirectory(source.file)">
+        <i class="mdi mdi-folder"></i> {{source.label}}
       </div>
-      <div class="controls" ng-if="entry.filetype && entry.label !== '..'">
+    </li>
+    <li class="clearfix" ng-show="currentLevel === 'files'">
+      <div class="label" ng-click="directoryUp()">
+        <i class="mdi mdi-folder"></i> ..
+      </div>
+    </li>
+    <li ng-repeat="file in files[currentDirectoryIndexKey] | filter:filterList" class="clearfix" ng-show="currentLevel === 'files'">
+      <div class="label" ng-click="file.filetype === 'file'? play(file.file, file.filetype) : getDirectory(file.file)">
+        <i class="mdi mdi-folder" ng-show="!file.filetype || file.filetype === 'directory'"></i>
+        <i class="mdi mdi-file-image" ng-show="file.filetype === 'file'"></i> {{file.label}}
+      </div>
+      <div class="controls">
         <i class="mdi mdi-play" ng-show="entry.filetype === 'file' || entry.filetype === 'directory'" title="Show" ng-click="play(entry.file, entry.filetype)"></i>
       </div>
     </li>

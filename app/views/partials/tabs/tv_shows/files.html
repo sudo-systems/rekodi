@@ -1,17 +1,31 @@
-<div class="options">
-  <a ng-click="getSources()" title="Back to video sources"><i class="mdi mdi-home"></i></a> <input type="text" class="filter" ng-model="filter.value" placeholder="filter" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+<div class="options clearfix">
+  <div class="page-specific">
+    <a ng-click="getSources()" title="Back to video sources"><i class="mdi mdi-home"></i></a> 
+  </div>
+  <div class="filter-container">
+    <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+  </div>
 </div>
 <div class="data-list-wrapper">
   <ul class="vertical">
-    <li ng-repeat="entry in files | filter:filterList" class="clearfix">
-      <div class="label" ng-click="entry.filetype === 'file'? play(entry.file, entry.filetype) : getDirectory(entry.file)">
-        <i class="mdi mdi-folder" ng-show="!entry.filetype || entry.filetype === 'directory'"></i>
-        <i class="mdi mdi-file-video" ng-show="entry.filetype === 'file'"></i>
-        {{entry.label}}
+    <li ng-repeat="source in sources | filter:filterList" class="clearfix" ng-show="currentLevel === 'sources'">
+      <div class="label" ng-click="getDirectory(source.file)">
+        <i class="mdi mdi-folder"></i> {{source.label}}
       </div>
-      <div class="controls" ng-if="entry.filetype && entry.label !== '..'">
-        <i class="mdi mdi-play" ng-show="entry.filetype === 'file' || entry.filetype === 'directory'" title="Play" ng-click="play(entry)"></i>
-        <i class="mdi mdi-playlist-plus" ng-show="entry.file !== '..'" title="Append to playlist" ng-click="addToPlaylist(entry)"></i>
+    </li>
+    <li class="clearfix" ng-show="currentLevel === 'files'">
+      <div class="label" ng-click="directoryUp()">
+        <i class="mdi mdi-folder"></i> ..
+      </div>
+    </li>
+    <li ng-repeat="file in files[currentDirectoryIndexKey] | filter:filterList" class="clearfix" ng-show="currentLevel === 'files'">
+      <div class="label" ng-click="file.filetype === 'file'? play(file.file, file.filetype) : getDirectory(file.file)">
+        <i class="mdi mdi-folder" ng-show="!file.filetype || file.filetype === 'directory'"></i>
+        <i class="mdi mdi-file-video" ng-show="file.filetype === 'file'"></i> {{file.label}}
+      </div>
+      <div class="controls">
+        <i class="mdi mdi-play-box-outline" ng-show="file.filetype === 'file' || file.filetype === 'directory'" title="Play" ng-click="play(file)"></i>
+        <i class="mdi mdi-playlist-plus" title="Append to playlist" ng-click="addToPlaylist(file)"></i>
       </div>
     </li>
   </ul>

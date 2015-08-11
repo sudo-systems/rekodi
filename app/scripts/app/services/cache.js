@@ -54,8 +54,6 @@ rekodiApp.service('rkCacheService', ['$localStorage',
         }
       }
       
-      console.dir($localStorage.cache[_identifier]);
-      
       return [];
     };
     

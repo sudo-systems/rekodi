@@ -1,5 +1,5 @@
-rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', 'rkEnumsService', '$attrs', '$localStorage',
-  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, rkEnumsService, $attrs, $localStorage) {
+rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', 'rkEnumsService', '$attrs', '$localStorage', 'rkCacheService',
+  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, rkEnumsService, $attrs, $localStorage, rkCacheService) {
     $scope.identifier = $attrs.id;
     $scope.files = {};
     $scope.sources = [];
@@ -13,31 +13,10 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     };
     
     function getSourcesFromCache() {
-      if($localStorage.cache[$scope.identifier].sources && $scope.sources.length === 0) {
-        $scope.sources = JSON.parse($localStorage.cache[$scope.identifier].sources);
-        sourcesPaths = JSON.parse($localStorage.cache[$scope.identifier].sourcesPaths);
+      if($scope.sources.length === 0) {
+        $scope.sources = rkCacheService.get({key: 'sources'});
+        sourcesPaths = rkCacheService.get({key: 'sourcesPaths'});
       }
-    }
-    
-    function updateSourcesCache(sources) {
-      if(!$localStorage.cache[$scope.identifier].sources || $localStorage.cache[$scope.identifier].sources !== JSON.stringify(sources)) {
-        processSources(sources);
-        return true;
-      }
-      
-      return false;
-    }
-    
-    function processSources(sources) {
-      $scope.sources = sources;
-      $localStorage.cache[$scope.identifier].sources = JSON.stringify(sources);
-      sourcesPaths = [];
-
-      for(var key in sources) {
-        sourcesPaths[key] = sources[key].file;
-      }
-      
-      $localStorage.cache[$scope.identifier].sourcesPaths = JSON.stringify(sourcesPaths);
     }
 
     $scope.getSources = function() {
@@ -59,11 +38,27 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
           }
         }).then(function(data) {
           data.sources = (data.sources === undefined)? [] : data.sources;
+          var properties = {
+            data: data.sources,
+            key: 'sources'
+          };
+          
+          if(rkCacheService.update(properties)) {
+            $scope.sources = data.sources;
+            
+            for(var key in data.sources) {
+              sourcesPaths.push(data.sources[key].file);
+            }
 
-          if(!updateSourcesCache(data.sources)) {
+            rkCacheService.update({
+              data: sourcesPaths,
+              key: 'sourcesPaths' 
+            });
+          }
+          else {
             getSourcesFromCache();
           }
-          
+
           $scope.$root.$emit('rkStopLoading');
           rkTooltipsService.apply($($element).find('.data-list-wrapper'));
         }, function(error) {
@@ -73,53 +68,24 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
       }
     };
     
-    function getFilesFromCache(directory) {
-      if($localStorage.cache[$scope.identifier].files) {
-        if(!$scope.files[directory] || $scope.files[directory].length === 0) {
-          var filesCacheTemp = JSON.parse($localStorage.cache[$scope.identifier].files);
-          $scope.files[directory] = (filesCacheTemp[directory])? filesCacheTemp[directory] : [];
-        }
-        
-        if($localStorage.cache[$scope.identifier].sourcesPaths && sourcesPaths.length === 0) {
-          sourcesPaths = JSON.parse($localStorage.cache[$scope.identifier].sourcesPaths);
-        }
+    function getFilesFromCache(index) {
+      if(!$scope.files[index]) {
+        $scope.files[index] = rkCacheService.get({
+          key: 'sources',
+          index: index
+        });
       }
-    }
-    
-    function updateFilesCache(files, directory) {
-      if($localStorage.cache[$scope.identifier].files) {
-        var filesCacheTemp = JSON.parse($localStorage.cache[$scope.identifier].files);
-        
-        if(!filesCacheTemp[directory] || JSON.stringify(filesCacheTemp[directory]) !== JSON.stringify(files)) {
-          processFiles(files, directory);
-          return true;
-        }
-      }
-      else {
-        processFiles(files, directory);
-        return true;
-      }
-
-      return false;
-    }
-    
-    function processFiles(files, directory) {
-      $scope.sources = sources;
-      $localStorage.cache[$scope.identifier].sources = JSON.stringify(sources);
-      sourcesPaths = [];
-
-      for(var key in sources) {
-        sourcesPaths[key] = sources[key].file;
-      }
-      
-      $localStorage.cache[$scope.identifier].sourcesPaths = JSON.stringify(sourcesPaths);
     }
     
     $scope.getDirectory = function(directory) {
       $scope.currentLevel = 'files';
       $scope.currentDirectory = directory;
-
+      var indexKey = encodeURIComponent(directory);
+      $scope.currentDirectoryIndexKey = indexKey;
       kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      
+      $scope.clearFilter();
+      getFilesFromCache(indexKey);
       
       if(kodiWsApiConnection) {
         $scope.$root.$emit('rkStartLoading');
@@ -142,9 +108,19 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
             method: 'label'
           }
         }).then(function(data) {
-          $scope.clearFilter();
           data.files = (data.files === undefined)? [] : data.files;
-          $scope.files = data.files;
+          var properties = {
+            data: data.files,
+            key: 'files',
+            index: indexKey
+          };
+          
+          if(rkCacheService.update(properties)) {
+            $scope.files[indexKey] = data.files;
+          }
+          else {
+            getFilesFromCache(indexKey);
+          }
 
           $scope.$root.$emit('rkStopLoading');
           rkTooltipsService.apply($($element).find('.data-list-wrapper'));
