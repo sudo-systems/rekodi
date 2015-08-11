@@ -1,13 +1,12 @@
-rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', '$localStorage',
-  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, $localStorage) {
-    $scope.identifier = 'musicLibrary';
+rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', '$localStorage', '$attrs', 'rkCacheService',
+  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, $localStorage, $attrs, rkCacheService) {
+    $scope.identifier = $attrs.id;
     $scope.selectedIndex = null;
     $scope.currentLevel = null;
     $scope.currentArtistId = null;
     $scope.currentAlbumId = null;
-    $scope.artists = [];
     $scope.artistsCategorised = {};
-    $scope.alphabeticIndex = [];
+    $scope.artistsIndex = [];
     $scope.albums = {};
     $scope.songs = {};
     $scope.filter = {
@@ -16,59 +15,54 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     var kodiWsApiConnection = null;
     
     function getArtistsFromCache() {
-      if($localStorage.cache[$scope.identifier].artists) {
-        if($scope.artists.length === 0) {
-          $scope.artists = JSON.parse($localStorage.cache[$scope.identifier].artists);
-        }
+      if(Object.keys($scope.artistsCategorised).length === 0) {
+        $scope.artistsCategorised = rkCacheService.get({key: 'artistsCategorised'});
+      }
 
-        if($localStorage.cache[$scope.identifier].artistsCategorised && Object.keys($scope.artistsCategorised).length === 0) {
-          $scope.artistsCategorised = JSON.parse($localStorage.cache[$scope.identifier].artistsCategorised);
-        }
+      if($scope.artistsIndex.length === 0) {
+        $scope.artistsIndex = rkCacheService.get({key: 'artistsIndex'});
+      }
 
-        if($localStorage.cache[$scope.identifier].alphabeticIndex && $scope.alphabeticIndex.length === 0) {
-          $scope.alphabeticIndex = JSON.parse($localStorage.cache[$scope.identifier].alphabeticIndex);
-        }
-
-        if($scope.alphabeticIndex.length > 0) {
-          setDefaultSelectedIndex();
-        }
+      if($scope.artistsIndex.length > 0) {
+        setDefaultSelectedIndex();
       }
     }
-    
-    function updateArtsistsCache(artists) {
-      if(!$localStorage.cache[$scope.identifier].artists || $localStorage.cache[$scope.identifier].artists !== JSON.stringify(artists)) {
-        processArtists(artists);
-        return true;
-      }
-      
-      return false;
-    }
-    
-    function processArtists(artists) {
-      $localStorage.cache[$scope.identifier].artists = JSON.stringify(artists);
-      $scope.artists = artists;
+
+    function createArtistsCategorised(artists) {
       $scope.artistsCategorised = {};
-      $scope.alphabeticIndex = [];
-
-      for(var key in $scope.artists) {
-        var firstLetter = $scope.artists[key].label.charAt(0).toUpperCase();
+      
+      for(var key in artists) {
+        var firstLetter = artists[key].label.charAt(0).toUpperCase();
 
         if($scope.artistsCategorised[firstLetter] === undefined) {
           $scope.artistsCategorised[firstLetter] = [];
         }
 
-        $scope.artistsCategorised[firstLetter].push($scope.artists[key]);
+        $scope.artistsCategorised[firstLetter].push(artists[key]);
       }
-
-      $localStorage.cache[$scope.identifier].artistsCategorised = JSON.stringify($scope.artistsCategorised);
+      
+      rkCacheService.set({
+        data: $scope.artistsCategorised,
+        key: 'artistsCategorised'
+      });
+      
+      createArtistsCategoriesIndex();
+    }
+    
+    function createArtistsCategoriesIndex() {
+      $scope.artistsIndex = [];
 
       for (var key in $scope.artistsCategorised) {
         if ($scope.artistsCategorised.hasOwnProperty(key)) {
-          $scope.alphabeticIndex.push(key);
+          $scope.artistsIndex.push(key);
         }
       }
-
-      $localStorage.cache[$scope.identifier].alphabeticIndex = JSON.stringify($scope.alphabeticIndex);
+      
+      rkCacheService.set({
+        data: $scope.artistsIndex,
+        key: 'artistsIndex'
+      });
+      
       setDefaultSelectedIndex();
     }
 
@@ -90,12 +84,20 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
           }
         }).then(function(data) {
           data.artists = (data.artists === undefined)? [] : data.artists;
-
-          if(!updateArtsistsCache(data.artists)) {
+          var properties = {
+            data: data.artists,
+            key: 'artists'
+          };
+          
+          if(rkCacheService.update(properties)) {
+            createArtistsCategorised(data.artists);
+          }
+          else {
             getArtistsFromCache();
           }
 
           $scope.$root.$emit('rkStopLoading');
+          rkTooltipsService.apply($($element).find('.data-list-wrapper'));
         }, function(error) {
           handleError(error);
           $scope.$root.$emit('rkStopLoading');
@@ -118,39 +120,14 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     }
     
     function getAlbumsFromCache(artistId) {
-      if($localStorage.cache[$scope.identifier].albums && (!$scope.albums[artistId] || $scope.albums[artistId].length === 0)) {
-        var albumsCacheTemp = JSON.parse($localStorage.cache[$scope.identifier].albums);
-        $scope.albums[artistId] = (albumsCacheTemp[artistId])? albumsCacheTemp[artistId] : [];
+      if(!$scope.albums[artistId]) {
+        $scope.albums[artistId] = rkCacheService.get({
+          key: 'albums',
+          index: artistId
+        });
       }
     }
-    
-    function updateAlbumsCache(albums, artistId) {
-      albums = addCustomAlbumsFiels(albums);
-      
-      if($localStorage.cache[$scope.identifier].albums) {
-        var albumsCacheTemp = JSON.parse($localStorage.cache[$scope.identifier].albums);
-        
-        if(!albumsCacheTemp[artistId] || JSON.stringify(albumsCacheTemp[artistId]) !== JSON.stringify(albums)) {
-          processAlbums(albums, artistId);
-          return true;
-        }
-      }
-      else {
-        processAlbums(albums, artistId);
-        return true;
-      }
-      
-      return false;
-    }
-    
-    function processAlbums(albums, artistId) {
-      albums = addCustomAlbumsFiels(albums);
-      var albumsCacheTemp = ($localStorage.cache[$scope.identifier].albums)? JSON.parse($localStorage.cache[$scope.identifier].albums) : {};
-      albumsCacheTemp[artistId] = albums;
-      $localStorage.cache[$scope.identifier].albums = JSON.stringify(albumsCacheTemp);
-      $scope.albums[artistId] = albums;
-    }
-    
+
     $scope.getAlbums = function(artist) {
       $scope.currentLevel = 'albums';
       $scope.currentArtistId = artist.artistid;
@@ -165,20 +142,29 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         kodiWsApiConnection.AudioLibrary.GetAlbums({
           properties: ['thumbnail', 'year', 'genre', 'displayartist'],
           filter: {
-            artistid: $scope.currentArtistId
+            artistid: artist.artistid
           },
           sort: {
             order: 'descending',
             method: 'year'
           }
         }).then(function(data) {
-          data.albums = (data.albums === undefined)? [] : data.albums;
+          data.albums = (data.albums === undefined)? [] : addCustomAlbumsFiels(data.albums);
+          var properties = {
+            data: data.albums,
+            key: 'albums',
+            index: artist.artistid
+          };
           
-          if(!updateAlbumsCache(data.albums, artist.artistid)) {
+          if(rkCacheService.update(properties)) {
+            $scope.albums[artist.artistid] = data.albums;
+          }
+          else {
             getAlbumsFromCache(artist.artistid);
           }
 
           $scope.$root.$emit('rkStopLoading');
+          rkTooltipsService.apply($($element).find('.data-list-wrapper'));
         }, function(error) {
           handleError(error);
           $scope.$root.$emit('rkStopLoading');
@@ -200,53 +186,22 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
       return songs;
     }
 
-    function getSongsFromCache(songId) {
-      if($localStorage.cache[$scope.identifier].songs && (!$scope.songs[songId] || $scope.songs[songId].length === 0)) {
-        var songsCacheTemp = JSON.parse($localStorage.cache[$scope.identifier].songs);
-        $scope.songs[songId] = (songsCacheTemp[songId])? songsCacheTemp[songId] : [];
+    function getSongsFromCache(albumId) {
+      if(!$scope.songs[albumId]) {
+        $scope.songs[albumId] = rkCacheService.get({
+          key: 'songs',
+          index: albumId
+        });
       }
     }
-    
-    function updateSongsCache(songs, songId) {
-      songs = addCustomSongsFiels(songs);
-      
-      if($localStorage.cache[$scope.identifier].songs) {
-        var songsCacheTemp = JSON.parse($localStorage.cache[$scope.identifier].songs);
-        
-        if(!songsCacheTemp[songId] || JSON.stringify(songsCacheTemp[songId]) !== JSON.stringify(songs)) {
-          processSongs(songs, songId);
-          return true;
-        }
-      }
-      else {
-        processSongs(songs, songId);
-        return true;
-      }
-      
-      return false;
-    }
-    
-    function processSongs(songs, songId) {
-      songs = addCustomSongsFiels(songs);
-      var songsCacheTemp = ($localStorage.cache[$scope.identifier].songs)? JSON.parse($localStorage.cache[$scope.identifier].songs) : {};
-      songsCacheTemp[songId] = songs;
-      $localStorage.cache[$scope.identifier].songs = JSON.stringify(songsCacheTemp);
-      $scope.songs[songId] = songs;
-    }
-    
+
     $scope.getSongs = function(album) {
       $scope.currentLevel = 'songs';
       $scope.currentAlbumId = album.albumid;
+      kodiWsApiConnection = rkKodiWsApiService.getConnection();
       
       $scope.clearFilter();
       getSongsFromCache(album.albumid);
-      
-      if(album.back === true) {
-        $scope.getArtists();
-        return;
-      }
-
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
       
       if(kodiWsApiConnection) {
         $scope.$root.$emit('rkStartLoading');
@@ -261,13 +216,22 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
             method: 'track'
           }
         }).then(function(data) {
-          data.songs = (data.songs === undefined)? [] : data.songs;
-
-          if(!updateSongsCache(data.songs, album.albumid)) {
+          data.songs = (data.songs === undefined)? [] : addCustomSongsFiels(data.songs);
+          var properties = {
+            data: data.songs,
+            key: 'songs',
+            index: album.albumid
+          };
+          
+          if(rkCacheService.update(properties)) {
+            $scope.songs[album.albumid] = data.songs;
+          }
+          else {
             getSongsFromCache(album.albumid);
           }
-          
+
           $scope.$root.$emit('rkStopLoading');
+          rkTooltipsService.apply($($element).find('.data-list-wrapper'));
         }, function(error) {
           handleError(error);
           $scope.$root.$emit('rkStopLoading');
@@ -290,9 +254,9 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     };
     
     function setDefaultSelectedIndex() {
-      for(var key in $scope.alphabeticIndex) {
-        if($scope.alphabeticIndex[key].toLowerCase() !== $scope.alphabeticIndex[key].toUpperCase()) {
-          $scope.selectedIndex = $scope.alphabeticIndex[key];
+      for(var key in $scope.artistsIndex) {
+        if($scope.artistsIndex[key].toLowerCase() !== $scope.artistsIndex[key].toUpperCase()) {
+          $scope.selectedIndex = $scope.artistsIndex[key];
           break;
         }
       }
@@ -311,18 +275,12 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     }
 
     $scope.init = function() {
+      rkCacheService.setCategory($scope.identifier);
+      
       if($.isEmptyObject($scope.artists)) {
         $timeout(function() {
           $scope.getArtists();
         });
-      }
-      
-      if(!$localStorage.cache) {
-        $localStorage.cache = {};
-      }
-      
-      if(!$localStorage.cache[$scope.identifier]) {
-        $localStorage.cache[$scope.identifier] = {};
       }
     };
   }
