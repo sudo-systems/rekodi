@@ -8,7 +8,7 @@
 </div>
 <div class="data-list-wrapper">
   <ul class="vertical">
-    <li ng-repeat="source in sources | filter:filterList" class="clearfix" ng-show="currentLevel === 'sources'">
+    <li ng-repeat="source in sources | filter:filterList track by source.file" class="clearfix" ng-show="currentLevel === 'sources'">
       <div class="label" ng-click="getDirectory(source.file)">
         <i class="mdi mdi-folder"></i> {{source.label}}
       </div>
@@ -18,10 +18,10 @@
         <i class="mdi mdi-folder"></i> ..
       </div>
     </li>
-    <li ng-repeat="file in files[currentDirectoryIndexKey] | filter:filterList" class="clearfix" ng-show="currentLevel === 'files'">
+    <li ng-repeat="file in files[currentDirectoryIndexKey] | filter:filterList track by file.file" class="clearfix" ng-show="currentLevel === 'files'">
       <div class="label" ng-click="file.filetype === 'file'? play(file.file, file.filetype) : getDirectory(file.file)">
         <i class="mdi mdi-folder" ng-show="!file.filetype || file.filetype === 'directory'"></i>
-        <i class="mdi mdi-file-music" ng-show="file.filetype === 'file'"></i> {{file.label}}
+        <i class="mdi mdi-file-music" ng-show="file.filetype === 'file'"></i> {{file.file_name}}
       </div>
       <div class="controls">
         <i class="mdi mdi-play-box-outline" ng-show="file.filetype === 'file' || file.filetype === 'directory'" title="Play" ng-click="play(file)"></i>

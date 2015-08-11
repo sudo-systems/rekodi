@@ -1,7 +1,7 @@
 <div class="options clearfix">
   <div class="page-specific" ng-show="currentLevel ==='artists' && artistsIndex.length > 0">
     <select name="index" ng-model="selectedIndex" class="index" title="Select the category">
-      <option ng-repeat="indexLetter in artistsIndex" ng-value="indexLetter" ng-selected="indexLetter === selectedIndex">{{indexLetter}}</option>
+      <option ng-repeat="indexLetter in artistsIndex track by indexLetter" ng-value="indexLetter" ng-selected="indexLetter === selectedIndex">{{indexLetter}}</option>
     </select>
   </div>
   <div class="filter-container">
@@ -10,7 +10,7 @@
 </div>
 <div class="data-list-wrapper">
   <ul class="vertical" ng-show="currentLevel ==='artists'">
-    <li ng-repeat="artist in artistsCategorised[selectedIndex] | filter:filterList" class="clearfix" ng-click="getAlbums(artist)">
+    <li ng-repeat="artist in artistsCategorised[selectedIndex] | filter:filterList track by artist.artistid" class="clearfix" ng-click="getAlbums(artist)">
       <div class="label">
         <i class="mdi mdi-worker"></i> {{artist.label}}
       </div>
@@ -22,7 +22,7 @@
         <i class="mdi mdi-worker"></i> [back to artists] ..
       </div>
     </li>
-    <li ng-repeat="album in albums[currentArtistId] | filter:filterList" class="clearfix" ng-click="getSongs(album)">
+    <li ng-repeat="album in albums[currentArtistId] | filter:filterList track by album.albumid" class="clearfix" ng-click="getSongs(album)">
       <div class="thumbnail">
         <div ng-if="album.thumbnail_src">
           <img ng-src="{{album.thumbnail_src}}" alt="" />
@@ -70,7 +70,7 @@
         <i class="mdi mdi-album"></i> [back to albums] ..
       </div>
     </li>
-    <li ng-repeat="song in songs[currentAlbumId] | filter:filterList" class="clearfix" ng-click="playSong(song)">
+    <li ng-repeat="song in songs[currentAlbumId] | filter:filterList track by song.songid" class="clearfix" ng-click="playSong(song)">
       <div class="thumbnail">
         <div ng-if="song.thumbnail_src">
           <img ng-src="{{song.thumbnail_src}}" alt="" />
@@ -84,12 +84,12 @@
               <h2><span class="track" ng-if="song.track">{{song.track}}. </span>{{song.label}}</h2>
             </td>
           </tr>
-          <tr ng-if="song.duration">
+          <tr ng-if="song.duration_readable">
             <td class="infoLabel">
               duration
             </td>
             <td class="infoContent">
-              {{song.duration}}
+              {{song.duration_readable}}
             </td>
           </tr>
           <tr ng-if="song.displayartist">

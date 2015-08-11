@@ -11,7 +11,7 @@
 </div>
 <div class="data-list-wrapper">
   <ul class="vertical">
-    <li ng-repeat="movie in moviesCategorised[selectedIndex] | filter:filterList" class="clearfix">
+    <li ng-repeat="movie in moviesCategorised[selectedIndex] | filter:filterList track by movie.movieid" class="clearfix">
       <div class="thumbnail">
         <img ng-src="{{movie.thumbnail_src}}" alt="" ng-if="movie.thumbnail_src" />
         <i class="mdi mdi-movie" ng-if="!movie.thumbnail_src"></i>
@@ -21,6 +21,22 @@
           <tr>
             <td colspan="2" class="title">
               <h2>{{movie.label}}</h2>
+            </td>
+          </tr>
+          <tr ng-if="movie.display_genre">
+            <td class="infoLabel">
+              genre
+            </td>
+            <td class="infoContent">
+              {{movie.display_genre}}
+            </td>
+          </tr>
+          <tr ng-if="movie.duration_readable">
+            <td class="infoLabel">
+              duration
+            </td>
+            <td class="infoContent">
+              {{movie.duration_readable}}
             </td>
           </tr>
           <tr ng-if="movie.rating_rounded">

@@ -942,7 +942,7 @@ section.tabsContainer {
     section.tabsContainer .options input[type="text"] {
       background: #2D2D2D;
       border: 0;
-      color: #FFF;
+      color: #E6802E;
       padding: 0 5px;
       line-height: 20px;
       font-size: 14px;
@@ -1097,8 +1097,9 @@ section.tabsContainer {
         margin: 10px 0 20px 0;
         display: inline-block;
         float: left;
-        width: 60px;
-        -webkit-perspective: 150px; }
+        width: 80px;
+        -webkit-perspective: 150px;
+        text-align: center; }
         section.tabsContainer .data-list-wrapper li .thumbnail img {
           width: 100%;
           -webkit-filter: grayscale(100%);
@@ -1110,7 +1111,7 @@ section.tabsContainer {
           -webkit-transition: all 0.5s ease-in-out;
           transition: all 0.5s ease-in-out; }
         section.tabsContainer .data-list-wrapper li .thumbnail i.mdi {
-          font-size: 60px;
+          font-size: 80px;
           -webkit-filter: grayscale(100%);
           -webkit-transform: rotateY(0deg);
           -webkit-box-reflect: below 4px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5)));
@@ -1121,7 +1122,7 @@ section.tabsContainer {
       section.tabsContainer .data-list-wrapper li .details {
         display: inline-block;
         float: right;
-        width: 410px;
+        width: 390px;
         font-size: 12px;
         line-height: normal;
         margin-bottom: 6px; }

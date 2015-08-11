@@ -1,5 +1,5 @@
-rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', '$localStorage', '$attrs', 'rkCacheService',
-  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, $localStorage, $attrs, rkCacheService) {
+rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', '$localStorage', '$attrs', 'rkCacheService', 'rkHelperService',
+  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, $localStorage, $attrs, rkCacheService, rkHelperService) {
     $scope.identifier = $attrs.id;
     $scope.selectedIndex = null;
     $scope.currentLevel = null;
@@ -17,7 +17,6 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     function getArtistsFromCache() {
       if(Object.keys($scope.artistsCategorised).length === 0) {
         $scope.artistsCategorised = rkCacheService.get({key: 'artistsCategorised'});
-        console.log('from cache');
       }
 
       if($scope.artistsIndex.length === 0) {
@@ -100,26 +99,12 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
           $scope.$root.$emit('rkStopLoading');
           rkTooltipsService.apply($($element).find('.data-list-wrapper'));
         }, function(error) {
-          handleError(error);
+          rkHelperService.handleError(error);
           $scope.$root.$emit('rkStopLoading');
         });
       }
     };
-    
-    function addCustomAlbumsFiels(albums) {
-      for(var key in albums) {
-        if(albums[key].thumbnail && albums[key].thumbnail !== '') {
-          albums[key].thumbnail_src = getImageSrc(albums[key].thumbnail);
-        }
 
-        if(albums[key].genre) {
-          albums[key].display_genre = albums[key].genre.join(', ');
-        }
-      }
-      
-      return albums;
-    }
-    
     function getAlbumsFromCache(artistId) {
       if(!$scope.albums[artistId]) {
         $scope.albums[artistId] = rkCacheService.get({
@@ -150,7 +135,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
             method: 'year'
           }
         }).then(function(data) {
-          data.albums = (data.albums === undefined)? [] : addCustomAlbumsFiels(data.albums);
+          data.albums = (data.albums === undefined)? [] : rkHelperService.addCustomFields(data.albums);
           var properties = {
             data: data.albums,
             key: 'albums',
@@ -167,25 +152,11 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
           $scope.$root.$emit('rkStopLoading');
           rkTooltipsService.apply($($element).find('.data-list-wrapper'));
         }, function(error) {
-          handleError(error);
+          rkHelperService.handleError(error);
           $scope.$root.$emit('rkStopLoading');
         });
       }
     };
-    
-    function addCustomSongsFiels(songs) {
-      for(var key in songs) {
-        if(songs[key].thumbnail && songs[key].thumbnail !== '') {
-          songs[key].thumbnail_src = getImageSrc(songs[key].thumbnail);
-        }
-
-        if(songs[key].genre) {
-          songs[key].display_genre = songs[key].genre.join(', ');
-        }
-      }
-      
-      return songs;
-    }
 
     function getSongsFromCache(albumId) {
       if(!$scope.songs[albumId]) {
@@ -217,7 +188,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
             method: 'track'
           }
         }).then(function(data) {
-          data.songs = (data.songs === undefined)? [] : addCustomSongsFiels(data.songs);
+          data.songs = (data.songs === undefined)? [] : rkHelperService.addCustomFields(data.songs);
           var properties = {
             data: data.songs,
             key: 'songs',
@@ -234,7 +205,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
           $scope.$root.$emit('rkStopLoading');
           rkTooltipsService.apply($($element).find('.data-list-wrapper'));
         }, function(error) {
-          handleError(error);
+          rkHelperService.handleError(error);
           $scope.$root.$emit('rkStopLoading');
         });
       }
@@ -261,18 +232,6 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
           break;
         }
       }
-    }
-    
-    function getImageSrc(specialPath) {
-      var usernameAndPassword = ($localStorage.settings.password && $localStorage.settings.password !== '')? $localStorage.settings.username+':'+$localStorage.settings.password+'@' : '';
-      return 'http://'+usernameAndPassword+$localStorage.settings.serverAddress+':'+$localStorage.settings.httpPort+'/image/'+encodeURIComponent(specialPath);
-    }
-    
-    function handleError(error) {
-      var errorDetails = (error.response.data)? ' ('+error.response.data.stack.message+': '+error.response.data.stack.name+')' : '';
-      $scope.$root.$emit('rkServerError', {
-        message: error.response.message+errorDetails
-      });
     }
 
     $scope.init = function() {

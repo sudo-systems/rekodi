@@ -1,5 +1,5 @@
-rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', 'rkEnumsService', '$sessionStorage',
-  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, rkEnumsService, $sessionStorage) {
+rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', 'rkEnumsService', '$sessionStorage', 'rkHelperService',
+  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, rkEnumsService, $sessionStorage, rkHelperService) {
     $scope.type = '';
     $scope.playlistId = null;
     $scope.items = [];
@@ -30,12 +30,12 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKod
           properties: ['file']
         }).then(function(data) {
           $scope.items = data.items;
-          $scope.$apply();
+          console.dir(data.items);
           $scope.$root.$emit('rkStopLoading');
           rkTooltipsService.apply($($element).find('.data-list-wrapper'));
         }, function(error) {
           $scope.$root.$emit('rkStopLoading');
-          handleError(error);
+          rkHelperService.handleError(error);
         });
       }
     };
@@ -47,12 +47,6 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKod
     $scope.clearFilter = function() {
       $scope.filter.value = '';
     };
-    
-    function handleError(error) {
-      $scope.$root.$emit('rkServerError', {
-        message: error.response.message+' ('+error.response.data.stack.message+': '+error.response.data.stack.name+')'
-      });
-    }
     
     function bindEvents() {
       kodiWsApiConnection = rkKodiWsApiService.getConnection();

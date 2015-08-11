@@ -1,5 +1,5 @@
-rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', 'rkEnumsService', '$attrs', 'rkCacheService',
-  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, rkEnumsService, $attrs, rkCacheService) {
+rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'rkKodiWsApiService', 'rkTooltipsService', 'rkEnumsService', '$attrs', 'rkCacheService', 'rkHelperService',
+  function($scope, $element, rkKodiWsApiService, rkTooltipsService, rkEnumsService, $attrs, rkCacheService, rkHelperService) {
     $scope.identifier = $attrs.id;
     $scope.files = {};
     $scope.sources = [];
@@ -62,12 +62,12 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
           $scope.$root.$emit('rkStopLoading');
           rkTooltipsService.apply($($element).find('.data-list-wrapper'));
         }, function(error) {
-          handleError(error);
+          rkHelperService.handleError(error);
           $scope.$root.$emit('rkStopLoading');
         });
       }
     };
-    
+
     function getFilesFromCache(index) {
       if(!$scope.files[index]) {
         $scope.files[index] = rkCacheService.get({
@@ -92,7 +92,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         var fields = ['file'];
 
         if($scope.type === 'video') {
-          fields = ['file'];
+          fields = ['file', 'thumbnail', 'genre', 'plotoutline', 'rating', 'year'];
         }
         
         if($scope.type === 'audio') {
@@ -108,7 +108,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
             method: 'label'
           }
         }).then(function(data) {
-          data.files = (data.files === undefined)? [] : data.files;
+          data.files = (data.files === undefined)? [] : rkHelperService.addCustomFields(data.files);
           var properties = {
             data: data.files,
             key: 'files',
@@ -126,7 +126,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
           rkTooltipsService.apply($($element).find('.data-list-wrapper'));
         }, function(error) {
           $scope.$root.$emit('rkStopLoading');
-          handleError(error);
+          rkHelperService.handleError(error);
         });
       }
     };
@@ -161,7 +161,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
           emitPlaybackNotification(entry);
         }
       }, function(error) {
-        handleError(error);
+        rkHelperService.handleError(error);
       });
     };
     
@@ -193,11 +193,11 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
             }
           }, function(error) {
             $scope.$root.$emit('rkStopLoading');
-            handleError(error);
+            rkHelperService.handleError(error);
           });
         }, function(error) {
           $scope.$root.$emit('rkStopLoading');
-          handleError(error);
+          rkHelperService.handleError(error);
         });
       }
     };
@@ -253,27 +253,12 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         message: fileName+ ' has been added to the playlist'
       });
     }
-    
-    function handleError(error) {
-      var errorDetails = (error.response.data)? ' ('+error.response.data.stack.message+': '+error.response.data.stack.name+')' : '';
-      $scope.$root.$emit('rkServerError', {
-        message: error.response.message+errorDetails
-      });
-    }
 
-    $scope.$evalAsync(function() {
-      
-    });
-    
     $scope.init = function() {
-      $timeout(function() {
-        rkCacheService.setCategory($scope.identifier);
-      });
+      rkCacheService.setCategory($scope.identifier);
       
       if($.isEmptyObject($scope.sources)) {
-        $timeout(function() {
-          $scope.getSources();
-        });
+        $scope.getSources();
       }
     };
   }

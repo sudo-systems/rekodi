@@ -1,5 +1,5 @@
-rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', '$localStorage', '$attrs', 'rkCacheService',
-  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, $localStorage, $attrs, rkCacheService) {
+rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'rkKodiWsApiService', 'rkTooltipsService', '$attrs', 'rkCacheService', 'rkHelperService',
+  function($scope, $element, rkKodiWsApiService, rkTooltipsService, $attrs, rkCacheService, rkHelperService) {
     $scope.identifier = $attrs.id;
     $scope.selectedIndex = null;
     $scope.moviesCategorised = {};
@@ -11,10 +11,6 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', '$timeout', 'rkKodiW
     };
     
     function getMoviesFromCache() {
-      /*if($scope.movies.length === 0) {
-        $scope.movies = rkCacheService.get({key: 'movies'});
-      }*/
-      
       if(Object.keys($scope.moviesCategorised).length === 0) {
         $scope.moviesCategorised = rkCacheService.get({key: 'moviesCategorised'});
       }
@@ -76,13 +72,13 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', '$timeout', 'rkKodiW
         $scope.$root.$emit('rkStartLoading');
         
         kodiWsApiConnection.VideoLibrary.GetMovies({
-          properties: ['thumbnail', 'year', 'rating', 'plotoutline'],
+          properties: ['thumbnail', 'year', 'rating', 'plotoutline', 'genre', 'runtime'],
           sort: {
             order: 'ascending',
             method: 'label'
           }
         }).then(function(data) {
-          data.movies = (data.movies === undefined)? [] : addCustomMoviesFields(data.movies);
+          data.movies = (data.movies === undefined)? [] : rkHelperService.addCustomFields(data.movies);
           var properties = {
             data: data.movies,
             key: 'movies'
@@ -98,26 +94,12 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', '$timeout', 'rkKodiW
           $scope.$root.$emit('rkStopLoading');
           rkTooltipsService.apply($($element).find('.data-list-wrapper'));
         }, function(error) {
-          handleError(error);
+          rkHelperService.handleError(error);
           $scope.$root.$emit('rkStopLoading');
         });
       }
     };
-    
-    function addCustomMoviesFields(movies) {
-      for(var key in movies) {
-        if(movies[key].thumbnail) {
-          movies[key].thumbnail_src = getImageSrc(movies[key].thumbnail);
-        }
-        
-        if(movies[key].rating) {
-          movies[key].rating_rounded =  Math.round(movies[key].rating * 10 ) / 10;
-        }
-      }
-      
-      return movies;
-    }
-    
+
     function setDefaultSelectedIndex() {
       for(var key in $scope.moviesIndex) {
         if($scope.moviesIndex[key].toLowerCase() !== $scope.moviesIndex[key].toUpperCase()) {
@@ -134,28 +116,12 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', '$timeout', 'rkKodiW
     $scope.clearFilter = function() {
       $scope.filter.value = '';
     };
-    
-    function getImageSrc(specialPath) {
-      var usernameAndPassword = ($localStorage.settings.password && $localStorage.settings.password !== '')? $localStorage.settings.username+':'+$localStorage.settings.password+'@' : '';
-      return 'http://'+usernameAndPassword+$localStorage.settings.serverAddress+':'+$localStorage.settings.httpPort+'/image/'+encodeURIComponent(specialPath);
-    }
-    
-    function handleError(error) {
-      var errorDetails = (error.response.data)? ' ('+error.response.data.stack.message+': '+error.response.data.stack.name+')' : '';
-      $scope.$root.$emit('rkServerError', {
-        message: error.response.message+errorDetails
-      });
-    }
-    
+
     $scope.init = function() {
-      $timeout(function() {
-        rkCacheService.setCategory($scope.identifier);
-      });
+      rkCacheService.setCategory($scope.identifier);
       
       if($.isEmptyObject($scope.movies)) {
-        $timeout(function() {
-          $scope.getMovies();
-        });
+        $scope.getMovies();
       }
     };
   }
