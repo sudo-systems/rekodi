@@ -212,10 +212,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
 
     $scope.$root.$on('rkWsConnectionStatusChange', function(event, data) {
       if(!data.connected) {
-        $scope.files = [];
-      }
-      else {
-        $scope.getSources();
+        $scope.files = {};
       }
     });
 
@@ -269,7 +266,9 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     });
     
     $scope.init = function() {
-      rkCacheService.setCategory($scope.identifier);
+      $timeout(function() {
+        rkCacheService.setCategory($scope.identifier);
+      });
       
       if($.isEmptyObject($scope.sources)) {
         $timeout(function() {

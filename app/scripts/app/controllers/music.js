@@ -9,10 +9,10 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     $scope.artistsIndex = [];
     $scope.albums = {};
     $scope.songs = {};
+    var kodiWsApiConnection = null;
     $scope.filter = {
       value: ''
     };
-    var kodiWsApiConnection = null;
     
     function getArtistsFromCache() {
       if(Object.keys($scope.artistsCategorised).length === 0) {
@@ -46,10 +46,10 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         key: 'artistsCategorised'
       });
       
-      createArtistsCategoriesIndex();
+      createArtistsCategorisedIndex();
     }
     
-    function createArtistsCategoriesIndex() {
+    function createArtistsCategorisedIndex() {
       $scope.artistsIndex = [];
 
       for (var key in $scope.artistsCategorised) {
@@ -275,7 +275,9 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     }
 
     $scope.init = function() {
-      rkCacheService.setCategory($scope.identifier);
+      $timeout(function() {
+        rkCacheService.setCategory($scope.identifier);
+      });
       
       if($.isEmptyObject($scope.artists)) {
         $timeout(function() {

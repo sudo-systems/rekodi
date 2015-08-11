@@ -18,7 +18,7 @@ rekodiApp.service('rkCacheService', ['$localStorage',
        *  index: String/Int (optional)
        * };
        */
-      
+
       if(properties.index) {
         if($localStorage.cache[_identifier][properties.key]) {
           var cachedDataObject = JSON.parse($localStorage.cache[_identifier][properties.key]);
@@ -43,7 +43,7 @@ rekodiApp.service('rkCacheService', ['$localStorage',
        *  index: String/Int (optional)
        * };
        */
-      
+
       if($localStorage.cache[_identifier][properties.key]) {
         if(properties.index) {
           var cachedDataObject = JSON.parse($localStorage.cache[_identifier][properties.key]);
@@ -65,7 +65,7 @@ rekodiApp.service('rkCacheService', ['$localStorage',
        *  index: String/Int (optional)
        * };
        */
-      
+
       if(properties.index) {
         if(!$localStorage.cache[_identifier][properties.key]) {
           this.set(properties);
