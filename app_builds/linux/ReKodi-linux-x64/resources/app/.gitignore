@@ -1,0 +1,5 @@
+/nbproject/private/
+/builds/osx/*
+/builds/win/*
+/builds/linux/*
+/node_modules/*
