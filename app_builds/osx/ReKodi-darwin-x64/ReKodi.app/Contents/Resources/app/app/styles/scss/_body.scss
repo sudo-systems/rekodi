@@ -2,6 +2,24 @@ html {
   -webkit-text-size-adjust: none;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #262626;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555;
+  border: 0;
+  cursor: all-scroll;
+}
+
+::-webkit-scrollbar-button {
+  visibility: hidden;
+}
+
 body {
   cursor: default;
   user-select: none;
@@ -26,8 +44,9 @@ body {
     line-height: 26px; 
     color: #EEE;
     padding: 0 10px;
+    font-family: map-get($body, font-family);
   }
-
+  
   label {
     display: inline-block;
     line-height: 26px;
@@ -51,6 +70,7 @@ body {
     border: 0;
     border-bottom: 1px dotted #FFF;
     @include transitionAll();
+    font-family: map-get($body, font-family);
   }
 
   button:hover,

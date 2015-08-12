@@ -553,6 +553,20 @@ tbody {
 html {
   -webkit-text-size-adjust: none; }
 
+::-webkit-scrollbar {
+  width: 10px; }
+
+::-webkit-scrollbar-track {
+  background: #262626; }
+
+::-webkit-scrollbar-thumb {
+  background: #555;
+  border: 0;
+  cursor: all-scroll; }
+
+::-webkit-scrollbar-button {
+  visibility: hidden; }
+
 body {
   cursor: default;
   user-select: none;
@@ -575,7 +589,8 @@ body {
     border-bottom: 1px dotted #AAA;
     line-height: 26px;
     color: #EEE;
-    padding: 0 10px; }
+    padding: 0 10px;
+    font-family: Quicksand; }
   body label {
     display: inline-block;
     line-height: 26px;
@@ -599,7 +614,8 @@ body {
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     -webkit-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out; }
+    transition: all 0.2s ease-in-out;
+    font-family: Quicksand; }
   body button:hover,
   body input[type=submit]:hover {
     background: #E6802E;
@@ -1097,7 +1113,7 @@ section.tabsContainer {
         margin: 10px 0 20px 0;
         display: inline-block;
         float: left;
-        width: 80px;
+        width: 70px;
         -webkit-perspective: 150px;
         text-align: center; }
         section.tabsContainer .data-list-wrapper li .thumbnail img {
@@ -1111,7 +1127,7 @@ section.tabsContainer {
           -webkit-transition: all 0.5s ease-in-out;
           transition: all 0.5s ease-in-out; }
         section.tabsContainer .data-list-wrapper li .thumbnail i.mdi {
-          font-size: 80px;
+          font-size: 70px;
           -webkit-filter: grayscale(100%);
           -webkit-transform: rotateY(0deg);
           -webkit-box-reflect: below 4px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5)));
