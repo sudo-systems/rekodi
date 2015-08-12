@@ -260,7 +260,7 @@ section.tabsContainer {
         margin: 10px 0 20px 0;
         display: inline-block;
         float: left;
-        width: 80px;
+        width: 70px;
         -webkit-perspective: 150px;
         text-align: center;
         
@@ -274,7 +274,7 @@ section.tabsContainer {
         }
         
         i.mdi {
-          font-size: 80px;
+          font-size: 70px;
           -webkit-filter: grayscale(100%);
           -webkit-transform: rotateY(0deg);
           -webkit-box-reflect: below 4px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
