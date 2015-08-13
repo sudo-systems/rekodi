@@ -652,7 +652,7 @@ body {
     border: 1px solid #AAA; }
   body .bodyOverlay {
     position: fixed;
-    top: 170px;
+    top: 130px;
     left: 0;
     right: 0;
     bottom: 32px;
@@ -728,7 +728,7 @@ section#windowControls {
     cursor: move; }
 
 section#nowPlaying {
-  height: 170px;
+  height: 130px;
   background: #595959;
   background: -moz-linear-gradient(top, #595959 0, #333 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #595959), color-stop(100%, #333));
@@ -744,7 +744,7 @@ section#nowPlaying {
   border-bottom: 1px solid #E6802E;
   overflow: hidden; }
   section#nowPlaying .inactive {
-    line-height: 170px;
+    line-height: 130px;
     margin-top: -18px;
     text-align: center;
     color: #221E1F;
@@ -754,18 +754,19 @@ section#nowPlaying {
     font-weight: 300;
     text-shadow: 0 0 2px #4C4E4F; }
   section#nowPlaying .active {
-    padding: 0 12px; }
+    padding: 0 12px;
+    overflow: hidden; }
     section#nowPlaying .active .thumbnail {
       display: inline-block;
       float: left;
-      height: 90px;
-      width: 90px;
+      height: 80px;
+      width: 70px;
       text-align: center;
       -webkit-perspective: 150px;
       margin-top: 20px; }
       section#nowPlaying .active .thumbnail i.mdi {
-        font-size: 90px;
-        line-height: 90px;
+        font-size: 80px;
+        line-height: 80px;
         -webkit-transform: rotateY(25deg);
         -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5))); }
       section#nowPlaying .active .thumbnail img {
@@ -777,9 +778,10 @@ section#nowPlaying {
     section#nowPlaying .active .details {
       display: inline-block;
       float: right;
-      width: 380px;
+      width: 400px;
       color: #BBB;
-      height: 100px; }
+      height: 100px;
+      margin-top: 10px; }
       section#nowPlaying .active .details .title {
         font-size: 14px;
         font-weight: 500;
@@ -797,11 +799,12 @@ section#nowPlaying {
       section#nowPlaying .active .details .plot {
         overflow-y: hidden;
         text-overflow: ellipsis;
-        text-align: justify; }
+        text-align: justify;
+        font-size: 12px; }
   section#nowPlaying .active.episode .thumbnail {
-    width: 170px; }
+    width: 120px; }
   section#nowPlaying .active.episode .details {
-    width: 280px; }
+    width: 340px; }
 
 section#playbackControls {
   text-align: center;
@@ -812,7 +815,7 @@ section#playbackControls {
   box-shadow: 0 4px 4px -4px #222;
   height: 47px;
   position: absolute;
-  top: 188px;
+  top: 148px;
   left: 0;
   right: 0;
   overflow: hidden; }
@@ -1222,7 +1225,7 @@ section.tabsContainer.sub nav {
 
 #tabs {
   position: fixed;
-  top: 235px;
+  top: 195px;
   left: 0;
   right: 0;
   bottom: 32px;
