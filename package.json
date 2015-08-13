@@ -35,7 +35,7 @@
     "xbmc-event-client": "^0.0.2",
     "xbmc-ws": "^2.1.2"
   },
-  "license": "MIT",
+  "license": "GPL v2",
   "repository": {
     "type": "git",
     "url": "git@git.sudo-systems.com:sudo-systems/rekodi.git"
