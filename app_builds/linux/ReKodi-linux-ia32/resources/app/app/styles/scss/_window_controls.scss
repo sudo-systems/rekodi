@@ -4,6 +4,8 @@ section#windowControls {
   left: 0;
   right: 0;
   height: map-get($window-controls, height);
+  overflow: hidden;
+  background: #595959;
  
   .controls {
     padding: 5px;

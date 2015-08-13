@@ -12,8 +12,8 @@
     "Remote",
     "Cross-platform"
   ],
-  "license": "MIT",
-  "homepage": "http://git.sudo-systems.com/sudo-systems/rekodi",
+  "license": "GPL v2",
+  "homepage": "https://github.com/Bram77/rekodi",
   "ignore": [
     "**/.*",
     "node_modules",

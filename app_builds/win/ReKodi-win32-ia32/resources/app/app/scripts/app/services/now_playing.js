@@ -1,5 +1,5 @@
-rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkKodiWsApiService', '$sessionStorage', 'rkEnumsService', '$localStorage',
-  function($rootScope, rkKodiWsApiService, $sessionStorage, rkEnumsService, $localStorage) {
+rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkKodiWsApiService', '$sessionStorage', 'rkEnumsService', '$localStorage', 'rkHelperService',
+  function($rootScope, rkKodiWsApiService, $sessionStorage, rkEnumsService, $localStorage, rkHelperService) {
     var kodiWsApiConnection = null;
     var itemProperties = [];
     itemProperties[rkEnumsService.PlayerId.AUDIO] = ['title', 'artist', 'albumartist', 'displayartist', 'album', 'track', 'year', 'genre', 'thumbnail', 'playcount', 'file', 'duration'];
@@ -39,7 +39,7 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkKodiWsApiService', '$
       }).then(function(data) {
         if(data.item) {
           if(data.item.duration) {
-            data.item.duration_readable = moment.duration(parseInt(data.item.duration), 'seconds');
+            data.item.duration_readable = rkHelperService.secondsToDuration(data.item.duration);
           }
           
           if(data.item.thumbnail && data.item.thumbnail !== '') {

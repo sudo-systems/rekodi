@@ -4,6 +4,11 @@ section#playbackControls {
   background-color: map-get($playback-controls, background-color);
   @include boxShadow(0 4px 4px -4px, #222);
   height: map-get($playback-controls, height);
+  position: absolute;
+  top: (map-get($window-controls, height) + map-get($now-playing, height));
+  left: 0;
+  right: 0;
+  overflow: hidden;
   
   .wrapper {
     ul {

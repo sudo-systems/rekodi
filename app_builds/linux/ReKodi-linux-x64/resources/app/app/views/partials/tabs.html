@@ -30,14 +30,14 @@
   </ul>
   <div class="magic-line"></div>
 </nav>
-<div class="tabs inline">
+<div class="tabs inline clearfix">
   <section ng-include="'views/partials/tabs/now_playing_details.html'" ng-controller="rkNowPlayingCtrl" rk-tooltips id="nowPlayingDetails" class="tabsContainer"></section>
   <section ng-include="'views/partials/tabs/playlist.html'" rk-tooltips rk-tabs id="playlist" class="tabsContainer sub"></section>
   <section ng-include="'views/partials/tabs/music.html'" rk-tooltips rk-tabs id="music" class="tabsContainer sub"></section>
   <section ng-include="'views/partials/tabs/movies.html'" rk-tooltips rk-tabs id="movies" class="tabsContainer sub"></section>
   <section ng-include="'views/partials/tabs/tv_shows.html'" rk-tooltips rk-tabs id="tvShows" class="tabsContainer sub"></section>
   <section ng-include="'views/partials/tabs/photos.html'" ng-controller="rkFilesCtrl" ng-init="type='pictures'" rk-tooltips id="photos" class="tabsContainer"></section>
-  <section ng-include="'views/partials/tabs/addons.html'" ng-controller="rkAddonsCtrl" rk-tooltips id="addons" class="tabsContainer"></section>
+  <section ng-include="'views/partials/tabs/addons.html'" ng-controller="rkAddonsCtrl" rk-tooltips id="addons" class="tabsContainer "></section>
   <section ng-include="'views/partials/tabs/remote.html'" ng-controller="rkRemoteCtrl" rk-tooltips id="remote" class="tabsContainer"></section>
   <section ng-include="'views/partials/tabs/settings.html'" ng-controller="rkSettingsCtrl" rk-tooltips id="settings" class="tabsContainer"></section>
 </div>

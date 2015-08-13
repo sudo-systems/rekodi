@@ -3,7 +3,8 @@ $global: (
   highlight-color: #E6802E,
   text-shadow-color: #666,
   transition-speed: .2s,
-  window-padding: 12px 
+  window-padding: 12px,
+  window-height: 700px
 );
 
 $body: (
@@ -34,7 +35,8 @@ $tabs: (
   number-of-tabs: 9,
   tab-width: 55.56px,
   tab-height: 40px,
-  sub-tab-width: 40px
+  sub-tab-width: 40px,
+  options-height: 36px
 );
 
 $footer: (

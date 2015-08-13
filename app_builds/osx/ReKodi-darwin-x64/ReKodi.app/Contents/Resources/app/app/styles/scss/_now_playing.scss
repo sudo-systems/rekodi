@@ -1,8 +1,11 @@
 section#nowPlaying {
   height: map-get($now-playing, height);
   @include backgroundGradientVertical(#595959, map-get($playback-controls, background-color));
+  position: fixed;
+  top: map-get($window-controls, height);
+  left: 0;
+  right: 0;
   border-bottom: 1px solid map-get($global, highlight-color);
-  padding-top: map-get($window-controls, height);
   overflow: hidden;
   
   .inactive {

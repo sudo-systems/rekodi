@@ -79,10 +79,12 @@ html,
 body {
   margin: 0;
   padding: 0;
-  width: 100%; }
+  width: 100%;
+  height: 100%; }
 
 body {
-  min-height: 100%; }
+  min-height: 100%;
+  max-height: 100%; }
 
 *,
 *:before,
@@ -564,8 +566,13 @@ html {
   border: 0;
   cursor: all-scroll; }
 
+::-webkit-scrollbar-thumb:hover {
+  background: #E6802E; }
+
 ::-webkit-scrollbar-button {
-  visibility: hidden; }
+  display: none;
+  visibility: hidden;
+  height: 0; }
 
 body {
   cursor: default;
@@ -680,7 +687,9 @@ section#windowControls {
   top: 0;
   left: 0;
   right: 0;
-  height: 18px; }
+  height: 18px;
+  overflow: hidden;
+  background: #595959; }
   section#windowControls .controls {
     padding: 5px;
     float: left;
@@ -728,8 +737,11 @@ section#nowPlaying {
   background: -ms-linear-gradient(top, #595959 0, #333 100%);
   background: linear-gradient(to bottom, #595959 0, #333 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0);
+  position: fixed;
+  top: 18px;
+  left: 0;
+  right: 0;
   border-bottom: 1px solid #E6802E;
-  padding-top: 18px;
   overflow: hidden; }
   section#nowPlaying .inactive {
     line-height: 170px;
@@ -798,7 +810,12 @@ section#playbackControls {
   -moz-box-shadow: 0 4px 4px -4px #222;
   -webkit-box-shadow: 0 4px 4px -4px #222;
   box-shadow: 0 4px 4px -4px #222;
-  height: 47px; }
+  height: 47px;
+  position: absolute;
+  top: 188px;
+  left: 0;
+  right: 0;
+  overflow: hidden; }
   section#playbackControls .wrapper ul {
     font-size: 0; }
   section#playbackControls .wrapper li {
@@ -835,10 +852,10 @@ section#playbackControls {
     display: none; }
 
 section.tabsContainer {
-  overflow: hidden;
-  padding-bottom: 32px;
-  font-size: 13px; }
+  position: relative;
+  overflow: hidden; }
   section.tabsContainer nav {
+    overflow: hidden;
     background: #262626;
     border-bottom: 1px solid #222;
     position: relative;
@@ -854,7 +871,8 @@ section.tabsContainer {
     background: linear-gradient(to bottom, #2A2A2A 0, #262626 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0); }
     section.tabsContainer nav ul {
-      font-size: 0; }
+      font-size: 0;
+      white-space: nowrap; }
     section.tabsContainer nav li {
       line-height: 40px;
       width: 55.56px;
@@ -907,24 +925,14 @@ section.tabsContainer {
     word-spacing: normal;
     white-space: normal; }
   section.tabsContainer .tabs {
+    background: #282828;
     position: relative;
     left: 0;
+    height: 100%;
     -moz-transition: all 0.4s ease-in-out;
     -o-transition: all 0.4s ease-in-out;
     -webkit-transition: all 0.4s ease-in-out;
     transition: all 0.4s ease-in-out; }
-    section.tabsContainer .tabs h4 {
-      margin: 0;
-      padding: 0 20px;
-      line-height: 26px;
-      text-transform: uppercase;
-      font-size: 11px;
-      letter-spacing: 4px;
-      font-weight: 400;
-      color: #999;
-      border-bottom: 1px solid #333; }
-    section.tabsContainer .tabs .content {
-      padding: 20px; }
   section.tabsContainer .tabs > * {
     width: 100%; }
   section.tabsContainer .tabs[data-tab='0'] {
@@ -953,7 +961,8 @@ section.tabsContainer {
     background: #242424;
     line-height: 36px;
     height: 36px;
-    font-size: 14px; }
+    font-size: 14px;
+    overflow: hidden; }
     section.tabsContainer .options select,
     section.tabsContainer .options input[type="text"] {
       background: #2D2D2D;
@@ -972,7 +981,7 @@ section.tabsContainer {
     section.tabsContainer .options input.filter {
       width: 120px; }
     section.tabsContainer .options input.filter::-webkit-input-placeholder {
-      color: #444; }
+      color: #666; }
     section.tabsContainer .options input.filter::-webkit-input-placeholder::before {
       font-family: 'MaterialDesignIcons';
       content: "\f3ab";
@@ -1000,7 +1009,11 @@ section.tabsContainer {
       transform: scale(1); }
   section.tabsContainer .data-list-wrapper {
     overflow-y: auto;
-    height: 384px; }
+    position: absolute;
+    top: 36px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px; }
     section.tabsContainer .data-list-wrapper li {
       padding: 0 12px;
       line-height: 32px !important;
@@ -1207,6 +1220,14 @@ section.tabsContainer.sub nav {
     background: #BBB;
     width: 40px; }
 
+#tabs {
+  position: fixed;
+  top: 235px;
+  left: 0;
+  right: 0;
+  bottom: 32px;
+  border: 0; }
+
 section#footer {
   position: fixed;
   left: 0;
@@ -1219,6 +1240,7 @@ section#footer {
   color: #CCC;
   font-size: 12px;
   white-space: nowrap;
+  overflow: hidden;
   background: #2C2C2C;
   background: -moz-linear-gradient(top, #2C2C2C 0, #393939 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #2C2C2C), color-stop(100%, #393939));
