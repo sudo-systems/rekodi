@@ -38,10 +38,10 @@
   "license": "GPL v2",
   "repository": {
     "type": "git",
-    "url": "git@git.sudo-systems.com:sudo-systems/rekodi.git"
+    "url": "https://github.com/Bram77/rekodi.git"
   },
   "bugs": {
-    "url": "http://git.sudo-systems.com/sudo-systems/rekodi/issues"
+    "url": "https://github.com/Bram77/rekodi/issues"
   },
   "keywords": [
     "kodi",
