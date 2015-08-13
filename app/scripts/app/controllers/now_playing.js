@@ -1,15 +1,15 @@
-rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$sessionStorage', '$timeout',
-  function($scope, $sessionStorage, $timeout) {
-    $scope.playStatus = $sessionStorage.playStatus;
+rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkNowPlayingService', 
+  function($scope, $timeout, rkNowPlayingService) {
+    $scope.playStatus = {};
     
     function init() {
       $scope.$root.$on('rkNowPlayingDataUpdated', function(event, data) {
-        $timeout(function() {
-          $scope.playStatus = data;
-        });
+        $scope.playStatus = data;
       });
     }
     
-    init();
+    $timeout(function() {
+      init();
+    });
   }
 ]);
