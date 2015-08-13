@@ -12,7 +12,7 @@
     "Remote",
     "Cross-platform"
   ],
-  "license": "MIT",
+  "license": "GPL v2",
   "homepage": "http://git.sudo-systems.com/sudo-systems/rekodi",
   "ignore": [
     "**/.*",
