@@ -16,8 +16,14 @@ html {
   cursor: all-scroll;
 }
 
+::-webkit-scrollbar-thumb:hover {
+  background: map-get($global, highlight-color);
+}
+
 ::-webkit-scrollbar-button {
+  display: none;
   visibility: hidden;
+  height: 0;
 }
 
 body {

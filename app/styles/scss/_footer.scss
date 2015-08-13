@@ -10,6 +10,7 @@ section#footer {
   color: #CCC;
   font-size: 12px;
   white-space: nowrap;
+  overflow: hidden;
   @include backgroundGradientVertical(#2C2C2C, #393939);
   @include boxShadow(0 -4px 4px -4px, #222);
   @include transitionAll(map-get($global, transition-speed));
