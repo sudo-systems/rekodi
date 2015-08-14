@@ -1,162 +1,108 @@
-rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkPlayerPropertiesService', 'rkKodiWsApiService', 'rkHelperService',
-  function($scope, $timeout, rkPlayerPropertiesService, rkKodiWsApiService, rkHelperService) {
+rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkKodiWsApiService', 'rkHelperService', 'rkRemoteControlService',
+  function ($scope, $timeout, rkKodiWsApiService, rkHelperService, rkRemoteControlService) {
     var kodiWsApiConnection = null;
     $scope.playerProperties = {};
-    $scope.isPlaying = false;
     $scope.isConnected = false;
+    $scope.isPlaying = false;
     $scope.isPaused = false;
-    $scope.isFastForwarding = false;
-    $scope.isRewinding = false;
-    $scope.currentSpeed = 0;
+    $scope.isStopped = true;
     $scope.isSeeking = false;
-    
-    var getActivePlayer = function(callback) {
-      if(kodiWsApiConnection) {
-        kodiWsApiConnection.Player.GetActivePlayers().then(function(data) {
-          var playerId = (data[0])? data[0].playerid : null;
-          callback(playerId);
-        }, function(error) {
-          rkHelperService.handleError(error);
-        });
-      }
+    $scope.isRewinding = false;
+    $scope.isFastForwarding = false;
+    $scope.currentSpeed = null;
+    $scope.showPlayButton = true;
+    $scope.player = {};
+
+    $scope.skipPrevious = function () {
+      rkRemoteControlService.skipPrevious();
     };
-    
-    $scope.goTo = function(direction) {
-      getActivePlayer(function(playerId) {
-        if(playerId !== null) {
-          kodiWsApiConnection.Player.GoTo({
-            playerid: playerId,
-            to: direction
-          }).then(function(data) {
-            if(data !== 'OK') {
-              //some error
-            }
-          }, function(error) {
-            rkHelperService.handleError(error);
-          });
-        }
-      });
+
+    $scope.skipNext = function () {
+      rkRemoteControlService.skipNext();
     };
-    
-    $scope.skipPrevious = function() {
-      $scope.goTo('previous');
+
+    $scope.playPause = function () {
+      rkRemoteControlService.playPause();
     };
-    
-    $scope.skipNext = function() {
-      $scope.goTo('next');
+
+    $scope.rewind = function () {
+      rkRemoteControlService.rewind();
     };
-    
-    $scope.playPause = function() {
-      getActivePlayer(function(playerId) {
-        if(playerId !== null) {
-          kodiWsApiConnection.Player.PlayPause({
-            playerid: playerId,
-            play: 'toggle'
-          }).then(function(data) {
-              $scope.isPlaying = (data.speed === 1);
-              $scope.isPaused = (data.speed === 0);
-              $scope.currentSpeed = data.speed;
-          }, function(error) {
-            rkHelperService.handleError(error);
-          });
-        }
-      });
+
+    $scope.fastForward = function () {
+      rkRemoteControlService.fastForward();
     };
-    
-    $scope.setSpeed = function(speed) {
-      $scope.currentSpeed = speed;
-      
-      getActivePlayer(function(playerId) {
-        if(playerId !== null) {
-          kodiWsApiConnection.Player.SetSpeed({
-            playerid: playerId,
-            speed: speed
-          }).then(function(data) {
-              $scope.currentSpeed = data.speed;
-          }, function(error) {
-            rkHelperService.handleError(error);
-          });
-        }
-      });
+
+    $scope.stop = function () {
+      rkRemoteControlService.stop();
     };
-    
-    $scope.rewind = function() {
-      var newSpeed = 0;
-      
-      if($scope.currentSpeed === 0) {
-        newSpeed = -1;
-      }
-      else if($scope.currentSpeed > 0) {
-        newSpeed = Math.floor($scope.currentSpeed / 2);
-      }
-      else {
-        newSpeed = ($scope.currentSpeed === -32)? -32 : ($scope.currentSpeed * 2);
-      }
-      
-      $scope.setSpeed(newSpeed);
-    };
-    
-    $scope.fastForward = function() {
-      var newSpeed = 0;
-      
-      if($scope.currentSpeed === 0) {
-        newSpeed = 1;
-      }
-      else if($scope.currentSpeed < 0) {
-        newSpeed = Math.ceil($scope.currentSpeed / 2);
-      }
-      else {
-        newSpeed = ($scope.currentSpeed === 32)? 32 : ($scope.currentSpeed * 2);
-      }
-      
-      $scope.setSpeed(newSpeed);
-    };
-    
+
+    function setButtonStates() {
+      $scope.showPlayButton = ($scope.isPaused || $scope.isStopped || $scope.isSeeking);
+      $scope.showPauseButton = ($scope.isPlaying);
+      $scope.showStopButton = ($scope.isPlaying || $scope.isPaused || $scope.isSeeking);
+    }
+
     function init() {
-      $scope.$root.$on('rkPlayerPropertiesChange', function(event, data) {
+      $scope.$root.$on('rkPlayerPropertiesChange', function (event, data) {
         $scope.playerProperties = data;
-        $scope.isPlaying = (data.speed === 1);
-        $scope.isPaused = (data.speed === 0);
-        $scope.currentSpeed = data.speed;
+        $scope.currentSpeed = (!$scope.isPlaying && data.speed === 0)? null : data.speed;
         $scope.$apply();
       });
-      
-      $scope.$root.$on('rkNowPlayingDataUpdated', function(event, data) {
+
+      $scope.$root.$on('rkNowPlayingDataUpdated', function (event, data) {
         $scope.isPlaying = data.isPlaying;
+        $scope.currentSpeed = (!$scope.isPlaying)? null : 1;
         $scope.$apply();
       });
-      
-      $scope.$root.$on('rkWsConnectionStatusChange', function(event, data) {
-        kodiWsApiConnection = (data.connected)? rkKodiWsApiService.getConnection() : null;
+
+      $scope.$root.$on('rkPlaybackSpeedChange', function (event, data) {
+        $scope.currentSpeed = (!$scope.isPlaying && data.speed === 0)? null : data;
+      });
+
+      $scope.$watch('currentSpeed', function (newValue, oldValue) {
+        $scope.isPlaying = (newValue === 1);
+        $scope.isSeeking = (newValue !== null && (newValue < 0 || newValue > 1));
+        $scope.isPaused = (newValue === 0);
+        $scope.isStopped = (newValue === null);
+        $scope.isRewinding = (newValue !== null && newValue < 0);
+        $scope.isFastForwarding = (newValue !== null && newValue > 1);
+        setButtonStates();
+      });
+
+      $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+        kodiWsApiConnection = (data.connected) ? rkKodiWsApiService.getConnection() : null;
         $scope.isConnected = data.connected;
+        $scope.currentSpeed = null;
         $scope.$apply();
-        
-        kodiWsApiConnection.Player.OnPlay(function(data) {
-          $scope.isPlaying = true;
-          $scope.isPaused = false;
+
+        kodiWsApiConnection.Player.OnPlay(function (data) {
+          $scope.player = data.data.player;
+          $scope.currentSpeed = (!$scope.isPlaying && data.data.player.speed === 0)? null : data.data.player.speed;
           $scope.$apply();
         });
-        
-        kodiWsApiConnection.Player.OnPause(function(data) {
-          $scope.isPlaying = false;
-          $scope.isPaused = true;
+
+        kodiWsApiConnection.Player.OnPause(function (data) {
+          $scope.player = data.data.player;
+          $scope.currentSpeed = (!$scope.isPlaying && data.data.player.speed === 0)? null : data.data.player.speed;
           $scope.$apply();
         });
-        
-        kodiWsApiConnection.Player.OnStop(function(data) {
-          $scope.isPlaying = false;
-          $scope.isPaused = false;
+
+        kodiWsApiConnection.Player.OnStop(function (data) {
+          $scope.player = {};
+          $scope.currentSpeed = null;
           $scope.$apply();
         });
-        
-        kodiWsApiConnection.Player.OnSpeedChanged(function(data) {
-          console.dir(data);
+
+        kodiWsApiConnection.Player.OnSpeedChanged(function (data) {
+          $scope.player = data.data.player;
+          $scope.currentSpeed = (!$scope.isPlaying && data.data.player.speed === 0)? null : data.data.player.speed;
           $scope.$apply();
         });
       });
     }
-    
-    $timeout(function() {
+
+    $timeout(function () {
       init();
     });
   }

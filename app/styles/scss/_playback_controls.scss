@@ -24,12 +24,6 @@ section#playbackControls {
       font-size: 32px;
       @include transitionAll(map-get($global, transition-speed));
     }
-    
-    li[data-button="play"],
-    li[data-button="pause"],
-    li[data-button="stop"] {
-      font-size: 36px;
-    }
 
     li:hover,
     li.active {
@@ -41,9 +35,25 @@ section#playbackControls {
       @include scale(1.0);
     }
 
-    li[data-button="pause"],
-    li[data-button="stop"] {
-      display: none;
+    li.play-button {
+      position: relative;
+      
+      
+      .speed-indicator {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        color: map-get($global, highlight-color);
+        font-weight: bold;
+        font-size: 16px;
+      }
+    }
+    
+    li.play-button:hover,
+    li.play-button.active {
+      .speed-indicator {
+        color: #FFF;
+      }
     }
   }
 }

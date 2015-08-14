@@ -1,7 +1,6 @@
-rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', '$timeout', 'rkKodiWsApiService', 'rkHelperService',
-  function($rootScope, $timeout, rkKodiWsApiService, rkHelperService) {
+rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', '$timeout', 'rkKodiWsApiService', 'rkHelperService', 'rkRemoteControlService',
+  function($rootScope, $timeout, rkKodiWsApiService, rkHelperService, rkRemoteControlService) {
     var kodiWsApiConnection = null;
-    var getPropertiesInterval = null;
     var currentProperties = {};
     var defaultProperties = {
       audiostreams: [],
@@ -21,34 +20,16 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', '$timeout', 'rkKod
       position: 0,
       repeat: 'off',
       shuffled: false,
-      speed: 1,
+      speed: 0,
       subtitleenabled: false,
       subtitles: [],
       time: {},
       totaltime: {},
       type: null
     };
-    
-    var getActivePlayer = function(callback) {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
-      
-      if(kodiWsApiConnection) {
-        kodiWsApiConnection.Player.GetActivePlayers().then(function(data) {
-          var playerId = (data[0])? data[0].playerid : null;
-          callback(playerId);
-        }, function(error) {
-          rkHelperService.handleError(error);
-          callback(null);
-        });
-      }
-      else {
-        clearInterval(getPropertiesInterval);
-        setDefaults();
-      }
-    };
-    
+
     var get = function() {
-      getActivePlayer(function(playerId) {
+      rkRemoteControlService.getActivePlayerId(function(playerId) {
         kodiWsApiConnection = rkKodiWsApiService.getConnection();
 
         if(kodiWsApiConnection && playerId !== null) {
@@ -66,7 +47,6 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', '$timeout', 'rkKod
           });
         }
         else {
-          clearInterval(getPropertiesInterval);
           setDefaults();
         }
       });
@@ -79,22 +59,29 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', '$timeout', 'rkKod
     function init() {
       $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
         if(data.connected) {
-          getPropertiesInterval = setInterval(function() {
-            get();
-          }, 1000);
+          kodiWsApiConnection = rkKodiWsApiService.getConnection();
+          
+          kodiWsApiConnection.Player.OnPropertyChanged(function(response) {
+            if(response.data && response.data.property) {
+              var propertyKeys = Object.keys(response.data.property);
+              
+              for(var key in propertyKeys) {
+                currentProperties[propertyKeys[key]] = response.data.property[propertyKeys[key]];
+              }
+            }
+
+            $rootScope.$emit('rkPlayerPropertiesChange', currentProperties);
+          });
           
           get();
         }
         else {
-          clearInterval(getPropertiesInterval);
           setDefaults();
         }
       });
     }
-    
-    $timeout(function() {
-      init();
-    });
+
+    init();
     
     return {
       

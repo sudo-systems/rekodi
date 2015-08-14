@@ -832,10 +832,6 @@ section#playbackControls {
     -o-transition: all 0.2s ease-in-out;
     -webkit-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out; }
-  section#playbackControls .wrapper li[data-button="play"],
-  section#playbackControls .wrapper li[data-button="pause"],
-  section#playbackControls .wrapper li[data-button="stop"] {
-    font-size: 36px; }
   section#playbackControls .wrapper li:hover,
   section#playbackControls .wrapper li.active {
     color: #E6802E;
@@ -850,9 +846,18 @@ section#playbackControls {
     -moz-transform: scale(1);
     -o-transform: scale(1);
     transform: scale(1); }
-  section#playbackControls .wrapper li[data-button="pause"],
-  section#playbackControls .wrapper li[data-button="stop"] {
-    display: none; }
+  section#playbackControls .wrapper li.play-button {
+    position: relative; }
+    section#playbackControls .wrapper li.play-button .speed-indicator {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      color: #E6802E;
+      font-weight: bold;
+      font-size: 16px; }
+  section#playbackControls .wrapper li.play-button:hover .speed-indicator,
+  section#playbackControls .wrapper li.play-button.active .speed-indicator {
+    color: #FFF; }
 
 section.tabsContainer {
   position: relative;

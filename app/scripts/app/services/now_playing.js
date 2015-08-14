@@ -1,40 +1,34 @@
-rekodiApp.factory('rkNowPlayingService', ['$rootScope', '$timeout', 'rkKodiWsApiService', 'rkEnumsService', 'rkHelperService',
-  function($rootScope, $timeout, rkKodiWsApiService, rkEnumsService, rkHelperService) {
+rekodiApp.factory('rkNowPlayingService', ['$rootScope', '$timeout', 'rkKodiWsApiService', 'rkEnumsService', 'rkHelperService', 'rkRemoteControlService',
+  function($rootScope, $timeout, rkKodiWsApiService, rkEnumsService, rkHelperService, rkRemoteControlService) {
     var kodiWsApiConnection = null;
     var currentData = {};
     var getInfoInterval = null;
     var itemProperties = [];
     itemProperties[rkEnumsService.PlayerId.AUDIO] = ['title', 'artist', 'albumartist', 'displayartist', 'album', 'track', 'year', 'genre', 'thumbnail', 'playcount', 'file', 'duration'];
     itemProperties[rkEnumsService.PlayerId.VIDEO] = ['title', 'file', 'thumbnail', 'plotoutline', 'year', 'season', 'episode', 'showtitle', 'plot', 'runtime'];
-
-    var getActivePlayer = function(callback) {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
-      
-      if(kodiWsApiConnection) {
-        kodiWsApiConnection.Player.GetActivePlayers().then(function(data) {
-          var playerId = (data[0])? data[0].playerid : null;
-          callback(playerId);
-        }, function(error) {
-          rkHelperService.handleError(error);
-          callback(null);
-        });
-      }
-      else {
-        clearInterval(getInfoInterval);
-        setNotPlaying();
-      }
-    };
     
-    var getInfo = function() {
+    var getInfo = function(playerId) {
+      if(playerId) {
+        clearInterval(getInfoInterval);
+        getItem(playerId);
+
+        getInfoInterval = setInterval(function() {
+          getItem(playerId);
+        }, 1000);
+        
+        return;
+      }
+      
+      clearInterval(getInfoInterval);
+      rkRemoteControlService.getActivePlayerId(function(playerId) {
+        getItem(playerId);
+      });
+
       getInfoInterval = setInterval(function() {
-        getActivePlayer(function(playerId) {
+        rkRemoteControlService.getActivePlayerId(function(playerId) {
           getItem(playerId);
         });
       }, 1000);
-      
-      getActivePlayer(function(playerId) {
-        getItem(playerId);
-      });
     };
     
     var setNotPlaying = function() {
@@ -89,7 +83,7 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', '$timeout', 'rkKodiWsApi
           kodiWsApiConnection = rkKodiWsApiService.getConnection();
 
           kodiWsApiConnection.Player.OnPlay(function(response) {
-            getInfo();
+            getInfo(response.data.player.playerid);
           });
 
           kodiWsApiConnection.Player.OnStop(function(response) {
@@ -103,10 +97,8 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', '$timeout', 'rkKodiWsApi
         }
       });
     };
-    
-    $timeout(function() {
-      init();
-    });
+
+    init();
     
     return {
       

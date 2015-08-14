@@ -3,22 +3,22 @@
     <li ng-click="skipPrevious()">
       <i class="mdi mdi-skip-previous"></i>
     </li>
-    <li ng-click="rewind()" ng-class="{active: isRewinding}">
+    <li ng-click="rewind()" ng-class="{active: isRewinding}" ng-show="playerProperties.canchangespeed">
       <i class="mdi mdi-rewind"></i>
     </li>
-    <li ng-show="!isPlaying || isPaused" ng-click="playPause()">
+    <li ng-show="showPlayButton" ng-click="playPause()" class="play-button">
       <i class="mdi mdi-play"></i>
+      <div ng-show="currentSpeed < 0 || currentSpeed > 1" class="speed-indicator">
+        {{currentSpeed}}X
+      </div>
     </li>
-    <li ng-show="currentSpeed < 0 || currentSpeed > 1">
-      {{currentSpeed}}x
-    </li>
-    <li ng-show="(isPlaying && !isPaused)" ng-click="playPause()" ng-class="{active: isPaused}">
+    <li ng-show="showPauseButton" ng-click="playPause()" ng-class="{active: isPaused}">
       <i class="mdi mdi-pause"></i>
     </li>
-    <li ng-show="isPlaying" ng-click="stop()">
+    <li ng-show="showStopButton" ng-click="stop()">
       <i class="mdi mdi-stop"></i>
     </li>
-    <li ng-click="fastForward()" ng-class="{active: isFastForwarding}">
+    <li ng-click="fastForward()" ng-class="{active: isFastForwarding}" ng-show="playerProperties.canchangespeed">
       <i class="mdi mdi-fast-forward"></i>
     </li>
     <li ng-click="skipNext()">
