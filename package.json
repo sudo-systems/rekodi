@@ -52,5 +52,5 @@
     "linux",
     "osx"
   ],
-  "private": true
+  "private": false
 }
