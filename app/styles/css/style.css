@@ -633,6 +633,7 @@ body {
     color: #AAA; }
   body input[type=range] {
     -webkit-appearance: none;
+    background: transparent;
     outline: none;
     border: 0;
     width: 100%;
@@ -645,7 +646,7 @@ body {
     border-radius: 50%;
     background: #AAA;
     cursor: pointer;
-    margin-top: -4.5px;
+    margin-top: -4.1px;
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     -webkit-transition: all 0.2s ease-in-out;
@@ -862,7 +863,7 @@ section#playbackControls {
     white-space: nowrap;
     text-align: left; }
     section#playbackControls .volume-slider-wrapper input {
-      width: 60px;
+      width: 65px;
       height: 47px; }
     section#playbackControls .volume-slider-wrapper i.mdi {
       line-height: 47px;

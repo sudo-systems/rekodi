@@ -93,6 +93,7 @@ body {
   
   input[type=range] {
     -webkit-appearance: none;
+    background: transparent;
     outline: none;
     border: 0;
     width: 100%;
@@ -107,7 +108,7 @@ body {
     border-radius: 50%;
     background: #AAA;
     cursor: pointer;
-    margin-top: -4.5px;
+    margin-top: -4.1px;
     @include transitionAll(map-get($global, transition-speed));
   }
   
