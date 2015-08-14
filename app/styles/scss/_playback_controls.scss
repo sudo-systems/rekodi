@@ -10,7 +10,37 @@ section#playbackControls {
   right: 0;
   overflow: hidden;
   
-  .wrapper {
+  .volume-slider-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding-left: map-get($global, window-padding);
+    white-space: nowrap;
+    text-align: left;
+    
+    input {
+      width: 60px;
+      height: map-get($playback-controls, height);
+    }
+    
+    i.mdi {
+      line-height: map-get($playback-controls, height);
+      font-size: 16px;
+      color: #AAA;
+      display: inline-block;
+      margin-right: 8px;
+      vertical-align: top;
+      @include transitionAll(map-get($global, transition-speed));
+    }
+    
+    i.mdi.active {
+      color: map-get($global, highlight-color);
+      @include scale(1.3);
+    }
+  }
+  
+  .controls-wrapper {
     ul {
       font-size: 0;
     }
@@ -19,7 +49,7 @@ section#playbackControls {
       color: map-get($global, text-highlight-color);
       text-align: center;
       line-height: 45px;
-      width: 42px;
+      padding: 0 4px;
       display: inline-block;
       font-size: 32px;
       @include transitionAll(map-get($global, transition-speed));
@@ -37,7 +67,6 @@ section#playbackControls {
 
     li.play-button {
       position: relative;
-      
       
       .speed-indicator {
         position: absolute;

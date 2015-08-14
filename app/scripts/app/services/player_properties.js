@@ -1,5 +1,5 @@
-rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', '$timeout', 'rkKodiWsApiService', 'rkHelperService', 'rkRemoteControlService',
-  function($rootScope, $timeout, rkKodiWsApiService, rkHelperService, rkRemoteControlService) {
+rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkKodiWsApiService', 'rkHelperService', 'rkRemoteControlService',
+  function($rootScope, rkKodiWsApiService, rkHelperService, rkRemoteControlService) {
     var kodiWsApiConnection = null;
     var currentProperties = {};
     var defaultProperties = {
@@ -35,7 +35,7 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', '$timeout', 'rkKod
         if(kodiWsApiConnection && playerId !== null) {
           kodiWsApiConnection.Player.GetProperties({
             playerid: playerId,
-            properties: ['canrepeat', 'canmove', 'canshuffle', 'speed', 'percentage', 'playlistid', 'audiostreams', 'position', 'repeat', 'currentsubtitle', 'canrotate', 'canzoom', 'canchangespeed', 'type', 'partymode', 'subtitles', 'canseek', 'time', 'totaltime', 'shuffled', 'currentaudiostream', 'live', 'subtitleenabled']
+            properties: Object.keys(defaultProperties)
           }).then(function(data) {
             if(JSON.stringify(currentProperties) !== JSON.stringify(data)) {
               currentProperties = data;
@@ -63,10 +63,8 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', '$timeout', 'rkKod
           
           kodiWsApiConnection.Player.OnPropertyChanged(function(response) {
             if(response.data && response.data.property) {
-              var propertyKeys = Object.keys(response.data.property);
-              
-              for(var key in propertyKeys) {
-                currentProperties[propertyKeys[key]] = response.data.property[propertyKeys[key]];
+              for(var key in response.data.property) {
+                currentProperties[key] = response.data.property[key];
               }
             }
 

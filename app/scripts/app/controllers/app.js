@@ -1,5 +1,5 @@
-rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'rkKodiWsApiService', '$sessionStorage', 'rkPlayerPropertiesService', 'rkNowPlayingService',
-  function($scope, $localStorage, $timeout, rkKodiWsApiService, $sessionStorage, rkPlayerPropertiesService, rkNowPlayingService) {
+rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'rkKodiWsApiService', '$sessionStorage', 'rkPlayerPropertiesService', 'rkNowPlayingService', 'rkKodiPropertiesService',
+  function($scope, $localStorage, $timeout, rkKodiWsApiService, $sessionStorage, rkPlayerPropertiesService, rkNowPlayingService, rkKodiPropertiesService) {
     $scope.storage = $localStorage;
     $scope.sessionStorage = $sessionStorage;
     $scope.isConfigured = true;

@@ -123,6 +123,34 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', '$timeout', 'rkKodiWs
       });
     };
     
+    var setVolume = function(percentage) {
+      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      
+      if(kodiWsApiConnection) {
+        kodiWsApiConnection.Application.SetVolume({
+          volume: parseInt(percentage)
+        }).then(function(data) {
+            //console.log(data);
+        }, function(error) {
+          rkHelperService.handleError(error);
+        });
+      }
+    };
+    
+    var toggleMute = function() {
+      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      
+      if(kodiWsApiConnection) {
+        kodiWsApiConnection.Application.SetMute({
+          mute: 'toggle'
+        }).then(function(data) {
+            //console.log(data);
+        }, function(error) {
+          rkHelperService.handleError(error);
+        });
+      }
+    };
+    
     function init() {
       $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
         kodiWsApiConnection = (data.connected)? rkKodiWsApiService.getConnection() : null;
@@ -146,7 +174,9 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', '$timeout', 'rkKodiWs
       fastForward: fastForward,
       stop: stop,
       skipPrevious: skipPrevious,
-      skipNext: skipNext
+      skipNext: skipNext,
+      setVolume: setVolume,
+      toggleMute: toggleMute
     };
   }
 ]);
