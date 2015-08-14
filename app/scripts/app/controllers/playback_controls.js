@@ -45,8 +45,6 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkKodiWsA
     };
     
     $scope.toggleMute = function() {
-      $scope.isMuted = (!$scope.isMuted);
-      $scope.currentVolume = ($scope.isMuted)? 0 : $scope.currentVolume;
       rkRemoteControlService.toggleMute();
     };
 
