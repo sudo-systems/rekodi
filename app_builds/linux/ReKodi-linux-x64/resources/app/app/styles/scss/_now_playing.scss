@@ -22,19 +22,20 @@ section#nowPlaying {
   
   .active {
     padding: 0 map-get($global, window-padding);
+    overflow: hidden;
     
     .thumbnail {
       display: inline-block;
       float: left;
-      height: 90px;
-      width: 90px;
+      height: 80px;
+      width: 70px;
       text-align: center;
       -webkit-perspective: 150px;
       margin-top: 20px;
       
       i.mdi {
-        font-size: 90px;
-        line-height: 90px;
+        font-size: 80px;
+        line-height: 80px;
         -webkit-transform: rotateY(25deg);
         -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
       }
@@ -51,9 +52,10 @@ section#nowPlaying {
     .details {
       display: inline-block;
       float: right;
-      width: 380px;
+      width: 400px;
       color: #BBB;
       height: 100px;
+      margin-top: 10px;
 
       .title {
         font-size: 14px;
@@ -77,17 +79,18 @@ section#nowPlaying {
         overflow-y: hidden;
         text-overflow: ellipsis;
         text-align: justify;
+        font-size: 12px;
       }
     }
   }
   
   .active.episode {
     .thumbnail {
-      width: 170px;
+      width: 120px;
     }
     
     .details {
-      width: 280px;
+      width: 340px;
     }
   }
 }

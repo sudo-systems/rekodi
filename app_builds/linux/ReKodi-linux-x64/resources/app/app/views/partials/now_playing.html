@@ -3,14 +3,14 @@
 </div>
 
 <div ng-show="playStatus.isPlaying">
-  <div class="active audio clearfix" ng-show="playStatus.item.type === 'song'">
+  <div class="active audio clearfix" ng-show="playStatus.item.type === 'song' || playStatus.item.type === 'unknown'">
     <div class="thumbnail">
       <i class="mdi mdi-music-note"></i>
     </div>
     <div class="details">
       <div class="title">
         {{playStatus.item.displayartist}}<br />
-        <span class="name">{{playStatus.item.title}}</span>
+        <span class="name">{{playStatus.item.label}}</span>
       </div>
     </div>
   </div>

@@ -10,7 +10,37 @@ section#playbackControls {
   right: 0;
   overflow: hidden;
   
-  .wrapper {
+  .volume-slider-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding-left: map-get($global, window-padding);
+    white-space: nowrap;
+    text-align: left;
+    
+    input {
+      width: 65px;
+      height: map-get($playback-controls, height);
+    }
+    
+    i.mdi {
+      line-height: map-get($playback-controls, height);
+      font-size: 16px;
+      color: #AAA;
+      display: inline-block;
+      margin-right: 8px;
+      vertical-align: top;
+      @include transitionAll(map-get($global, transition-speed));
+    }
+    
+    i.mdi.active {
+      color: map-get($global, highlight-color);
+      @include scale(1.3);
+    }
+  }
+  
+  .controls-wrapper {
     ul {
       font-size: 0;
     }
@@ -18,17 +48,11 @@ section#playbackControls {
     li {
       color: map-get($global, text-highlight-color);
       text-align: center;
-      line-height: 45px;
-      width: 42px;
+      line-height: map-get($playback-controls, height);
+      padding: 0 4px;
       display: inline-block;
       font-size: 32px;
       @include transitionAll(map-get($global, transition-speed));
-    }
-    
-    li[data-button="play"],
-    li[data-button="pause"],
-    li[data-button="stop"] {
-      font-size: 36px;
     }
 
     li:hover,
@@ -41,9 +65,28 @@ section#playbackControls {
       @include scale(1.0);
     }
 
-    li[data-button="pause"],
-    li[data-button="stop"] {
-      display: none;
+    li.play-button {
+      position: relative;
+      
+      .speed-indicator {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        line-height: map-get($playback-controls, height);
+        text-align: center;
+        color: map-get($global, highlight-color);
+        font-weight: bold;
+        font-size: 16px;
+      }
+    }
+    
+    li.play-button:hover,
+    li.play-button.active {
+      .speed-indicator {
+        color: #FFF;
+      }
     }
   }
 }

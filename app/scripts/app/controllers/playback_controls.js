@@ -84,7 +84,9 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkKodiWsA
         $scope.isStopped = (newValue === null);
         $scope.isRewinding = (newValue !== null && newValue < 0);
         $scope.isFastForwarding = (newValue !== null && newValue > 1);
-        $scope.currentVolume = newValue;
+        
+        console.log(newValue);
+        
         setButtonStates();
       });
 

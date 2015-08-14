@@ -48,7 +48,7 @@ section#playbackControls {
     li {
       color: map-get($global, text-highlight-color);
       text-align: center;
-      line-height: 45px;
+      line-height: map-get($playback-controls, height);
       padding: 0 4px;
       display: inline-block;
       font-size: 32px;
@@ -70,8 +70,12 @@ section#playbackControls {
       
       .speed-indicator {
         position: absolute;
+        left: 0;
+        top: 0;
         right: 0;
         bottom: 0;
+        line-height: map-get($playback-controls, height);
+        text-align: center;
         color: map-get($global, highlight-color);
         font-weight: bold;
         font-size: 16px;

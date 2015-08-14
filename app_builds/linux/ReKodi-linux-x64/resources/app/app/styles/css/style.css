@@ -631,6 +631,42 @@ body {
   body input[type=submit]:disabled {
     background: #666;
     color: #AAA; }
+  body input[type=range] {
+    -webkit-appearance: none;
+    background: transparent;
+    outline: none;
+    border: 0;
+    width: 100%;
+    padding: 0;
+    margin: 0; }
+  body input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 11px;
+    width: 11px;
+    border-radius: 50%;
+    background: #AAA;
+    cursor: pointer;
+    margin-top: -4.1px;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out; }
+  body input[type=range]:hover::-webkit-slider-thumb,
+  body input[type=range]:focus::-webkit-slider-thumb {
+    background: #E6802E; }
+  body input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: #555;
+    border-radius: 1px;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out; }
+  body input[type=range]:hover::-webkit-slider-runnable-track,
+  body input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #999; }
   body a {
     color: #FFF; }
   body a:hover {
@@ -652,7 +688,7 @@ body {
     border: 1px solid #AAA; }
   body .bodyOverlay {
     position: fixed;
-    top: 170px;
+    top: 130px;
     left: 0;
     right: 0;
     bottom: 32px;
@@ -728,7 +764,7 @@ section#windowControls {
     cursor: move; }
 
 section#nowPlaying {
-  height: 170px;
+  height: 130px;
   background: #595959;
   background: -moz-linear-gradient(top, #595959 0, #333 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #595959), color-stop(100%, #333));
@@ -744,7 +780,7 @@ section#nowPlaying {
   border-bottom: 1px solid #E6802E;
   overflow: hidden; }
   section#nowPlaying .inactive {
-    line-height: 170px;
+    line-height: 130px;
     margin-top: -18px;
     text-align: center;
     color: #221E1F;
@@ -754,18 +790,19 @@ section#nowPlaying {
     font-weight: 300;
     text-shadow: 0 0 2px #4C4E4F; }
   section#nowPlaying .active {
-    padding: 0 12px; }
+    padding: 0 12px;
+    overflow: hidden; }
     section#nowPlaying .active .thumbnail {
       display: inline-block;
       float: left;
-      height: 90px;
-      width: 90px;
+      height: 80px;
+      width: 70px;
       text-align: center;
       -webkit-perspective: 150px;
       margin-top: 20px; }
       section#nowPlaying .active .thumbnail i.mdi {
-        font-size: 90px;
-        line-height: 90px;
+        font-size: 80px;
+        line-height: 80px;
         -webkit-transform: rotateY(25deg);
         -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5))); }
       section#nowPlaying .active .thumbnail img {
@@ -777,9 +814,10 @@ section#nowPlaying {
     section#nowPlaying .active .details {
       display: inline-block;
       float: right;
-      width: 380px;
+      width: 400px;
       color: #BBB;
-      height: 100px; }
+      height: 100px;
+      margin-top: 10px; }
       section#nowPlaying .active .details .title {
         font-size: 14px;
         font-weight: 500;
@@ -797,11 +835,12 @@ section#nowPlaying {
       section#nowPlaying .active .details .plot {
         overflow-y: hidden;
         text-overflow: ellipsis;
-        text-align: justify; }
+        text-align: justify;
+        font-size: 12px; }
   section#nowPlaying .active.episode .thumbnail {
-    width: 170px; }
+    width: 120px; }
   section#nowPlaying .active.episode .details {
-    width: 280px; }
+    width: 340px; }
 
 section#playbackControls {
   text-align: center;
@@ -812,44 +851,82 @@ section#playbackControls {
   box-shadow: 0 4px 4px -4px #222;
   height: 47px;
   position: absolute;
-  top: 188px;
+  top: 148px;
   left: 0;
   right: 0;
   overflow: hidden; }
-  section#playbackControls .wrapper ul {
+  section#playbackControls .volume-slider-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding-left: 12px;
+    white-space: nowrap;
+    text-align: left; }
+    section#playbackControls .volume-slider-wrapper input {
+      width: 65px;
+      height: 47px; }
+    section#playbackControls .volume-slider-wrapper i.mdi {
+      line-height: 47px;
+      font-size: 16px;
+      color: #AAA;
+      display: inline-block;
+      margin-right: 8px;
+      vertical-align: top;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      -webkit-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out; }
+    section#playbackControls .volume-slider-wrapper i.mdi.active {
+      color: #E6802E;
+      -ms-transform: scale(1.3);
+      -webkit-transform: scale(1.3);
+      -moz-transform: scale(1.3);
+      -o-transform: scale(1.3);
+      transform: scale(1.3); }
+  section#playbackControls .controls-wrapper ul {
     font-size: 0; }
-  section#playbackControls .wrapper li {
+  section#playbackControls .controls-wrapper li {
     color: #FFF;
     text-align: center;
-    line-height: 45px;
-    width: 42px;
+    line-height: 47px;
+    padding: 0 4px;
     display: inline-block;
     font-size: 32px;
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     -webkit-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out; }
-  section#playbackControls .wrapper li[data-button="play"],
-  section#playbackControls .wrapper li[data-button="pause"],
-  section#playbackControls .wrapper li[data-button="stop"] {
-    font-size: 36px; }
-  section#playbackControls .wrapper li:hover,
-  section#playbackControls .wrapper li.active {
+  section#playbackControls .controls-wrapper li:hover,
+  section#playbackControls .controls-wrapper li.active {
     color: #E6802E;
     -ms-transform: scale(1.15);
     -webkit-transform: scale(1.15);
     -moz-transform: scale(1.15);
     -o-transform: scale(1.15);
     transform: scale(1.15); }
-  section#playbackControls .wrapper li:active {
+  section#playbackControls .controls-wrapper li:active {
     -ms-transform: scale(1);
     -webkit-transform: scale(1);
     -moz-transform: scale(1);
     -o-transform: scale(1);
     transform: scale(1); }
-  section#playbackControls .wrapper li[data-button="pause"],
-  section#playbackControls .wrapper li[data-button="stop"] {
-    display: none; }
+  section#playbackControls .controls-wrapper li.play-button {
+    position: relative; }
+    section#playbackControls .controls-wrapper li.play-button .speed-indicator {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      line-height: 47px;
+      text-align: center;
+      color: #E6802E;
+      font-weight: bold;
+      font-size: 16px; }
+  section#playbackControls .controls-wrapper li.play-button:hover .speed-indicator,
+  section#playbackControls .controls-wrapper li.play-button.active .speed-indicator {
+    color: #FFF; }
 
 section.tabsContainer {
   position: relative;
@@ -1222,7 +1299,7 @@ section.tabsContainer.sub nav {
 
 #tabs {
   position: fixed;
-  top: 235px;
+  top: 195px;
   left: 0;
   right: 0;
   bottom: 32px;
