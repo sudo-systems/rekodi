@@ -1,10 +1,12 @@
-rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'rkKodiWsApiService', 'rkTooltipsService', '$attrs', 'rkCacheService', 'rkHelperService',
-  function($scope, $element, rkKodiWsApiService, rkTooltipsService, $attrs, rkCacheService, rkHelperService) {
+rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'rkKodiWsApiService', 'rkTooltipsService', '$attrs', 'rkCacheService', 'rkHelperService', 'rkRemoteControlService', 'rkEnumsService',
+  function($scope, $element, rkKodiWsApiService, rkTooltipsService, $attrs, rkCacheService, rkHelperService, rkRemoteControlService, rkEnumsService) {
+    var modal = {};
     $scope.identifier = $attrs.id;
     $scope.selectedIndex = null;
     $scope.moviesCategorised = {};
     $scope.moviesIndex = [];
     $scope.movies = [];
+    $scope.resumeMovie = {};
     var kodiWsApiConnection = null;
     $scope.filter = {
       value: ''
@@ -72,7 +74,7 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'rkKodiWsApiService'
         $scope.$root.$emit('rkStartLoading');
         
         kodiWsApiConnection.VideoLibrary.GetMovies({
-          properties: ['thumbnail', 'year', 'rating', 'plotoutline', 'genre', 'runtime'],
+          properties: ['thumbnail', 'year', 'rating', 'plotoutline', 'genre', 'runtime', 'resume', 'lastplayed', 'file'],
           sort: {
             order: 'ascending',
             method: 'label'
@@ -116,6 +118,35 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'rkKodiWsApiService'
     $scope.clearFilter = function() {
       $scope.filter.value = '';
     };
+    
+    $scope.handlePlay = function(movie) {
+      if(movie.resume.position > 0) {
+        $scope.resumeMovie = movie;
+        modal.resumeMovie = $('[data-remodal-id=resumeMovieModal]').remodal();
+        modal.resumeMovie.open();
+      }
+      else {
+        $scope.play(movie, false);
+      }
+    };
+    
+    $scope.play = function(movie, resume) {
+      if(modal.resumeMovie) {
+        modal.resumeMovie.close();
+      }
+      
+      resume = (resume)? true : false;
+      var options = {
+        item: {
+          movieid: movie.movieid
+        },
+        options: {
+          resume: resume
+        }
+      };
+
+      rkRemoteControlService.play(options);
+    };
 
     $scope.init = function() {
       rkCacheService.setCategory($scope.identifier);
@@ -123,6 +154,11 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'rkKodiWsApiService'
       if($.isEmptyObject($scope.movies)) {
         $scope.getMovies();
       }
+      
+      $(document).on('closed', '[data-remodal-id=resumeMovieModal]', function(e) {
+        $scope.resumeMovie = {};
+        modal.resumeMovie = null;
+      });
     };
   }
 ]);

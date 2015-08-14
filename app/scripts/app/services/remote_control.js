@@ -1,5 +1,5 @@
-rekodiApp.factory('rkRemoteControlService', ['$rootScope', '$timeout', 'rkKodiWsApiService', 'rkHelperService',
-  function($rootScope, $timeout, rkKodiWsApiService, rkHelperService) {
+rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkKodiWsApiService', 'rkHelperService',
+  function($rootScope, rkKodiWsApiService, rkHelperService) {
     var kodiWsApiConnection = null;
     var currentSpeed = 0;
     
@@ -56,6 +56,16 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', '$timeout', 'rkKodiWs
           });
         }
       });
+    };
+    
+    var play = function(options) {
+      if(kodiWsApiConnection) {
+        kodiWsApiConnection.Player.Open(options).then(function(data) {
+          
+        }, function(error) {
+          rkHelperService.handleError(error);
+        });
+      }
     };
     
     var setSpeed = function(speed) {
@@ -162,6 +172,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', '$timeout', 'rkKodiWs
     return {
       getActivePlayerId: getActivePlayerId,
       goTo: goTo,
+      play: play,
       playPause: playPause,
       setSpeed: setSpeed,
       rewind: rewind,

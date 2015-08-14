@@ -3,7 +3,7 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
     var getImageUrl = function(specialPath) {
       var usernameAndPassword = ($localStorage.settings.password && $localStorage.settings.password !== '')? $localStorage.settings.username+':'+$localStorage.settings.password+'@' : '';
       return 'http://'+usernameAndPassword+$localStorage.settings.serverAddress+':'+$localStorage.settings.httpPort+'/image/'+encodeURIComponent(specialPath);
-    }
+    };
     
     var addCustomFields = function(data) {
       for(var key in data) {
@@ -40,6 +40,10 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
         
         if(data[key].runtime) {
           data[key].duration_readable =  secondsToDuration(data[key].runtime);
+        }
+        
+        if(data[key].resume && data[key].resume.position) {
+          data[key].resume.position_readable = secondsToDuration(data[key].resume.position);
         }
       }
 

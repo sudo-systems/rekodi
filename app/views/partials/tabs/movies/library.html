@@ -11,7 +11,7 @@
 </div>
 <div class="data-list-wrapper">
   <ul class="vertical">
-    <li ng-repeat="movie in moviesCategorised[selectedIndex] | filter:filterList track by movie.movieid" class="clearfix">
+    <li ng-repeat="movie in moviesCategorised[selectedIndex] | filter:filterList track by movie.movieid" rk-tooltips class="clearfix" ng-click="handlePlay(movie)">
       <div class="thumbnail">
         <img ng-src="{{movie.thumbnail_src}}" alt="" ng-if="movie.thumbnail_src" />
         <i class="mdi mdi-movie" ng-if="!movie.thumbnail_src"></i>
@@ -20,7 +20,11 @@
         <table width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td colspan="2" class="title">
-              <h2>{{movie.label}}</h2>
+              <h2>
+                <i class="mdi mdi-eye watched-label" ng-if="movie.lastplayed !== '' && movie.resume.position === 0" title="Watched"></i> 
+                <i class="mdi mdi-redo partially-watched-label" ng-if="movie.resume.position !== 0" title="Partially watched"></i>
+                {{movie.label}}
+              </h2>
             </td>
           </tr>
           <tr ng-if="movie.display_genre">
@@ -67,4 +71,14 @@
       </div>
     </li>
   </ul>
+</div>
+
+<div class="remodal" data-remodal-id="resumeMovieModal">
+  <button data-remodal-action="close" class="remodal-close"></button>
+  <button class="click-option" ng-click="play(resumeMovie, true)" data-remodal-action="confirm">
+    Resume "{{resumeMovie.label}}" from {{resumeMovie.resume.position_readable}}
+  </button>
+  <button class="click-option" ng-click="play(resumeMovie, false)" data-remodal-action="confirm">
+    Start from the beginning
+  </button>
 </div>
