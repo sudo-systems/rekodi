@@ -122,6 +122,7 @@ body {
     height: 2px;
     cursor: pointer;
     background: #555;
+    border-radius: 1px;
     @include transitionAll(map-get($global, transition-speed));
   }
 
