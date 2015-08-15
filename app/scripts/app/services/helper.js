@@ -64,7 +64,7 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
       date.setSeconds(seconds);
       return date.toISOString().substr(11, 8);
     };
-    
+
     return {
       getImageUrl: getImageUrl,
       addCustomFields: addCustomFields,

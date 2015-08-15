@@ -1,27 +1,27 @@
 <div class="volume-slider-wrapper">
-  <i class="mdi mdi-volume-off" ng-class="{active: isMuted}" ng-click="toggleMute()"></i><input type="range" name="volume" ng-model="currentVolume" ng-change="setVolume(currentVolume)" min="0" max="100" step="1" />
+  <i class="mdi mdi-volume-off" ng-class="{active: status.isMuted}" ng-click="toggleMute()"></i><input type="range" name="volume" ng-model="status.currentVolume" ng-change="setVolume(status.currentVolume)" min="0" max="100" step="1" />
 </div>
-<div class="controls-wrapper" ng-show="isConnected">
+<div class="controls-wrapper" ng-show="status.isConnected">
   <ul class="horizontal">
     <li ng-click="skipPrevious()">
       <i class="mdi mdi-skip-previous"></i>
     </li>
-    <li ng-click="rewind()" ng-class="{active: isRewinding}">
+    <li ng-click="rewind()" ng-class="{active: status.isRewinding}">
       <i class="mdi mdi-rewind"></i>
     </li>
-    <li ng-show="showPlayButton" ng-click="playPause()" class="play-button">
+    <li ng-show="status.showPlayButton" ng-click="playPause()" class="play-button">
       <i class="mdi mdi-play"></i>
-      <div ng-show="currentSpeed < 0 || currentSpeed > 1" class="speed-indicator">
-        {{currentSpeed}}X
+      <div ng-show="status.currentSpeed < 0 || status.currentSpeed > 1" class="speed-indicator">
+        {{status.currentSpeed}}X
       </div>
     </li>
-    <li ng-show="showPauseButton" ng-click="playPause()" ng-class="{active: isPaused}">
+    <li ng-show="status.showPauseButton" ng-click="playPause()" ng-class="{active: status.isPaused}">
       <i class="mdi mdi-pause"></i>
     </li>
-    <li ng-show="showStopButton" ng-click="stop()">
+    <li ng-show="status.showStopButton" ng-click="stop()">
       <i class="mdi mdi-stop"></i>
     </li>
-    <li ng-click="fastForward()" ng-class="{active: isFastForwarding}">
+    <li ng-click="fastForward()" ng-class="{active: status.isFastForwarding}">
       <i class="mdi mdi-fast-forward"></i>
     </li>
     <li ng-click="skipNext()">

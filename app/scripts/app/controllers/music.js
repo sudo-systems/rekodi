@@ -68,13 +68,11 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
 
     $scope.getArtists = function() {
       $scope.currentLevel = 'artists';
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
-      
       $scope.clearFilter();
-      getArtistsFromCache();
-      
+
       if(kodiWsApiConnection) {
         $scope.$root.$emit('rkStartLoading');
+        getArtistsFromCache();
         
         kodiWsApiConnection.AudioLibrary.GetArtists({
           albumartistsonly: false,
@@ -117,13 +115,11 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     $scope.getAlbums = function(artist) {
       $scope.currentLevel = 'albums';
       $scope.currentArtistId = artist.artistid;
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
-      
       $scope.clearFilter();
-      getAlbumsFromCache(artist.artistid);
-      
+
       if(kodiWsApiConnection) {
         $scope.$root.$emit('rkStartLoading');
+        getAlbumsFromCache(artist.artistid);
         
         kodiWsApiConnection.AudioLibrary.GetAlbums({
           properties: ['thumbnail', 'year', 'genre', 'displayartist'],
@@ -170,13 +166,11 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     $scope.getSongs = function(album) {
       $scope.currentLevel = 'songs';
       $scope.currentAlbumId = album.albumid;
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
-      
       $scope.clearFilter();
-      getSongsFromCache(album.albumid);
       
       if(kodiWsApiConnection) {
         $scope.$root.$emit('rkStartLoading');
+        getSongsFromCache(album.albumid);
         
         kodiWsApiConnection.AudioLibrary.GetSongs({
           properties: ['thumbnail', 'year', 'genre', 'displayartist', 'track', 'album', 'duration'],
@@ -233,13 +227,22 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
         }
       }
     }
+    
+    function initConnectionChange() {
+      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+
+      if(kodiWsApiConnection && $.isEmptyObject($scope.artists)) {
+        $scope.getArtists();
+      }
+    }
 
     $scope.init = function() {
       rkCacheService.setCategory($scope.identifier);
+      initConnectionChange();
       
-      if($.isEmptyObject($scope.artists)) {
-        $scope.getArtists();
-      }
+      $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+        initConnectionChange();
+      });
     };
   }
 ]);

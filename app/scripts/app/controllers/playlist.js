@@ -1,5 +1,6 @@
 rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', 'rkEnumsService', '$sessionStorage', 'rkHelperService',
   function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, rkEnumsService, $sessionStorage, rkHelperService) {
+    var kodiWsApiConnection = null;
     $scope.type = '';
     $scope.playlistId = null;
     $scope.items = [];
@@ -7,7 +8,6 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKod
     $scope.filter = {
       value: ''
     };
-    var kodiWsApiConnection = null;
     
     $scope.$watch('type', function() {
       if($scope.type === 'audio') {
@@ -20,8 +20,6 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKod
     });
     
     $scope.get = function() {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
-
       if(kodiWsApiConnection) {
         $scope.$root.$emit('rkStartLoading');
         
@@ -30,7 +28,6 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKod
           properties: ['file']
         }).then(function(data) {
           $scope.items = data.items;
-          console.dir(data.items);
           $scope.$root.$emit('rkStopLoading');
           rkTooltipsService.apply($($element).find('.data-list-wrapper'));
         }, function(error) {
@@ -48,48 +45,41 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKod
       $scope.filter.value = '';
     };
     
-    function bindEvents() {
+    function initConnectionChange() {
       kodiWsApiConnection = rkKodiWsApiService.getConnection();
 
       if(kodiWsApiConnection) {
+        if($scope.items.length === 0) {
+          $scope.get();
+        }
+
         kodiWsApiConnection.Playlist.OnAdd(function(serverData) {
           if(serverData.data.playlistid === $scope.playlistId) {
             $scope.get();
           }
         });
-        
+
         kodiWsApiConnection.Playlist.OnRemove(function(serverData) {
           if(serverData.data.playlistid === $scope.playlistId) {
             $scope.get();
           }
         });
-        
+
         kodiWsApiConnection.Playlist.OnClear(function(serverData) {
           if(serverData.data.playlistid === $scope.playlistId) {
             $scope.get();
           }
         });
-        
-        $scope.$root.$on('rkWsConnectionStatusChange', function(event, data) {
-          if(!data.connected) {
-            $scope.items = [];
-          }
-          else {
-            $scope.get();
-          }
-        });
       }
     }
-    
+
     $scope.init = function() {
-      $timeout(function() {
-        if($.isEmptyObject($scope.items)) {
-          $scope.get();
-        };
-        
-        bindEvents();
-      });
+      initConnectionChange();
       
+      $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+        initConnectionChange();
+      });
+
       $scope.$watchCollection(function() {
         return $sessionStorage.playStatus;
       }, function(newValue, oldValue) {

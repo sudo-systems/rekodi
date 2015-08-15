@@ -65,13 +65,11 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'rkKodiWsApiService'
     }
     
     $scope.getMovies = function() {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
-      
       $scope.clearFilter();
-      getMoviesFromCache();
       
       if(kodiWsApiConnection) {
         $scope.$root.$emit('rkStartLoading');
+        getMoviesFromCache();
         
         kodiWsApiConnection.VideoLibrary.GetMovies({
           properties: ['thumbnail', 'year', 'rating', 'plotoutline', 'genre', 'runtime', 'resume', 'lastplayed', 'file'],
@@ -147,14 +145,23 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'rkKodiWsApiService'
 
       rkRemoteControlService.play(options);
     };
+    
+    function initConnectionChange() {
+      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+
+      if(kodiWsApiConnection && $.isEmptyObject($scope.movies)) {
+        $scope.getMovies();
+      }
+    }
 
     $scope.init = function() {
       rkCacheService.setCategory($scope.identifier);
+      initConnectionChange();
       
-      if($.isEmptyObject($scope.movies)) {
-        $scope.getMovies();
-      }
-      
+      $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+        initConnectionChange();
+      });
+
       $(document).on('closed', '[data-remodal-id=resumeMovieModal]', function(e) {
         $scope.resumeMovie = {};
         modal.resumeMovie = null;
