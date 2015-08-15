@@ -34,9 +34,8 @@ section#nowPlaying {
       margin-top: 20px;
       
       i.mdi {
-        font-size: 80px;
-        line-height: 80px;
-        -webkit-transform: rotateY(25deg);
+        font-size: 60px;
+        line-height: 60px;
         -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
       }
       
@@ -52,27 +51,40 @@ section#nowPlaying {
     .details {
       display: inline-block;
       float: right;
-      width: 400px;
-      color: #BBB;
+      width: 395px;
+      color: #999;
       height: 100px;
       margin-top: 10px;
 
-      .title {
+      i.mdi {
+        color: #666;
         font-size: 14px;
-        font-weight: 500;
-        color: #BBB;
-        padding-bottom: 3px;
-        text-align: right;
+      }
+      
+      .artist {
+        font-size: 14px;
+        line-height: 18px;
+      }
 
-        .name {
-          color: #FFF;
-          font-size: 20px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: inline-block;
-          width: 100%;
-        }
+      .album {
+        color: #BBB;
+        font-size: 15px;
+        line-height: 22px;
+      }
+
+      .title {
+        color: #FFF;
+        font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        line-height: 22px;
+      }
+      
+      .time {
+        font-size: 14px;
+        color: #FFF;
       }
       
       .plot {

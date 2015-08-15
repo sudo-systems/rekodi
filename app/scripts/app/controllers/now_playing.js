@@ -1,10 +1,10 @@
 rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout',
   function($scope, $timeout) {
-    $scope.playStatus = {};
+    $scope.nowPlaying = null;
     
     function init() {
-      $scope.$root.$on('rkNowPlayingDataUpdated', function(event, data) {
-        $scope.playStatus = data;
+      $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
+        $scope.nowPlaying = data;
       });
     }
     

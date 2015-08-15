@@ -28,11 +28,9 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 
       type: null
     };
 
-    var get = function() {
+    var getProperties = function() {
       rkRemoteControlService.getActivePlayerId(function(playerId) {
-        kodiApi = kodiApiService.getConnection();
-
-        if(kodiApi && playerId !== null) {
+        if(playerId !== null) {
           kodiApi.Player.GetProperties({
             playerid: playerId,
             properties: Object.keys(defaultProperties)
@@ -43,38 +41,28 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 
             }
           }, function(error) {
             rkHelperService.handleError(error);
-            setDefaults();
+            $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
           });
         }
         else {
-          setDefaults();
+          $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
         }
       });
     };
-    
-    var setDefaults = function() {
-      $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
-    };
-    
+
     function init() {
       $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
         kodiApi = kodiApiService.getConnection();
         
         if(kodiApi) {
-          kodiApi.Player.OnPropertyChanged(function(response) {
-            if(response.data && response.data.property) {
-              for(var key in response.data.property) {
-                currentProperties[key] = response.data.property[key];
-              }
-            }
-
-            $rootScope.$emit('rkPlayerPropertiesChange', currentProperties);
-          });
+          getProperties();
           
-          get();
+          kodiApi.Player.OnPropertyChanged(function(response) {
+            getProperties();
+          });
         }
         else {
-          setDefaults();
+          $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
         }
       });
     }

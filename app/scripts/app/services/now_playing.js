@@ -1,80 +1,43 @@
 rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'kodiApiService', 'rkEnumsService', 'rkHelperService', 'rkRemoteControlService',
   function($rootScope, kodiApiService, rkEnumsService, rkHelperService, rkRemoteControlService) {
     var kodiApi = null;
-    var currentData = {};
-    var getInfoInterval = null;
+    var playingItem = null;
     var itemProperties = [];
-    itemProperties[rkEnumsService.PlayerId.AUDIO] = ['title', 'artist', 'albumartist', 'displayartist', 'album', 'track', 'year', 'genre', 'thumbnail', 'playcount', 'file', 'duration'];
+    itemProperties[rkEnumsService.PlayerId.AUDIO] = ['title', 'displayartist', 'album', 'track', 'year', 'genre', 'thumbnail', 'file', 'duration'];
     itemProperties[rkEnumsService.PlayerId.VIDEO] = ['title', 'file', 'thumbnail', 'plotoutline', 'year', 'season', 'episode', 'showtitle', 'plot', 'runtime'];
     
-    var getInfo = function(playerId) {
-      if(playerId) {
-        clearInterval(getInfoInterval);
-        getItem(playerId);
-
-        getInfoInterval = setInterval(function() {
-          getItem(playerId);
-        }, 1000);
-        
-        return;
-      }
-      
-      clearInterval(getInfoInterval);
-      rkRemoteControlService.getActivePlayerId(function(playerId) {
-        getItem(playerId);
-      });
-
-      getInfoInterval = setInterval(function() {
-        rkRemoteControlService.getActivePlayerId(function(playerId) {
-          getItem(playerId);
-        });
-      }, 1000);
-    };
-    
     var setNotPlaying = function() {
-      $rootScope.$emit('rkNowPlayingDataUpdated', {
-        isPlaying: false,
-        playerType: null,
-        item: null
-      });
+      playingItem = null;
+      $rootScope.$emit('rkNowPlayingDataUpdate', playingItem);
     };
-    
-    var setIsPlaying = function(playerId, data) {
-      if(JSON.stringify(currentData) !== JSON.stringify(data.item)) {
-        currentData = data.item;
-        
-        $rootScope.$emit('rkNowPlayingDataUpdated', {
-          isPlaying: true,
-          playerType: (rkEnumsService.PlaylistId.AUDIO === playerId)? 'audio' : 'video',
-          item: data.item
-        });
-      }
-    };
-    
-    var getItem = function(playerId) {
-      kodiApi = kodiApiService.getConnection();
-      
-      if(kodiApi && playerId !== null) {
-        kodiApi.Player.GetItem({
-          playerid: playerId,
-          properties: itemProperties[playerId]
-        }).then(function(data) {
-          if(data.item) {
-            data.item = rkHelperService.addCustomFields(data.item);
-            setIsPlaying(playerId, data);
-          }
-          else {
+
+    var getItem = function() {
+      rkRemoteControlService.getActivePlayerId(function(playerId) {
+        if(playerId !== null) {
+          kodiApi.Player.GetItem({
+            playerid: playerId,
+            properties: itemProperties[playerId]
+          }).then(function(data) {
+            if(data.item) {
+              data.item = rkHelperService.addCustomFields(data.item);
+
+              if(JSON.stringify(playingItem) !== JSON.stringify(data.item)) {
+                playingItem = data.item;
+                $rootScope.$emit('rkNowPlayingDataUpdate', playingItem);
+              }
+            }
+            else {
+              setNotPlaying();
+            }
+          }, function(error) {
             setNotPlaying();
-          }
-        }, function(error) {
+            rkHelperService.handleError(error);
+          });
+        }
+        else {
           setNotPlaying();
-          rkHelperService.handleError(error);
-        });
-      }
-      else {
-        clearInterval(getInfoInterval);
-        setNotPlaying();
-      }
+        }
+      });
     };
 
     var init = function() {
@@ -83,14 +46,14 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'kodiApiService', 'rkEnu
         
         if(kodiApi) {
           kodiApi.Player.OnPlay(function(response) {
-            getInfo(response.data.player.playerid);
+            getItem();
           });
 
           kodiApi.Player.OnStop(function(response) {
             setNotPlaying();
           });
-          
-          getInfo();
+
+          getItem();
         }
         else {
           setNotPlaying();
