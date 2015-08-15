@@ -1,5 +1,5 @@
-rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'rkKodiWsApiService', '$sessionStorage', 'rkPlayerPropertiesService', 'rkNowPlayingService', 'rkKodiPropertiesService',
-  function($scope, $localStorage, $timeout, rkKodiWsApiService, $sessionStorage, rkPlayerPropertiesService, rkNowPlayingService, rkKodiPropertiesService) {
+rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'kodiApiService', '$sessionStorage', 'rkPlayerPropertiesService', 'rkNowPlayingService', 'rkKodiPropertiesService',
+  function($scope, $localStorage, $timeout, kodiApiService, $sessionStorage, rkPlayerPropertiesService, rkNowPlayingService, rkKodiPropertiesService) {
     $scope.storage = $localStorage;
     $scope.sessionStorage = $sessionStorage;
     $scope.isConfigured = true;
@@ -28,7 +28,7 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'rkKod
 
     function init() {
       setIfConnectionConfigured();
-      rkKodiWsApiService.connect();
+      kodiApiService.connect();
       
       if($scope.storage.tabs && $scope.storage.tabs.currentlyActiveTab) {
         $scope.storage.tabs.currentlyActiveTab = '';

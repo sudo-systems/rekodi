@@ -1,6 +1,6 @@
-rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkKodiWsApiService', 'rkHelperService', 'rkRemoteControlService',
-  function ($scope, $timeout, rkKodiWsApiService, rkHelperService, rkRemoteControlService) {
-    var kodiWsApiConnection = null;
+rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'kodiApiService', 'rkRemoteControlService',
+  function ($scope, $timeout, kodiApiService, rkRemoteControlService) {
+    var kodiApi = null;
     $scope.playerProperties = {};
     $scope.player = {};
     $scope.status = {
@@ -59,31 +59,31 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkKodiWsA
     }
     
     function initConnectionChange() {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
-      $scope.status.isConnected = (kodiWsApiConnection);
+      kodiApi = kodiApiService.getConnection();
+      $scope.status.isConnected = (kodiApi);
       $scope.status.currentSpeed = null;
       $scope.$apply();
 
-      if(kodiWsApiConnection) {
-        kodiWsApiConnection.Player.OnPlay(function (data) {
+      if(kodiApi) {
+        kodiApi.Player.OnPlay(function (data) {
           $scope.player = data.data.player;
           $scope.status.currentSpeed = (!$scope.status.isPlaying && data.data.player.speed === 0)? null : data.data.player.speed;
           $scope.$apply();
         });
 
-        kodiWsApiConnection.Player.OnPause(function (data) {
+        kodiApi.Player.OnPause(function (data) {
           $scope.player = data.data.player;
           $scope.status.currentSpeed = (!$scope.status.isPlaying && data.data.player.speed === 0)? null : data.data.player.speed;
           $scope.$apply();
         });
 
-        kodiWsApiConnection.Player.OnStop(function (data) {
+        kodiApi.Player.OnStop(function (data) {
           $scope.player = {};
           $scope.status.currentSpeed = null;
           $scope.$apply();
         });
 
-        kodiWsApiConnection.Player.OnSpeedChanged(function (data) {
+        kodiApi.Player.OnSpeedChanged(function (data) {
           $scope.player = data.data.player;
           $scope.status.currentSpeed = (!$scope.status.isPlaying && data.data.player.speed === 0)? null : data.data.player.speed;
           $scope.$apply();

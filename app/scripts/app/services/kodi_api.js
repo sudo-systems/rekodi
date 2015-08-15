@@ -1,4 +1,4 @@
-rekodiApp.factory('rkKodiWsApiService', ['$rootScope', '$localStorage', '$sessionStorage',
+rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', '$sessionStorage',
   function($rootScope, $localStorage, $sessionStorage) {
     var kodiWs = require('xbmc-ws');
     var connectingInProgress = false;

@@ -1,6 +1,6 @@
-rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkKodiWsApiService', 'rkHelperService', 'rkRemoteControlService',
-  function($rootScope, rkKodiWsApiService, rkHelperService, rkRemoteControlService) {
-    var kodiWsApiConnection = null;
+rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 'rkHelperService', 'rkRemoteControlService',
+  function($rootScope, kodiApiService, rkHelperService, rkRemoteControlService) {
+    var kodiApi = null;
     var currentProperties = {};
     var defaultProperties = {
       audiostreams: [],
@@ -30,10 +30,10 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkKodiWsApiServic
 
     var get = function() {
       rkRemoteControlService.getActivePlayerId(function(playerId) {
-        kodiWsApiConnection = rkKodiWsApiService.getConnection();
+        kodiApi = kodiApiService.getConnection();
 
-        if(kodiWsApiConnection && playerId !== null) {
-          kodiWsApiConnection.Player.GetProperties({
+        if(kodiApi && playerId !== null) {
+          kodiApi.Player.GetProperties({
             playerid: playerId,
             properties: Object.keys(defaultProperties)
           }).then(function(data) {
@@ -58,10 +58,10 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkKodiWsApiServic
     
     function init() {
       $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
-        if(data.connected) {
-          kodiWsApiConnection = rkKodiWsApiService.getConnection();
-          
-          kodiWsApiConnection.Player.OnPropertyChanged(function(response) {
+        kodiApi = kodiApiService.getConnection();
+        
+        if(kodiApi) {
+          kodiApi.Player.OnPropertyChanged(function(response) {
             if(response.data && response.data.property) {
               for(var key in response.data.property) {
                 currentProperties[key] = response.data.property[key];

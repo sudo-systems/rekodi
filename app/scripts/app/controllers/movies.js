@@ -1,5 +1,5 @@
-rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'rkKodiWsApiService', 'rkTooltipsService', '$attrs', 'rkCacheService', 'rkHelperService', 'rkRemoteControlService', 'rkEnumsService',
-  function($scope, $element, rkKodiWsApiService, rkTooltipsService, $attrs, rkCacheService, rkHelperService, rkRemoteControlService, rkEnumsService) {
+rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', '$attrs', 'rkCacheService', 'rkHelperService', 'rkRemoteControlService',
+  function($scope, $element, kodiApiService, rkTooltipsService, $attrs, rkCacheService, rkHelperService, rkRemoteControlService) {
     var modal = {};
     $scope.identifier = $attrs.id;
     $scope.selectedIndex = null;
@@ -7,7 +7,7 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'rkKodiWsApiService'
     $scope.moviesIndex = [];
     $scope.movies = [];
     $scope.resumeMovie = {};
-    var kodiWsApiConnection = null;
+    var kodiApi = null;
     $scope.filter = {
       value: ''
     };
@@ -67,11 +67,11 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'rkKodiWsApiService'
     $scope.getMovies = function() {
       $scope.clearFilter();
       
-      if(kodiWsApiConnection) {
+      if(kodiApi) {
         $scope.$root.$emit('rkStartLoading');
         getMoviesFromCache();
         
-        kodiWsApiConnection.VideoLibrary.GetMovies({
+        kodiApi.VideoLibrary.GetMovies({
           properties: ['thumbnail', 'year', 'rating', 'plotoutline', 'genre', 'runtime', 'resume', 'lastplayed', 'file'],
           sort: {
             order: 'ascending',
@@ -147,9 +147,9 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'rkKodiWsApiService'
     };
     
     function initConnectionChange() {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      kodiApi = kodiApiService.getConnection();
 
-      if(kodiWsApiConnection && $.isEmptyObject($scope.movies)) {
+      if(kodiApi && $.isEmptyObject($scope.movies)) {
         $scope.getMovies();
       }
     }

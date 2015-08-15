@@ -1,5 +1,5 @@
-rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'rkKodiWsApiService', 'rkTooltipsService', 'rkEnumsService', '$attrs', 'rkCacheService', 'rkHelperService', 'rkRemoteControlService',
-  function($scope, $element, rkKodiWsApiService, rkTooltipsService, rkEnumsService, $attrs, rkCacheService, rkHelperService, rkRemoteControlService) {
+rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', '$attrs', 'rkCacheService', 'rkHelperService', 'rkRemoteControlService',
+  function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, $attrs, rkCacheService, rkHelperService, rkRemoteControlService) {
     $scope.identifier = $attrs.id;
     $scope.files = {};
     $scope.sources = [];
@@ -7,7 +7,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'rkKodiWsApiService',
     $scope.currentLevel = null;
     $scope.currentDirectory = null;
     var sourcesPaths = [];
-    var kodiWsApiConnection = null;
+    var kodiApi = null;
     $scope.filter = {
       value: ''
     };
@@ -24,11 +24,11 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'rkKodiWsApiService',
       $scope.currentDirectory = null;
       $scope.clearFilter();
 
-      if(kodiWsApiConnection) {
+      if(kodiApi) {
         $scope.$root.$emit('rkStartLoading');
         getSourcesFromCache();
         
-        kodiWsApiConnection.Files.GetSources({
+        kodiApi.Files.GetSources({
           media: $scope.type,
           sort: {
             order: 'ascending',
@@ -82,7 +82,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'rkKodiWsApiService',
       $scope.currentDirectoryIndexKey = indexKey;
       $scope.clearFilter();
       
-      if(kodiWsApiConnection) {
+      if(kodiApi) {
         $scope.$root.$emit('rkStartLoading');
         getFilesFromCache(indexKey);
         var fields = ['file'];
@@ -95,7 +95,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'rkKodiWsApiService',
           fields = ['file'];
         }
         
-        kodiWsApiConnection.Files.GetDirectory({
+        kodiApi.Files.GetDirectory({
           directory: directory,
           media: $scope.type,
           properties: fields,
@@ -149,17 +149,17 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'rkKodiWsApiService',
       
       options.item[entry.filetype] = entry.file;
 
-      if(kodiWsApiConnection) {
+      if(kodiApi) {
         rkRemoteControlService.play(options);
       }
     };
     
     $scope.addToPlaylist = function(entry) {
-      if(kodiWsApiConnection) {
+      if(kodiApi) {
         $scope.$root.$emit('rkStartLoading');
         var playlistId = ($scope.type === 'music')? rkEnumsService.PlaylistId.AUDIO : rkEnumsService.PlaylistId.VIDEO;
 
-        kodiWsApiConnection.Playlist.GetItems({
+        kodiApi.Playlist.GetItems({
           playlistid: playlistId
         }).then(function(data) {
           var options = {
@@ -170,7 +170,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'rkKodiWsApiService',
 
           options.item[entry.filetype] = entry.file;
           
-          kodiWsApiConnection.Playlist.Insert(options).then(function(data) {
+          kodiApi.Playlist.Insert(options).then(function(data) {
             if(data === 'OK') {
               emitAddedToPlaylistNotification(entry);
             }
@@ -213,9 +213,9 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'rkKodiWsApiService',
     }
     
     function initConnectionChange() {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      kodiApi = kodiApiService.getConnection();
 
-      if(kodiWsApiConnection && $scope.sources.length === 0) {
+      if(kodiApi && $scope.sources.length === 0) {
         $scope.getSources();
       }
     }

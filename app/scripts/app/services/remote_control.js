@@ -1,11 +1,11 @@
-rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkKodiWsApiService', 'rkHelperService',
-  function($rootScope, rkKodiWsApiService, rkHelperService) {
-    var kodiWsApiConnection = null;
+rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rkHelperService',
+  function($rootScope, kodiApiService, rkHelperService) {
+    var kodiApi = null;
     var currentSpeed = 0;
     
     var getActivePlayerId = function(callback) {
-      if(kodiWsApiConnection) {
-        kodiWsApiConnection.Player.GetActivePlayers().then(function(data) {
+      if(kodiApi) {
+        kodiApi.Player.GetActivePlayers().then(function(data) {
           var playerId = (data[0])? data[0].playerid : null;
           callback(playerId);
         }, function(error) {
@@ -21,7 +21,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkKodiWsApiService',
     var goTo = function(direction) {
       getActivePlayerId(function(playerId) {
         if(playerId !== null) {
-          kodiWsApiConnection.Player.GoTo({
+          kodiApi.Player.GoTo({
             playerid: playerId,
             to: direction
           }).then(function(data) {
@@ -46,7 +46,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkKodiWsApiService',
     var playPause = function() {
       getActivePlayerId(function(playerId) {
         if(playerId !== null) {
-          kodiWsApiConnection.Player.PlayPause({
+          kodiApi.Player.PlayPause({
             playerid: playerId,
             play: 'toggle'
           }).then(function(data) {
@@ -59,8 +59,8 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkKodiWsApiService',
     };
     
     var play = function(options) {
-      if(kodiWsApiConnection) {
-        kodiWsApiConnection.Player.Open(options).then(function(data) {
+      if(kodiApi) {
+        kodiApi.Player.Open(options).then(function(data) {
           
         }, function(error) {
           rkHelperService.handleError(error);
@@ -73,7 +73,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkKodiWsApiService',
       
       getActivePlayerId(function(playerId) {
         if(playerId !== null) {
-          kodiWsApiConnection.Player.SetSpeed({
+          kodiApi.Player.SetSpeed({
             playerid: playerId,
             speed: speed
           }).then(function(data) {
@@ -122,7 +122,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkKodiWsApiService',
     var stop = function() {
       getActivePlayerId(function(playerId) {
         if(playerId !== null) {
-          kodiWsApiConnection.Player.Stop({
+          kodiApi.Player.Stop({
             playerid: playerId
           }).then(function(data) {
               currentSpeed = 0;
@@ -134,10 +134,10 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkKodiWsApiService',
     };
     
     var setVolume = function(percentage) {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      kodiApi = kodiApiService.getConnection();
       
-      if(kodiWsApiConnection) {
-        kodiWsApiConnection.Application.SetVolume({
+      if(kodiApi) {
+        kodiApi.Application.SetVolume({
           volume: parseInt(percentage)
         }).then(function(data) {
             //console.log(data);
@@ -148,10 +148,10 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkKodiWsApiService',
     };
     
     var toggleMute = function() {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      kodiApi = kodiApiService.getConnection();
       
-      if(kodiWsApiConnection) {
-        kodiWsApiConnection.Application.SetMute({
+      if(kodiApi) {
+        kodiApi.Application.SetMute({
           mute: 'toggle'
         }).then(function(data) {
             //console.log(data);
@@ -163,7 +163,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkKodiWsApiService',
     
     function init() {
       $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
-        kodiWsApiConnection = (data.connected)? rkKodiWsApiService.getConnection() : null;
+        kodiApi = kodiApiService.getConnection();
       });
     }
 

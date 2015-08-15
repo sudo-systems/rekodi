@@ -1,5 +1,5 @@
-rekodiApp.controller('rkSettingsCtrl', ['$scope', '$localStorage', 'rkKodiWsApiService', '$sessionStorage',
-  function($scope, $localStorage, rkKodiWsApiService, $sessionStorage) {
+rekodiApp.controller('rkSettingsCtrl', ['$scope', '$localStorage', 'kodiApiService', '$sessionStorage',
+  function($scope, $localStorage, kodiApiService, $sessionStorage) {
     $scope.storage = null;
     $scope.connectButton = {
       text: 'connect',
@@ -7,7 +7,7 @@ rekodiApp.controller('rkSettingsCtrl', ['$scope', '$localStorage', 'rkKodiWsApiS
     };
     
     $scope.connect = function() {
-      rkKodiWsApiService.connect(true);
+      kodiApiService.connect(true);
     };
     
     $scope.setDefaultTab = function(tabPath) {

@@ -1,6 +1,6 @@
-rekodiApp.factory('rkNowPlayingService', ['$rootScope', '$timeout', 'rkKodiWsApiService', 'rkEnumsService', 'rkHelperService', 'rkRemoteControlService',
-  function($rootScope, $timeout, rkKodiWsApiService, rkEnumsService, rkHelperService, rkRemoteControlService) {
-    var kodiWsApiConnection = null;
+rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'kodiApiService', 'rkEnumsService', 'rkHelperService', 'rkRemoteControlService',
+  function($rootScope, kodiApiService, rkEnumsService, rkHelperService, rkRemoteControlService) {
+    var kodiApi = null;
     var currentData = {};
     var getInfoInterval = null;
     var itemProperties = [];
@@ -52,10 +52,10 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', '$timeout', 'rkKodiWsApi
     };
     
     var getItem = function(playerId) {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      kodiApi = kodiApiService.getConnection();
       
-      if(kodiWsApiConnection && playerId !== null) {
-        kodiWsApiConnection.Player.GetItem({
+      if(kodiApi && playerId !== null) {
+        kodiApi.Player.GetItem({
           playerid: playerId,
           properties: itemProperties[playerId]
         }).then(function(data) {
@@ -79,14 +79,14 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', '$timeout', 'rkKodiWsApi
 
     var init = function() {
       $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
-        if(data.connected) {
-          kodiWsApiConnection = rkKodiWsApiService.getConnection();
-
-          kodiWsApiConnection.Player.OnPlay(function(response) {
+        kodiApi = kodiApiService.getConnection();
+        
+        if(kodiApi) {
+          kodiApi.Player.OnPlay(function(response) {
             getInfo(response.data.player.playerid);
           });
 
-          kodiWsApiConnection.Player.OnStop(function(response) {
+          kodiApi.Player.OnStop(function(response) {
             setNotPlaying();
           });
           

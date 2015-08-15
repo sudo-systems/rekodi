@@ -1,6 +1,6 @@
-rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', 'rkEnumsService', '$sessionStorage', 'rkHelperService',
-  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, rkEnumsService, $sessionStorage, rkHelperService) {
-    var kodiWsApiConnection = null;
+rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', '$sessionStorage', 'rkHelperService',
+  function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, $sessionStorage, rkHelperService) {
+    var kodiApi = null;
     $scope.type = '';
     $scope.playlistId = null;
     $scope.items = [];
@@ -20,10 +20,10 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKod
     });
     
     $scope.get = function() {
-      if(kodiWsApiConnection) {
+      if(kodiApi) {
         $scope.$root.$emit('rkStartLoading');
         
-        kodiWsApiConnection.Playlist.GetItems({
+        kodiApi.Playlist.GetItems({
           playlistid: $scope.playlistId,
           properties: ['file']
         }).then(function(data) {
@@ -46,26 +46,26 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', '$timeout', 'rkKod
     };
     
     function initConnectionChange() {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      kodiApi = kodiApiService.getConnection();
 
-      if(kodiWsApiConnection) {
+      if(kodiApi) {
         if($scope.items.length === 0) {
           $scope.get();
         }
 
-        kodiWsApiConnection.Playlist.OnAdd(function(serverData) {
+        kodiApi.Playlist.OnAdd(function(serverData) {
           if(serverData.data.playlistid === $scope.playlistId) {
             $scope.get();
           }
         });
 
-        kodiWsApiConnection.Playlist.OnRemove(function(serverData) {
+        kodiApi.Playlist.OnRemove(function(serverData) {
           if(serverData.data.playlistid === $scope.playlistId) {
             $scope.get();
           }
         });
 
-        kodiWsApiConnection.Playlist.OnClear(function(serverData) {
+        kodiApi.Playlist.OnClear(function(serverData) {
           if(serverData.data.playlistid === $scope.playlistId) {
             $scope.get();
           }

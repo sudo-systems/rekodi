@@ -1,5 +1,5 @@
-rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWsApiService', 'rkTooltipsService', '$localStorage', '$attrs', 'rkCacheService', 'rkHelperService',
-  function($scope, $element, $timeout, rkKodiWsApiService, rkTooltipsService, $localStorage, $attrs, rkCacheService, rkHelperService) {
+rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', '$attrs', 'rkCacheService', 'rkHelperService',
+  function($scope, $element, kodiApiService, rkTooltipsService, $attrs, rkCacheService, rkHelperService) {
     $scope.identifier = $attrs.id;
     $scope.selectedIndex = null;
     $scope.currentLevel = null;
@@ -9,7 +9,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     $scope.artistsIndex = [];
     $scope.albums = {};
     $scope.songs = {};
-    var kodiWsApiConnection = null;
+    var kodiApi = null;
     $scope.filter = {
       value: ''
     };
@@ -70,11 +70,11 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
       $scope.currentLevel = 'artists';
       $scope.clearFilter();
 
-      if(kodiWsApiConnection) {
+      if(kodiApi) {
         $scope.$root.$emit('rkStartLoading');
         getArtistsFromCache();
         
-        kodiWsApiConnection.AudioLibrary.GetArtists({
+        kodiApi.AudioLibrary.GetArtists({
           albumartistsonly: false,
           sort: {
             order: 'ascending',
@@ -117,11 +117,11 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
       $scope.currentArtistId = artist.artistid;
       $scope.clearFilter();
 
-      if(kodiWsApiConnection) {
+      if(kodiApi) {
         $scope.$root.$emit('rkStartLoading');
         getAlbumsFromCache(artist.artistid);
         
-        kodiWsApiConnection.AudioLibrary.GetAlbums({
+        kodiApi.AudioLibrary.GetAlbums({
           properties: ['thumbnail', 'year', 'genre', 'displayartist'],
           filter: {
             artistid: artist.artistid
@@ -168,11 +168,11 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
       $scope.currentAlbumId = album.albumid;
       $scope.clearFilter();
       
-      if(kodiWsApiConnection) {
+      if(kodiApi) {
         $scope.$root.$emit('rkStartLoading');
         getSongsFromCache(album.albumid);
         
-        kodiWsApiConnection.AudioLibrary.GetSongs({
+        kodiApi.AudioLibrary.GetSongs({
           properties: ['thumbnail', 'year', 'genre', 'displayartist', 'track', 'album', 'duration'],
           filter: {
             albumid: $scope.currentAlbumId
@@ -229,9 +229,9 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', '$timeout', 'rkKodiWs
     }
     
     function initConnectionChange() {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      kodiApi = kodiApiService.getConnection();
 
-      if(kodiWsApiConnection && $.isEmptyObject($scope.artists)) {
+      if(kodiApi && $.isEmptyObject($scope.artists)) {
         $scope.getArtists();
       }
     }
