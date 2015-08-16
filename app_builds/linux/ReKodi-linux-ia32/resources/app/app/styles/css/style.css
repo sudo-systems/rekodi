@@ -672,7 +672,7 @@ body {
   body a:hover {
     color: #E6802E; }
   body .jBox-container {
-    background: #EEE; }
+    background: #FFF; }
   body .jBox-content {
     padding: 3px 8px;
     overflow: auto;
@@ -682,10 +682,11 @@ body {
     white-space: nowrap; }
   body .jBox-Tooltip .jBox-container,
   body .jBox-Mouse .jBox-container {
-    border: 1px solid #AAA; }
+    border: 0;
+    border-radius: 1px; }
   body .jBox-pointer:after {
-    background: #EEE;
-    border: 1px solid #AAA; }
+    background: #FFF;
+    border: 0; }
   body .bodyOverlay {
     position: fixed;
     top: 130px;
@@ -701,6 +702,32 @@ body {
     body .bodyOverlay a {
       color: #E6802E; }
 
+.remodal-overlay {
+  background: rgba(34, 34, 34, 0.9); }
+
+.remodal .remodal-close:hover {
+  background: none;
+  color: #E6802E;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out; }
+.remodal .click-option {
+  border-bottom: 1px dotted #AAA;
+  line-height: 32px;
+  margin: 6px 0;
+  font-size: 15px;
+  background: #F4F4F4;
+  display: block;
+  font-size: 14;
+  text-transform: none;
+  letter-spacing: normal;
+  width: 100%; }
+.remodal .click-option:hover {
+  background: #EAEAEA;
+  color: #E6802E;
+  border-bottom: 1px solid #E6802E; }
+
 section#settings .settings-section {
   padding: 0 12px; }
   section#settings .settings-section .title {
@@ -712,11 +739,12 @@ section#settings .settings-section {
     line-height: 24px;
     text-transform: uppercase; }
   section#settings .settings-section li {
-    padding: 6px 0; }
+    padding: 6px 0;
+    white-space: nowrap; }
     section#settings .settings-section li label {
-      width: 125px; }
+      width: 140px; }
     section#settings .settings-section li input {
-      width: 351px; }
+      width: 336px; }
 
 section#windowControls {
   position: fixed;
@@ -801,9 +829,8 @@ section#nowPlaying {
       -webkit-perspective: 150px;
       margin-top: 20px; }
       section#nowPlaying .active .thumbnail i.mdi {
-        font-size: 80px;
-        line-height: 80px;
-        -webkit-transform: rotateY(25deg);
+        font-size: 60px;
+        line-height: 60px;
         -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5))); }
       section#nowPlaying .active .thumbnail img {
         max-height: 100%;
@@ -814,29 +841,33 @@ section#nowPlaying {
     section#nowPlaying .active .details {
       display: inline-block;
       float: right;
-      width: 400px;
-      color: #BBB;
+      width: 395px;
+      color: #999;
       height: 100px;
       margin-top: 10px; }
-      section#nowPlaying .active .details .title {
-        font-size: 14px;
-        font-weight: 500;
+      section#nowPlaying .active .details i.mdi {
+        color: #666;
+        font-size: 14px; }
+      section#nowPlaying .active .details .artist {
+        font-size: 14px; }
+      section#nowPlaying .active .details .album {
         color: #BBB;
-        padding-bottom: 3px;
-        text-align: right; }
-        section#nowPlaying .active .details .title .name {
-          color: #FFF;
-          font-size: 20px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: inline-block;
-          width: 100%; }
+        font-size: 15px; }
+      section#nowPlaying .active .details .title {
+        color: #FFF;
+        font-size: 18px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
+      section#nowPlaying .active .details .time {
+        font-size: 14px; }
       section#nowPlaying .active .details .plot {
         overflow-y: hidden;
         text-overflow: ellipsis;
         text-align: justify;
         font-size: 12px; }
+    section#nowPlaying .active .details > div {
+      line-height: 20px; }
   section#nowPlaying .active.episode .thumbnail {
     width: 120px; }
   section#nowPlaying .active.episode .details {
@@ -1200,6 +1231,7 @@ section.tabsContainer {
       line-height: normal;
       overflow: hidden; }
       section.tabsContainer .data-list-wrapper li .thumbnail {
+        position: relative;
         margin: 10px 0 20px 0;
         display: inline-block;
         float: left;
@@ -1248,6 +1280,10 @@ section.tabsContainer {
           -o-transition: all 0.2s ease-in-out;
           -webkit-transition: all 0.2s ease-in-out;
           transition: all 0.2s ease-in-out; }
+          section.tabsContainer .data-list-wrapper li .details td.title h2 .watched-label {
+            color: #FFF; }
+          section.tabsContainer .data-list-wrapper li .details td.title h2 .partially-watched-label {
+            color: #FFF; }
           section.tabsContainer .data-list-wrapper li .details td.title h2 .track {
             font-size: 16px;
             color: #AAA; }

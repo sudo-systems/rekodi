@@ -1,6 +1,7 @@
-rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkKodiWsApiService', 'rkHelperService', 'rkRemoteControlService',
-  function($rootScope, rkKodiWsApiService, rkHelperService, rkRemoteControlService) {
-    var kodiWsApiConnection = null;
+rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 'rkHelperService', 'rkRemoteControlService',
+  function($rootScope, kodiApiService, rkHelperService, rkRemoteControlService) {
+    var kodiApi = null;
+    var updatePropertiesInterval = null;
     var currentProperties = {};
     var defaultProperties = {
       audiostreams: [],
@@ -28,12 +29,10 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkKodiWsApiServic
       type: null
     };
 
-    var get = function() {
+    var getProperties = function() {
       rkRemoteControlService.getActivePlayerId(function(playerId) {
-        kodiWsApiConnection = rkKodiWsApiService.getConnection();
-
-        if(kodiWsApiConnection && playerId !== null) {
-          kodiWsApiConnection.Player.GetProperties({
+        if(playerId !== null) {
+          kodiApi.Player.GetProperties({
             playerid: playerId,
             properties: Object.keys(defaultProperties)
           }).then(function(data) {
@@ -43,38 +42,41 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkKodiWsApiServic
             }
           }, function(error) {
             rkHelperService.handleError(error);
-            setDefaults();
+            $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
           });
         }
         else {
-          setDefaults();
+          $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
         }
       });
     };
     
-    var setDefaults = function() {
-      $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
+    var startUpdateInterval = function() {
+      getProperties();
+      clearInterval(updatePropertiesInterval);
+      
+      updatePropertiesInterval = setInterval(function() {
+        getProperties();
+      }, 1000);
     };
     
+    var stopUpdateInterval = function() {
+      clearInterval(updatePropertiesInterval);
+    };
+
     function init() {
       $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
-        if(data.connected) {
-          kodiWsApiConnection = rkKodiWsApiService.getConnection();
+        kodiApi = kodiApiService.getConnection();
+        
+        if(kodiApi) {
+          getProperties();
           
-          kodiWsApiConnection.Player.OnPropertyChanged(function(response) {
-            if(response.data && response.data.property) {
-              for(var key in response.data.property) {
-                currentProperties[key] = response.data.property[key];
-              }
-            }
-
-            $rootScope.$emit('rkPlayerPropertiesChange', currentProperties);
+          kodiApi.Player.OnPropertyChanged(function(response) {
+            getProperties();
           });
-          
-          get();
         }
         else {
-          setDefaults();
+          $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
         }
       });
     }
@@ -82,7 +84,8 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkKodiWsApiServic
     init();
     
     return {
-      
+      startUpdateInterval: startUpdateInterval,
+      stopUpdateInterval: stopUpdateInterval
     };
   }
 ]);

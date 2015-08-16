@@ -1,11 +1,11 @@
-rekodiApp.factory('rkRemoteControlService', ['$rootScope', '$timeout', 'rkKodiWsApiService', 'rkHelperService',
-  function($rootScope, $timeout, rkKodiWsApiService, rkHelperService) {
-    var kodiWsApiConnection = null;
+rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rkHelperService',
+  function($rootScope, kodiApiService, rkHelperService) {
+    var kodiApi = null;
     var currentSpeed = 0;
     
     var getActivePlayerId = function(callback) {
-      if(kodiWsApiConnection) {
-        kodiWsApiConnection.Player.GetActivePlayers().then(function(data) {
+      if(kodiApi) {
+        kodiApi.Player.GetActivePlayers().then(function(data) {
           var playerId = (data[0])? data[0].playerid : null;
           callback(playerId);
         }, function(error) {
@@ -21,7 +21,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', '$timeout', 'rkKodiWs
     var goTo = function(direction) {
       getActivePlayerId(function(playerId) {
         if(playerId !== null) {
-          kodiWsApiConnection.Player.GoTo({
+          kodiApi.Player.GoTo({
             playerid: playerId,
             to: direction
           }).then(function(data) {
@@ -46,7 +46,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', '$timeout', 'rkKodiWs
     var playPause = function() {
       getActivePlayerId(function(playerId) {
         if(playerId !== null) {
-          kodiWsApiConnection.Player.PlayPause({
+          kodiApi.Player.PlayPause({
             playerid: playerId,
             play: 'toggle'
           }).then(function(data) {
@@ -58,12 +58,22 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', '$timeout', 'rkKodiWs
       });
     };
     
+    var play = function(options) {
+      if(kodiApi) {
+        kodiApi.Player.Open(options).then(function(data) {
+          
+        }, function(error) {
+          rkHelperService.handleError(error);
+        });
+      }
+    };
+    
     var setSpeed = function(speed) {
       currentSpeed = speed;
       
       getActivePlayerId(function(playerId) {
         if(playerId !== null) {
-          kodiWsApiConnection.Player.SetSpeed({
+          kodiApi.Player.SetSpeed({
             playerid: playerId,
             speed: speed
           }).then(function(data) {
@@ -112,7 +122,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', '$timeout', 'rkKodiWs
     var stop = function() {
       getActivePlayerId(function(playerId) {
         if(playerId !== null) {
-          kodiWsApiConnection.Player.Stop({
+          kodiApi.Player.Stop({
             playerid: playerId
           }).then(function(data) {
               currentSpeed = 0;
@@ -124,10 +134,10 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', '$timeout', 'rkKodiWs
     };
     
     var setVolume = function(percentage) {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      kodiApi = kodiApiService.getConnection();
       
-      if(kodiWsApiConnection) {
-        kodiWsApiConnection.Application.SetVolume({
+      if(kodiApi) {
+        kodiApi.Application.SetVolume({
           volume: parseInt(percentage)
         }).then(function(data) {
             //console.log(data);
@@ -138,10 +148,10 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', '$timeout', 'rkKodiWs
     };
     
     var toggleMute = function() {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      kodiApi = kodiApiService.getConnection();
       
-      if(kodiWsApiConnection) {
-        kodiWsApiConnection.Application.SetMute({
+      if(kodiApi) {
+        kodiApi.Application.SetMute({
           mute: 'toggle'
         }).then(function(data) {
             //console.log(data);
@@ -153,7 +163,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', '$timeout', 'rkKodiWs
     
     function init() {
       $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
-        kodiWsApiConnection = (data.connected)? rkKodiWsApiService.getConnection() : null;
+        kodiApi = kodiApiService.getConnection();
       });
     }
 
@@ -162,6 +172,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', '$timeout', 'rkKodiWs
     return {
       getActivePlayerId: getActivePlayerId,
       goTo: goTo,
+      play: play,
       playPause: playPause,
       setSpeed: setSpeed,
       rewind: rewind,

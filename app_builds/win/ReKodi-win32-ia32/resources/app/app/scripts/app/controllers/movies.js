@@ -1,11 +1,13 @@
-rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'rkKodiWsApiService', 'rkTooltipsService', '$attrs', 'rkCacheService', 'rkHelperService',
-  function($scope, $element, rkKodiWsApiService, rkTooltipsService, $attrs, rkCacheService, rkHelperService) {
+rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', '$attrs', 'rkCacheService', 'rkHelperService', 'rkRemoteControlService',
+  function($scope, $element, kodiApiService, rkTooltipsService, $attrs, rkCacheService, rkHelperService, rkRemoteControlService) {
+    var modal = {};
     $scope.identifier = $attrs.id;
     $scope.selectedIndex = null;
     $scope.moviesCategorised = {};
     $scope.moviesIndex = [];
     $scope.movies = [];
-    var kodiWsApiConnection = null;
+    $scope.resumeMovie = {};
+    var kodiApi = null;
     $scope.filter = {
       value: ''
     };
@@ -63,16 +65,14 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'rkKodiWsApiService'
     }
     
     $scope.getMovies = function() {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
-      
       $scope.clearFilter();
-      getMoviesFromCache();
       
-      if(kodiWsApiConnection) {
+      if(kodiApi) {
         $scope.$root.$emit('rkStartLoading');
+        getMoviesFromCache();
         
-        kodiWsApiConnection.VideoLibrary.GetMovies({
-          properties: ['thumbnail', 'year', 'rating', 'plotoutline', 'genre', 'runtime'],
+        kodiApi.VideoLibrary.GetMovies({
+          properties: ['thumbnail', 'year', 'rating', 'plotoutline', 'genre', 'runtime', 'resume', 'lastplayed', 'file'],
           sort: {
             order: 'ascending',
             method: 'label'
@@ -116,13 +116,56 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'rkKodiWsApiService'
     $scope.clearFilter = function() {
       $scope.filter.value = '';
     };
+    
+    $scope.handlePlay = function(movie) {
+      if(movie.resume.position > 0) {
+        $scope.resumeMovie = movie;
+        modal.resumeMovie = $('[data-remodal-id=resumeMovieModal]').remodal();
+        modal.resumeMovie.open();
+      }
+      else {
+        $scope.play(movie, false);
+      }
+    };
+    
+    $scope.play = function(movie, resume) {
+      if(modal.resumeMovie) {
+        modal.resumeMovie.close();
+      }
+      
+      resume = (resume)? true : false;
+      var options = {
+        item: {
+          movieid: movie.movieid
+        },
+        options: {
+          resume: resume
+        }
+      };
+
+      rkRemoteControlService.play(options);
+    };
+    
+    function initConnectionChange() {
+      kodiApi = kodiApiService.getConnection();
+
+      if(kodiApi && $.isEmptyObject($scope.movies)) {
+        $scope.getMovies();
+      }
+    }
 
     $scope.init = function() {
       rkCacheService.setCategory($scope.identifier);
+      initConnectionChange();
       
-      if($.isEmptyObject($scope.movies)) {
-        $scope.getMovies();
-      }
+      $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+        initConnectionChange();
+      });
+
+      $(document).on('closed', '[data-remodal-id=resumeMovieModal]', function(e) {
+        $scope.resumeMovie = {};
+        modal.resumeMovie = null;
+      });
     };
   }
 ]);

@@ -1,4 +1,4 @@
-<div class="settings-section">
+<div class="settings-section clearfix">
   <div class="title">
     Connection
   </div>
@@ -21,6 +21,19 @@
       </li>
       <li class="float-right">
         <button ng-click="connect()" ng-disabled="connectButton.disabled" ng-hide="connectionSettings.$invalid">{{connectButton.text}}</button>
+      </li>
+    </ul>
+  </form>
+</div>
+
+<div class="settings-section clearfix">
+  <div class="title">
+    Now playing
+  </div>
+  <form name="connectionSettings">
+    <ul class="vertical">
+      <li title="Use currently playing fanart as desktop wallpaper if available">
+        <label for="fanartWallpaper">fanart wallpaper</label><input type="checkbox" ng-model="storage.fanartWallpaper" name="fanart_wallpaper" id="fanartWallpaper" />
       </li>
     </ul>
   </form>

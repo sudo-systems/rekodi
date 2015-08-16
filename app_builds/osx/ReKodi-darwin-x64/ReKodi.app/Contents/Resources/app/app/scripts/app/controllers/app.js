@@ -1,9 +1,18 @@
-rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'rkKodiWsApiService', '$sessionStorage', 'rkPlayerPropertiesService', 'rkNowPlayingService', 'rkKodiPropertiesService',
-  function($scope, $localStorage, $timeout, rkKodiWsApiService, $sessionStorage, rkPlayerPropertiesService, rkNowPlayingService, rkKodiPropertiesService) {
+rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'kodiApiService', '$sessionStorage', 'rkNowPlayingService', 'rkKodiPropertiesService',
+  function($scope, $localStorage, $timeout, kodiApiService, $sessionStorage, rkNowPlayingService, rkKodiPropertiesService) {
     $scope.storage = $localStorage;
     $scope.sessionStorage = $sessionStorage;
     $scope.isConfigured = true;
     $scope.isConnected = true;
+    $scope.controllersLoaded = false;
+    $scope.$root.rkControllers = {};
+    var rkControllers = ['footer', 'now_playing', 'playback_controls', 'tabs', 'window'];
+    
+    for(var key in rkControllers) {
+      $scope.$root.rkControllers[rkControllers[key]] = {
+        loaded: false
+      };
+    }
 
     $scope.setActiveTab = function(tab, subTab) {
       $timeout(function() {
@@ -28,8 +37,7 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'rkKod
 
     function init() {
       setIfConnectionConfigured();
-      rkKodiWsApiService.connect();
-      
+
       if($scope.storage.tabs && $scope.storage.tabs.currentlyActiveTab) {
         $scope.storage.tabs.currentlyActiveTab = '';
       }
@@ -45,8 +53,26 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'rkKod
       }, function(newData, oldData) {
         $scope.isConnected = newData;
       });
+      
+      $scope.$root.$watch('rkControllers', function(newValue, oldValue) {
+        var allInitialControllersLoaded = true;
+
+        for(var key in newValue) {
+          if(!newValue[key].loaded) {
+            allInitialControllersLoaded = false;
+            break;
+          }
+        }
+        
+        if(allInitialControllersLoaded) {
+          $scope.controllersLoaded = true;
+          kodiApiService.connect();
+        }
+      }, true);
     }
     
-    init();
+    $timeout(function() {
+      init();
+    });
   }
 ]);

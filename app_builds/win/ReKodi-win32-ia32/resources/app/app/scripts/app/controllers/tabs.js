@@ -1,5 +1,5 @@
-rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage',
-  function($scope, $localStorage) {
+rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage', '$timeout',
+  function($scope, $localStorage, $timeout) {
     $scope.storage = null;
     
     $scope.initTab = function(tabSelector) {
@@ -147,8 +147,12 @@ rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage',
       }
       
       $scope.storage = $localStorage.tabs;
+      
+      $scope.$root.rkControllers.tabs.loaded = true;
     }
     
-    init();
+    $timeout(function() {
+      init();
+    });
   }
 ]);

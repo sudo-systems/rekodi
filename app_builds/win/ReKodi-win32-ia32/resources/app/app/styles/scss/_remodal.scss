@@ -1,0 +1,30 @@
+.remodal-overlay {
+  background: rgba(34, 34, 34, 0.9);
+}
+
+.remodal {
+  .remodal-close:hover {
+    background: none;
+    color: map-get($global, highlight-color);
+    @include transitionAll(map-get($global, transition-speed));
+  }
+  
+  .click-option {
+    border-bottom: 1px dotted #AAA;
+    line-height: 32px;
+    margin: 6px 0;
+    font-size: 15px;
+    background: #F4F4F4;
+    display: block;
+    font-size: 14;
+    text-transform: none;
+    letter-spacing: normal;
+    width: 100%;
+  }
+  
+  .click-option:hover {
+    background: #EAEAEA;
+    color: map-get($global, highlight-color);
+    border-bottom: 1px solid map-get($global, highlight-color);
+  }
+}

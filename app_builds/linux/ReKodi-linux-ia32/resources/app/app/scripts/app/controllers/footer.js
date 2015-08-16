@@ -97,5 +97,9 @@ rekodiApp.controller('rkFooterCtrl', ['$scope', '$element', '$timeout', 'rkToolt
         $('#footer .indicator.error').stop().fadeOut(1500);
       }, 15000);
     });
+    
+    $timeout(function() {
+      $scope.$root.rkControllers.footer.loaded = true;
+    });
   }
 ]);

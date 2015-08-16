@@ -1,44 +1,52 @@
-<div class="inactive" ng-hide="playStatus.isPlaying">
+<div class="inactive" ng-hide="nowPlaying">
   ReKodi
 </div>
 
-<div ng-show="playStatus.isPlaying">
-  <div class="active audio clearfix" ng-show="playStatus.item.type === 'song' || playStatus.item.type === 'unknown'">
+<div ng-show="nowPlaying">
+  <div class="active audio clearfix" ng-show="nowPlaying.type === 'song' || nowPlaying.type === 'unknown'">
     <div class="thumbnail">
       <i class="mdi mdi-music-note"></i>
     </div>
     <div class="details">
+      <div class="artist" ng-show="nowPlaying.displayartist && nowPlaying.displayartist !== ''">
+        <i class="mdi mdi-worker"></i> {{nowPlaying.displayartist}}
+      </div>
+      <div class="album" ng-show="nowPlaying.album && nowPlaying.album !== ''">
+        <i class="mdi mdi-album"></i> {{nowPlaying.album}}
+      </div>
       <div class="title">
-        {{playStatus.item.displayartist}}<br />
-        <span class="name">{{playStatus.item.label}}</span>
+        <i class="mdi mdi-music-note"></i> <span ng-show="nowPlaying.track !== ''">{{nowPlaying.track}}.</span> {{nowPlaying.label}}
+      </div>
+      <div class="time" ng-show="nowPlaying.duration_readable && nowPlaying.duration_readable !== ''">
+        <i class="mdi mdi-timelapse"></i> <span ng-show="timePlaying !== null">{{timePlaying}}</span> / <span ng-show="nowPlaying.duration_readable !== ''">{{nowPlaying.duration_readable}}</span>
       </div>
     </div>
   </div>
 
-  <div class="active movie clearfix" ng-show="playStatus.item.type === 'movie'">
+  <div class="active movie clearfix" ng-show="nowPlaying.type === 'movie'">
     <div class="thumbnail">
-      <i class="mdi mdi-movie" ng-show="!playStatus.item.thumbnail_url"></i>
-      <img ng-src="{{playStatus.item.thumbnail_url}}" alt="" ng-hide="!playStatus.item.thumbnail_url" />
+      <i class="mdi mdi-movie" ng-show="!nowPlaying.thumbnail_url"></i>
+      <img ng-src="{{nowPlaying.thumbnail_url}}" alt="" ng-hide="!nowPlaying.thumbnail_url" />
     </div>
     <div class="details">
       <div class="title">
-        <span class="name">{{playStatus.item.title}}</span>
+        <span class="name">{{nowPlaying.title}}</span>
       </div>
       <div class="plot">
-        {{playStatus.item.plotoutline}}
+        {{nowPlaying.plotoutline}}
       </div>
     </div>
   </div>
   
-  <div class="active episode clearfix" ng-show="playStatus.item.type === 'episode'">
+  <div class="active episode clearfix" ng-show="nowPlaying.type === 'episode'">
     <div class="thumbnail">
-      <i class="mdi mdi-movie" ng-show="!playStatus.item.thumbnail_url"></i>
-      <img ng-src="{{playStatus.item.thumbnail_url}}" alt="" ng-hide="!playStatus.item.thumbnail_url" />
+      <i class="mdi mdi-movie" ng-show="!nowPlaying.thumbnail_url"></i>
+      <img ng-src="{{nowPlaying.thumbnail_url}}" alt="" ng-hide="!nowPlaying.thumbnail_url" />
     </div>
     <div class="details">
       <div class="title">
-        {{playStatus.item.showtitle}} - s{{playStatus.item.season}}e{{playStatus.item.episode}}
-        <span class="name">{{playStatus.item.title}}</span>
+        {{nowPlaying.showtitle}} - s{{nowPlaying.season}}e{{nowPlaying.episode}}
+        <span class="name">{{nowPlaying.title}}</span>
       </div>
     </div>
   </div>

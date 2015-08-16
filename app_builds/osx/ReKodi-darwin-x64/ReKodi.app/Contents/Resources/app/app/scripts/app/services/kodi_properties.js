@@ -1,6 +1,6 @@
-rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'rkKodiWsApiService', 'rkHelperService',
-  function($rootScope, rkKodiWsApiService, rkHelperService) {
-    var kodiWsApiConnection = null;
+rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'kodiApiService', 'rkHelperService',
+  function($rootScope, kodiApiService, rkHelperService) {
+    var kodiApi = null;
     var currentProperties = {};
     var defaultProperties = {
       volume: 0, 
@@ -10,10 +10,10 @@ rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'rkKodiWsApiService'
     };
 
     var get = function() {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
+      kodiApi = kodiApiService.getConnection();
 
-      if(kodiWsApiConnection) {
-        kodiWsApiConnection.Application.GetProperties({
+      if(kodiApi) {
+        kodiApi.Application.GetProperties({
           properties: Object.keys(defaultProperties)
         }).then(function(data) {
           if(JSON.stringify(currentProperties) !== JSON.stringify(data)) {
@@ -36,10 +36,10 @@ rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'rkKodiWsApiService'
     
     function init() {
       $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
-        if(data.connected) {
-          kodiWsApiConnection = rkKodiWsApiService.getConnection();
-          
-          kodiWsApiConnection.Application.OnVolumeChanged(function(response) {
+        kodiApi = kodiApiService.getConnection();
+        
+        if(kodiApi) {
+          kodiApi.Application.OnVolumeChanged(function(response) {
             if(response.data) {
               for(var key in response.data) {
                 currentProperties[key] = response.data[key];

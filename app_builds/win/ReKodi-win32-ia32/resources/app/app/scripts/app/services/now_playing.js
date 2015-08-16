@@ -1,96 +1,79 @@
-rekodiApp.factory('rkNowPlayingService', ['$rootScope', '$timeout', 'rkKodiWsApiService', 'rkEnumsService', 'rkHelperService', 'rkRemoteControlService',
-  function($rootScope, $timeout, rkKodiWsApiService, rkEnumsService, rkHelperService, rkRemoteControlService) {
-    var kodiWsApiConnection = null;
-    var currentData = {};
-    var getInfoInterval = null;
+rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'kodiApiService', 'rkEnumsService', 'rkHelperService', 'rkRemoteControlService', '$localStorage',
+  function($rootScope, kodiApiService, rkEnumsService, rkHelperService, rkRemoteControlService, $localStorage) {
+    var kodiApi = null;
+    var playingItem = null;
+    var defaultWallpaper = null;
     var itemProperties = [];
-    itemProperties[rkEnumsService.PlayerId.AUDIO] = ['title', 'artist', 'albumartist', 'displayartist', 'album', 'track', 'year', 'genre', 'thumbnail', 'playcount', 'file', 'duration'];
-    itemProperties[rkEnumsService.PlayerId.VIDEO] = ['title', 'file', 'thumbnail', 'plotoutline', 'year', 'season', 'episode', 'showtitle', 'plot', 'runtime'];
-    
-    var getInfo = function(playerId) {
-      if(playerId) {
-        clearInterval(getInfoInterval);
-        getItem(playerId);
-
-        getInfoInterval = setInterval(function() {
-          getItem(playerId);
-        }, 1000);
-        
-        return;
-      }
-      
-      clearInterval(getInfoInterval);
-      rkRemoteControlService.getActivePlayerId(function(playerId) {
-        getItem(playerId);
-      });
-
-      getInfoInterval = setInterval(function() {
-        rkRemoteControlService.getActivePlayerId(function(playerId) {
-          getItem(playerId);
-        });
-      }, 1000);
-    };
+    itemProperties[rkEnumsService.PlayerId.AUDIO] = ['title', 'displayartist', 'album', 'track', 'year', 'genre', 'thumbnail', 'file', 'duration', 'fanart'];
+    itemProperties[rkEnumsService.PlayerId.VIDEO] = ['title', 'file', 'thumbnail', 'plotoutline', 'year', 'season', 'episode', 'showtitle', 'plot', 'runtime', 'fanart'];
     
     var setNotPlaying = function() {
-      $rootScope.$emit('rkNowPlayingDataUpdated', {
-        isPlaying: false,
-        playerType: null,
-        item: null
-      });
+      playingItem = null;
+      applyDefaultWallpaper();
+      $rootScope.$emit('rkNowPlayingDataUpdate', playingItem);
     };
     
-    var setIsPlaying = function(playerId, data) {
-      if(JSON.stringify(currentData) !== JSON.stringify(data.item)) {
-        currentData = data.item;
-        
-        $rootScope.$emit('rkNowPlayingDataUpdated', {
-          isPlaying: true,
-          playerType: (rkEnumsService.PlaylistId.AUDIO === playerId)? 'audio' : 'video',
-          item: data.item
-        });
-      }
-    };
-    
-    var getItem = function(playerId) {
-      kodiWsApiConnection = rkKodiWsApiService.getConnection();
-      
-      if(kodiWsApiConnection && playerId !== null) {
-        kodiWsApiConnection.Player.GetItem({
-          playerid: playerId,
-          properties: itemProperties[playerId]
-        }).then(function(data) {
-          if(data.item) {
-            data.item = rkHelperService.addCustomFields(data.item);
-            setIsPlaying(playerId, data);
-          }
-          else {
-            setNotPlaying();
-          }
-        }, function(error) {
-          setNotPlaying();
-          rkHelperService.handleError(error);
-        });
+    var applyCurrentFanartWallpaper = function() {
+      if($localStorage.settings.fanartWallpaper && playingItem && playingItem.fanart_src) {
+        rkHelperService.setDesktopWallpaper(playingItem.fanart_src);
       }
       else {
-        clearInterval(getInfoInterval);
-        setNotPlaying();
+        applyDefaultWallpaper();
       }
+    };
+    
+    var applyDefaultWallpaper = function(callback) {
+      rkHelperService.setDesktopWallpaper(defaultWallpaper, callback);
+    };
+    
+    var getItem = function() {
+      rkRemoteControlService.getActivePlayerId(function(playerId) {
+        if(playerId !== null) {
+          kodiApi.Player.GetItem({
+            playerid: playerId,
+            properties: itemProperties[playerId]
+          }).then(function(data) {
+            if(data.item) {
+              data.item = rkHelperService.addCustomFields(data.item);
+
+              if(JSON.stringify(playingItem) !== JSON.stringify(data.item)) {
+                playingItem = data.item;
+                $rootScope.$emit('rkNowPlayingDataUpdate', playingItem);
+                applyCurrentFanartWallpaper();
+              }
+            }
+            else {
+              setNotPlaying();
+            }
+          }, function(error) {
+            setNotPlaying();
+            rkHelperService.handleError(error);
+          });
+        }
+        else {
+          setNotPlaying();
+        }
+      });
     };
 
     var init = function() {
+      rkHelperService.getDesktopWallpaper(function(imagePath) {
+        defaultWallpaper = imagePath;
+      });
+      
       $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
-        if(data.connected) {
-          kodiWsApiConnection = rkKodiWsApiService.getConnection();
-
-          kodiWsApiConnection.Player.OnPlay(function(response) {
-            getInfo(response.data.player.playerid);
+        kodiApi = kodiApiService.getConnection();
+        
+        if(kodiApi) {
+          kodiApi.Player.OnPlay(function(response) {
+            getItem();
           });
 
-          kodiWsApiConnection.Player.OnStop(function(response) {
+          kodiApi.Player.OnStop(function(response) {
             setNotPlaying();
           });
-          
-          getInfo();
+
+          getItem();
         }
         else {
           setNotPlaying();
@@ -101,7 +84,8 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', '$timeout', 'rkKodiWsApi
     init();
     
     return {
-      
+      applyCurrentFanartWallpaper: applyCurrentFanartWallpaper,
+      applyDefaultWallpaper: applyDefaultWallpaper
     };
   }
 ]);
