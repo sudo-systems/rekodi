@@ -1,7 +1,7 @@
-rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'kodiApiService', 'rkRemoteControlService',
-  function ($scope, $timeout, kodiApiService, rkRemoteControlService) {
+rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'kodiApiService', 'rkRemoteControlService', 'rkPlayerPropertiesService',
+  function ($scope, $timeout, kodiApiService, rkRemoteControlService, rkPlayerPropertiesService) {
     var kodiApi = null;
-    $scope.playerProperties = {};
+    $scope.playerProperties = null;
     $scope.player = {};
     $scope.showPlayButton = true;
     $scope.showPauseButton = false;
@@ -120,6 +120,7 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'kodiApiSe
 
       $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
         if(data === null) {
+          rkPlayerPropertiesService.stopUpdateInterval();
           $scope.status.isPaused = false;
           $scope.status.isPlaying = false;
           $scope.status.currentSpeed = 0;
@@ -127,6 +128,7 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'kodiApiSe
           $scope.status.isFastForwarding = false;
         }
         else {
+          rkPlayerPropertiesService.startUpdateInterval();
           $scope.status.isPlaying = true;
         }
         

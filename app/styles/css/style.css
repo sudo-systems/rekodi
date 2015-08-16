@@ -848,28 +848,25 @@ section#nowPlaying {
         color: #666;
         font-size: 14px; }
       section#nowPlaying .active .details .artist {
-        font-size: 14px;
-        line-height: 18px; }
+        font-size: 14px; }
       section#nowPlaying .active .details .album {
         color: #BBB;
-        font-size: 15px;
-        line-height: 22px; }
+        font-size: 15px; }
       section#nowPlaying .active .details .title {
         color: #FFF;
-        font-size: 16px;
+        font-size: 18px;
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis;
-        display: inline-block;
-        line-height: 22px; }
+        text-overflow: ellipsis; }
       section#nowPlaying .active .details .time {
-        font-size: 14px;
-        color: #FFF; }
+        font-size: 14px; }
       section#nowPlaying .active .details .plot {
         overflow-y: hidden;
         text-overflow: ellipsis;
         text-align: justify;
         font-size: 12px; }
+    section#nowPlaying .active .details > div {
+      line-height: 20px; }
   section#nowPlaying .active.episode .thumbnail {
     width: 120px; }
   section#nowPlaying .active.episode .details {

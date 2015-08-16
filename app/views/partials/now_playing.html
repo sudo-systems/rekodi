@@ -8,17 +8,17 @@
       <i class="mdi mdi-music-note"></i>
     </div>
     <div class="details">
-      <div class="artist" ng-show="nowPlaying.displayartist !== ''">
+      <div class="artist" ng-show="nowPlaying.displayartist && nowPlaying.displayartist !== ''">
         <i class="mdi mdi-worker"></i> {{nowPlaying.displayartist}}
       </div>
-      <div class="album" ng-show="nowPlaying.album !== ''">
+      <div class="album" ng-show="nowPlaying.album && nowPlaying.album !== ''">
         <i class="mdi mdi-album"></i> {{nowPlaying.album}}
       </div>
       <div class="title">
         <i class="mdi mdi-music-note"></i> <span ng-show="nowPlaying.track !== ''">{{nowPlaying.track}}.</span> {{nowPlaying.label}}
       </div>
-      <div class="time">
-        <i class="mdi mdi-timelapse"></i> <span ng-show="nowPlaying.duration_readable !== ''">{{nowPlaying.duration_readable}}</span>
+      <div class="time" ng-show="nowPlaying.duration_readable && nowPlaying.duration_readable !== ''">
+        <i class="mdi mdi-timelapse"></i> <span ng-show="timePlaying !== null">{{timePlaying}}</span> / <span ng-show="nowPlaying.duration_readable !== ''">{{nowPlaying.duration_readable}}</span>
       </div>
     </div>
   </div>

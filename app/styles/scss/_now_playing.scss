@@ -63,28 +63,23 @@ section#nowPlaying {
       
       .artist {
         font-size: 14px;
-        line-height: 18px;
       }
 
       .album {
         color: #BBB;
         font-size: 15px;
-        line-height: 22px;
       }
 
       .title {
         color: #FFF;
-        font-size: 16px;
+        font-size: 18px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        display: inline-block;
-        line-height: 22px;
       }
       
       .time {
         font-size: 14px;
-        color: #FFF;
       }
       
       .plot {
@@ -93,6 +88,11 @@ section#nowPlaying {
         text-align: justify;
         font-size: 12px;
       }
+    }
+    
+    
+    .details > div {
+      line-height: 20px;
     }
   }
   

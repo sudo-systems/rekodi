@@ -1,6 +1,7 @@
 rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 'rkHelperService', 'rkRemoteControlService',
   function($rootScope, kodiApiService, rkHelperService, rkRemoteControlService) {
     var kodiApi = null;
+    var updatePropertiesInterval = null;
     var currentProperties = {};
     var defaultProperties = {
       audiostreams: [],
@@ -49,6 +50,19 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 
         }
       });
     };
+    
+    var startUpdateInterval = function() {
+      getProperties();
+      clearInterval(updatePropertiesInterval);
+      
+      updatePropertiesInterval = setInterval(function() {
+        getProperties();
+      }, 1000);
+    };
+    
+    var stopUpdateInterval = function() {
+      clearInterval(updatePropertiesInterval);
+    };
 
     function init() {
       $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
@@ -70,7 +84,8 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 
     init();
     
     return {
-      
+      startUpdateInterval: startUpdateInterval,
+      stopUpdateInterval: stopUpdateInterval
     };
   }
 ]);

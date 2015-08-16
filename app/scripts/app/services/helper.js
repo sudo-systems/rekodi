@@ -5,48 +5,58 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
       return 'http://'+usernameAndPassword+$localStorage.settings.serverAddress+':'+$localStorage.settings.httpPort+'/image/'+encodeURIComponent(specialPath);
     };
     
-    var addCustomFields = function(data) {
-      for(var key in data) {
-        if(data[key].file) {
-          var filenameParts = data[key].file.split('/');
-        
-          if(filenameParts.length === 0) {
-            filenameParts = data[key].file.split('\\');
-          }
+    var applyCustomFielsToItem = function(item) {
+      if(item.file) {
+        var filenameParts = item.file.split('/');
 
-          if(filenameParts.length > 0) {
-            data[key].file_name = (filenameParts[filenameParts.length-1] === '')? filenameParts[filenameParts.length-2] : filenameParts[filenameParts.length-1];
-          }
-          else {
-            data[key].file_name = data[key].label;
-          }
-        }
-        
-        if(data[key].thumbnail) {
-          data[key].thumbnail_src = getImageUrl(data[key].thumbnail);
+        if(filenameParts.length === 0) {
+          filenameParts = item.file.split('\\');
         }
 
-        if(data[key].genre) {
-          data[key].display_genre = data[key].genre.join(', ');
+        if(filenameParts.length > 0) {
+          item.file_name = (filenameParts[filenameParts.length-1] === '')? filenameParts[filenameParts.length-2] : filenameParts[filenameParts.length-1];
         }
-        
-        if(data[key].rating) {
-          data[key].rating_rounded =  Math.round(data[key].rating * 10 ) / 10;
-        }
-        
-        if(data[key].duration) {
-          data[key].duration_readable =  secondsToDuration(data[key].duration);
-        }
-        
-        if(data[key].runtime) {
-          data[key].duration_readable =  secondsToDuration(data[key].runtime);
-        }
-        
-        if(data[key].resume && data[key].resume.position) {
-          data[key].resume.position_readable = secondsToDuration(data[key].resume.position);
+        else {
+          item.file_name = item.label;
         }
       }
 
+      if(item.thumbnail) {
+        item.thumbnail_src = getImageUrl(item.thumbnail);
+      }
+
+      if(item.genre) {
+        item.display_genre = item.genre.join(', ');
+      }
+
+      if(item.rating) {
+        item.rating_rounded =  Math.round(item.rating * 10 ) / 10;
+      }
+
+      if(item.duration) {
+        item.duration_readable =  secondsToDuration(item.duration);
+      }
+
+      if(item.runtime) {
+        item.duration_readable =  secondsToDuration(item.runtime);
+      }
+
+      if(item.resume && item.resume.position) {
+        item.resume.position_readable = secondsToDuration(item.resume.position);
+      }
+      
+      return item;
+    };
+    
+    var addCustomFields = function(data) {
+      if(data.constructor === Object) {
+        data = applyCustomFielsToItem(data);
+      }
+      
+      for(var key in data) {
+        data[key] = applyCustomFielsToItem(data[key]);
+      }
+  
       return data;
     };
     
@@ -62,7 +72,13 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
     var secondsToDuration = function(seconds) {
       var date = new Date(null);
       date.setSeconds(seconds);
-      return date.toISOString().substr(11, 8);
+      var timeString = date.toISOString().substr(11, 8);
+
+      if(timeString.substr(0, 3) === '00:') {
+        timeString = timeString.substr(3, 7);
+      }
+      
+      return timeString;
     };
 
     return {
