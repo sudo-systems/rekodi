@@ -14,13 +14,14 @@ section#settings {
     
     li {
       padding: 6px 0;
+      white-space: nowrap;
       
       label {
-        width: 125px;
+        width: 140px;
       }
 
       input {
-        width: 351px;
+        width: 336px;
       }
     }
   }

@@ -144,6 +144,8 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'kodiApiSe
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
         initConnectionChange();
       });
+      
+      $scope.$root.rkControllers.playback_controls.loaded = true;
     }
 
     $timeout(function () {

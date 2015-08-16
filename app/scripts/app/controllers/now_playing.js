@@ -6,7 +6,7 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
     function init() {
       $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
         $scope.nowPlaying = data;
-        
+
         if(!data) {
           $scope.timePlaying = null;
         }
@@ -22,6 +22,8 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
           $scope.timePlaying = null;
         }
       });
+      
+      $scope.$root.rkControllers.now_playing.loaded = true;
     }
     
     $timeout(function() {

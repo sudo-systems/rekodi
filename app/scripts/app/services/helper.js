@@ -1,8 +1,27 @@
 rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
   function($localStorage, $rootScope) {
+    var wallpaper = require('wallpaper');
+    var http = require('http');
+    var fs = require('fs');
+    var mkpath = require('mkpath');
+    var tempDownloadDirectory = __dirname+'/tmp/';
+
     var getImageUrl = function(specialPath) {
       var usernameAndPassword = ($localStorage.settings.password && $localStorage.settings.password !== '')? $localStorage.settings.username+':'+$localStorage.settings.password+'@' : '';
-      return 'http://'+usernameAndPassword+$localStorage.settings.serverAddress+':'+$localStorage.settings.httpPort+'/image/'+encodeURIComponent(specialPath);
+      var downloadPath = 'http://'+usernameAndPassword+$localStorage.settings.serverAddress+':'+$localStorage.settings.httpPort+'/image/';
+      var urlEncodedImagePath = encodeURIComponent(specialPath);
+      var imageUrl = downloadPath+urlEncodedImagePath;
+
+      return imageUrl;
+    };
+    
+    var getFilenameFromUrl = function(url) {
+      var filename = (url)? $.trim(decodeURIComponent(url.split('/').pop().split('#').shift().split('?').shift())) : null;
+      filename = (filename.substr(-1) === '/')? filename.substr(0, filename.length - 1) : filename;
+      filename = decodeURIComponent(filename);
+      filename = filename.split('/').pop();
+
+      return filename; 
     };
     
     var applyCustomFielsToItem = function(item) {
@@ -23,6 +42,10 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
 
       if(item.thumbnail) {
         item.thumbnail_src = getImageUrl(item.thumbnail);
+      }
+      
+      if(item.fanart) {
+        item.fanart_src = getImageUrl(item.fanart);
       }
 
       if(item.genre) {
@@ -81,11 +104,108 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
       return timeString;
     };
 
+    var downloadFile = function(url, targetDirectory, filename, callback) {
+      var downloadDirectory = tempDownloadDirectory+targetDirectory;
+      downloadDirectory = (downloadDirectory.substr(-1) !== '/')? downloadDirectory+'/' : downloadDirectory;
+      filename = (!filename || filename === '')? getFilenameFromUrl(url) : filename;
+      var downloadedFilePath = downloadDirectory+filename;
+      
+      if(fs.existsSync(downloadedFilePath)) {
+        callback(downloadedFilePath);
+        return;
+      }
+      
+      if(!fs.existsSync(downloadDirectory)) {
+        mkpath.sync(downloadDirectory);
+      }
+
+      var file = fs.createWriteStream(downloadedFilePath);
+      
+      http.get(url, function(response) {
+        response.pipe(file);
+        file.on('finish', function() {
+          file.close(function(data) {
+            callback(downloadedFilePath);
+          });
+        });
+      }).on('error', function(error) {
+        fs.unlink(file);
+        
+        if(error) {
+          console.error(error.message);
+        }
+
+        if(callback) {
+          callback(null);
+        }
+      });
+    };
+    
+    var setDesktopWallpaper = function(path, callback) {
+      if(!path) {
+        return;
+      }
+
+      callback = (callback && callback.constructor === Function)? callback : function() {};
+      var isDownload = (path.substr(0, 4).toLowerCase() === 'http');
+      
+      if(isDownload) {
+        downloadFile(path, 'fanart', null, function(donwloadedFilePath, data) {
+          getDesktopWallpaper(function(currentWallpaperPath) {
+            if(donwloadedFilePath && currentWallpaperPath !== donwloadedFilePath) {
+              wallpaper.set(donwloadedFilePath, function(error) {
+                if(error) {
+                  console.error(error);
+                }
+                
+                callback();
+              });
+            }
+            else {
+              callback();
+            }
+          });
+        });
+      }
+      else {
+        getDesktopWallpaper(function(currentWallpaperPath) {
+          if(currentWallpaperPath !== path) {
+            wallpaper.set(path, function(error) {
+              if(error) {
+                console.error(error);
+              }
+              
+              callback();
+            });
+          }
+          else {
+            callback();
+          }
+        });
+      }
+    };
+    
+    var getDesktopWallpaper = function(callback) {
+      wallpaper.get(function(error, currentWallpaperPath) {
+        if(error) {
+          console.error(error);
+          callback(null);
+        }
+        else {
+          callback(currentWallpaperPath);
+        }
+      });
+    };
+
     return {
       getImageUrl: getImageUrl,
       addCustomFields: addCustomFields,
       handleError: handleError,
-      secondsToDuration: secondsToDuration
+      secondsToDuration: secondsToDuration,
+      getFilenameFromUrl: getFilenameFromUrl,
+      downloadFile: downloadFile,
+      setDesktopWallpaper: setDesktopWallpaper,
+      getDesktopWallpaper: getDesktopWallpaper
     };
   }
 ]);

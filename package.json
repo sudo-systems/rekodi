@@ -31,6 +31,8 @@
     "electron-prebuilt": "^0.30.4",
     "lodash": "^3.10.1",
     "lodash.template": "^3.6.2",
+    "mkpath": "^0.1.0",
+    "wallpaper": "^1.1.0",
     "wiredep": "^2.2.2",
     "xbmc-event-client": "^0.0.2",
     "xbmc-ws": "^2.1.2"

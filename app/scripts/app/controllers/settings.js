@@ -1,5 +1,5 @@
-rekodiApp.controller('rkSettingsCtrl', ['$scope', '$localStorage', 'kodiApiService', '$sessionStorage',
-  function($scope, $localStorage, kodiApiService, $sessionStorage) {
+rekodiApp.controller('rkSettingsCtrl', ['$scope', '$localStorage', 'kodiApiService', 'rkNowPlayingService', '$timeout',
+  function($scope, $localStorage, kodiApiService, rkNowPlayingService, $timeout) {
     $scope.storage = null;
     $scope.connectButton = {
       text: 'connect',
@@ -43,25 +43,34 @@ rekodiApp.controller('rkSettingsCtrl', ['$scope', '$localStorage', 'kodiApiServi
           jsonRpcPort: '9090',
           httpPort: '8080',
           username: 'kodi',
-          password: ''
+          password: '',
+          fanartWallpaper: false
         };
       }
       
       $scope.storage = $localStorage.settings;
-
-      $scope.$watchCollection(function() { 
-        return $sessionStorage.connectionStatus; 
-      }, function(newData, oldData) {
-        $scope.setConnectionStatus(newData);
-      });
       
+      $scope.$on('rkWsConnectionStatusChange', function(event, data) {
+        $scope.setConnectionStatus(data);
+      });
+
+
       $scope.$watchCollection(function() { 
         return $localStorage.settings; 
       }, function(newData, oldData) {
         $scope.setButtonStatus(newData, oldData);
+
+        if(newData.fanartWallpaper) {
+          rkNowPlayingService.applyCurrentFanartWallpaper();
+        }
+        else {
+          rkNowPlayingService.applyDefaultWallpaper();
+        }
       });
     }
     
-    init();
+    $timeout(function() {
+      init();
+    });
   }
 ]);

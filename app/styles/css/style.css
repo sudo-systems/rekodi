@@ -739,11 +739,12 @@ section#settings .settings-section {
     line-height: 24px;
     text-transform: uppercase; }
   section#settings .settings-section li {
-    padding: 6px 0; }
+    padding: 6px 0;
+    white-space: nowrap; }
     section#settings .settings-section li label {
-      width: 125px; }
+      width: 140px; }
     section#settings .settings-section li input {
-      width: 351px; }
+      width: 336px; }
 
 section#windowControls {
   position: fixed;
