@@ -1,5 +1,9 @@
 <div class="volume-slider-wrapper">
-  <i class="mdi mdi-volume-off" ng-class="{active: status.isMuted}" ng-click="toggleMute()"></i><input type="range" name="volume" ng-model="status.currentVolume" ng-change="setVolume(status.currentVolume)" min="0" max="100" step="1" />
+  <i class="mdi mdi-volume-low" ng-show="!status.isMuted && status.currentVolume <= 25" ng-click="toggleMute()" title="Mute"></i>
+  <i class="mdi mdi-volume-medium" ng-show="!status.isMuted && status.currentVolume > 25 && status.currentVolume < 75" ng-click="toggleMute()" title="Mute"></i>
+  <i class="mdi mdi-volume-high" ng-show="!status.isMuted && status.currentVolume >= 75" ng-click="toggleMute()" title="Mute"></i>
+  <i class="mdi mdi-volume-off" ng-show="status.isMuted" ng-class="{active: status.isMuted}" ng-click="toggleMute()" title="Unmute"></i>
+  <input type="range" name="volume" ng-model="status.currentVolume" ng-change="setVolume(status.currentVolume)" min="0" max="100" step="1" />
 </div>
 <div class="controls-wrapper" ng-show="status.isConnected">
   <ul class="horizontal">

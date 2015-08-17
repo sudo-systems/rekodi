@@ -2,10 +2,28 @@
   ReKodi
 </div>
 
-<div ng-show="nowPlaying">
-  <div class="active audio clearfix" ng-show="nowPlaying.type === 'song' || nowPlaying.type === 'unknown'">
+<div ng-show="nowPlaying" class="data-wrapper">
+  <div class="paused-overlay" ng-show="playbackStatus.isPaused">
+    <i class="mdi mdi-pause"></i>
+  </div>
+  <div class="muted-overlay" ng-show="playbackStatus.isMuted && !playbackStatus.isPaused">
+    <i class="mdi mdi-volume-off"></i>
+  </div>
+  <div class="seek-slider-wrapper">
+    <div class="seek-time">
+      {{timePlaying}}
+    </div>
+    <div class="range-slider">
+      <input type="range" name="seek" ng-model="seek.position" ng-change="updateTootltip(seek.position)" ng-mouseup="setPlaybackPosition(seek.position)" ng-mousedown="setManuallySeeking(true)" min="0" max="100000" step="1" />
+    </div>
+    <div class="total-time">
+      {{nowPlaying.duration_readable}}
+    </div>
+  </div>
+  <div class="active audio clearfix" ng-show="nowPlaying.type === 'song' || nowPlaying.type === 'unknown'" ng-class="{blur: (playbackStatus.isPaused || playbackStatus.isMuted)}">
     <div class="thumbnail">
-      <i class="mdi mdi-music-note"></i>
+      <i class="mdi mdi-music-note" ng-show="!nowPlaying.thumbnail_src"></i>
+      <img ng-src="{{nowPlaying.thumbnail_src}}" alt="" ng-show="nowPlaying.thumbnail_src" />
     </div>
     <div class="details">
       <div class="artist" ng-show="nowPlaying.displayartist && nowPlaying.displayartist !== ''">
@@ -17,16 +35,13 @@
       <div class="title">
         <i class="mdi mdi-music-note"></i> <span ng-show="nowPlaying.track !== ''">{{nowPlaying.track}}.</span> {{nowPlaying.label}}
       </div>
-      <div class="time" ng-show="nowPlaying.duration_readable && nowPlaying.duration_readable !== ''">
-        <i class="mdi mdi-timelapse"></i> <span ng-show="timePlaying !== null">{{timePlaying}}</span> / <span ng-show="nowPlaying.duration_readable !== ''">{{nowPlaying.duration_readable}}</span>
-      </div>
     </div>
   </div>
 
-  <div class="active movie clearfix" ng-show="nowPlaying.type === 'movie'">
+  <div class="active movie clearfix" ng-show="nowPlaying.type === 'movie'" ng-class="{blur: (playbackStatus.isPaused || playbackStatus.isMuted)}">
     <div class="thumbnail">
-      <i class="mdi mdi-movie" ng-show="!nowPlaying.thumbnail_url"></i>
-      <img ng-src="{{nowPlaying.thumbnail_url}}" alt="" ng-hide="!nowPlaying.thumbnail_url" />
+      <i class="mdi mdi-movie" ng-show="!nowPlaying.thumbnail_src"></i>
+      <img ng-src="{{nowPlaying.thumbnail_src}}" alt="" ng-show="nowPlaying.thumbnail_src" />
     </div>
     <div class="details">
       <div class="title">
@@ -38,10 +53,10 @@
     </div>
   </div>
   
-  <div class="active episode clearfix" ng-show="nowPlaying.type === 'episode'">
+  <div class="active episode clearfix" ng-show="nowPlaying.type === 'episode'" ng-class="{blur: (playbackStatus.isPaused || playbackStatus.isMuted)}">
     <div class="thumbnail">
-      <i class="mdi mdi-movie" ng-show="!nowPlaying.thumbnail_url"></i>
-      <img ng-src="{{nowPlaying.thumbnail_url}}" alt="" ng-hide="!nowPlaying.thumbnail_url" />
+      <i class="mdi mdi-movie" ng-show="!nowPlaying.thumbnail_src"></i>
+      <img ng-src="{{nowPlaying.thumbnail_src}}" alt="" ng-show="nowPlaying.thumbnail_src" />
     </div>
     <div class="details">
       <div class="title">

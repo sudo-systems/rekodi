@@ -36,7 +36,7 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 
             playerid: playerId,
             properties: Object.keys(defaultProperties)
           }).then(function(data) {
-            if(JSON.stringify(currentProperties) !== JSON.stringify(data)) {
+            if(!angular.equals(currentProperties, data)) {
               currentProperties = data;
               $rootScope.$emit('rkPlayerPropertiesChange', data);
             }

@@ -552,6 +552,9 @@ tbody {
 .text-shadow-5 {
   text-shadow: 0 0 5px #222; }
 
+.blur {
+  -webkit-filter: blur(1.5px); }
+
 html {
   -webkit-text-size-adjust: none; }
 
@@ -641,25 +644,35 @@ body {
     margin: 0; }
   body input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    height: 11px;
-    width: 11px;
+    height: 10px;
+    width: 10px;
     border-radius: 50%;
-    background: #AAA;
-    cursor: pointer;
-    margin-top: -4.1px;
+    background: #666;
+    cursor: default;
+    margin-top: -4.5px;
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     -webkit-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out; }
+    transition: all 0.2s ease-in-out;
+    position: relative; }
+  body input[type=range]:focus::-webkit-slider-thumb:after,
+  body input[type=range]:hover::-webkit-slider-thumb:after {
+    position: absolute;
+    z-index: 999;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: transparent;
+    color: #999;
+    font-size: 10px; }
   body input[type=range]:hover::-webkit-slider-thumb,
   body input[type=range]:focus::-webkit-slider-thumb {
     background: #E6802E; }
   body input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
-    height: 2px;
-    cursor: pointer;
+    height: 1px;
+    cursor: default;
     background: #555;
-    border-radius: 1px;
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     -webkit-transition: all 0.2s ease-in-out;
@@ -817,57 +830,137 @@ section#nowPlaying {
     font-size: 46px;
     font-weight: 300;
     text-shadow: 0 0 2px #4C4E4F; }
-  section#nowPlaying .active {
-    padding: 0 12px;
-    overflow: hidden; }
-    section#nowPlaying .active .thumbnail {
-      display: inline-block;
-      float: left;
-      height: 80px;
-      width: 70px;
-      text-align: center;
-      -webkit-perspective: 150px;
-      margin-top: 20px; }
-      section#nowPlaying .active .thumbnail i.mdi {
-        font-size: 60px;
-        line-height: 60px;
-        -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5))); }
-      section#nowPlaying .active .thumbnail img {
-        max-height: 100%;
-        max-width: 100%;
-        -webkit-transform: rotateY(25deg);
-        -webkit-box-reflect: below 4px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5)));
-        border-radius: 3px; }
-    section#nowPlaying .active .details {
-      display: inline-block;
-      float: right;
-      width: 395px;
-      color: #999;
-      height: 100px;
-      margin-top: 10px; }
-      section#nowPlaying .active .details i.mdi {
-        color: #666;
-        font-size: 14px; }
-      section#nowPlaying .active .details .artist {
-        font-size: 14px; }
-      section#nowPlaying .active .details .album {
-        color: #BBB;
-        font-size: 15px; }
-      section#nowPlaying .active .details .title {
+  section#nowPlaying .data-wrapper {
+    position: relative;
+    height: 100%; }
+    section#nowPlaying .data-wrapper .paused-overlay,
+    section#nowPlaying .data-wrapper .muted-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+      text-align: center; }
+      section#nowPlaying .data-wrapper .paused-overlay i.mdi,
+      section#nowPlaying .data-wrapper .muted-overlay i.mdi {
+        line-height: 130px;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 140px;
+        -webkit-animation: flickerAnimation 1s infinite;
+        -moz-animation: flickerAnimation 1s infinite;
+        -o-animation: flickerAnimation 1s infinite;
+        animation: flickerAnimation 1s infinite; }
+    section#nowPlaying .data-wrapper .seek-slider-wrapper {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      padding: 0 12px;
+      height: 12px; }
+      section#nowPlaying .data-wrapper .seek-slider-wrapper .total-time,
+      section#nowPlaying .data-wrapper .seek-slider-wrapper .seek-time {
+        width: 60px;
+        text-align: center;
+        color: #AAA;
+        font-size: 12px;
+        line-height: 12px; }
+      section#nowPlaying .data-wrapper .seek-slider-wrapper .seek-time {
         color: #FFF;
-        font-size: 18px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis; }
-      section#nowPlaying .active .details .time {
-        font-size: 14px; }
-      section#nowPlaying .active .details .plot {
-        overflow-y: hidden;
-        text-overflow: ellipsis;
-        text-align: justify;
-        font-size: 12px; }
-    section#nowPlaying .active .details > div {
-      line-height: 20px; }
+        text-align: right;
+        padding-right: 6px; }
+      section#nowPlaying .data-wrapper .seek-slider-wrapper .total-time {
+        float: right;
+        text-align: left;
+        padding-left: 6px; }
+      section#nowPlaying .data-wrapper .seek-slider-wrapper .range-slider {
+        width: 354px;
+        padding: 0; }
+        section#nowPlaying .data-wrapper .seek-slider-wrapper .range-slider input[type=range] {
+          height: 12px;
+          margin: 0;
+          border: 0;
+          border-left: 1px solid #666;
+          border-right: 1px solid #666; }
+          section#nowPlaying .data-wrapper .seek-slider-wrapper .range-slider input[type=range]::-webkit-slider-thumb {
+            border-radius: 0;
+            height: 12px;
+            width: 6px;
+            background: #E6802E;
+            margin-top: -6px; }
+          section#nowPlaying .data-wrapper .seek-slider-wrapper .range-slider input[type=range]::-webkit-slider-runnable-track {
+            height: 0; }
+        section#nowPlaying .data-wrapper .seek-slider-wrapper .range-slider input[type=range]:focus::-webkit-slider-thumb:after,
+        section#nowPlaying .data-wrapper .seek-slider-wrapper .range-slider input[type=range]:hover::-webkit-slider-thumb:after {
+          top: -20px;
+          left: 50%;
+          transform: translateX(-50%);
+          color: #FFF; }
+    section#nowPlaying .data-wrapper .seek-slider-wrapper > div {
+      display: inline-block;
+      float: left; }
+    section#nowPlaying .data-wrapper .active {
+      padding: 0 12px;
+      overflow: hidden;
+      height: 100%; }
+      section#nowPlaying .data-wrapper .active .thumbnail {
+        display: inline-block;
+        float: left;
+        height: 90px;
+        width: 80px;
+        text-align: center;
+        -webkit-perspective: 150px;
+        margin-top: 10px; }
+        section#nowPlaying .data-wrapper .active .thumbnail i.mdi {
+          font-size: 80px;
+          line-height: 90px;
+          -webkit-transform: rotateY(25deg);
+          -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5)));
+          -moz-transition: all 1s ease-in-out;
+          -o-transition: all 1s ease-in-out;
+          -webkit-transition: all 1s ease-in-out;
+          transition: all 1s ease-in-out; }
+        section#nowPlaying .data-wrapper .active .thumbnail img {
+          max-height: 100%;
+          max-width: 100%;
+          -webkit-transform: rotateY(25deg);
+          -webkit-box-reflect: below 2px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5)));
+          border-radius: 3px;
+          -moz-transition: all 1s ease-in-out;
+          -o-transition: all 1s ease-in-out;
+          -webkit-transition: all 1s ease-in-out;
+          transition: all 1s ease-in-out; }
+      section#nowPlaying .data-wrapper .active .details {
+        display: inline-block;
+        float: right;
+        width: 395px;
+        color: #999;
+        height: 100px;
+        margin-top: 10px; }
+        section#nowPlaying .data-wrapper .active .details i.mdi {
+          color: #666;
+          font-size: 14px; }
+        section#nowPlaying .data-wrapper .active .details .album {
+          color: #BBB; }
+        section#nowPlaying .data-wrapper .active .details .title {
+          color: #FFF;
+          font-size: 16px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis; }
+        section#nowPlaying .data-wrapper .active .details .time {
+          font-size: 12px; }
+        section#nowPlaying .data-wrapper .active .details .plot {
+          overflow-y: hidden;
+          text-overflow: ellipsis;
+          text-align: justify;
+          font-size: 12px; }
+      section#nowPlaying .data-wrapper .active .details > div {
+        line-height: 20px; }
+  section#nowPlaying .active:hover .thumbnail img,
+  section#nowPlaying .active:hover .thumbnail i.mdi {
+    -webkit-transform: rotateY(0deg); }
   section#nowPlaying .active.episode .thumbnail {
     width: 120px; }
   section#nowPlaying .active.episode .details {
@@ -893,28 +986,32 @@ section#playbackControls {
     bottom: 0;
     padding-left: 12px;
     white-space: nowrap;
-    text-align: left; }
+    text-align: left;
+    overflow: hidden;
+    width: 34px;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out; }
     section#playbackControls .volume-slider-wrapper input {
       width: 65px;
       height: 47px; }
     section#playbackControls .volume-slider-wrapper i.mdi {
       line-height: 47px;
-      font-size: 16px;
-      color: #AAA;
+      width: 20px;
+      font-size: 20px;
+      color: #666;
       display: inline-block;
-      margin-right: 8px;
       vertical-align: top;
       -moz-transition: all 0.2s ease-in-out;
       -o-transition: all 0.2s ease-in-out;
       -webkit-transition: all 0.2s ease-in-out;
       transition: all 0.2s ease-in-out; }
+    section#playbackControls .volume-slider-wrapper i.mdi:hover,
     section#playbackControls .volume-slider-wrapper i.mdi.active {
-      color: #E6802E;
-      -ms-transform: scale(1.3);
-      -webkit-transform: scale(1.3);
-      -moz-transform: scale(1.3);
-      -o-transform: scale(1.3);
-      transform: scale(1.3); }
+      color: #E6802E; }
+  section#playbackControls .volume-slider-wrapper:hover {
+    width: 110px; }
   section#playbackControls .controls-wrapper ul {
     font-size: 0; }
   section#playbackControls .controls-wrapper li {

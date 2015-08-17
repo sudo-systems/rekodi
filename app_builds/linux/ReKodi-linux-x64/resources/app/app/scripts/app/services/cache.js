@@ -74,7 +74,7 @@ rekodiApp.service('rkCacheService', ['$localStorage',
         else {
           var cachedDataObject = JSON.parse($localStorage.cache[_identifier][properties.key]);
           
-          if(!cachedDataObject[properties.index] || JSON.stringify(cachedDataObject[properties.index]) !== JSON.stringify(properties.data)) {
+          if(!cachedDataObject[properties.index] || angular.equals(cachedDataObject[properties.index], properties.data)) {
             this.set(properties);
             return true;
           }

@@ -16,7 +16,7 @@ rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'kodiApiService', 'r
         kodiApi.Application.GetProperties({
           properties: Object.keys(defaultProperties)
         }).then(function(data) {
-          if(JSON.stringify(currentProperties) !== JSON.stringify(data)) {
+          if(!angular.equals(currentProperties, data)) {
             currentProperties = data;
             $rootScope.$emit('rkKodiPropertiesChange', data);
           }

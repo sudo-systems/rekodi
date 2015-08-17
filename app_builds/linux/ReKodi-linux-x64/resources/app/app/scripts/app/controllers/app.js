@@ -5,11 +5,11 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'kodiA
     $scope.isConfigured = true;
     $scope.isConnected = true;
     $scope.controllersLoaded = false;
-    $scope.$root.rkControllers = {};
-    var rkControllers = ['footer', 'now_playing', 'playback_controls', 'tabs', 'window'];
+    $scope.$root.rkRequiredControllers = {};
+    var rkRequiredControllers = ['footer', 'now_playing', 'playback_controls', 'tabs', 'window'];
     
-    for(var key in rkControllers) {
-      $scope.$root.rkControllers[rkControllers[key]] = {
+    for(var key in rkRequiredControllers) {
+      $scope.$root.rkRequiredControllers[rkRequiredControllers[key]] = {
         loaded: false
       };
     }
@@ -54,7 +54,7 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'kodiA
         $scope.isConnected = newData;
       });
       
-      $scope.$root.$watch('rkControllers', function(newValue, oldValue) {
+      var loadRequiredControllersWatch = $scope.$root.$watch('rkRequiredControllers', function(newValue, oldValue) {
         var allInitialControllersLoaded = true;
 
         for(var key in newValue) {
@@ -67,6 +67,7 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'kodiA
         if(allInitialControllersLoaded) {
           $scope.controllersLoaded = true;
           kodiApiService.connect();
+          loadRequiredControllersWatch(); //destroy watcher
         }
       }, true);
     }

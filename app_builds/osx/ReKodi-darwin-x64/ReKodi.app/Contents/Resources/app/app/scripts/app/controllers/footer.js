@@ -99,7 +99,7 @@ rekodiApp.controller('rkFooterCtrl', ['$scope', '$element', '$timeout', 'rkToolt
     });
     
     $timeout(function() {
-      $scope.$root.rkControllers.footer.loaded = true;
+      $scope.$root.rkRequiredControllers.footer.loaded = true;
     });
   }
 ]);

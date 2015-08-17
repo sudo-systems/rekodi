@@ -148,7 +148,7 @@ rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage', '$timeout',
       
       $scope.storage = $localStorage.tabs;
       
-      $scope.$root.rkControllers.tabs.loaded = true;
+      $scope.$root.rkRequiredControllers.tabs.loaded = true;
     }
     
     $timeout(function() {

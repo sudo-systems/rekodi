@@ -405,3 +405,7 @@ tbody {
 .text-shadow-5 {
   @include textShadow(0 0 5px, #222);
 }
+
+.blur {
+  -webkit-filter: blur(1.5px);
+}
