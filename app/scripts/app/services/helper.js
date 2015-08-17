@@ -61,6 +61,7 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
       }
 
       if(item.runtime) {
+        item.duration = item.runtime;
         item.duration_readable =  secondsToDuration(item.runtime);
       }
 

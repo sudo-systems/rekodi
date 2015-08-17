@@ -20,6 +20,7 @@ section#playbackControls {
     text-align: left;
     overflow: hidden;
     width: 34px;
+    @include transitionAll(map-get($global, transition-speed));
     
     input {
       width: 65px;

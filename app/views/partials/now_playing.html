@@ -9,6 +9,17 @@
   <div class="muted-overlay" ng-show="playbackStatus.isMuted && !playbackStatus.isPaused">
     <i class="mdi mdi-volume-off"></i>
   </div>
+  <div class="seek-slider-wrapper">
+    <div class="seek-time">
+      {{timePlaying}}
+    </div>
+    <div class="range-slider">
+      <input type="range" name="seek" ng-model="seekPercentage" ng-change="updateTootltip()" ng-mouseup="setPlaybackPosition()" ng-mousedown="pausePositionUpdates()" min="0" max="100" step="0.01" />
+    </div>
+    <div class="total-time">
+      {{nowPlaying.duration_readable}}
+    </div>
+  </div>
   <div class="active audio clearfix" ng-show="nowPlaying.type === 'song' || nowPlaying.type === 'unknown'" ng-class="{blur: (playbackStatus.isPaused || playbackStatus.isMuted)}">
     <div class="thumbnail">
       <i class="mdi mdi-music-note" ng-show="!nowPlaying.thumbnail_src"></i>
@@ -25,7 +36,7 @@
         <i class="mdi mdi-music-note"></i> <span ng-show="nowPlaying.track !== ''">{{nowPlaying.track}}.</span> {{nowPlaying.label}}
       </div>
       <div class="time" ng-show="nowPlaying.duration_readable && nowPlaying.duration_readable !== ''">
-        <i class="mdi mdi-timelapse"></i> <span ng-show="timePlaying !== null">{{timePlaying}}</span> / <span ng-show="nowPlaying.duration_readable !== ''">{{nowPlaying.duration_readable}}</span>
+        <i class="mdi mdi-timelapse"></i> {{nowPlaying.duration_readable}}
       </div>
     </div>
   </div>

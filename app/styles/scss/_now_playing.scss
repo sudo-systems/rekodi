@@ -31,7 +31,7 @@ section#nowPlaying {
       left: 0;
       right: 0;
       bottom: 0;
-      z-index: 1;
+      z-index: 2;
       text-align: center;
       
       i.mdi {
@@ -40,6 +40,76 @@ section#nowPlaying {
         font-size: 140px;
         @include fadeInAndOut(1s);
       }
+    }
+    
+    .seek-slider-wrapper {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1;
+      padding: 0 map-get($global, window-padding);
+      height: 12px;
+      
+      .total-time,
+      .seek-time {
+        width: 60px;
+        text-align: center;
+        color: #AAA;
+        font-size: 12px;
+        line-height: 12px;
+      }
+      
+      .seek-time {
+        text-align: right;
+        padding-right: 6px;
+      }
+      
+      .total-time {
+        float: right;
+        text-align: left;
+        padding-left: 6px;
+      }
+      
+      .range-slider {
+        width: 354px;
+        padding: 0;
+        
+        input[type=range] {
+          height: 12px;
+          margin: 0;
+          border: 0;
+          border-left: 1px solid #666;
+          border-right: 1px solid #666;
+          
+          &::-webkit-slider-thumb {
+            border-radius: 0;
+            height: 12px;
+            width: 6px;
+            background: map-get($global, highlight-color);
+            margin-top: -6px;
+          }
+          
+          &::-webkit-slider-runnable-track {
+            height: 0;
+          }
+        }
+        
+        input[type=range]:focus,
+        input[type=range]:hover {
+          &::-webkit-slider-thumb:after {
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #FFF;
+          }
+        }
+      }
+    }
+    
+    .seek-slider-wrapper > div {
+      display: inline-block;
+      float: left;
     }
     
     .active {
@@ -57,9 +127,11 @@ section#nowPlaying {
         margin-top: 10px;
 
         i.mdi {
-          font-size: 60px;
-          line-height: 80px;
+          font-size: 80px;
+          line-height: 90px;
+          -webkit-transform: rotateY(25deg);
           -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
+          @include transitionAll(1s);
         }
 
         img {
@@ -101,6 +173,7 @@ section#nowPlaying {
         }
 
         .time {
+          font-size: 12px;
         }
 
         .plot {
@@ -117,7 +190,8 @@ section#nowPlaying {
     }
   }
   
-  .active:hover .thumbnail img {
+  .active:hover .thumbnail img,
+  .active:hover .thumbnail i.mdi {
     -webkit-transform: rotateY(0deg);
   }
   
