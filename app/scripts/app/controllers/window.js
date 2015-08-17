@@ -43,7 +43,7 @@ rekodiApp.controller('rkWindowCtrl', ['$scope', '$element', 'rkTooltipsService',
         rkTooltipsService.apply($($element));
       });
       
-      $scope.$root.rkControllers.window.loaded = true;
+      $scope.$root.rkRequiredControllers.window.loaded = true;
     }
     
     $timeout(function() {

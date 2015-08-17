@@ -1,9 +1,12 @@
-rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService',
-  function($scope, $timeout, rkHelperService) {
+rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService', 'rkPlaybackStatusService',
+  function($scope, $timeout, rkHelperService, rkPlaybackStatusService) {
     $scope.nowPlaying = null;
     $scope.timePlaying = '00:00:00';
+    $scope.playbackStatus = {};
     
     function init() {
+      $scope.status = rkPlaybackStatusService.getCurrentStatus();
+      
       $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
         $scope.nowPlaying = data;
 
@@ -23,7 +26,11 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
         }
       });
       
-      $scope.$root.rkControllers.now_playing.loaded = true;
+      $scope.$root.$on('rkPlaybackStatusChange', function(event, data) {
+        $scope.playbackStatus = data;
+      });
+      
+      $scope.$root.rkRequiredControllers.now_playing.loaded = true;
     }
     
     $timeout(function() {

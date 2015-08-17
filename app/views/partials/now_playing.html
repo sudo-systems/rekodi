@@ -2,10 +2,17 @@
   ReKodi
 </div>
 
-<div ng-show="nowPlaying">
-  <div class="active audio clearfix" ng-show="nowPlaying.type === 'song' || nowPlaying.type === 'unknown'">
+<div ng-show="nowPlaying" class="data-wrapper">
+  <div class="paused-overlay" ng-show="playbackStatus.isPaused">
+    <i class="mdi mdi-pause"></i>
+  </div>
+  <div class="muted-overlay" ng-show="playbackStatus.isMuted && !playbackStatus.isPaused">
+    <i class="mdi mdi-volume-off"></i>
+  </div>
+  <div class="active audio clearfix" ng-show="nowPlaying.type === 'song' || nowPlaying.type === 'unknown'" ng-class="{blur: (playbackStatus.isPaused || playbackStatus.isMuted)}">
     <div class="thumbnail">
-      <i class="mdi mdi-music-note"></i>
+      <i class="mdi mdi-music-note" ng-show="!nowPlaying.thumbnail_src"></i>
+      <img ng-src="{{nowPlaying.thumbnail_src}}" alt="" ng-show="nowPlaying.thumbnail_src" />
     </div>
     <div class="details">
       <div class="artist" ng-show="nowPlaying.displayartist && nowPlaying.displayartist !== ''">
@@ -23,10 +30,10 @@
     </div>
   </div>
 
-  <div class="active movie clearfix" ng-show="nowPlaying.type === 'movie'">
+  <div class="active movie clearfix" ng-show="nowPlaying.type === 'movie'" ng-class="{blur: (playbackStatus.isPaused || playbackStatus.isMuted)}">
     <div class="thumbnail">
-      <i class="mdi mdi-movie" ng-show="!nowPlaying.thumbnail_url"></i>
-      <img ng-src="{{nowPlaying.thumbnail_url}}" alt="" ng-hide="!nowPlaying.thumbnail_url" />
+      <i class="mdi mdi-movie" ng-show="!nowPlaying.thumbnail_src"></i>
+      <img ng-src="{{nowPlaying.thumbnail_src}}" alt="" ng-show="nowPlaying.thumbnail_src" />
     </div>
     <div class="details">
       <div class="title">
@@ -38,10 +45,10 @@
     </div>
   </div>
   
-  <div class="active episode clearfix" ng-show="nowPlaying.type === 'episode'">
+  <div class="active episode clearfix" ng-show="nowPlaying.type === 'episode'" ng-class="{blur: (playbackStatus.isPaused || playbackStatus.isMuted)}">
     <div class="thumbnail">
-      <i class="mdi mdi-movie" ng-show="!nowPlaying.thumbnail_url"></i>
-      <img ng-src="{{nowPlaying.thumbnail_url}}" alt="" ng-hide="!nowPlaying.thumbnail_url" />
+      <i class="mdi mdi-movie" ng-show="!nowPlaying.thumbnail_src"></i>
+      <img ng-src="{{nowPlaying.thumbnail_src}}" alt="" ng-show="nowPlaying.thumbnail_src" />
     </div>
     <div class="details">
       <div class="title">

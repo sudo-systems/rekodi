@@ -19,81 +19,106 @@ section#nowPlaying {
     font-weight: 300;
     @include textShadow(0 0 2px, #4C4E4F);
   }
-  
-  .active {
-    padding: 0 map-get($global, window-padding);
-    overflow: hidden;
+
+  .data-wrapper {
+    position: relative;
+    height: 100%;
     
-    .thumbnail {
-      display: inline-block;
-      float: left;
-      height: 80px;
-      width: 70px;
+    .paused-overlay,
+    .muted-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
       text-align: center;
-      -webkit-perspective: 150px;
-      margin-top: 20px;
       
       i.mdi {
-        font-size: 60px;
-        line-height: 60px;
-        -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
-      }
-      
-      img {
-        max-height: 100%;
-        max-width: 100%;
-        -webkit-transform: rotateY(25deg);
-        -webkit-box-reflect: below 4px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
-        border-radius: 3px;
+        line-height: map-get($now-playing, height);
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 140px;
+        @include fadeInAndOut(1s);
       }
     }
     
-    .details {
-      display: inline-block;
-      float: right;
-      width: 395px;
-      color: #999;
-      height: 100px;
-      margin-top: 10px;
-
-      i.mdi {
-        color: #666;
-        font-size: 14px;
-      }
+    .active {
+      padding: 0 map-get($global, window-padding);
+      overflow: hidden;
+      height: 100%;
       
-      .artist {
-        font-size: 14px;
+      .thumbnail {
+        display: inline-block;
+        float: left;
+        height: 90px;
+        width: 80px;
+        text-align: center;
+        -webkit-perspective: 150px;
+        margin-top: 10px;
+
+        i.mdi {
+          font-size: 60px;
+          line-height: 80px;
+          -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
+        }
+
+        img {
+          max-height: 100%;
+          max-width: 100%;
+          -webkit-transform: rotateY(25deg);
+          -webkit-box-reflect: below 2px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
+          border-radius: 3px;
+          @include transitionAll(1s);
+        }
       }
 
-      .album {
-        color: #BBB;
-        font-size: 15px;
+      .details {
+        display: inline-block;
+        float: right;
+        width: 395px;
+        color: #999;
+        height: 100px;
+        margin-top: 10px;
+
+        i.mdi {
+          color: #666;
+          font-size: 14px;
+        }
+
+        .artist {
+        }
+
+        .album {
+          color: #BBB;
+        }
+
+        .title {
+          color: #FFF;
+          font-size: 18px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .time {
+        }
+
+        .plot {
+          overflow-y: hidden;
+          text-overflow: ellipsis;
+          text-align: justify;
+          font-size: 12px;
+        }
       }
 
-      .title {
-        color: #FFF;
-        font-size: 18px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      
-      .time {
-        font-size: 14px;
-      }
-      
-      .plot {
-        overflow-y: hidden;
-        text-overflow: ellipsis;
-        text-align: justify;
-        font-size: 12px;
+      .details > div {
+        line-height: 20px;
       }
     }
-    
-    
-    .details > div {
-      line-height: 20px;
-    }
+  }
+  
+  .active:hover .thumbnail img {
+    -webkit-transform: rotateY(0deg);
   }
   
   .active.episode {

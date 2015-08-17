@@ -36,7 +36,7 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'kodiApiService', 'rkEnu
             if(data.item) {
               data.item = rkHelperService.addCustomFields(data.item);
 
-              if(JSON.stringify(playingItem) !== JSON.stringify(data.item)) {
+              if(!angular.equals(playingItem, data.item)) {
                 playingItem = data.item;
                 $rootScope.$emit('rkNowPlayingDataUpdate', playingItem);
                 applyCurrentFanartWallpaper();
