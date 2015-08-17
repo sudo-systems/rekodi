@@ -137,6 +137,10 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
       if(!fs.existsSync(downloadDirectory)) {
         mkpath.sync(downloadDirectory);
       }
+      
+      if(fs.existsSync(downloadedFilePath)) {
+        fs.unlinkSync(filePath);
+      }
 
       var file = fs.createWriteStream(downloadedFilePath);
       

@@ -31,7 +31,7 @@ section#nowPlaying {
       left: 0;
       right: 0;
       bottom: 0;
-      z-index: 2;
+      z-index: 1;
       text-align: center;
       
       i.mdi {
@@ -47,7 +47,7 @@ section#nowPlaying {
       bottom: 0;
       left: 0;
       right: 0;
-      z-index: 1;
+      z-index: 2;
       padding: 0 map-get($global, window-padding);
       height: 12px;
       
@@ -82,7 +82,7 @@ section#nowPlaying {
           border: 0;
           border-left: 1px solid #666;
           border-right: 1px solid #666;
-          
+
           &::-webkit-slider-thumb {
             border-radius: 0;
             height: 12px;
@@ -167,7 +167,7 @@ section#nowPlaying {
 
         .title {
           color: #FFF;
-          font-size: 18px;
+          font-size: 16px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;

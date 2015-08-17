@@ -4,6 +4,7 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
     $scope.timePlaying = '00:00:00';
     $scope.isManuallySeeking = false;
     $scope.playbackStatus = null;
+    $scope.seekbarResolution = 100000;
     $scope.seek = {
       position: 0
     };
@@ -19,13 +20,13 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
     
     $scope.setPlaybackPosition = function(seekPosition) {
       if($scope.nowPlaying && $scope.nowPlaying.duration) {
-        var seconds = Math.ceil(($scope.nowPlaying.duration / 1000) * seekPosition);
+        var seconds = Math.ceil(($scope.nowPlaying.duration / $scope.seekbarResolution) * seekPosition);
         var timeObject = rkHelperService.secondsToTimeObject(seconds);
 
         rkRemoteControlService.seek(timeObject, function(data) {
           var seconds = rkHelperService.timeObjectToSeconds(data.time);
           var totalSeconds = rkHelperService.timeObjectToSeconds(data.totaltime);
-          $scope.seek.position = Math.floor((seconds / totalSeconds) * 1000);
+          $scope.seek.position = Math.floor((seconds / totalSeconds) * $scope.seekbarResolution);
           $scope.setManuallySeeking(false);
         });
       }
@@ -40,7 +41,7 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
       var sliderWrapperFocusSelector = '.seek-slider-wrapper input[type=range]:focus::-webkit-slider-thumb:after';
 
       if($scope.nowPlaying && $scope.nowPlaying.duration) {
-        var seconds = Math.ceil(($scope.nowPlaying.duration / 1000) * seekPosition);
+        var seconds = Math.ceil(($scope.nowPlaying.duration / $scope.seekbarResolution) * seekPosition);
         var seekTime = rkHelperService.secondsToDuration(seconds);
         styl.inject(sliderWrapperHoverSelector+', '+sliderWrapperFocusSelector, {content: "'"+seekTime+"'"}).apply();
       }
@@ -51,9 +52,12 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
       
       $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
         $scope.nowPlaying = data;
+        
         if(!data) {
           setDefaults();
         }
+        
+        $scope.$apply();
       });
       
       $scope.$root.$on('rkPlayerPropertiesChange', function(event, data) {
@@ -63,7 +67,7 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
 
           if(!$scope.isManuallySeeking) {
             if($scope.nowPlaying && $scope.nowPlaying.duration) {
-              $scope.seek.position = Math.floor((seconds / $scope.nowPlaying.duration) * 1000);
+              $scope.seek.position = Math.floor((seconds / $scope.nowPlaying.duration) * $scope.seekbarResolution);
             }
             else {
               $scope.seek.position = 0;
@@ -71,14 +75,14 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
 
             $scope.updateTootltip($scope.seek.position);
           }
-          
-          $scope.$apply();
         }
         else {
           $scope.timePlaying = '00:00:00';
           $scope.seek.position = 0;
           $scope.updateTootltip($scope.seek.position);
         }
+        
+        $scope.$apply();
       });
       
       $scope.$root.$on('rkPlaybackStatusChange', function(event, data) {

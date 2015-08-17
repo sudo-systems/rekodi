@@ -14,7 +14,7 @@
       {{timePlaying}}
     </div>
     <div class="range-slider">
-      <input type="range" name="seek" ng-model="seek.position" ng-change="updateTootltip(seek.position)" ng-mouseup="setPlaybackPosition(seek.position)" ng-mousedown="setManuallySeeking(true)" min="0" max="1000" step="1" />
+      <input type="range" name="seek" ng-model="seek.position" ng-change="updateTootltip(seek.position)" ng-mouseup="setPlaybackPosition(seek.position)" ng-mousedown="setManuallySeeking(true)" min="0" max="100000" step="1" />
     </div>
     <div class="total-time">
       {{nowPlaying.duration_readable}}

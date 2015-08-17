@@ -840,7 +840,7 @@ section#nowPlaying {
       left: 0;
       right: 0;
       bottom: 0;
-      z-index: 2;
+      z-index: 1;
       text-align: center; }
       section#nowPlaying .data-wrapper .paused-overlay i.mdi,
       section#nowPlaying .data-wrapper .muted-overlay i.mdi {
@@ -856,7 +856,7 @@ section#nowPlaying {
       bottom: 0;
       left: 0;
       right: 0;
-      z-index: 1;
+      z-index: 2;
       padding: 0 12px;
       height: 12px; }
       section#nowPlaying .data-wrapper .seek-slider-wrapper .total-time,
@@ -945,7 +945,7 @@ section#nowPlaying {
           color: #BBB; }
         section#nowPlaying .data-wrapper .active .details .title {
           color: #FFF;
-          font-size: 18px;
+          font-size: 16px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis; }
