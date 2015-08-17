@@ -134,8 +134,6 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
     };
     
     var setVolume = function(percentage) {
-      kodiApi = kodiApiService.getConnection();
-      
       if(kodiApi) {
         kodiApi.Application.SetVolume({
           volume: parseInt(percentage)
@@ -148,8 +146,6 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
     };
     
     var toggleMute = function() {
-      kodiApi = kodiApiService.getConnection();
-      
       if(kodiApi) {
         kodiApi.Application.SetMute({
           mute: 'toggle'
@@ -159,6 +155,24 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
           rkHelperService.handleError(error);
         });
       }
+    };
+    
+    var seek = function(timeObject, callback) {
+      callback = (callback.constructor !== Function)? function(){} : callback;
+      
+      getActivePlayerId(function(playerId) {
+        if(playerId !== null) {
+          kodiApi.Player.Seek({
+            playerid: playerId,
+            value: timeObject
+          }).then(function(data) {
+              callback(data);
+          }, function(error) {
+            rkHelperService.handleError(error);
+            callback(null);
+          });
+        }
+      });
     };
     
     function init() {
@@ -181,7 +195,8 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
       skipPrevious: skipPrevious,
       skipNext: skipNext,
       setVolume: setVolume,
-      toggleMute: toggleMute
+      toggleMute: toggleMute,
+      seek: seek
     };
   }
 ]);

@@ -104,6 +104,24 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
       
       return timeString;
     };
+    
+    var secondsToTimeObject = function(seconds) {
+      var date = new Date(1970, 0, 1);
+      date.setSeconds(seconds);
+      
+      var timeObject = {
+        hours: date.getHours(),
+        minutes: date.getMinutes(),
+        seconds: date.getSeconds(),
+        milliseconds: date.getMilliseconds()
+      };
+
+      return timeObject;
+    };
+    
+    var timeObjectToSeconds = function(timeObject) {
+      return ((+timeObject.hours) * 60 * 60 + (+timeObject.minutes) * 60 + (+timeObject.seconds));
+    };
 
     var downloadFile = function(url, targetDirectory, filename, callback) {
       var downloadDirectory = tempDownloadDirectory+targetDirectory;
@@ -206,7 +224,9 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
       getFilenameFromUrl: getFilenameFromUrl,
       downloadFile: downloadFile,
       setDesktopWallpaper: setDesktopWallpaper,
-      getDesktopWallpaper: getDesktopWallpaper
+      getDesktopWallpaper: getDesktopWallpaper,
+      secondsToTimeObject: secondsToTimeObject,
+      timeObjectToSeconds: timeObjectToSeconds
     };
   }
 ]);

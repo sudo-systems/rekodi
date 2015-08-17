@@ -867,6 +867,7 @@ section#nowPlaying {
         font-size: 12px;
         line-height: 12px; }
       section#nowPlaying .data-wrapper .seek-slider-wrapper .seek-time {
+        color: #FFF;
         text-align: right;
         padding-right: 6px; }
       section#nowPlaying .data-wrapper .seek-slider-wrapper .total-time {

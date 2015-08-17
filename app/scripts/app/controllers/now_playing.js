@@ -1,80 +1,94 @@
-rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService', 'rkPlaybackStatusService',
-  function($scope, $timeout, rkHelperService, rkPlaybackStatusService) {
+rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService', 'rkPlaybackStatusService', 'rkRemoteControlService',
+  function($scope, $timeout, rkHelperService, rkPlaybackStatusService, rkRemoteControlService) {
     $scope.nowPlaying = null;
     $scope.timePlaying = '00:00:00';
-    $scope.seekPercentage = 0;
-    var pauseSeekPositionUpdates = false;
-    $scope.playbackStatus = {};
+    $scope.isManuallySeeking = false;
+    $scope.playbackStatus = null;
+    $scope.seek = {
+      position: 0
+    };
     
-    $scope.setPlaybackPosition = function() {
-      pauseSeekPositionUpdates = false;
-      
+    function setDefaults() {
+      $scope.nowPlaying = null;
+      $scope.timePlaying = '00:00:00';
+      $scope.seek.position = 0;
+      $scope.playbackStatus = null;
+      $scope.isManuallySeeking = false;
+      $scope.updateTootltip($scope.seek.position);
+    }
+    
+    $scope.setPlaybackPosition = function(seekPosition) {
       if($scope.nowPlaying && $scope.nowPlaying.duration) {
+        var seconds = Math.ceil(($scope.nowPlaying.duration / 1000) * seekPosition);
+        var timeObject = rkHelperService.secondsToTimeObject(seconds);
 
+        rkRemoteControlService.seek(timeObject, function(data) {
+          var seconds = rkHelperService.timeObjectToSeconds(data.time);
+          var totalSeconds = rkHelperService.timeObjectToSeconds(data.totaltime);
+          $scope.seek.position = Math.floor((seconds / totalSeconds) * 1000);
+          $scope.setManuallySeeking(false);
+        });
       }
     };
     
-    $scope.updateTootltip = function(useSeekPercentage) {
-      var seekTime = $scope.timePlaying;
-      
-      if(useSeekPercentage && $scope.nowPlaying && $scope.nowPlaying.duration) {
-        var seconds = Math.ceil(($scope.nowPlaying.duration / 100) * $scope.seekPercentage);
-        seekTime = rkHelperService.secondsToDuration(seconds);
+    $scope.setManuallySeeking = function(manuallySeeking) {
+      $scope.isManuallySeeking = manuallySeeking;
+    };
+
+    $scope.updateTootltip = function(seekPosition) {
+      var sliderWrapperHoverSelector = '.seek-slider-wrapper input[type=range]:hover::-webkit-slider-thumb:after';
+      var sliderWrapperFocusSelector = '.seek-slider-wrapper input[type=range]:focus::-webkit-slider-thumb:after';
+
+      if($scope.nowPlaying && $scope.nowPlaying.duration) {
+        var seconds = Math.ceil(($scope.nowPlaying.duration / 1000) * seekPosition);
+        var seekTime = rkHelperService.secondsToDuration(seconds);
+        styl.inject(sliderWrapperHoverSelector+', '+sliderWrapperFocusSelector, {content: "'"+seekTime+"'"}).apply();
       }
-      
-      styl.inject('.seek-slider-wrapper input[type=range]:hover::-webkit-slider-thumb:after, .seek-slider-wrapper input[type=range]:focus::-webkit-slider-thumb:after', {content: "'"+seekTime+"'"}).apply();
     };
-    
-    $scope.pausePositionUpdates = function() {
-      pauseSeekPositionUpdates = true;
-    };
-    
+
     function init() {
       $scope.status = rkPlaybackStatusService.getCurrentStatus();
       
       $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
         $scope.nowPlaying = data;
-
         if(!data) {
-          $scope.timePlaying = null;
-          $scope.seekPercentage = 0;
-          $scope.updateTootltip();
+          setDefaults();
         }
       });
       
       $scope.$root.$on('rkPlayerPropertiesChange', function(event, data) {
         if(data.time && Object.keys(data.time).length > 0) {
-          var seconds = (+data.time.hours) * 60 * 60 + (+data.time.minutes) * 60 + (+data.time.seconds);
+          var seconds = rkHelperService.timeObjectToSeconds(data.time);
           $scope.timePlaying = rkHelperService.secondsToDuration(seconds);
 
-          if(!pauseSeekPositionUpdates) {
+          if(!$scope.isManuallySeeking) {
             if($scope.nowPlaying && $scope.nowPlaying.duration) {
-              $scope.seekPercentage = ((seconds / $scope.nowPlaying.duration) * 100).toFixed(2);
+              $scope.seek.position = Math.floor((seconds / $scope.nowPlaying.duration) * 1000);
             }
             else {
-              $scope.seekPercentage = 0;
+              $scope.seek.position = 0;
             }
-            
-            $scope.updateTootltip();
+
+            $scope.updateTootltip($scope.seek.position);
           }
           
           $scope.$apply();
         }
         else {
-          $scope.timePlaying = null;
-          $scope.seekPercentage = 0;
-          $scope.updateTootltip();
+          $scope.timePlaying = '00:00:00';
+          $scope.seek.position = 0;
+          $scope.updateTootltip($scope.seek.position);
         }
       });
       
       $scope.$root.$on('rkPlaybackStatusChange', function(event, data) {
         $scope.playbackStatus = data;
       });
+      
+      $scope.updateTootltip($scope.seek.position);
 
       $('.seek-slider-wrapper input[type="range"]').on('mouseup', function() {
         this.blur();
-      }).on('mouseover', function() {
-        $scope.updateTootltip();
       });
 
       $scope.$root.rkRequiredControllers.now_playing.loaded = true;
