@@ -166,10 +166,11 @@ section.tabsContainer {
       
       .label {
         float: left;
-        display: block;
+        display: inline-block;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        width: 100%;
         
         i.mdi {
           margin-right: 6px;

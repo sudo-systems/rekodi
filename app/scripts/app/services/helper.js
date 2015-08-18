@@ -126,7 +126,22 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
     var downloadFile = function(url, targetDirectory, filename, callback) {
       var downloadDirectory = tempDownloadDirectory+targetDirectory;
       downloadDirectory = (downloadDirectory.substr(-1) !== '/')? downloadDirectory+'/' : downloadDirectory;
-      filename = (!filename || filename === '')? getFilenameFromUrl(url) : filename;
+
+      if(filename && filename !== '') {
+        filename = filename.toString();
+        var filenameParts = filename.split('.');
+
+        if(filenameParts.length < 2) {
+          var downloadedFilename = getFilenameFromUrl(url);
+          var donwloadedFilenameParts = downloadedFilename.split('.');
+          var downloadedFileExtension = (donwloadedFilenameParts.length > 0)? donwloadedFilenameParts[donwloadedFilenameParts.length -1] : '';
+          filename = filename+'.'+downloadedFileExtension;
+        }
+      }
+      else {
+        filename = getFilenameFromUrl(url);
+      }
+
       var downloadedFilePath = downloadDirectory+filename;
       
       if(fs.existsSync(downloadedFilePath)) {
@@ -139,7 +154,7 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
       }
       
       if(fs.existsSync(downloadedFilePath)) {
-        fs.unlinkSync(filePath);
+        fs.unlinkSync(downloadedFilePath);
       }
 
       var file = fs.createWriteStream(downloadedFilePath);
@@ -173,7 +188,9 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
       var isDownload = (path.substr(0, 4).toLowerCase() === 'http');
       
       if(isDownload) {
-        downloadFile(path, 'fanart', null, function(donwloadedFilePath, data) {
+        var filename = (new Date).getTime();
+        
+        downloadFile(path, 'fanart', filename, function(donwloadedFilePath, data) {
           getDesktopWallpaper(function(currentWallpaperPath) {
             if(donwloadedFilePath && currentWallpaperPath !== donwloadedFilePath) {
               wallpaper.set(donwloadedFilePath, function(error) {

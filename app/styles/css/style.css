@@ -1233,10 +1233,11 @@ section.tabsContainer {
       transition: all 0.2s ease-in-out; }
       section.tabsContainer .data-list-wrapper li .label {
         float: left;
-        display: block;
+        display: inline-block;
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis; }
+        text-overflow: ellipsis;
+        width: 100%; }
         section.tabsContainer .data-list-wrapper li .label i.mdi {
           margin-right: 6px;
           font-size: 20px;
