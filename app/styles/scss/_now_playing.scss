@@ -43,13 +43,13 @@ section#nowPlaying {
       .current-speed {
         font-family: sans-serif, arial, verdana;
         position: absolute;
-        line-height: initial;
         display: inline-block;
         top: 55px;
         left: 230px;
         font-size: 45px;
         font-weight: bold;
         color: map-get($global, highlight-color);
+        line-height: initial;
       }
     }
     

@@ -553,7 +553,7 @@ tbody {
   text-shadow: 0 0 5px #222; }
 
 .blur {
-  -webkit-filter: blur(1.5px); }
+  -webkit-filter: blur(2px); }
 
 html {
   -webkit-text-size-adjust: none; }
@@ -852,13 +852,13 @@ section#nowPlaying {
       section#nowPlaying .data-wrapper .overlay .current-speed {
         font-family: sans-serif, arial, verdana;
         position: absolute;
-        line-height: initial;
         display: inline-block;
         top: 55px;
         left: 230px;
         font-size: 45px;
         font-weight: bold;
-        color: #E6802E; }
+        color: #E6802E;
+        line-height: initial; }
     section#nowPlaying .data-wrapper .seek-slider-wrapper {
       position: absolute;
       bottom: 0;

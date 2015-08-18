@@ -13,7 +13,7 @@
     <i class="mdi mdi-fast-forward" ng-show="playbackStatus.isFastForwarding"></i>
     <i class="mdi mdi-rewind" ng-show="playbackStatus.isRewinding"></i>
     <div class="current-speed">
-      {{(playbackStatus.currentSpeed > 1)? '+' : ''}}{{playbackStatus.currentSpeed}}
+      {{playbackStatus.currentSpeed}}x
     </div>
   </div>
   <div class="seek-slider-wrapper">
