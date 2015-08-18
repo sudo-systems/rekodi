@@ -38,6 +38,18 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
     $scope.toggleMute = function() {
       rkRemoteControlService.toggleMute();
     };
+    
+    $scope.togglePartymode = function() {
+      rkRemoteControlService.togglePartymode();
+    };
+    
+    $scope.cycleRepeat = function() {
+      rkRemoteControlService.cycleRepeat();
+    };
+
+    $scope.toggleShuffle = function() {
+      rkRemoteControlService.toggleShuffle();
+    };
 
     function setButtonStates() {
       $timeout(function() {
@@ -58,6 +70,7 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
       
       $scope.$root.$on('rkPlayerPropertiesChange', function(event, data) {
         $scope.playerProperties = data;
+        $scope.$apply();
       });
       
       $('.volume-slider-wrapper input[type="range"]').on('mouseout', function() {

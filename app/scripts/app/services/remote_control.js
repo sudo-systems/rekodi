@@ -175,6 +175,48 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
       });
     };
     
+    var togglePartymode = function() {
+      getActivePlayerId(function(playerId) {
+        if(playerId !== null) {
+          kodiApi.Player.SetPartymode({
+            playerid: playerId,
+            partymode: 'toggle'
+          }).then(function(data) {
+          }, function(error) {
+            rkHelperService.handleError(error);
+          });
+        }
+      });
+    };
+    
+    var cycleRepeat = function() {
+      getActivePlayerId(function(playerId) {
+        if(playerId !== null) {
+          kodiApi.Player.SetRepeat({
+            playerid: playerId,
+            repeat: 'cycle'
+          }).then(function(data) {
+          }, function(error) {
+            rkHelperService.handleError(error);
+          });
+        }
+      });
+    };
+    
+    var toggleShuffle = function() {
+      getActivePlayerId(function(playerId) {
+        if(playerId !== null) {
+          kodiApi.Player.SetShuffle({
+            playerid: playerId,
+            shuffle: 'toggle'
+          }).then(function(data) {
+          }, function(error) {
+            rkHelperService.handleError(error);
+          });
+        }
+      });
+    };
+    
     function init() {
       $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
         kodiApi = kodiApiService.getConnection();
@@ -196,7 +238,10 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
       skipNext: skipNext,
       setVolume: setVolume,
       toggleMute: toggleMute,
-      seek: seek
+      seek: seek,
+      togglePartymode: togglePartymode,
+      cycleRepeat: cycleRepeat,
+      toggleShuffle: toggleShuffle
     };
   }
 ]);

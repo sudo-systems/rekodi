@@ -50,7 +50,7 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 
         }
       });
     };
-    
+
     var startUpdateInterval = function() {
       getProperties();
       clearInterval(updatePropertiesInterval);
@@ -84,6 +84,7 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 
     init();
     
     return {
+      getProperties: getProperties,
       startUpdateInterval: startUpdateInterval,
       stopUpdateInterval: stopUpdateInterval
     };

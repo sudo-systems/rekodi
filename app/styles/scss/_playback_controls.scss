@@ -30,7 +30,7 @@ section#playbackControls {
     i.mdi {
       line-height: map-get($playback-controls, height);
       width: 20px;
-      font-size: 20px;
+      font-size: 18px;
       color: #999;
       display: inline-block;
       vertical-align: top;
@@ -40,6 +40,34 @@ section#playbackControls {
     i.mdi:hover,
     i.mdi.active {
       color: map-get($global, highlight-color);
+    }
+  }
+  
+  .player-options-wrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding-right: map-get($global, window-padding);
+    white-space: nowrap;
+    text-align: left;
+    overflow: hidden;
+
+    ul {
+      i.mdi {
+        line-height: map-get($playback-controls, height);
+        width: 20px;
+        font-size: 16px;
+        color: #999;
+        display: inline-block;
+        vertical-align: top;
+        @include transitionAll(map-get($global, transition-speed));
+      }
+      
+      i.mdi:focus,
+      i.mdi.active {
+        color: map-get($global, highlight-color);
+      }
     }
   }
   

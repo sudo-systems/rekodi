@@ -30,3 +30,28 @@
     </li>
   </ul>
 </div>
+<div class="player-options-wrapper">
+  <ul class="horizontal">
+    <li ng-show="playerProperties.canshuffle && !playerProperties.partymode && !playerProperties.shuffled" ng-click="toggleShuffle()">
+      <i class="mdi mdi-shuffle" title="Enable shuffle"></i>
+    </li>
+    <li ng-show="playerProperties.canshuffle && !playerProperties.partymode && playerProperties.shuffled" ng-click="toggleShuffle()">
+      <i class="mdi mdi-shuffle active" title="Disable shuffle"></i>
+    </li>
+    <li ng-show="playerProperties.canrepeat && !playerProperties.partymode && playerProperties.repeat === 'off'" ng-click="cycleRepeat()">
+      <i class="mdi mdi-repeat" title="Enable repeat all"></i>
+    </li>
+    <li ng-show="playerProperties.canrepeat && !playerProperties.partymode && playerProperties.repeat === 'all'" ng-click="cycleRepeat()">
+      <i class="mdi mdi-repeat active" title="Switch to repeat one"></i>
+    </li>
+    <li ng-show="playerProperties.canrepeat && !playerProperties.partymode && playerProperties.repeat === 'one'" ng-click="cycleRepeat()">
+      <i class="mdi mdi-repeat-once active" title="Disable repeat"></i>
+    </li>
+    <li ng-click="togglePartymode()" ng-show="!playerProperties.partymode">
+      <i class="mdi mdi-bullhorn" title="Enable partymode"></i>
+    </li>
+    <li ng-click="togglePartymode()" ng-show="playerProperties.partymode">
+      <i class="mdi mdi-bullhorn active" title="Disable partymode"></i>
+    </li>
+  </ul>
+</div>
