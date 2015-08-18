@@ -123,7 +123,7 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
       return ((+timeObject.hours) * 60 * 60 + (+timeObject.minutes) * 60 + (+timeObject.seconds));
     };
 
-    var downloadFile = function(url, targetDirectory, filename, callback) {
+    var downloadFile = function(url, targetDirectory, filename, overwrite, callback) {
       var downloadDirectory = tempDownloadDirectory+targetDirectory;
       downloadDirectory = (downloadDirectory.substr(-1) !== '/')? downloadDirectory+'/' : downloadDirectory;
 
@@ -144,17 +144,16 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
 
       var downloadedFilePath = downloadDirectory+filename;
       
-      if(fs.existsSync(downloadedFilePath)) {
+      if(!overwrite && fs.existsSync(downloadedFilePath)) {
         callback(downloadedFilePath);
         return;
       }
       
-      if(!fs.existsSync(downloadDirectory)) {
-        mkpath.sync(downloadDirectory);
-      }
-      
       if(fs.existsSync(downloadedFilePath)) {
         fs.unlinkSync(downloadedFilePath);
+      }
+      else if(!fs.existsSync(downloadDirectory)) {
+        mkpath.sync(downloadDirectory);
       }
 
       var file = fs.createWriteStream(downloadedFilePath);
@@ -190,7 +189,7 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
       if(isDownload) {
         var filename = (new Date).getTime();
         
-        downloadFile(path, 'fanart', filename, function(donwloadedFilePath, data) {
+        downloadFile(path, 'fanart', filename, false, function(donwloadedFilePath, data) {
           getDesktopWallpaper(function(currentWallpaperPath) {
             if(donwloadedFilePath && currentWallpaperPath !== donwloadedFilePath) {
               wallpaper.set(donwloadedFilePath, function(error) {
