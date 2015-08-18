@@ -647,7 +647,7 @@ body {
     height: 10px;
     width: 10px;
     border-radius: 50%;
-    background: #666;
+    background: #999;
     cursor: default;
     margin-top: -4.5px;
     -moz-transition: all 0.2s ease-in-out;
@@ -833,8 +833,7 @@ section#nowPlaying {
   section#nowPlaying .data-wrapper {
     position: relative;
     height: 100%; }
-    section#nowPlaying .data-wrapper .paused-overlay,
-    section#nowPlaying .data-wrapper .muted-overlay {
+    section#nowPlaying .data-wrapper .overlay {
       position: absolute;
       top: 0;
       left: 0;
@@ -842,15 +841,24 @@ section#nowPlaying {
       bottom: 0;
       z-index: 1;
       text-align: center; }
-      section#nowPlaying .data-wrapper .paused-overlay i.mdi,
-      section#nowPlaying .data-wrapper .muted-overlay i.mdi {
-        line-height: 130px;
+      section#nowPlaying .data-wrapper .overlay i.mdi {
         color: rgba(255, 255, 255, 0.7);
-        font-size: 140px;
         -webkit-animation: flickerAnimation 1s infinite;
         -moz-animation: flickerAnimation 1s infinite;
         -o-animation: flickerAnimation 1s infinite;
-        animation: flickerAnimation 1s infinite; }
+        animation: flickerAnimation 1s infinite;
+        font-size: 120px;
+        line-height: 130px; }
+      section#nowPlaying .data-wrapper .overlay .current-speed {
+        font-family: sans-serif, arial, verdana;
+        position: absolute;
+        line-height: initial;
+        display: inline-block;
+        top: 55px;
+        left: 230px;
+        font-size: 45px;
+        font-weight: bold;
+        color: #E6802E; }
     section#nowPlaying .data-wrapper .seek-slider-wrapper {
       position: absolute;
       bottom: 0;
@@ -1000,7 +1008,7 @@ section#playbackControls {
       line-height: 47px;
       width: 20px;
       font-size: 20px;
-      color: #666;
+      color: #999;
       display: inline-block;
       vertical-align: top;
       -moz-transition: all 0.2s ease-in-out;
@@ -1011,7 +1019,7 @@ section#playbackControls {
     section#playbackControls .volume-slider-wrapper i.mdi.active {
       color: #E6802E; }
   section#playbackControls .volume-slider-wrapper:hover {
-    width: 110px; }
+    width: 120px; }
   section#playbackControls .controls-wrapper ul {
     font-size: 0; }
   section#playbackControls .controls-wrapper li {

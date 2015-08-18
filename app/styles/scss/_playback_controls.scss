@@ -31,7 +31,7 @@ section#playbackControls {
       line-height: map-get($playback-controls, height);
       width: 20px;
       font-size: 20px;
-      color: #666;
+      color: #999;
       display: inline-block;
       vertical-align: top;
       @include transitionAll(map-get($global, transition-speed));
@@ -44,7 +44,7 @@ section#playbackControls {
   }
   
   .volume-slider-wrapper:hover {
-    width: 110px;
+    width: 120px;
   }
   
   .controls-wrapper {

@@ -3,24 +3,31 @@
 </div>
 
 <div ng-show="nowPlaying" class="data-wrapper">
-  <div class="paused-overlay" ng-show="playbackStatus.isPaused">
+  <div class="overlay" ng-show="playbackStatus.isPaused">
     <i class="mdi mdi-pause"></i>
   </div>
-  <div class="muted-overlay" ng-show="playbackStatus.isMuted && !playbackStatus.isPaused">
+  <div class="overlay" ng-show="playbackStatus.isMuted && !playbackStatus.isPaused">
     <i class="mdi mdi-volume-off"></i>
+  </div>
+  <div class="overlay" ng-show="playbackStatus.isRewinding || playbackStatus.isFastForwarding">
+    <i class="mdi mdi-fast-forward" ng-show="playbackStatus.isFastForwarding"></i>
+    <i class="mdi mdi-rewind" ng-show="playbackStatus.isRewinding"></i>
+    <div class="current-speed">
+      {{(playbackStatus.currentSpeed > 1)? '+' : ''}}{{playbackStatus.currentSpeed}}
+    </div>
   </div>
   <div class="seek-slider-wrapper">
     <div class="seek-time">
       {{timePlaying}}
     </div>
-    <div class="range-slider">
+    <div class="range-slider" ng-show="playerProperties.canseek">
       <input type="range" name="seek" ng-model="seek.position" ng-change="updateTootltip(seek.position)" ng-mouseup="setPlaybackPosition(seek.position)" ng-mousedown="setManuallySeeking(true)" min="0" max="100000" step="1" />
     </div>
     <div class="total-time">
       {{nowPlaying.duration_readable}}
     </div>
   </div>
-  <div class="active audio clearfix" ng-show="nowPlaying.type === 'song' || nowPlaying.type === 'unknown'" ng-class="{blur: (playbackStatus.isPaused || playbackStatus.isMuted)}">
+  <div class="active audio clearfix" ng-show="nowPlaying.type === 'song' || nowPlaying.type === 'unknown'" ng-class="{blur: (playbackStatus.isPaused || playbackStatus.isMuted || playbackStatus.isRewinding || playbackStatus.isFastForwarding)}">
     <div class="thumbnail">
       <i class="mdi mdi-music-note" ng-show="!nowPlaying.thumbnail_src"></i>
       <img ng-src="{{nowPlaying.thumbnail_src}}" alt="" ng-show="nowPlaying.thumbnail_src" />

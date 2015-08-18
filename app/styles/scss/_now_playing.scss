@@ -24,8 +24,7 @@ section#nowPlaying {
     position: relative;
     height: 100%;
     
-    .paused-overlay,
-    .muted-overlay {
+    .overlay {
       position: absolute;
       top: 0;
       left: 0;
@@ -35,10 +34,22 @@ section#nowPlaying {
       text-align: center;
       
       i.mdi {
-        line-height: map-get($now-playing, height);
         color: rgba(255, 255, 255, 0.7);
-        font-size: 140px;
         @include fadeInAndOut(1s);
+        font-size: 120px;
+        line-height: map-get($now-playing, height);
+      }
+      
+      .current-speed {
+        font-family: sans-serif, arial, verdana;
+        position: absolute;
+        line-height: initial;
+        display: inline-block;
+        top: 55px;
+        left: 230px;
+        font-size: 45px;
+        font-weight: bold;
+        color: map-get($global, highlight-color);
       }
     }
     

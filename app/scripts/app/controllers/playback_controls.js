@@ -3,6 +3,7 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
     $scope.showPlayButton = true;
     $scope.showPauseButton = false;
     $scope.showStopButton = false;
+    $scope.playerProperties = null;
     $scope.status = {};
 
     $scope.skipPrevious = function () {
@@ -53,6 +54,10 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
       $scope.$root.$on('rkPlaybackStatusChange', function(event, data) {
         $scope.status = data;
         setButtonStates();
+      });
+      
+      $scope.$root.$on('rkPlayerPropertiesChange', function(event, data) {
+        $scope.playerProperties = data;
       });
       
       $('.volume-slider-wrapper input[type="range"]').on('mouseout', function() {
