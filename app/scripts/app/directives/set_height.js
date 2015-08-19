@@ -3,7 +3,7 @@ rekodiApp.directive('rkSetHeight', [
   	return {
       restrict: 'A',
       link: function(scope, element, attrs) {
-        function setTabContentHeight() {
+        /*function setTabContentHeight() {
           var wrapperHeight = ($('#tabs').outerHeight() - $('#tabs').find('nav:first').outerHeight());
           var parent = $(element).parents('.tabsContainer:first');
           parent.css('height', wrapperHeight+'px');
@@ -17,7 +17,7 @@ rekodiApp.directive('rkSetHeight', [
           setTabContentHeight();
         });
         
-        setTabContentHeight();
+        setTabContentHeight();*/
       }
   	};
   }

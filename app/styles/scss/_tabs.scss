@@ -1,7 +1,8 @@
 section.tabsContainer {
   position: relative;
+  height: 100%;
   overflow: hidden;
-  
+
   nav {
     overflow: hidden;
     background: #262626;
@@ -41,16 +42,16 @@ section.tabsContainer {
 
     .magic-line {
       position: absolute; 
-      bottom: -1; 
-      left: 0; 
-      width: map-get($tabs, tab-width); 
-      height: 1px; 
+      bottom: -1;
+      left: 0;
+      width: map-get($tabs, tab-width);
+      height: 1px;
       background: #E6802E;
     }
   }
 
   .tabs.inline {
-    font-size: 0rem;
+    font-size: 0;
     letter-spacing: -.31em;
     word-spacing: -.43em;
     white-space: nowrap;
@@ -69,9 +70,11 @@ section.tabsContainer {
 
   .tabs {
     background: #282828;
-    position: relative;
+    position: absolute;
     left: 0;
-    height: 100%;
+    top: (map-get($tabs, tab-height) + 2px);
+    bottom: 0;
+    width: map-get($global, window-width);
     @include transitionAll(0.4s);
   }
 
@@ -81,7 +84,7 @@ section.tabsContainer {
 
   @for $i from 0 through map-get($tabs, number-of-tabs) {
     .tabs[data-tab='#{$i}'] {
-      left: -(100%*$i);
+      left: -(100% * $i);
     }
   }
   
@@ -147,12 +150,12 @@ section.tabsContainer {
   }
   
   .data-list-wrapper {
-    overflow-y: auto;
     position: absolute;
     top:  map-get($tabs, options-height);
     left: 0px;
     right: 0px;
     bottom: 0px;
+    overflow-y: auto;
     
     li {
       padding: 0 map-get($global, window-padding);
@@ -355,7 +358,7 @@ section.tabsContainer.sub {
     @include boxShadow(0 4px 4px -4px, #222);
     
     li {
-      line-height: 30px;
+      line-height: map-get($tabs, sub-tab-height);
       width: map-get($tabs, sub-tab-width); 
       font-size: 16px;
     }
@@ -369,13 +372,19 @@ section.tabsContainer.sub {
       width: map-get($tabs, sub-tab-width); 
     }
   }
+  
+  .tabs {
+    top: (map-get($tabs, sub-tab-height) + 2px);
+  }
 }
 
-#tabs {
+section#tabs {
   position: fixed;
   top: (map-get($window-controls, height) + map-get($now-playing, height) + map-get($playback-controls, height));
   left: 0;
   right: 0;
   bottom: map-get($footer, height);
   border: 0;
+  height: auto;
+  overflow: hidden;
 }

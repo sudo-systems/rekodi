@@ -553,7 +553,7 @@ tbody {
   text-shadow: 0 0 5px #222; }
 
 .blur {
-  -webkit-filter: blur(2px); }
+  -webkit-filter: blur(1.5px); }
 
 html {
   -webkit-text-size-adjust: none; }
@@ -1089,6 +1089,7 @@ section#playbackControls {
 
 section.tabsContainer {
   position: relative;
+  height: 100%;
   overflow: hidden; }
   section.tabsContainer nav {
     overflow: hidden;
@@ -1147,7 +1148,7 @@ section.tabsContainer {
       height: 1px;
       background: #E6802E; }
   section.tabsContainer .tabs.inline {
-    font-size: 0rem;
+    font-size: 0;
     letter-spacing: -.31em;
     word-spacing: -.43em;
     white-space: nowrap; }
@@ -1162,9 +1163,11 @@ section.tabsContainer {
     white-space: normal; }
   section.tabsContainer .tabs {
     background: #282828;
-    position: relative;
+    position: absolute;
     left: 0;
-    height: 100%;
+    top: 42px;
+    bottom: 0;
+    width: 500px;
     -moz-transition: all 0.4s ease-in-out;
     -o-transition: all 0.4s ease-in-out;
     -webkit-transition: all 0.4s ease-in-out;
@@ -1244,12 +1247,12 @@ section.tabsContainer {
       -o-transform: scale(1);
       transform: scale(1); }
   section.tabsContainer .data-list-wrapper {
-    overflow-y: auto;
     position: absolute;
     top: 36px;
     left: 0px;
     right: 0px;
-    bottom: 0px; }
+    bottom: 0px;
+    overflow-y: auto; }
     section.tabsContainer .data-list-wrapper li {
       padding: 0 12px;
       line-height: 32px !important;
@@ -1461,14 +1464,18 @@ section.tabsContainer.sub nav {
   section.tabsContainer.sub nav .magic-line {
     background: #BBB;
     width: 40px; }
+section.tabsContainer.sub .tabs {
+  top: 32px; }
 
-#tabs {
+section#tabs {
   position: fixed;
   top: 195px;
   left: 0;
   right: 0;
   bottom: 32px;
-  border: 0; }
+  border: 0;
+  height: auto;
+  overflow: hidden; }
 
 section#footer {
   position: fixed;

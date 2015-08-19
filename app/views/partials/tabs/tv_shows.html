@@ -13,7 +13,7 @@
   <div class="magic-line"></div>
 </nav>
 <div class="tabs inline">
-  <section ng-include="'views/partials/tabs/tv_shows/library.html'" id="tvShowsLibrary" ng-controller="rkTvShowsCtrl" rk-set-height class="tabsContainer"></section>
-  <section ng-include="'views/partials/tabs/tv_shows/files.html'" id="tvShowsFiles" ng-controller="rkFilesCtrl" rk-set-height ng-init="type='video'" class="tabsContainer"></section>
-  <section ng-include="'views/partials/tabs/tv_shows/addons.html'" id="tvShowsAddons" ng-controller="rkAddonsCtrl" rk-set-height ng-init="type='video'" class="tabsContainer"></section>
+  <section ng-include="'views/partials/tabs/tv_shows/library.html'" id="tvShowsLibrary" ng-controller="rkTvShowsCtrl" class="tabsContainer" data-level="2"></section>
+  <section ng-include="'views/partials/tabs/tv_shows/files.html'" id="tvShowsFiles" ng-controller="rkFilesCtrl" ng-init="type='video'" class="tabsContainer" data-level="2"></section>
+  <section ng-include="'views/partials/tabs/tv_shows/addons.html'" id="tvShowsAddons" ng-controller="rkAddonsCtrl" ng-init="type='video'" class="tabsContainer" data-level="2"></section>
 </div>
