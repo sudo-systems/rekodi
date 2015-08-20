@@ -1,5 +1,5 @@
-rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService', 'rkPlaybackStatusService', 'rkRemoteControlService',
-  function($scope, $timeout, rkHelperService, rkPlaybackStatusService, rkRemoteControlService) {
+rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService', 'rkPlaybackStatusService', 'rkRemoteControlService', 'rkNotificationService',
+  function($scope, $timeout, rkHelperService, rkPlaybackStatusService, rkRemoteControlService, rkNotificationService) {
     $scope.nowPlaying = null;
     $scope.timePlaying = '00:00:00';
     $scope.isManuallySeeking = false;
@@ -53,12 +53,14 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
       
       $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
         $scope.nowPlaying = data;
-        
+        $scope.$apply();
+
         if(!data) {
           setDefaults();
         }
-        
-        $scope.$apply();
+        else if(!$scope.playbackStatus || $scope.playbackStatus.isPlaying){
+          rkNotificationService.notifyPlay(data);
+        }
       });
       
       $scope.$root.$on('rkPlayerPropertiesChange', function(event, data) {
@@ -89,7 +91,17 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
       });
       
       $scope.$root.$on('rkPlaybackStatusChange', function(event, data) {
+        if(data && $scope.playbackStatus) {
+          if(!$scope.playbackStatus.isPaused && data.isPaused) {
+            rkNotificationService.notifyPause($scope.nowPlaying);
+          }
+          else if($scope.playbackStatus.isPaused && data.isPlaying) {
+            rkNotificationService.notifyResume($scope.nowPlaying);
+          }
+        }
+
         $scope.playbackStatus = data;
+        $scope.$apply();
       });
       
       $scope.updateTootltip($scope.seek.position);

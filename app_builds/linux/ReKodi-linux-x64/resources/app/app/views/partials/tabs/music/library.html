@@ -70,7 +70,7 @@
         <i class="mdi mdi-album"></i> [back to albums] ..
       </div>
     </li>
-    <li ng-repeat="song in scrollItems | filter:filterList track by song.songid" class="clearfix" ng-click="playSong(song)">
+    <li ng-repeat="song in scrollItems[currentLevel] | filter:filterList track by song.songid" class="clearfix" ng-click="playSong(song)">
       <div class="thumbnail">
         <div ng-if="song.thumbnail_src">
           <img ng-src="{{song.thumbnail_src}}" alt="" />

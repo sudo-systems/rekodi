@@ -1,5 +1,5 @@
-rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteControlService', 'rkPlaybackStatusService',
-  function ($scope, $timeout, rkRemoteControlService, rkPlaybackStatusService) {
+rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteControlService', 'rkPlaybackStatusService', 'rkNotificationService',
+  function ($scope, $timeout, rkRemoteControlService, rkPlaybackStatusService, rkNotificationService) {
     $scope.showPlayButton = true;
     $scope.showPauseButton = false;
     $scope.showStopButton = false;
@@ -46,8 +46,6 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
       }
       
       $scope.playerProperties.partymode = (!$scope.playerProperties.partymode);
-      $scope.$apply();
-      
       rkRemoteControlService.togglePartymode();
     };
     
@@ -116,14 +114,16 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
           }
           else if(event.keyCode === 45) { //-
             if($scope.kodiProperties.volume && $scope.kodiProperties.volume >= 5) {
-              var newVolume = ($scope.kodiProperties.volume - 5);
+              var newVolume = Math.floor($scope.kodiProperties.volume - 5);
               $scope.setVolume(newVolume);
+              rkNotificationService.notifyVolume(newVolume);
             }
           }
           else if(event.keyCode === 61) { //=
             if($scope.kodiProperties.volume && $scope.kodiProperties.volume <= 95) {
-              var newVolume = ($scope.kodiProperties.volume + 5);
+              var newVolume = Math.floor($scope.kodiProperties.volume+ 5);
               $scope.setVolume(newVolume);
+              rkNotificationService.notifyVolume(newVolume);
             }
           }
           else if(event.keyCode === 114) { //r

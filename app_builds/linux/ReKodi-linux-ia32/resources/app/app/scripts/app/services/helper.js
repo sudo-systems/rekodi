@@ -189,7 +189,7 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
       if(isDownload) {
         var filename = (new Date).getTime();
         
-        downloadFile(path, 'fanart', filename, false, function(donwloadedFilePath, data) {
+        downloadFile(path, 'fanart', filename, false, function(donwloadedFilePath) {
           getDesktopWallpaper(function(currentWallpaperPath) {
             if(donwloadedFilePath && currentWallpaperPath !== donwloadedFilePath) {
               wallpaper.set(donwloadedFilePath, function(error) {

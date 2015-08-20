@@ -48,12 +48,10 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'kodiA
         setIfConnectionConfigured();
       });
       
-      $scope.$watch(function() { 
-        return $sessionStorage.connectionStatus.connected; 
-      }, function(newData, oldData) {
-        $scope.isConnected = newData;
+      $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+        $scope.isConnected = data.connected;
       });
-      
+
       var loadRequiredControllersWatch = $scope.$root.$watch('rkRequiredControllers', function(newValue, oldValue) {
         var allInitialControllersLoaded = true;
 

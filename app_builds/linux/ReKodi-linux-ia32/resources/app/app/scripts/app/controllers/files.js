@@ -43,7 +43,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
         }
       }
 
-      if (!$scope.$$phase){
+      if(!$scope.$$phase){
         $scope.$apply();
       }
     };
