@@ -8,7 +8,7 @@
     <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
   </div>
 </div>
-<div class="data-list-wrapper" endless-scroll="showItems(selectedIndex)" endless-scroll-offset="30">
+<div class="data-list-wrapper" su-endless-scroll="showItems(selectedIndex)">
   <ul class="vertical" ng-show="currentLevel ==='artists'">
     <li ng-repeat="artist in scrollItems | filter:filterList track by artist.artistid" class="clearfix" ng-click="getAlbums(artist)">
       <div class="label">

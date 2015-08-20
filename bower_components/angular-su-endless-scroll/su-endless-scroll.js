@@ -1,11 +1,15 @@
-rekodiApp.directive('endlessScroll', ['$window',
+/* su-endless-scroll - v1.0.0 - 2015-08-20 */
+
+var mod = angular.module('suEndlessScroll', []);
+
+mod.directive('suEndlessScroll', ['$window',
   function($window) {
   	return {
       restrict: 'A',
       scope: {
-        endlessScroll: '&',
-        endlessScrollOffset: '@offset',
-        endlessScrollCheck: '@autoCheck'
+        suEndlessScroll: '&',
+        suEndlessScrollOffset: '@offset',
+        suEndlessScrollAutoCheck: '@autoCheck'
       },
       link: function(scope, element, attrs) {
         var elementHeight, currentScrollHeight, triggerPoint;
@@ -13,7 +17,8 @@ rekodiApp.directive('endlessScroll', ['$window',
         var _window = angular.element($window);
         var currentScrollHeight = _element.scrollHeight;
         var eventFired = false;
-        var offset = (!scope.offset)? 20 : scope.offset;
+        var defaultOffset = 30;
+        var offset = (!scope.offset)? defaultOffset : scope.offset;
         var autoCheckInterval = 1000;
         var autoCheck = (!scope.autoCheck)? true : scope.autoCheck;
 
@@ -32,7 +37,7 @@ rekodiApp.directive('endlessScroll', ['$window',
           }
 
           if(scrollPosition <= triggerPoint && !eventFired) {
-            scope.endlessScroll();
+            scope.suEndlessScroll();
             eventFired = true;
           }
         }
@@ -40,9 +45,8 @@ rekodiApp.directive('endlessScroll', ['$window',
         function initAutoCheck() {
           if(autoCheck) {
             setInterval(function() {
-              if(autoCheck) {
-                testConditions(_element);
-              }
+              console.log();
+              testConditions(_element);
             }, autoCheckInterval);
           }
         }

@@ -6,7 +6,7 @@
     <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
   </div>
 </div>
-<div class="data-list-wrapper" endless-scroll="showItems()" endless-scroll-offset="30">
+<div class="data-list-wrapper" su-endless-scroll="showItems()">
   <ul class="vertical">
     <li ng-repeat="source in scrollItems[currentLevel] | filter:filterList" class="clearfix" ng-show="currentLevel === 'sources'">
       <div class="label" ng-click="getDirectory(source.file)">
