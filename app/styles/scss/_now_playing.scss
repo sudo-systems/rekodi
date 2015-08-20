@@ -136,7 +136,8 @@ section#nowPlaying {
         width: 80px;
         text-align: center;
         -webkit-perspective: 150px;
-        margin-top: 10px;
+        margin-top: 6px;
+        margin-left: 6px;
 
         i.mdi {
           font-size: 80px;
@@ -159,7 +160,7 @@ section#nowPlaying {
       .details {
         display: inline-block;
         float: right;
-        width: 385px;
+        width: 380px;
         color: #999;
         height: 100px;
         margin-top: 10px;
@@ -168,12 +169,20 @@ section#nowPlaying {
           color: #666;
           font-size: 14px;
         }
+        
+        & > div {
+          width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
 
         .artist {
         }
 
         .album {
           color: #BBB;
+          font-size: 15px;
         }
 
         .title {

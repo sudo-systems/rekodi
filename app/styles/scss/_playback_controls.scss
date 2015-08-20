@@ -37,7 +37,10 @@ section#playbackControls {
       @include transitionAll(map-get($global, transition-speed));
     }
     
-    i.mdi:hover,
+    i.mdi:hover {
+      @include textShadow(0 0 3px, rgba(255, 255, 255, 0.5));
+    }
+    
     i.mdi.active {
       color: map-get($global, highlight-color);
     }
@@ -64,6 +67,10 @@ section#playbackControls {
         @include transitionAll(map-get($global, transition-speed));
       }
       
+      i.mdi:hover {
+        @include textShadow(0 0 3px, rgba(255, 255, 255, 0.5));
+      }
+      
       i.mdi:focus,
       i.mdi.active {
         color: map-get($global, highlight-color);
@@ -87,17 +94,18 @@ section#playbackControls {
       padding: 0 4px;
       display: inline-block;
       font-size: 32px;
-      @include transitionAll(map-get($global, transition-speed));
+      @include transitionAll(0.1s);
     }
 
-    li:hover,
-    li.active {
+    li:hover {
+      @include textShadow(0 0 3px, rgba(255, 255, 255, 0.5));
+      @include scale(1.2);
+    }
+    
+    li.active,
+    li:active {
       color: map-get($global, highlight-color);
       @include scale(1.15);
-    }
-
-    li:active {
-      @include scale(1.0);
     }
 
     li.play-button {

@@ -41,6 +41,13 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
     };
     
     $scope.togglePartymode = function() {
+      if($scope.status.isPlaying && !$scope.playerProperties.partymode) {
+        rkRemoteControlService.stop();
+      }
+      
+      $scope.playerProperties.partymode = (!$scope.playerProperties.partymode);
+      $scope.$apply();
+      
       rkRemoteControlService.togglePartymode();
     };
     
@@ -66,6 +73,7 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
       
       $scope.$root.$on('rkPlaybackStatusChange', function(event, data) {
         $scope.status = data;
+        $scope.$apply();
         setButtonStates();
       });
       
@@ -89,51 +97,47 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
         //console.dir(event);
         if($('input:focus, textarea:focus').length === 0) {
           if(event.keyCode === 32) {
-            rkRemoteControlService.playPause();
+            $scope.playPause();
           }
           else if(event.keyCode === 13) {
-            rkRemoteControlService.stop();
+            $scope.stop();
           }
           else if(event.keyCode === 91) { //[
-            rkRemoteControlService.skipPrevious();
+            $scope.skipPrevious();
           }
           else if(event.keyCode === 93) { //]
-            rkRemoteControlService.skipNext();
+            $scope.skipNext();
           }
           else if(event.keyCode === 44) { //,
-            rkRemoteControlService.rewind();
+            $scope.rewind();
           }
           else if(event.keyCode === 46) { //.
-            rkRemoteControlService.fastForward();
+            $scope.fastForward();
           }
           else if(event.keyCode === 45) { //-
             if($scope.kodiProperties.volume && $scope.kodiProperties.volume >= 5) {
-              $scope.kodiProperties.volume -= 5;
-              $scope.$apply();
-              
-              rkRemoteControlService.setVolume($scope.kodiProperties.volume);
+              var newVolume = ($scope.kodiProperties.volume - 5);
+              $scope.setVolume(newVolume);
             }
           }
           else if(event.keyCode === 61) { //=
             if($scope.kodiProperties.volume && $scope.kodiProperties.volume <= 95) {
-              $scope.kodiProperties.volume += 5;
-              $scope.$apply();
-              
-              rkRemoteControlService.setVolume($scope.kodiProperties.volume);
+              var newVolume = ($scope.kodiProperties.volume + 5);
+              $scope.setVolume(newVolume);
             }
           }
           else if(event.keyCode === 114) { //r
             if(!$scope.playerProperties.partymode) {
-              rkRemoteControlService.cycleRepeat();
+              $scope.cycleRepeat();
             }
           }
           else if(event.keyCode === 115) { //s
             if(!$scope.playerProperties.partymode) {
-              rkRemoteControlService.toggleShuffle();
+              $scope.toggleShuffle();
             }
           }
           else if(event.keyCode === 112) { //p
-            rkRemoteControlService.togglePartymode();
+            $scope.togglePartymode();
           }
         }
       });

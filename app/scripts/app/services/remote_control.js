@@ -1,5 +1,5 @@
-rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rkHelperService',
-  function($rootScope, kodiApiService, rkHelperService) {
+rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rkHelperService', 'rkEnumsService',
+  function($rootScope, kodiApiService, rkHelperService, rkEnumsService) {
     var kodiApi = null;
     var currentSpeed = 0;
     
@@ -176,16 +176,12 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
     };
     
     var togglePartymode = function() {
-      getActivePlayerId(function(playerId) {
-        if(playerId !== null) {
-          kodiApi.Player.SetPartymode({
-            playerid: playerId,
-            partymode: 'toggle'
-          }).then(function(data) {
-          }, function(error) {
-            rkHelperService.handleError(error);
-          });
-        }
+      kodiApi.Player.SetPartymode({
+        playerid: rkEnumsService.PlayerId.AUDIO,
+        partymode: 'toggle'
+      }).then(function(data) {
+      }, function(error) {
+        rkHelperService.handleError(error);
       });
     };
     
