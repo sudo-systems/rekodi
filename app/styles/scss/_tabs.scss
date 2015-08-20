@@ -267,7 +267,7 @@ section.tabsContainer {
           -webkit-transform: rotateY(0deg);
           -webkit-box-reflect: below 4px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
           border-radius: 3px;
-          @include transitionAll(.5s);
+          @include transitionAll(0.5s);
         }
         
         i.mdi {
@@ -275,7 +275,7 @@ section.tabsContainer {
           -webkit-filter: grayscale(100%);
           -webkit-transform: rotateY(0deg);
           -webkit-box-reflect: below 4px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
-          @include transitionAll(.5s);
+          @include transitionAll(0.5s);
         }
       }
       

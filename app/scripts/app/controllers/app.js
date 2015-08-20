@@ -1,5 +1,5 @@
-rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'kodiApiService', '$sessionStorage', 'rkNowPlayingService', 'rkKodiPropertiesService', 'rkRemoteControlService',
-  function($scope, $localStorage, $timeout, kodiApiService, $sessionStorage, rkNowPlayingService, rkKodiPropertiesService, rkRemoteControlService) {
+rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'kodiApiService', '$sessionStorage', 'rkNowPlayingService', 'rkKodiPropertiesService',
+  function($scope, $localStorage, $timeout, kodiApiService, $sessionStorage, rkNowPlayingService, rkKodiPropertiesService) {
     $scope.storage = $localStorage;
     $scope.sessionStorage = $sessionStorage;
     $scope.isConfigured = true;
@@ -70,12 +70,6 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'kodiA
           loadRequiredControllersWatch(); //destroy watcher
         }
       }, true);
-      
-      angular.element('body').bind('keypress', function(event) {
-        if($('input:focus, textarea:focus, button:focus').length === 0 && event.keyCode === 32) {
-          rkRemoteControlService.playPause();
-        }
-      });
     }
     
     $timeout(function() {

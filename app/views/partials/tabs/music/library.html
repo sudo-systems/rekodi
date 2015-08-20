@@ -10,7 +10,7 @@
 </div>
 <div class="data-list-wrapper" su-endless-scroll="showItems(selectedIndex)">
   <ul class="vertical" ng-show="currentLevel ==='artists'">
-    <li ng-repeat="artist in scrollItems | filter:filterList track by artist.artistid" class="clearfix" ng-click="getAlbums(artist)">
+    <li ng-repeat="artist in scrollItems[currentLevel] | filter:filterList track by artist.artistid" class="clearfix" ng-click="getAlbums(artist)">
       <div class="label">
         <i class="mdi mdi-worker"></i> {{artist.label}}
       </div>
@@ -22,7 +22,7 @@
         <i class="mdi mdi-worker"></i> [back to artists] ..
       </div>
     </li>
-    <li ng-repeat="album in scrollItems | filter:filterList track by album.albumid" class="clearfix" ng-click="getSongs(album)">
+    <li ng-repeat="album in scrollItems[currentLevel] | filter:filterList track by album.albumid" class="clearfix" ng-click="getSongs(album)">
       <div class="thumbnail">
         <div ng-if="album.thumbnail_src">
           <img ng-src="{{album.thumbnail_src}}" alt="" />

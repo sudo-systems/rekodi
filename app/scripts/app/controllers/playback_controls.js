@@ -4,6 +4,7 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
     $scope.showPauseButton = false;
     $scope.showStopButton = false;
     $scope.playerProperties = null;
+    $scope.kodiProperties = null;
     $scope.status = {};
 
     $scope.skipPrevious = function () {
@@ -73,10 +74,68 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
         $scope.$apply();
       });
       
+      $scope.$root.$on('rkKodiPropertiesChange', function(event, data) {
+        $scope.kodiProperties = data;
+        $scope.$apply();
+      });
+      
       $('.volume-slider-wrapper input[type="range"]').on('mouseout', function() {
         this.blur();
       }).on('mouseover input', function() {
         styl.inject('.volume-slider-wrapper input[type=range]:hover::-webkit-slider-thumb:after', {content: "'"+this.value+"%'"}).apply();
+      });
+      
+      angular.element(document).bind('keypress', function(event) {
+        //console.dir(event);
+        if($('input:focus, textarea:focus').length === 0) {
+          if(event.keyCode === 32) {
+            rkRemoteControlService.playPause();
+          }
+          else if(event.keyCode === 13) {
+            rkRemoteControlService.stop();
+          }
+          else if(event.keyCode === 91) { //[
+            rkRemoteControlService.skipPrevious();
+          }
+          else if(event.keyCode === 93) { //]
+            rkRemoteControlService.skipNext();
+          }
+          else if(event.keyCode === 44) { //,
+            rkRemoteControlService.rewind();
+          }
+          else if(event.keyCode === 46) { //.
+            rkRemoteControlService.fastForward();
+          }
+          else if(event.keyCode === 45) { //-
+            if($scope.kodiProperties.volume && $scope.kodiProperties.volume >= 5) {
+              $scope.kodiProperties.volume -= 5;
+              $scope.$apply();
+              
+              rkRemoteControlService.setVolume($scope.kodiProperties.volume);
+            }
+          }
+          else if(event.keyCode === 61) { //=
+            if($scope.kodiProperties.volume && $scope.kodiProperties.volume <= 95) {
+              $scope.kodiProperties.volume += 5;
+              $scope.$apply();
+              
+              rkRemoteControlService.setVolume($scope.kodiProperties.volume);
+            }
+          }
+          else if(event.keyCode === 114) { //r
+            if(!$scope.playerProperties.partymode) {
+              rkRemoteControlService.cycleRepeat();
+            }
+          }
+          else if(event.keyCode === 115) { //s
+            if(!$scope.playerProperties.partymode) {
+              rkRemoteControlService.toggleShuffle();
+            }
+          }
+          else if(event.keyCode === 112) { //p
+            rkRemoteControlService.togglePartymode();
+          }
+        }
       });
 
       $scope.$root.rkRequiredControllers.playback_controls.loaded = true;

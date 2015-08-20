@@ -22,7 +22,8 @@
     "nbproject",
     "assets",
     "test",
-    "tests"
+    "tests",
+    "app/tmp"
   ],
   "dependencies": {
     "font-awesome": "~4.3.0",
