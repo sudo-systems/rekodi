@@ -7,7 +7,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
     $scope.currentLevel = null;
     $scope.currentDirectory = null;
     $scope.scrollItems = [];
-    $scope.displayLimit = 12;
+    $scope.displayLimit = 15;
     $scope.isInitialized = false;
     var sourcesPaths = [];
     var kodiApi = null;
