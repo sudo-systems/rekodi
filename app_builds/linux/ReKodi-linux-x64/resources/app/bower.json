@@ -22,7 +22,8 @@
     "nbproject",
     "assets",
     "test",
-    "tests"
+    "tests",
+    "app/tmp"
   ],
   "dependencies": {
     "font-awesome": "~4.3.0",
@@ -32,6 +33,7 @@
     "ngstorage": "~0.3.7",
     "bower": "*",
     "install": "~1.0.4",
-    "remodal": "~1.0.2"
+    "remodal": "~1.0.2",
+    "angular-su-endless-scroll": "~1.0.0"
   }
 }

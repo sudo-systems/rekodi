@@ -104,7 +104,11 @@ rekodiApp.factory('rkPlaybackStatusService', ['$rootScope', 'kodiApiService', 'r
         }
         else {
           rkPlayerPropertiesService.startUpdateInterval();
+          status.isPaused = false;
           status.isPlaying = true;
+          status.currentSpeed = 0;
+          status.isRewinding = false;
+          status.isFastForwarding = false;
           updateCurrentStatus();
         }
       });

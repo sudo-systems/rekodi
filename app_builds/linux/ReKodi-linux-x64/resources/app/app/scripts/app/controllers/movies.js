@@ -6,10 +6,37 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'r
     $scope.moviesCategorised = {};
     $scope.moviesIndex = [];
     $scope.movies = [];
+    $scope.scrollItems = [];
+    $scope.displayLimit = 3;
+    $scope.isInitialized = false;
     $scope.resumeMovie = {};
     var kodiApi = null;
     $scope.filter = {
       value: ''
+    };
+    
+    $scope.showItems = function(selectedIndex, reset) {
+      if(reset) {
+        $scope.scrollItems = [];
+      }
+      
+      var scrollItemsCount = $scope.scrollItems.length;
+      
+      if(!$scope.moviesCategorised[selectedIndex] || !$scope.moviesCategorised[selectedIndex][scrollItemsCount]) {
+        return;
+      }
+
+      for(var x = 0; x < $scope.displayLimit; x++) {
+        var nextIndex = ((scrollItemsCount)+x);
+
+        if($scope.moviesCategorised[selectedIndex][nextIndex]) {
+          $scope.scrollItems.push($scope.moviesCategorised[selectedIndex][nextIndex]);
+        }
+      }
+      
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
     };
     
     function getMoviesFromCache() {
@@ -64,6 +91,16 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'r
       setDefaultSelectedIndex();
     }
     
+    function setDefaultSelectedIndex() {
+      for(var key in $scope.moviesIndex) {
+        if($scope.moviesIndex[key].toLowerCase() !== $scope.moviesIndex[key].toUpperCase()) {
+          $scope.selectedIndex = $scope.moviesIndex[key];
+          $scope.showItems($scope.moviesIndex[key], true);
+          break;
+        }
+      }
+    }
+    
     $scope.getMovies = function() {
       $scope.clearFilter();
       
@@ -99,15 +136,6 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'r
         });
       }
     };
-
-    function setDefaultSelectedIndex() {
-      for(var key in $scope.moviesIndex) {
-        if($scope.moviesIndex[key].toLowerCase() !== $scope.moviesIndex[key].toUpperCase()) {
-          $scope.selectedIndex = $scope.moviesIndex[key];
-          break;
-        }
-      }
-    }
     
     $scope.filterList = function(entry) {
       return (entry.label.toLowerCase().indexOf($scope.filter.value.toLowerCase()) > -1 || entry.label === '..');
@@ -155,17 +183,21 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'r
     }
 
     $scope.init = function() {
-      rkCacheService.setCategory($scope.identifier);
-      initConnectionChange();
-      
-      $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+      if(!$scope.isInitialized) {
+        rkCacheService.setCategory($scope.identifier);
         initConnectionChange();
-      });
 
-      $(document).on('closed', '[data-remodal-id=resumeMovieModal]', function(e) {
-        $scope.resumeMovie = {};
-        modal.resumeMovie = null;
-      });
+        $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+          initConnectionChange();
+        });
+
+        $(document).on('closed', '[data-remodal-id=resumeMovieModal]', function(e) {
+          $scope.resumeMovie = {};
+          modal.resumeMovie = null;
+        });
+        
+        $scope.isInitialized = true;
+      }
     };
   }
 ]);

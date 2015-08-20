@@ -1,7 +1,7 @@
 <div class="options">
   <div class="page-specific">
     <a ng-click="getMovies()" title="Refresh list"><i class="mdi mdi-refresh"></i></a>
-    <select name="index" ng-model="selectedIndex" class="index" title="Select the category">
+    <select name="index" ng-model="selectedIndex" class="index" title="Select the category" ng-change="showItems(selectedIndex, true)">
       <option ng-repeat="indexLetter in moviesIndex" ng-value="indexLetter" ng-selected="indexLetter === selectedIndex">{{indexLetter}}</option>
     </select>
   </div>
@@ -9,9 +9,9 @@
     <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list"  /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
   </div>
 </div>
-<div class="data-list-wrapper">
+<div class="data-list-wrapper" su-endless-scroll="showItems(selectedIndex)">
   <ul class="vertical">
-    <li ng-repeat="movie in moviesCategorised[selectedIndex] | filter:filterList track by movie.movieid" rk-tooltips class="clearfix" ng-click="handlePlay(movie)">
+    <li ng-repeat="movie in scrollItems | filter:filterList track by movie.movieid" rk-tooltips class="clearfix" ng-click="handlePlay(movie)">
       <div class="thumbnail">
         <img ng-src="{{movie.thumbnail_src}}" alt="" ng-if="movie.thumbnail_src" />
         <i class="mdi mdi-movie" ng-if="!movie.thumbnail_src"></i>

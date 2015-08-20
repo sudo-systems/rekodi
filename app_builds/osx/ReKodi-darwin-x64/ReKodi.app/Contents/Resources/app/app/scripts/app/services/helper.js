@@ -123,23 +123,37 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
       return ((+timeObject.hours) * 60 * 60 + (+timeObject.minutes) * 60 + (+timeObject.seconds));
     };
 
-    var downloadFile = function(url, targetDirectory, filename, callback) {
+    var downloadFile = function(url, targetDirectory, filename, overwrite, callback) {
       var downloadDirectory = tempDownloadDirectory+targetDirectory;
       downloadDirectory = (downloadDirectory.substr(-1) !== '/')? downloadDirectory+'/' : downloadDirectory;
-      filename = (!filename || filename === '')? getFilenameFromUrl(url) : filename;
+
+      if(filename && filename !== '') {
+        filename = filename.toString();
+        var filenameParts = filename.split('.');
+
+        if(filenameParts.length < 2) {
+          var downloadedFilename = getFilenameFromUrl(url);
+          var donwloadedFilenameParts = downloadedFilename.split('.');
+          var downloadedFileExtension = (donwloadedFilenameParts.length > 0)? donwloadedFilenameParts[donwloadedFilenameParts.length -1] : '';
+          filename = filename+'.'+downloadedFileExtension;
+        }
+      }
+      else {
+        filename = getFilenameFromUrl(url);
+      }
+
       var downloadedFilePath = downloadDirectory+filename;
       
-      if(fs.existsSync(downloadedFilePath)) {
+      if(!overwrite && fs.existsSync(downloadedFilePath)) {
         callback(downloadedFilePath);
         return;
       }
       
-      if(!fs.existsSync(downloadDirectory)) {
-        mkpath.sync(downloadDirectory);
-      }
-      
       if(fs.existsSync(downloadedFilePath)) {
-        fs.unlinkSync(filePath);
+        fs.unlinkSync(downloadedFilePath);
+      }
+      else if(!fs.existsSync(downloadDirectory)) {
+        mkpath.sync(downloadDirectory);
       }
 
       var file = fs.createWriteStream(downloadedFilePath);
@@ -173,7 +187,9 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
       var isDownload = (path.substr(0, 4).toLowerCase() === 'http');
       
       if(isDownload) {
-        downloadFile(path, 'fanart', null, function(donwloadedFilePath, data) {
+        var filename = (new Date).getTime();
+        
+        downloadFile(path, 'fanart', filename, false, function(donwloadedFilePath, data) {
           getDesktopWallpaper(function(currentWallpaperPath) {
             if(donwloadedFilePath && currentWallpaperPath !== donwloadedFilePath) {
               wallpaper.set(donwloadedFilePath, function(error) {

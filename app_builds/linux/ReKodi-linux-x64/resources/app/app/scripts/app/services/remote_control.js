@@ -1,5 +1,5 @@
-rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rkHelperService',
-  function($rootScope, kodiApiService, rkHelperService) {
+rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rkHelperService', 'rkEnumsService',
+  function($rootScope, kodiApiService, rkHelperService, rkEnumsService) {
     var kodiApi = null;
     var currentSpeed = 0;
     
@@ -175,6 +175,44 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
       });
     };
     
+    var togglePartymode = function() {
+      kodiApi.Player.SetPartymode({
+        playerid: rkEnumsService.PlayerId.AUDIO,
+        partymode: 'toggle'
+      }).then(function(data) {
+      }, function(error) {
+        rkHelperService.handleError(error);
+      });
+    };
+    
+    var cycleRepeat = function() {
+      getActivePlayerId(function(playerId) {
+        if(playerId !== null) {
+          kodiApi.Player.SetRepeat({
+            playerid: playerId,
+            repeat: 'cycle'
+          }).then(function(data) {
+          }, function(error) {
+            rkHelperService.handleError(error);
+          });
+        }
+      });
+    };
+    
+    var toggleShuffle = function() {
+      getActivePlayerId(function(playerId) {
+        if(playerId !== null) {
+          kodiApi.Player.SetShuffle({
+            playerid: playerId,
+            shuffle: 'toggle'
+          }).then(function(data) {
+          }, function(error) {
+            rkHelperService.handleError(error);
+          });
+        }
+      });
+    };
+    
     function init() {
       $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
         kodiApi = kodiApiService.getConnection();
@@ -196,7 +234,10 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
       skipNext: skipNext,
       setVolume: setVolume,
       toggleMute: toggleMute,
-      seek: seek
+      seek: seek,
+      togglePartymode: togglePartymode,
+      cycleRepeat: cycleRepeat,
+      toggleShuffle: toggleShuffle
     };
   }
 ]);

@@ -5,6 +5,7 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', 'kodiApiService', 
     $scope.playlistId = null;
     $scope.items = [];
     $scope.playStatus = null;
+    $scope.isInitialized = false;
     $scope.filter = {
       value: ''
     };
@@ -74,19 +75,22 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', 'kodiApiService', 
     }
 
     $scope.init = function() {
-      initConnectionChange();
-      
-      $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+      if(!$scope.isInitialized) {
         initConnectionChange();
-      });
 
-      $scope.$watchCollection(function() {
-        return $sessionStorage.playStatus;
-      }, function(newValue, oldValue) {
-        $scope.playStatus = newValue;
-      });
-      
-      $scope.playStatus = $sessionStorage.playStatus;
+        $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+          initConnectionChange();
+        });
+
+        $scope.$watchCollection(function() {
+          return $sessionStorage.playStatus;
+        }, function(newValue, oldValue) {
+          $scope.playStatus = newValue;
+        });
+
+        $scope.playStatus = $sessionStorage.playStatus;
+        $scope.isInitialized = true;
+      }
     };
   }
 ]);

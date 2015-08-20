@@ -647,7 +647,7 @@ body {
     height: 10px;
     width: 10px;
     border-radius: 50%;
-    background: #666;
+    background: #999;
     cursor: default;
     margin-top: -4.5px;
     -moz-transition: all 0.2s ease-in-out;
@@ -769,7 +769,7 @@ section#windowControls {
   background: #595959; }
   section#windowControls .controls {
     padding: 5px;
-    float: left;
+    float: right;
     font-size: 0;
     white-space: nowrap; }
     section#windowControls .controls .button {
@@ -777,11 +777,11 @@ section#windowControls {
       line-height: 18px;
       width: 18px;
       text-align: center;
-      color: #333;
+      color: #999;
       font-weight: normal;
       font-size: 14px; }
     section#windowControls .controls .button:hover {
-      color: #FFF;
+      color: #E6802E;
       -moz-transition: all 0.15s ease-in-out;
       -o-transition: all 0.15s ease-in-out;
       -webkit-transition: all 0.15s ease-in-out;
@@ -798,7 +798,7 @@ section#windowControls {
       -o-transform: scale(1);
       transform: scale(1); }
   section#windowControls .drag {
-    float: right;
+    float: left;
     width: 450px;
     height: 100%;
     -webkit-app-region: drag;
@@ -833,8 +833,7 @@ section#nowPlaying {
   section#nowPlaying .data-wrapper {
     position: relative;
     height: 100%; }
-    section#nowPlaying .data-wrapper .paused-overlay,
-    section#nowPlaying .data-wrapper .muted-overlay {
+    section#nowPlaying .data-wrapper .overlay {
       position: absolute;
       top: 0;
       left: 0;
@@ -842,15 +841,24 @@ section#nowPlaying {
       bottom: 0;
       z-index: 1;
       text-align: center; }
-      section#nowPlaying .data-wrapper .paused-overlay i.mdi,
-      section#nowPlaying .data-wrapper .muted-overlay i.mdi {
-        line-height: 130px;
+      section#nowPlaying .data-wrapper .overlay i.mdi {
         color: rgba(255, 255, 255, 0.7);
-        font-size: 140px;
         -webkit-animation: flickerAnimation 1s infinite;
         -moz-animation: flickerAnimation 1s infinite;
         -o-animation: flickerAnimation 1s infinite;
-        animation: flickerAnimation 1s infinite; }
+        animation: flickerAnimation 1s infinite;
+        font-size: 120px;
+        line-height: 130px; }
+      section#nowPlaying .data-wrapper .overlay .current-speed {
+        font-family: sans-serif, arial, verdana;
+        position: absolute;
+        display: inline-block;
+        top: 55px;
+        left: 230px;
+        font-size: 45px;
+        font-weight: bold;
+        color: #E6802E;
+        line-height: initial; }
     section#nowPlaying .data-wrapper .seek-slider-wrapper {
       position: absolute;
       bottom: 0;
@@ -911,38 +919,45 @@ section#nowPlaying {
         width: 80px;
         text-align: center;
         -webkit-perspective: 150px;
-        margin-top: 10px; }
+        margin-top: 6px;
+        margin-left: 6px; }
         section#nowPlaying .data-wrapper .active .thumbnail i.mdi {
           font-size: 80px;
           line-height: 90px;
           -webkit-transform: rotateY(25deg);
           -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5)));
-          -moz-transition: all 1s ease-in-out;
-          -o-transition: all 1s ease-in-out;
-          -webkit-transition: all 1s ease-in-out;
-          transition: all 1s ease-in-out; }
+          -moz-transition: all 0.5s ease-in-out;
+          -o-transition: all 0.5s ease-in-out;
+          -webkit-transition: all 0.5s ease-in-out;
+          transition: all 0.5s ease-in-out; }
         section#nowPlaying .data-wrapper .active .thumbnail img {
           max-height: 100%;
           max-width: 100%;
           -webkit-transform: rotateY(25deg);
           -webkit-box-reflect: below 2px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(250, 250, 250, 0.5)));
           border-radius: 3px;
-          -moz-transition: all 1s ease-in-out;
-          -o-transition: all 1s ease-in-out;
-          -webkit-transition: all 1s ease-in-out;
-          transition: all 1s ease-in-out; }
+          -moz-transition: all 0.5s ease-in-out;
+          -o-transition: all 0.5s ease-in-out;
+          -webkit-transition: all 0.5s ease-in-out;
+          transition: all 0.5s ease-in-out; }
       section#nowPlaying .data-wrapper .active .details {
         display: inline-block;
         float: right;
-        width: 395px;
+        width: 380px;
         color: #999;
         height: 100px;
         margin-top: 10px; }
         section#nowPlaying .data-wrapper .active .details i.mdi {
           color: #666;
           font-size: 14px; }
+        section#nowPlaying .data-wrapper .active .details > div {
+          width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis; }
         section#nowPlaying .data-wrapper .active .details .album {
-          color: #BBB; }
+          color: #BBB;
+          font-size: 15px; }
         section#nowPlaying .data-wrapper .active .details .title {
           color: #FFF;
           font-size: 16px;
@@ -999,19 +1014,45 @@ section#playbackControls {
     section#playbackControls .volume-slider-wrapper i.mdi {
       line-height: 47px;
       width: 20px;
-      font-size: 20px;
-      color: #666;
+      font-size: 18px;
+      color: #999;
       display: inline-block;
       vertical-align: top;
       -moz-transition: all 0.2s ease-in-out;
       -o-transition: all 0.2s ease-in-out;
       -webkit-transition: all 0.2s ease-in-out;
       transition: all 0.2s ease-in-out; }
-    section#playbackControls .volume-slider-wrapper i.mdi:hover,
+    section#playbackControls .volume-slider-wrapper i.mdi:hover {
+      text-shadow: 0 0 3px rgba(255, 255, 255, 0.5); }
     section#playbackControls .volume-slider-wrapper i.mdi.active {
       color: #E6802E; }
+  section#playbackControls .player-options-wrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding-right: 12px;
+    white-space: nowrap;
+    text-align: left;
+    overflow: hidden; }
+    section#playbackControls .player-options-wrapper ul i.mdi {
+      line-height: 47px;
+      width: 20px;
+      font-size: 16px;
+      color: #999;
+      display: inline-block;
+      vertical-align: top;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      -webkit-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out; }
+    section#playbackControls .player-options-wrapper ul i.mdi:hover {
+      text-shadow: 0 0 3px rgba(255, 255, 255, 0.5); }
+    section#playbackControls .player-options-wrapper ul i.mdi:focus,
+    section#playbackControls .player-options-wrapper ul i.mdi.active {
+      color: #E6802E; }
   section#playbackControls .volume-slider-wrapper:hover {
-    width: 110px; }
+    width: 120px; }
   section#playbackControls .controls-wrapper ul {
     font-size: 0; }
   section#playbackControls .controls-wrapper li {
@@ -1021,24 +1062,25 @@ section#playbackControls {
     padding: 0 4px;
     display: inline-block;
     font-size: 32px;
-    -moz-transition: all 0.2s ease-in-out;
-    -o-transition: all 0.2s ease-in-out;
-    -webkit-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out; }
-  section#playbackControls .controls-wrapper li:hover,
-  section#playbackControls .controls-wrapper li.active {
+    -moz-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out; }
+  section#playbackControls .controls-wrapper li:hover {
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+    -ms-transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    transform: scale(1.2); }
+  section#playbackControls .controls-wrapper li.active,
+  section#playbackControls .controls-wrapper li:active {
     color: #E6802E;
     -ms-transform: scale(1.15);
     -webkit-transform: scale(1.15);
     -moz-transform: scale(1.15);
     -o-transform: scale(1.15);
     transform: scale(1.15); }
-  section#playbackControls .controls-wrapper li:active {
-    -ms-transform: scale(1);
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -o-transform: scale(1);
-    transform: scale(1); }
   section#playbackControls .controls-wrapper li.play-button {
     position: relative; }
     section#playbackControls .controls-wrapper li.play-button .speed-indicator {
@@ -1058,6 +1100,7 @@ section#playbackControls {
 
 section.tabsContainer {
   position: relative;
+  height: 100%;
   overflow: hidden; }
   section.tabsContainer nav {
     overflow: hidden;
@@ -1116,7 +1159,7 @@ section.tabsContainer {
       height: 1px;
       background: #E6802E; }
   section.tabsContainer .tabs.inline {
-    font-size: 0rem;
+    font-size: 0;
     letter-spacing: -.31em;
     word-spacing: -.43em;
     white-space: nowrap; }
@@ -1131,9 +1174,11 @@ section.tabsContainer {
     white-space: normal; }
   section.tabsContainer .tabs {
     background: #282828;
-    position: relative;
+    position: absolute;
     left: 0;
-    height: 100%;
+    top: 42px;
+    bottom: 0;
+    width: 500px;
     -moz-transition: all 0.4s ease-in-out;
     -o-transition: all 0.4s ease-in-out;
     -webkit-transition: all 0.4s ease-in-out;
@@ -1213,12 +1258,12 @@ section.tabsContainer {
       -o-transform: scale(1);
       transform: scale(1); }
   section.tabsContainer .data-list-wrapper {
-    overflow-y: auto;
     position: absolute;
     top: 36px;
     left: 0px;
     right: 0px;
-    bottom: 0px; }
+    bottom: 0px;
+    overflow-y: auto; }
     section.tabsContainer .data-list-wrapper li {
       padding: 0 12px;
       line-height: 32px !important;
@@ -1233,10 +1278,11 @@ section.tabsContainer {
       transition: all 0.2s ease-in-out; }
       section.tabsContainer .data-list-wrapper li .label {
         float: left;
-        display: block;
+        display: inline-block;
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis; }
+        text-overflow: ellipsis;
+        width: 100%; }
         section.tabsContainer .data-list-wrapper li .label i.mdi {
           margin-right: 6px;
           font-size: 20px;
@@ -1429,14 +1475,18 @@ section.tabsContainer.sub nav {
   section.tabsContainer.sub nav .magic-line {
     background: #BBB;
     width: 40px; }
+section.tabsContainer.sub .tabs {
+  top: 32px; }
 
-#tabs {
+section#tabs {
   position: fixed;
   top: 195px;
   left: 0;
   right: 0;
   bottom: 32px;
-  border: 0; }
+  border: 0;
+  height: auto;
+  overflow: hidden; }
 
 section#footer {
   position: fixed;

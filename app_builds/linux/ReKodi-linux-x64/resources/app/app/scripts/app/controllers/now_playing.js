@@ -5,6 +5,7 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
     $scope.isManuallySeeking = false;
     $scope.playbackStatus = null;
     $scope.seekbarResolution = 100000;
+    $scope.playerProperties = null;
     $scope.seek = {
       position: 0
     };
@@ -61,6 +62,8 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
       });
       
       $scope.$root.$on('rkPlayerPropertiesChange', function(event, data) {
+        $scope.playerProperties = data;
+
         if(data.time && Object.keys(data.time).length > 0) {
           var seconds = rkHelperService.timeObjectToSeconds(data.time);
           $scope.timePlaying = rkHelperService.secondsToDuration(seconds);

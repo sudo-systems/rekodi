@@ -24,8 +24,7 @@ section#nowPlaying {
     position: relative;
     height: 100%;
     
-    .paused-overlay,
-    .muted-overlay {
+    .overlay {
       position: absolute;
       top: 0;
       left: 0;
@@ -35,10 +34,22 @@ section#nowPlaying {
       text-align: center;
       
       i.mdi {
-        line-height: map-get($now-playing, height);
         color: rgba(255, 255, 255, 0.7);
-        font-size: 140px;
         @include fadeInAndOut(1s);
+        font-size: 120px;
+        line-height: map-get($now-playing, height);
+      }
+      
+      .current-speed {
+        font-family: sans-serif, arial, verdana;
+        position: absolute;
+        display: inline-block;
+        top: 55px;
+        left: 230px;
+        font-size: 45px;
+        font-weight: bold;
+        color: map-get($global, highlight-color);
+        line-height: initial;
       }
     }
     
@@ -125,14 +136,15 @@ section#nowPlaying {
         width: 80px;
         text-align: center;
         -webkit-perspective: 150px;
-        margin-top: 10px;
+        margin-top: 6px;
+        margin-left: 6px;
 
         i.mdi {
           font-size: 80px;
           line-height: 90px;
           -webkit-transform: rotateY(25deg);
           -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
-          @include transitionAll(1s);
+          @include transitionAll(0.5s);
         }
 
         img {
@@ -141,14 +153,14 @@ section#nowPlaying {
           -webkit-transform: rotateY(25deg);
           -webkit-box-reflect: below 2px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
           border-radius: 3px;
-          @include transitionAll(1s);
+          @include transitionAll(0.5s);
         }
       }
 
       .details {
         display: inline-block;
         float: right;
-        width: 395px;
+        width: 380px;
         color: #999;
         height: 100px;
         margin-top: 10px;
@@ -157,12 +169,20 @@ section#nowPlaying {
           color: #666;
           font-size: 14px;
         }
+        
+        & > div {
+          width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
 
         .artist {
         }
 
         .album {
           color: #BBB;
+          font-size: 15px;
         }
 
         .title {

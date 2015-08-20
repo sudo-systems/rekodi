@@ -3,6 +3,8 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
     $scope.showPlayButton = true;
     $scope.showPauseButton = false;
     $scope.showStopButton = false;
+    $scope.playerProperties = null;
+    $scope.kodiProperties = null;
     $scope.status = {};
 
     $scope.skipPrevious = function () {
@@ -37,6 +39,25 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
     $scope.toggleMute = function() {
       rkRemoteControlService.toggleMute();
     };
+    
+    $scope.togglePartymode = function() {
+      if($scope.status.isPlaying && !$scope.playerProperties.partymode) {
+        rkRemoteControlService.stop();
+      }
+      
+      $scope.playerProperties.partymode = (!$scope.playerProperties.partymode);
+      $scope.$apply();
+      
+      rkRemoteControlService.togglePartymode();
+    };
+    
+    $scope.cycleRepeat = function() {
+      rkRemoteControlService.cycleRepeat();
+    };
+
+    $scope.toggleShuffle = function() {
+      rkRemoteControlService.toggleShuffle();
+    };
 
     function setButtonStates() {
       $timeout(function() {
@@ -52,13 +73,73 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
       
       $scope.$root.$on('rkPlaybackStatusChange', function(event, data) {
         $scope.status = data;
+        $scope.$apply();
         setButtonStates();
+      });
+      
+      $scope.$root.$on('rkPlayerPropertiesChange', function(event, data) {
+        $scope.playerProperties = data;
+        $scope.$apply();
+      });
+      
+      $scope.$root.$on('rkKodiPropertiesChange', function(event, data) {
+        $scope.kodiProperties = data;
+        $scope.$apply();
       });
       
       $('.volume-slider-wrapper input[type="range"]').on('mouseout', function() {
         this.blur();
       }).on('mouseover input', function() {
         styl.inject('.volume-slider-wrapper input[type=range]:hover::-webkit-slider-thumb:after', {content: "'"+this.value+"%'"}).apply();
+      });
+      
+      angular.element(document).bind('keypress', function(event) {
+        //console.dir(event);
+        if($('input:focus, textarea:focus').length === 0) {
+          if(event.keyCode === 32) {
+            $scope.playPause();
+          }
+          else if(event.keyCode === 13) {
+            $scope.stop();
+          }
+          else if(event.keyCode === 91) { //[
+            $scope.skipPrevious();
+          }
+          else if(event.keyCode === 93) { //]
+            $scope.skipNext();
+          }
+          else if(event.keyCode === 44) { //,
+            $scope.rewind();
+          }
+          else if(event.keyCode === 46) { //.
+            $scope.fastForward();
+          }
+          else if(event.keyCode === 45) { //-
+            if($scope.kodiProperties.volume && $scope.kodiProperties.volume >= 5) {
+              var newVolume = ($scope.kodiProperties.volume - 5);
+              $scope.setVolume(newVolume);
+            }
+          }
+          else if(event.keyCode === 61) { //=
+            if($scope.kodiProperties.volume && $scope.kodiProperties.volume <= 95) {
+              var newVolume = ($scope.kodiProperties.volume + 5);
+              $scope.setVolume(newVolume);
+            }
+          }
+          else if(event.keyCode === 114) { //r
+            if(!$scope.playerProperties.partymode) {
+              $scope.cycleRepeat();
+            }
+          }
+          else if(event.keyCode === 115) { //s
+            if(!$scope.playerProperties.partymode) {
+              $scope.toggleShuffle();
+            }
+          }
+          else if(event.keyCode === 112) { //p
+            $scope.togglePartymode();
+          }
+        }
       });
 
       $scope.$root.rkRequiredControllers.playback_controls.loaded = true;

@@ -9,7 +9,7 @@ section#windowControls {
  
   .controls {
     padding: 5px;
-    float: left;
+    float: right;
     font-size: 0;
     white-space: nowrap;
 
@@ -18,13 +18,13 @@ section#windowControls {
       line-height:  map-get($window-controls, height);
       width: map-get($window-controls, button-width);
       text-align: center;
-      color: #333;
+      color: #999;
       font-weight: normal;
       font-size: 14px;
     }
 
     .button:hover {
-      color: #FFF;
+      color: map-get($global, highlight-color);
       @include transitionAll(0.15s);
       @include scale(1.15);
     }
@@ -35,7 +35,7 @@ section#windowControls {
   }
   
   .drag {
-    float: right;
+    float: left;
     width: 450px;
     height: 100%;
     -webkit-app-region: drag;

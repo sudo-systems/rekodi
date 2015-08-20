@@ -4,7 +4,8 @@ $global: (
   text-shadow-color: #666,
   transition-speed: .2s,
   window-padding: 12px,
-  window-height: 700px
+  window-height: 700px,
+  window-width: 500px
 );
 
 $body: (
@@ -36,6 +37,7 @@ $tabs: (
   tab-width: 55.56px,
   tab-height: 40px,
   sub-tab-width: 40px,
+  sub-tab-height: 30px,
   options-height: 36px
 );
 

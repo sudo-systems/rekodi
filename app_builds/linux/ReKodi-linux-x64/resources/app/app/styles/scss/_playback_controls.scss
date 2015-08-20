@@ -30,21 +30,56 @@ section#playbackControls {
     i.mdi {
       line-height: map-get($playback-controls, height);
       width: 20px;
-      font-size: 20px;
-      color: #666;
+      font-size: 18px;
+      color: #999;
       display: inline-block;
       vertical-align: top;
       @include transitionAll(map-get($global, transition-speed));
     }
     
-    i.mdi:hover,
+    i.mdi:hover {
+      @include textShadow(0 0 3px, rgba(255, 255, 255, 0.5));
+    }
+    
     i.mdi.active {
       color: map-get($global, highlight-color);
     }
   }
   
+  .player-options-wrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding-right: map-get($global, window-padding);
+    white-space: nowrap;
+    text-align: left;
+    overflow: hidden;
+
+    ul {
+      i.mdi {
+        line-height: map-get($playback-controls, height);
+        width: 20px;
+        font-size: 16px;
+        color: #999;
+        display: inline-block;
+        vertical-align: top;
+        @include transitionAll(map-get($global, transition-speed));
+      }
+      
+      i.mdi:hover {
+        @include textShadow(0 0 3px, rgba(255, 255, 255, 0.5));
+      }
+      
+      i.mdi:focus,
+      i.mdi.active {
+        color: map-get($global, highlight-color);
+      }
+    }
+  }
+  
   .volume-slider-wrapper:hover {
-    width: 110px;
+    width: 120px;
   }
   
   .controls-wrapper {
@@ -59,17 +94,18 @@ section#playbackControls {
       padding: 0 4px;
       display: inline-block;
       font-size: 32px;
-      @include transitionAll(map-get($global, transition-speed));
+      @include transitionAll(0.1s);
     }
 
-    li:hover,
-    li.active {
+    li:hover {
+      @include textShadow(0 0 3px, rgba(255, 255, 255, 0.5));
+      @include scale(1.2);
+    }
+    
+    li.active,
+    li:active {
       color: map-get($global, highlight-color);
       @include scale(1.15);
-    }
-
-    li:active {
-      @include scale(1.0);
     }
 
     li.play-button {

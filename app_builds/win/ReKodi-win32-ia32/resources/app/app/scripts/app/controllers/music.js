@@ -7,11 +7,50 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
     $scope.currentAlbumId = null;
     $scope.artistsCategorised = {};
     $scope.artistsIndex = [];
+    $scope.scrollItems = [];
+    $scope.displayLimit = 15;
+    $scope.isInitialized = false;
     $scope.albums = {};
     $scope.songs = {};
     var kodiApi = null;
     $scope.filter = {
       value: ''
+    };
+    
+    $scope.showItems = function(selectedIndex, reset) {
+      if(reset || !$scope.scrollItems[$scope.currentLevel]) {
+        $scope.scrollItems[$scope.currentLevel] = [];
+      }
+      
+      var items = [];
+      
+      if($scope.currentLevel === 'artists') {
+        items = $scope.artistsCategorised[selectedIndex];
+      }
+      else if($scope.currentLevel === 'albums') {
+        items = $scope.albums[$scope.currentArtistId];
+      }
+      else if($scope.currentLevel === 'songs') {
+        items = $scope.songs[$scope.currentAlbumId];
+      }
+      
+      var scrollItemsCount = $scope.scrollItems[$scope.currentLevel].length;
+      
+      if(!items[scrollItemsCount]) {
+        return;
+      }
+
+      for(var x = 0; x < $scope.displayLimit; x++) {
+        var nextIndex = ((scrollItemsCount)+x);
+
+        if(items[nextIndex]) {
+          $scope.scrollItems[$scope.currentLevel].push(items[nextIndex]);
+        }
+      }
+
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
     };
     
     function getArtistsFromCache() {
@@ -66,8 +105,19 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
       setDefaultSelectedIndex();
     }
 
+    function setDefaultSelectedIndex() {
+      for(var key in $scope.artistsIndex) {
+        if($scope.artistsIndex[key].toLowerCase() !== $scope.artistsIndex[key].toUpperCase()) {
+          $scope.selectedIndex = $scope.artistsIndex[key];
+          $scope.showItems($scope.artistsIndex[key], true);
+          break;
+        }
+      }
+    }
+
     $scope.getArtists = function() {
       $scope.currentLevel = 'artists';
+      $scope.displayLimit = 15;
       $scope.clearFilter();
 
       if(kodiApi) {
@@ -110,11 +160,14 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
           index: artistId
         });
       }
+      
+      $scope.showItems(null, true);
     }
 
     $scope.getAlbums = function(artist) {
       $scope.currentLevel = 'albums';
       $scope.currentArtistId = artist.artistid;
+      $scope.displayLimit = 5;
       $scope.clearFilter();
 
       if(kodiApi) {
@@ -140,6 +193,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
           
           if(rkCacheService.update(properties)) {
             $scope.albums[artist.artistid] = data.albums;
+            $scope.showItems(null, true);
           }
           else {
             getAlbumsFromCache(artist.artistid);
@@ -161,11 +215,14 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
           index: albumId
         });
       }
+      
+      $scope.showItems(null, true);
     }
 
     $scope.getSongs = function(album) {
       $scope.currentLevel = 'songs';
       $scope.currentAlbumId = album.albumid;
+      $scope.displayLimit = 5;
       $scope.clearFilter();
       
       if(kodiApi) {
@@ -191,6 +248,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
           
           if(rkCacheService.update(properties)) {
             $scope.songs[album.albumid] = data.songs;
+            $scope.showItems(null, true);
           }
           else {
             getSongsFromCache(album.albumid);
@@ -218,16 +276,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
     $scope.clearFilter = function() {
       $scope.filter.value = '';
     };
-    
-    function setDefaultSelectedIndex() {
-      for(var key in $scope.artistsIndex) {
-        if($scope.artistsIndex[key].toLowerCase() !== $scope.artistsIndex[key].toUpperCase()) {
-          $scope.selectedIndex = $scope.artistsIndex[key];
-          break;
-        }
-      }
-    }
-    
+
     function initConnectionChange() {
       kodiApi = kodiApiService.getConnection();
 
@@ -237,12 +286,16 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
     }
 
     $scope.init = function() {
-      rkCacheService.setCategory($scope.identifier);
-      initConnectionChange();
-      
-      $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+      if(!$scope.isInitialized) {
+        rkCacheService.setCategory($scope.identifier);
         initConnectionChange();
-      });
+
+        $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+          initConnectionChange();
+        });
+        
+        $scope.isInitialized = true;
+      }
     };
   }
 ]);
