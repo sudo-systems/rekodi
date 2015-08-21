@@ -117,15 +117,15 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
             $scope.fastForward();
           }
           else if(event.keyCode === 45) { //-
-            if($scope.kodiProperties.volume && $scope.kodiProperties.volume >= 5) {
-              var newVolume = Math.floor($scope.kodiProperties.volume - 5);
+            if($scope.kodiProperties.volume) {
+              var newVolume = ($scope.kodiProperties.volume >= 5)? Math.floor($scope.kodiProperties.volume - 5) : 0;
               $scope.setVolume(newVolume);
               rkNotificationService.notifyVolume(newVolume);
             }
           }
           else if(event.keyCode === 61) { //=
-            if($scope.kodiProperties.volume && $scope.kodiProperties.volume <= 95) {
-              var newVolume = Math.floor($scope.kodiProperties.volume+ 5);
+            if($scope.kodiProperties.volume) {
+              var newVolume = ($scope.kodiProperties.volume <= 95)? Math.floor($scope.kodiProperties.volume + 5) : 100;
               $scope.setVolume(newVolume);
               rkNotificationService.notifyVolume(newVolume);
             }
