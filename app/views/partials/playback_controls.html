@@ -7,7 +7,7 @@
 </div>
 <div class="controls-wrapper" ng-show="status.isConnected">
   <ul class="horizontal">
-    <li ng-click="skipPrevious()">
+    <li ng-click="skipPrevious()" ng-show="showPreviousButton">
       <i class="mdi mdi-skip-previous"></i>
     </li>
     <li ng-click="rewind()" ng-class="{active: status.isRewinding}" ng-show="playerProperties.canchangespeed">
@@ -25,7 +25,7 @@
     <li ng-click="fastForward()" ng-class="{active: status.isFastForwarding}" ng-show="playerProperties.canchangespeed">
       <i class="mdi mdi-fast-forward"></i>
     </li>
-    <li ng-click="skipNext()">
+    <li ng-click="skipNext()" ng-show="showNextButton">
       <i class="mdi mdi-skip-next"></i>
     </li>
   </ul>
@@ -38,20 +38,20 @@
     <li ng-show="playerProperties.canshuffle && !playerProperties.partymode && playerProperties.shuffled" ng-click="toggleShuffle()">
       <i class="mdi mdi-shuffle active" title="Disable shuffle"></i>
     </li>
-    <li ng-show="playerProperties.canrepeat && !playerProperties.partymode && playerProperties.repeat === 'off'" ng-click="cycleRepeat()">
+    <li ng-show="playerProperties.canrepeat && playerProperties.repeat === 'off'" ng-click="cycleRepeat()">
       <i class="mdi mdi-repeat" title="Enable repeat"></i>
     </li>
-    <li ng-show="playerProperties.canrepeat && !playerProperties.partymode && playerProperties.repeat === 'all'" ng-click="cycleRepeat()">
+    <li ng-show="playerProperties.canrepeat && playerProperties.repeat === 'all'" ng-click="cycleRepeat()">
       <i class="mdi mdi-repeat active" title="Switch to repeat one"></i>
     </li>
-    <li ng-show="playerProperties.canrepeat && !playerProperties.partymode && playerProperties.repeat === 'one'" ng-click="cycleRepeat()">
+    <li ng-show="playerProperties.canrepeat && playerProperties.repeat === 'one'" ng-click="cycleRepeat()">
       <i class="mdi mdi-repeat-once active" title="Disable repeat"></i>
     </li>
     <li ng-click="togglePartymode()" ng-show="!playerProperties.partymode">
-      <i class="mdi mdi-dice" title="Enable partymode"></i>
+      <i class="mdi mdi-dice" title="Start partymode"></i>
     </li>
     <li ng-click="togglePartymode()" ng-show="playerProperties.partymode">
-      <i class="mdi mdi-dice active" title="Disable partymode"></i>
+      <i class="mdi mdi-dice active" title="Stop partymode"></i>
     </li>
   </ul>
 </div>

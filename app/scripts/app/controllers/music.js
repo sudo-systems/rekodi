@@ -290,7 +290,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
         rkCacheService.setCategory($scope.identifier);
         initConnectionChange();
 
-        $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+        $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
           initConnectionChange();
         });
         

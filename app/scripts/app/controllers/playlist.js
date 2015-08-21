@@ -78,7 +78,7 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', 'kodiApiService', 
       if(!$scope.isInitialized) {
         initConnectionChange();
 
-        $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+        $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
           initConnectionChange();
         });
 

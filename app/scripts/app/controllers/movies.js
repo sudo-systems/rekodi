@@ -187,7 +187,7 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'r
         rkCacheService.setCategory($scope.identifier);
         initConnectionChange();
 
-        $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+        $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
           initConnectionChange();
         });
 
