@@ -1,16 +1,16 @@
 <div class="options clearfix">
-  <div class="page-specific" ng-show="currentLevel ==='artists' && artistsIndex.length > 0">
+  <div class="page-specific" ng-show="currentLevel ==='artists' && artistsIndex.length > 0 && !isFiltering">
     <select name="index" ng-model="selectedIndex" class="index" title="Select the category" ng-change="showItems(selectedIndex, true)">
       <option ng-repeat="indexLetter in artistsIndex track by indexLetter" ng-value="indexLetter" ng-selected="indexLetter === selectedIndex">{{indexLetter}}</option>
     </select>
   </div>
   <div class="filter-container">
-    <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+    <input type="text" class="filter" ng-model="filter.value" ng-change="applyFilter(filter.value)" placeholder="search" title="Find artists (2 characters minimal)" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
   </div>
 </div>
 <div class="data-list-wrapper" su-endless-scroll="showItems(selectedIndex)">
   <ul class="vertical" ng-show="currentLevel ==='artists'">
-    <li ng-repeat="artist in scrollItems[currentLevel] | filter:filterList track by artist.artistid" class="clearfix" ng-click="getAlbums(artist)">
+    <li ng-repeat="artist in scrollItems['artists'] track by artist.artistid" class="clearfix" ng-click="getAlbums(artist)">
       <div class="label">
         <i class="mdi mdi-worker"></i> {{artist.label}}
       </div>
@@ -22,7 +22,7 @@
         <i class="mdi mdi-worker"></i> [back to artists] ..
       </div>
     </li>
-    <li ng-repeat="album in scrollItems[currentLevel] | filter:filterList track by album.albumid" class="clearfix" ng-click="getSongs(album)">
+    <li ng-repeat="album in scrollItems['albums'] track by album.albumid" class="clearfix" ng-click="getSongs(album)">
       <div class="thumbnail">
         <div ng-if="album.thumbnail_src">
           <img ng-src="{{album.thumbnail_src}}" alt="" />
@@ -70,7 +70,7 @@
         <i class="mdi mdi-album"></i> [back to albums] ..
       </div>
     </li>
-    <li ng-repeat="song in scrollItems[currentLevel] | filter:filterList track by song.songid" class="clearfix" ng-click="playSong(song)">
+    <li ng-repeat="song in scrollItems['songs'] track by song.songid" class="clearfix" ng-click="playSong(song)">
       <div class="thumbnail">
         <div ng-if="song.thumbnail_src">
           <img ng-src="{{song.thumbnail_src}}" alt="" />

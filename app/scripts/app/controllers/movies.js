@@ -1,5 +1,5 @@
-rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', '$attrs', 'rkCacheService', 'rkHelperService', 'rkRemoteControlService',
-  function($scope, $element, kodiApiService, rkTooltipsService, $attrs, rkCacheService, rkHelperService, rkRemoteControlService) {
+rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', '$attrs', 'rkCacheService', 'rkHelperService', 'rkRemoteControlService', '$timeout',
+  function($scope, $element, kodiApiService, rkTooltipsService, $attrs, rkCacheService, rkHelperService, rkRemoteControlService, $timeout) {
     var modal = {};
     $scope.identifier = $attrs.id;
     $scope.selectedIndex = null;
@@ -182,7 +182,7 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'r
       }
     }
 
-    $scope.init = function() {
+    var init = function() {
       if(!$scope.isInitialized) {
         rkCacheService.setCategory($scope.identifier);
         initConnectionChange();
@@ -199,5 +199,9 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'r
         $scope.isInitialized = true;
       }
     };
+    
+    $timeout(function() {
+      init();
+    });
   }
 ]);

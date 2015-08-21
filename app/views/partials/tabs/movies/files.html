@@ -8,7 +8,7 @@
 </div>
 <div class="data-list-wrapper" su-endless-scroll="showItems()">
   <ul class="vertical">
-    <li ng-repeat="source in scrollItems[currentLevel] | filter:filterList track by source.file" class="clearfix" ng-show="currentLevel === 'sources'">
+    <li ng-repeat="source in scrollItems['sources'] | filter:filterList track by source.file" class="clearfix" ng-show="currentLevel === 'sources'">
       <div class="label" ng-click="getDirectory(source.file)">
         <i class="mdi mdi-folder"></i> {{source.label}}
       </div>
@@ -18,7 +18,7 @@
         <i class="mdi mdi-folder"></i> ..
       </div>
     </li>
-    <li ng-repeat="file in scrollItems[currentLevel] | filter:filterList track by file.file" class="clearfix" ng-show="currentLevel === 'files'">
+    <li ng-repeat="file in scrollItems['files'] | filter:filterList track by file.file" class="clearfix" ng-show="currentLevel === 'files'">
       <div class="label" ng-if="file.type !== 'movie'" ng-click="file.filetype === 'file'? play(file.file, file.filetype) : getDirectory(file.file)">
         <i class="mdi mdi-folder" ng-show="!file.filetype || file.filetype === 'directory'"></i>
         <i class="mdi mdi-movie" ng-show="file.filetype === 'file'"></i> {{file.label}}

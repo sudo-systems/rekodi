@@ -1,5 +1,5 @@
-rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', '$attrs', 'rkCacheService', 'rkHelperService', 'rkRemoteControlService',
-  function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, $attrs, rkCacheService, rkHelperService, rkRemoteControlService) {
+rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', '$attrs', 'rkCacheService', 'rkHelperService', 'rkRemoteControlService', '$timeout',
+  function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, $attrs, rkCacheService, rkHelperService, rkRemoteControlService, $timeout) {
     $scope.identifier = $attrs.id;
     $scope.files = {};
     $scope.sources = [];
@@ -263,7 +263,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
       }
     }
 
-    $scope.init = function() {
+    var init = function() {
       if(!$scope.isInitialized) { 
         rkCacheService.setCategory($scope.identifier);
         initConnectionChange();
@@ -275,5 +275,9 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
         $scope.isInitialized = true;
       }
     };
+    
+    $timeout(function() {
+      init();
+    });
   }
 ]);
