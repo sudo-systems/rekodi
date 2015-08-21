@@ -34,7 +34,8 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
     };
 
     $scope.setVolume = function(percentage) {
-      percentage = parseInt(Math.ceil(percentage));
+      percentage = parseInt(Math.floor(percentage));
+      styl.inject('.volume-slider-wrapper input[type=range]:hover::-webkit-slider-thumb:after, .volume-slider-wrapper input[type=range]:focus::-webkit-slider-thumb:after', {content: "'"+percentage+"%'"}).apply();
       rkRemoteControlService.setVolume(percentage);
     };
     
@@ -89,10 +90,8 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
         $scope.$apply();
       });
       
-      $('.volume-slider-wrapper input[type="range"]').on('mouseout', function() {
+      $('.volume-slider-wrapper input[type="range"]').on('mouseup', function() {
         this.blur();
-      }).on('mouseover input', function() {
-        styl.inject('.volume-slider-wrapper input[type=range]:hover::-webkit-slider-thumb:after', {content: "'"+this.value+"%'"}).apply();
       });
       
       angular.element(document).bind('keypress', function(event) {
@@ -117,14 +116,14 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
             $scope.fastForward();
           }
           else if(event.keyCode === 45) { //-
-            if($scope.kodiProperties.volume) {
+            if($scope.kodiProperties.volume !== undefined) {
               var newVolume = ($scope.kodiProperties.volume >= 5)? Math.floor($scope.kodiProperties.volume - 5) : 0;
               $scope.setVolume(newVolume);
               rkNotificationService.notifyVolume(newVolume);
             }
           }
           else if(event.keyCode === 61) { //=
-            if($scope.kodiProperties.volume) {
+            if($scope.kodiProperties.volume !== undefined) {
               var newVolume = ($scope.kodiProperties.volume <= 95)? Math.floor($scope.kodiProperties.volume + 5) : 100;
               $scope.setVolume(newVolume);
               rkNotificationService.notifyVolume(newVolume);
