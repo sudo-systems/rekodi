@@ -1,12 +1,11 @@
 <div class="options">
-  <div class="page-specific">
-    <a ng-click="getMovies()" title="Refresh list"><i class="mdi mdi-refresh"></i></a>
+  <div class="page-specific" ng-show="moviesIndex.length > 0 && !isFiltering">
     <select name="index" ng-model="selectedIndex" class="index" title="Select the category" ng-change="showItems(selectedIndex, true)">
       <option ng-repeat="indexLetter in moviesIndex" ng-value="indexLetter" ng-selected="indexLetter === selectedIndex">{{indexLetter}}</option>
     </select>
   </div>
   <div class="filter-container">
-    <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list"  /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+    <input type="text" class="filter" ng-model="filter.value" ng-change="applyFilter(filter.value)" placeholder="search" title="Find movies (2 characters minimal)" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
   </div>
 </div>
 <div class="data-list-wrapper" su-endless-scroll="showItems(selectedIndex)">

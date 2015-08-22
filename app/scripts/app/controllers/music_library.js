@@ -54,7 +54,7 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', '$element', 'kodiApiServic
       }
     };
 
-    function createArtistsCategorisedIndex(artistsCategorised) {
+    function createCategorisedIndex(artistsCategorised) {
       $scope.artistsIndex = [];
 
       for (var key in artistsCategorised) {
@@ -66,7 +66,7 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', '$element', 'kodiApiServic
       return $scope.artistsIndex;
     }
 
-    function getDefaultArtistsIndex(artistsIndex) {
+    function getDefaultIndex(artistsIndex) {
       for(var key in artistsIndex) {
         if(artistsIndex[key].toLowerCase() !== artistsIndex[key].toUpperCase()) {
           return artistsIndex[key];
@@ -81,32 +81,26 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', '$element', 'kodiApiServic
       $scope.displayLimit = 15;
       $scope.currentAlbumId = null;
       $scope.currentArtistId = null;
-      var defaultArtistsIndex = null;
-      var artistsIndex = [];
       $scope.clearFilter();
       
       if(Object.keys($scope.artistsCategorised).length === 0) {
         $scope.artistsCategorised = rkAudioLibraryService.getArtistsCategorisedFromCache();
-        artistsIndex = createArtistsCategorisedIndex($scope.artistsCategorised);
-        defaultArtistsIndex = getDefaultArtistsIndex(artistsIndex);
-      }
-      
-      if(defaultArtistsIndex !== null) {
-        $scope.showItems(defaultArtistsIndex, true);
+        applyArtistsData($scope.artistsCategorised);
       }
 
       rkAudioLibraryService.getArtistsCategorised(function(artistsCategorised) {
         if(artistsCategorised && !angular.equals(artistsCategorised, $scope.artistsCategorised)) {
           $scope.artistsCategorised = artistsCategorised;
-          artistsIndex = createArtistsCategorisedIndex(artistsCategorised);
-          defaultArtistsIndex = getDefaultArtistsIndex(artistsIndex);
-
-          if(defaultArtistsIndex !== null) {
-            $scope.showItems(true);
-          }
+          applyArtistsData($scope.artistsCategorised);
         }
       });
     };
+    
+    function applyArtistsData(artistsCategorised) {
+      $scope.artistsIndex = createCategorisedIndex(artistsCategorised);
+      $scope.selectedIndex = getDefaultIndex($scope.artistsIndex);
+      $scope.showItems($scope.selectedIndex, true);
+    }
 
     $scope.getAlbums = function(artistId) {
       $scope.currentLevel = 'albums';
@@ -195,7 +189,7 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', '$element', 'kodiApiServic
     function initConnectionChange() {
       kodiApi = kodiApiService.getConnection();
 
-      if(kodiApi && $.isEmptyObject($scope.artistsCategorised)) {
+      if(kodiApi && Object.keys($scope.artistsCategorised).length === 0) {
         $scope.getArtistsCategorised();
       }
     }
