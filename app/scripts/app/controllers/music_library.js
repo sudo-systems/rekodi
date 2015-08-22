@@ -1,51 +1,63 @@
 rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', '$timeout', 'rkAudioLibraryService',
   function($scope, $element, kodiApiService, rkTooltipsService, $timeout, rkAudioLibraryService) {
-    $scope.selectedIndex = null;
+    var displayLimit = 15;
+    var kodiApi = null;
     $scope.currentLevel = null;
     $scope.artistsCategorised = {};
     $scope.artistsIndex = [];
     $scope.scrollItems = [];
-    $scope.displayLimit = 15;
     $scope.isFiltering = false;
     $scope.currentArtistId = null;
     $scope.currentAlbumId = null;
+    $scope.filteredItems = [];
     $scope.albums = {};
     $scope.songs = {};
-    $scope.filter = {value: ''};
-    var kodiApi = null;
+    $scope.guiModels = {
+      filterValue: '',
+      selectedIndex: null
+    };
     
-    $scope.showItems = function(selectedIndex, reset) {
-      if(selectedIndex !== null) {
-        $scope.selectedIndex = selectedIndex;
-      }
-      
-      if(reset || !$scope.scrollItems[$scope.currentLevel]) {
-        $scope.scrollItems[$scope.currentLevel] = [];
+    $scope.showItems = function(options) {
+      var _scrollItemsCount = 0;
+      var _options = angular.extend({}, {
+        key: null,
+        reset: false, //optional
+        data: null //required
+      }, options);
+
+      if($scope.isFiltering && !_options.reset) {
+        _options.data = $scope.filteredItems;
       }
 
-      var items = [];
-      
-      if($scope.currentLevel === 'artists') {
-        items = ($scope.selectedIndex !== null)? $scope.artistsCategorised[$scope.selectedIndex] : [];
+      if(_options.key !== null) {
+        if(!$scope.scrollItems[_options.key] || _options.reset) {
+          $scope.scrollItems[_options.key] = [];
+        }
+        
+        _scrollItemsCount = $scope.scrollItems[_options.key].length;
       }
-      else if($scope.currentLevel === 'albums') {
-        items = ($scope.currentArtistId !== null)? $scope.albums[$scope.currentArtistId] : [];
+      else {
+        if(_options.reset) {
+          $scope.scrollItems = [];
+        }
+        
+        _scrollItemsCount = $scope.scrollItems.length;
       }
-      else if($scope.currentLevel === 'songs') {
-        items = ($scope.currentAlbumId !== null)? $scope.songs[$scope.currentAlbumId] : [];
-      }
-      
-      var scrollItemsCount = $scope.scrollItems[$scope.currentLevel].length;
-      
-      if(!items || !items[scrollItemsCount]) {
+
+      if(!_options.data || !_options.data[_scrollItemsCount]) {
         return;
       }
+      
+      for(var x = 0; x < displayLimit; x++) {
+        var nextIndex = ((_scrollItemsCount)+x);
 
-      for(var x = 0; x < $scope.displayLimit; x++) {
-        var nextIndex = ((scrollItemsCount)+x);
-
-        if(items[nextIndex]) {
-          $scope.scrollItems[$scope.currentLevel].push(items[nextIndex]);
+        if(_options.data[nextIndex]) {
+          if(_options.key) {
+            $scope.scrollItems[_options.key].push(_options.data[nextIndex]);
+          }
+          else {
+            $scope.scrollItems.push(_options.data[nextIndex]);
+          }
         }
       }
 
@@ -78,10 +90,9 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', '$element', 'kodiApiServic
     
     $scope.getArtistsCategorised = function() {
       $scope.currentLevel = 'artists';
-      $scope.displayLimit = 15;
+      displayLimit = 15;
       $scope.currentAlbumId = null;
       $scope.currentArtistId = null;
-      $scope.clearFilter();
       
       if(Object.keys($scope.artistsCategorised).length === 0) {
         $scope.artistsCategorised = rkAudioLibraryService.getArtistsCategorisedFromCache();
@@ -98,16 +109,19 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', '$element', 'kodiApiServic
     
     function applyArtistsData(artistsCategorised) {
       $scope.artistsIndex = createCategorisedIndex(artistsCategorised);
-      $scope.selectedIndex = getDefaultIndex($scope.artistsIndex);
-      $scope.showItems($scope.selectedIndex, true);
+      $scope.guiModels.selectedIndex = getDefaultIndex($scope.artistsIndex);
+      $scope.showItems({
+        key: $scope.currentLevel,
+        reset: true,
+        data: artistsCategorised[$scope.guiModels.selectedIndex]
+      });
     }
 
     $scope.getAlbums = function(artistId) {
       $scope.currentLevel = 'albums';
-      $scope.displayLimit = 5;
+      displayLimit = 5;
       $scope.currentArtistId = artistId;
       $scope.currentAlbumId = null;
-      $scope.clearFilter();
 
       if(!$scope.albums[artistId]) {
         $scope.albums[artistId] = [];
@@ -116,22 +130,29 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', '$element', 'kodiApiServic
       if($scope.albums[artistId].length === 0) {
         $scope.albums[artistId] = rkAudioLibraryService.getAlbumsFromCache(artistId);
       }
-      
-      $scope.showItems(null, true);
-      
+
+      $scope.showItems({
+        key: $scope.currentLevel,
+        reset: true,
+        data: $scope.albums[artistId]
+      });
+
       rkAudioLibraryService.getAlbums(artistId, function(albums) {
         if(albums && !angular.equals(albums, $scope.albums[artistId])) {
           $scope.albums[artistId] = albums;
-          $scope.showItems(null, true);
+          $scope.showItems({
+            key: $scope.currentLevel,
+            reset: true,
+            data: $scope.albums[artistId]
+          });
         }
       });
     };
 
     $scope.getSongs = function(albumId) {
       $scope.currentLevel = 'songs';
-      $scope.displayLimit = 5;
+      displayLimit = 5;
       $scope.currentAlbumId = albumId;
-      $scope.clearFilter();
       
       if(!$scope.songs[albumId]) {
         $scope.songs[albumId] = [];
@@ -140,55 +161,89 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', '$element', 'kodiApiServic
       if($scope.songs[albumId].length === 0) {
         $scope.songs[albumId] = rkAudioLibraryService.getSongsFromCache(albumId);
       }
-      
-      $scope.showItems(null, true);
+
+      $scope.showItems({
+        key: $scope.currentLevel,
+        reset: true,
+        data: $scope.songs[albumId]
+      });
       
       rkAudioLibraryService.getSongs(albumId, function(songs) {
         if(songs && !angular.equals(songs, $scope.songs[albumId])) {
           $scope.songs[albumId] = songs;
-          $scope.showItems(null, true);
+
+          $scope.showItems({
+            key: $scope.currentLevel,
+            reset: true,
+            data: $scope.songs[albumId]
+          });
         }
       });
     };
 
     $scope.applyFilter = function(filterValue) {
       if(filterValue.length < 2) {
-        $scope.isFiltering = false;
-        $scope.showItems(null, true);
+        $scope.clearFilter(false);
         return;
       }
-
+      
       $scope.isFiltering = true;
-      $scope.scrollItems[$scope.currentLevel] = [];
-      
-      if(!$scope.$$phase){
-        $scope.$apply();
-      }
-      
+      $scope.filteredItems = [];
       var items = [];
-      
+
       if($scope.currentLevel === 'artists') {
-        var artists = rkAudioLibraryService.getArtsistsFromCache();
-        items = (artists)? artists : [];
+        items = rkAudioLibraryService.getArtsistsFromCache();
       }
       else if($scope.currentLevel === 'albums') {
-        items = ($scope.currentArtistId!== null)? $scope.albums[$scope.currentArtistId] : [];
+        items = ($scope.currentArtistId !== null)? $scope.albums[$scope.currentArtistId] : [];
       }
       else if($scope.currentLevel === 'songs') {
         items = ($scope.currentAlbumId !== null)? $scope.songs[$scope.currentAlbumId] : [];
       }
-      
+
       for(var key in items) {
         if(items[key].label && items[key].label.toLowerCase().indexOf(filterValue.toLowerCase()) !== -1) {
-          $scope.scrollItems[$scope.currentLevel].push(items[key]);
+          $scope.filteredItems.push(items[key]);
         }
       }
+
+      $scope.showItems({
+        key: $scope.currentLevel,
+        reset: true,
+        data: $scope.filteredItems
+      });
     };
     
-    $scope.clearFilter = function() {
+    $scope.clearFilter = function(clearValue) {
       $scope.isFiltering = false;
-      $scope.filter.value = '';
-      $scope.showItems(null, true);
+      $scope.filteredItems = [];
+      clearValue = (clearValue === undefined)? true : clearValue;
+      
+      if(clearValue) {
+        $scope.guiModels.filterValue = '';
+      }
+ 
+      if($scope.currentLevel === 'albums') {        
+        $scope.showItems({
+          key: $scope.currentLevel,
+          reset: true,
+          data: $scope.albums[$scope.currentArtistId]
+        });
+      }
+      else if($scope.currentLevel === 'songs') {
+        $scope.showItems({
+          key: $scope.currentLevel,
+          reset: true,
+          data: $scope.songs[$scope.currentAlbumId]
+        });
+      }
+      else if($scope.currentLevel === 'artists') {
+        $scope.showItems({
+          key: $scope.currentLevel,
+          reset: true,
+          data: $scope.artistsCategorised[$scope.guiModels.selectedIndex]
+        });
+      }
     };
 
     function initConnectionChange() {

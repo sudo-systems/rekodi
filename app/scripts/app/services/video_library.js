@@ -4,11 +4,13 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     var _cache = new rkCacheService.create('videoLibrary');
 
     var getMoviesFromCache = function() {
-      return _cache.get({key: 'movies'});
+      var _data = _cache.get({key: 'movies'});
+      return (_data)? _data : [];
     };
     
     var getMoviesCategorisedFromCache = function() {
-      return _cache.get({key: 'moviesCategorised'});
+      var _data = _cache.get({key: 'moviesCategorised'});
+      return (_data)? _data : [];
     };
     
     function updateMoviesCategorised(movies, callback) {

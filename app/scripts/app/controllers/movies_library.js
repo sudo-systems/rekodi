@@ -1,37 +1,62 @@
 rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkRemoteControlService', '$timeout', 'rkVideoLibraryService',
   function($scope, $element, kodiApiService, rkTooltipsService, rkRemoteControlService, $timeout, rkVideoLibraryService) {
     var modal = {};
-    $scope.selectedIndex = null;
+    var displayLimit = 3;
+    var kodiApi = null;
     $scope.moviesCategorised = {};
     $scope.moviesIndex = [];
     $scope.scrollItems = [];
-    $scope.displayLimit = 3;
     $scope.isFiltering = false;
     $scope.resumeMovie = {};
-    $scope.filter = {value: ''};
-    var kodiApi = null;
-    
-    $scope.showItems = function(selectedIndex, reset) {
-      $scope.selectedIndex = selectedIndex;
-      
-      if(reset) {
-        $scope.scrollItems = [];
+    $scope.guiModels = {
+      filterValue: '',
+      selectedIndex: null
+    };
+
+    $scope.showItems = function(options) {
+      var _scrollItemsCount = 0;
+      var _options = angular.extend({}, {
+        key: null,
+        reset: false, //optional
+        data: null //required
+      }, options);
+
+      if($scope.isFiltering && !_options.reset) {
+        _options.data = $scope.filteredItems;
       }
 
-      var scrollItemsCount = $scope.scrollItems.length;
-      
-      if(!$scope.moviesCategorised[selectedIndex] || !$scope.moviesCategorised[selectedIndex][scrollItemsCount]) {
+      if(_options.key !== null) {
+        if(!$scope.scrollItems[_options.key] || _options.reset) {
+          $scope.scrollItems[_options.key] = [];
+        }
+        
+        _scrollItemsCount = $scope.scrollItems[_options.key].length;
+      }
+      else {
+        if(_options.reset) {
+          $scope.scrollItems = [];
+        }
+        
+        _scrollItemsCount = $scope.scrollItems.length;
+      }
+
+      if(!_options.data || !_options.data[_scrollItemsCount]) {
         return;
       }
+      
+      for(var x = 0; x < displayLimit; x++) {
+        var nextIndex = ((_scrollItemsCount)+x);
 
-      for(var x = 0; x < $scope.displayLimit; x++) {
-        var nextIndex = ((scrollItemsCount)+x);
-
-        if($scope.moviesCategorised[selectedIndex][nextIndex]) {
-          $scope.scrollItems.push($scope.moviesCategorised[selectedIndex][nextIndex]);
+        if(_options.data[nextIndex]) {
+          if(_options.key) {
+            $scope.scrollItems[_options.key].push(_options.data[nextIndex]);
+          }
+          else {
+            $scope.scrollItems.push(_options.data[nextIndex]);
+          }
         }
       }
-      
+
       if(!$scope.$$phase){
         $scope.$apply();
       }
@@ -77,37 +102,51 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiServi
     
     function applyMoviesData(moviesCategorised) {
       $scope.moviesIndex = createCategorisedIndex(moviesCategorised);
-      $scope.selectedIndex = getDefaultIndex($scope.moviesIndex);
-      $scope.showItems($scope.selectedIndex, true);
+      $scope.guiModels.selectedIndex = getDefaultIndex($scope.moviesIndex);
+
+      $scope.showItems({
+        reset: true,
+        data: moviesCategorised[$scope.guiModels.selectedIndex]
+      });
     }
     
     $scope.applyFilter = function(filterValue) {
       if(filterValue.length < 2) {
         $scope.isFiltering = false;
-        $scope.showItems($scope.selectedIndex, true);
+        $scope.showItems({
+          reset: true,
+          data: $scope.moviesCategorised[$scope.guiModels.selectedIndex]
+        });
+        
         return;
       }
 
       $scope.isFiltering = true;
-      $scope.scrollItems = [];
-      
-      if(!$scope.$$phase){
-        $scope.$apply();
-      }
-
+      $scope.filteredItems = [];
       var items = rkVideoLibraryService.getMoviesFromCache();
 
       for(var key in items) {
         if(items[key].label && items[key].label.toLowerCase().indexOf(filterValue.toLowerCase()) !== -1) {
-          $scope.scrollItems.push(items[key]);
+          $scope.filteredItems.push(items[key]);
         }
       }
+      
+      $scope.showItems({
+        reset: true,
+        data: $scope.filteredItems
+      });
     };
     
     $scope.clearFilter = function() {
       $scope.isFiltering = false;
-      $scope.filter.value = '';
-      $scope.showItems($scope.selectedIndex, true);
+      $scope.filteredItems = [];
+      $scope.guiModels.filterValue = '';
+      
+      $scope.showItems({
+        index: $scope.guiModels.selectedIndex,
+        reset: true,
+        data: $scope.moviesCategorised[$scope.guiModels.selectedIndex]
+      });
     };
 
     $scope.handlePlay = function(movie) {

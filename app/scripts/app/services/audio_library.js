@@ -4,11 +4,13 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     var _cache = new rkCacheService.create('audioLibrary');
 
     var getArtsistsFromCache = function() {
-      return _cache.get({key: 'artists'});
+      var _data = _cache.get({key: 'artists'});
+      return (_data)? _data : [];
     };
     
     var getArtistsCategorisedFromCache = function() {
-      return _cache.get({key: 'artistsCategorised'});
+      var _data = _cache.get({key: 'artistsCategorised'});
+      return (_data)? _data : [];
     };
     
     function updateArtistsCategorised(artists, callback) {
@@ -57,7 +59,8 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     };
     
     var getAlbumsFromCache = function(artistId) {
-      return _cache.get({key: 'albums', index: artistId});
+      var _data = _cache.get({key: 'albums', index: artistId});
+      return (_data)? _data : [];
     };
 
     var getAlbums = function(artistId, callback) {
@@ -92,7 +95,8 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     };
     
     var getSongsFromCache = function(albumId) {
-      return _cache.get({key: 'songs', index: albumId});
+      var _data = _cache.get({key: 'songs', index: albumId});
+      return (_data)? _data : [];
     };
 
     var getSongs = function(albumId, callback) {
