@@ -85,12 +85,7 @@ rekodiApp.factory('rkHelperService', ['$localStorage', '$rootScope',
     };
     
     var handleError = function(error) {
-      var errorDetails = (error.response.data)? ' ('+error.response.data.stack.message+': '+error.response.data.stack.name+')' : '';
-      $rootScope.$emit('rkServerError', {
-        message: error.response.message+errorDetails
-      });
-      
-      console.dir(error.response);
+      console.dir(error);
     };
     
     var secondsToDuration = function(seconds) {

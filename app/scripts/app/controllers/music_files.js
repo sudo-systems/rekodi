@@ -1,7 +1,8 @@
 rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', 'rkHelperService', 'rkRemoteControlService', '$timeout', 'rkFilesService',
   function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, rkHelperService, rkRemoteControlService, $timeout, rkFilesService) {
-    $scope.files = [];
+    $scope.files = {};
     $scope.sources = [];
+    $scope.filesKey = null;
     $scope.currentLevel = null;
     $scope.scrollItems = [];
     $scope.displayLimit = 15;
@@ -13,7 +14,7 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService'
         return $scope.sources;
       }
       else if($scope.currentLevel === 'files') {
-        return $scope.files;
+        return ($scope.files[$scope.filesKey])? $scope.files[$scope.filesKey] : [];
       }
       
       return [];
@@ -64,17 +65,22 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService'
     
     $scope.getDirectory = function(directory) {
       $scope.currentLevel = 'files';
+      $scope.filesKey = encodeURIComponent(directory);
       $scope.clearFilter();
       
-      if($scope.files.length === 0) {
-        $scope.files = rkFilesService.getDirectoryFromCache(directory);
+      if(!$scope.files[$scope.filesKey]) {
+        $scope.files[$scope.filesKey] = [];
+      }
+
+      if($scope.files[$scope.filesKey].length === 0) {
+        $scope.files[$scope.filesKey] = rkFilesService.getDirectoryFromCache(directory);
       }
 
       $scope.showItems(true);
 
       rkFilesService.getDirectory(directory, function(files) {
-        if(files && !angular.equals(files, $scope.files)) {
-          $scope.files = files;
+        if(files && !angular.equals(files, $scope.files[$scope.filesKey])) {
+          $scope.files[$scope.filesKey] = files;
           $scope.showItems(true);
         }
       });
@@ -144,7 +150,8 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService'
       }
       else {
         $scope.sources = [];
-        $scope.files = [];
+        $scope.files = {};
+        $scope.filesKey = null;
         $scope.showItems(true);
       }
     }

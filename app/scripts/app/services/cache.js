@@ -20,9 +20,8 @@ rekodiApp.factory('rkCacheService', ['rkHelperService',
       init();
       
       function writeData(data) {
-        fs.writeFile(cacheFile, JSON.stringify(data), 'utf8', function(error) {
-          rkHelperService.handleError(error);
-        });
+        var fileStream = fs.createWriteStream(cacheFile, {flags: 'w'});
+        fileStream.write(JSON.stringify(data));
       }
 
       function formatKey(properties) {

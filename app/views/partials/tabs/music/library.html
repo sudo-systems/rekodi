@@ -10,19 +10,19 @@
 </div>
 <div class="data-list-wrapper" su-endless-scroll="showItems(selectedIndex)">
   <ul class="vertical" ng-show="currentLevel ==='artists'">
-    <li ng-repeat="artist in scrollItems['artists'] track by artist.artistid" class="clearfix" ng-click="getAlbums(artist)">
+    <li ng-repeat="artist in scrollItems['artists'] track by artist.artistid" class="clearfix" ng-click="getAlbums(artist.artistid)">
       <div class="label">
         <i class="mdi mdi-worker"></i> {{artist.label}}
       </div>
     </li>
   </ul>
   <ul class="vertical" ng-show="currentLevel === 'albums'">
-    <li class="clearfix" ng-click="getArtists()">
+    <li class="clearfix" ng-click="getArtistsCategorised()">
       <div class="label">
         <i class="mdi mdi-worker"></i> [back to artists] ..
       </div>
     </li>
-    <li ng-repeat="album in scrollItems['albums'] track by album.albumid" class="clearfix" ng-click="getSongs(album)">
+    <li ng-repeat="album in scrollItems['albums'] track by album.albumid" class="clearfix" ng-click="getSongs(album.albumid)">
       <div class="thumbnail">
         <div ng-if="album.thumbnail_src">
           <img ng-src="{{album.thumbnail_src}}" alt="" />
@@ -65,12 +65,12 @@
     </li>
   </ul>
   <ul class="vertical" ng-show="currentLevel === 'songs'">
-    <li ng-click="getAlbums({artistid: currentArtistId})">
+    <li ng-click="getAlbums(currentArtistId)">
       <div class="label">
         <i class="mdi mdi-album"></i> [back to albums] ..
       </div>
     </li>
-    <li ng-repeat="song in scrollItems['songs'] track by song.songid" class="clearfix" ng-click="playSong(song)">
+    <li ng-repeat="song in scrollItems['songs'] track by song.songid" class="clearfix">
       <div class="thumbnail">
         <div ng-if="song.thumbnail_src">
           <img ng-src="{{song.thumbnail_src}}" alt="" />
