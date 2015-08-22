@@ -160,6 +160,11 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', '$element', 'kodiApiServic
 
       $scope.isFiltering = true;
       $scope.scrollItems[$scope.currentLevel] = [];
+      
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
+      
       var items = [];
       
       if($scope.currentLevel === 'artists') {

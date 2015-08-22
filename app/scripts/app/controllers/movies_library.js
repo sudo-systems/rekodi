@@ -12,10 +12,12 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiServi
     var kodiApi = null;
     
     $scope.showItems = function(selectedIndex, reset) {
+      $scope.selectedIndex = selectedIndex;
+      
       if(reset) {
         $scope.scrollItems = [];
       }
-      
+
       var scrollItemsCount = $scope.scrollItems.length;
       
       if(!$scope.moviesCategorised[selectedIndex] || !$scope.moviesCategorised[selectedIndex][scrollItemsCount]) {
@@ -88,6 +90,11 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiServi
 
       $scope.isFiltering = true;
       $scope.scrollItems = [];
+      
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
+
       var items = rkVideoLibraryService.getMoviesFromCache();
 
       for(var key in items) {
@@ -100,7 +107,7 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiServi
     $scope.clearFilter = function() {
       $scope.isFiltering = false;
       $scope.filter.value = '';
-      $scope.showItems(null, true);
+      $scope.showItems($scope.selectedIndex, true);
     };
 
     $scope.handlePlay = function(movie) {
