@@ -10,8 +10,8 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
     $scope.artistsIndex = [];
     $scope.scrollItems = [];
     $scope.displayLimit = 15;
-    $scope.isInitialized = false;
     $scope.isFiltering = false;
+    var _cache = null;
     $scope.albums = {};
     $scope.songs = {};
     var kodiApi = null;
@@ -61,11 +61,11 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
     
     function getArtistsFromCache() {
       if(Object.keys($scope.artistsCategorised).length === 0) {
-        $scope.artistsCategorised = rkCacheService.get({key: 'artistsCategorised'});
+        $scope.artistsCategorised = _cache.get({key: 'artistsCategorised'});
       }
 
       if($scope.artistsIndex.length === 0) {
-        $scope.artistsIndex = rkCacheService.get({key: 'artistsIndex'});
+        $scope.artistsIndex = _cache.get({key: 'artistsIndex'});
       }
 
       if($scope.artistsIndex.length > 0) {
@@ -86,7 +86,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
         $scope.artistsCategorised[firstLetter].push(artists[key]);
       }
       
-      rkCacheService.set({
+      _cache.set({
         data: $scope.artistsCategorised,
         key: 'artistsCategorised'
       });
@@ -103,7 +103,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
         }
       }
       
-      rkCacheService.set({
+      _cache.set({
         data: $scope.artistsIndex,
         key: 'artistsIndex'
       });
@@ -142,7 +142,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
             key: 'artists'
           };
 
-          if(rkCacheService.update(properties)) {
+          if(_cache.update(properties)) {
             createArtistsCategorised(data.artists);
           }
           else {
@@ -160,7 +160,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
 
     function getAlbumsFromCache(artistId) {
       if(!$scope.albums[artistId]) {
-        $scope.albums[artistId] = rkCacheService.get({
+        $scope.albums[artistId] = _cache.get({
           key: 'albums',
           index: artistId
         });
@@ -196,7 +196,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
             index: artist.artistid
           };
           
-          if(rkCacheService.update(properties)) {
+          if(_cache.update(properties)) {
             $scope.albums[artist.artistid] = data.albums;
             $scope.showItems(null, true);
           }
@@ -215,7 +215,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
 
     function getSongsFromCache(albumId) {
       if(!$scope.songs[albumId]) {
-        $scope.songs[albumId] = rkCacheService.get({
+        $scope.songs[albumId] = _cache.get({
           key: 'songs',
           index: albumId
         });
@@ -251,7 +251,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
             index: album.albumid
           };
           
-          if(rkCacheService.update(properties)) {
+          if(_cache.update(properties)) {
             $scope.songs[album.albumid] = data.songs;
             $scope.showItems(null, true);
           }
@@ -286,7 +286,7 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
       var items = [];
       
       if($scope.currentLevel === 'artists') {
-        items = rkCacheService.get({key: 'artists'});
+        items = _cache.get({key: 'artists'});
       }
       else if($scope.currentLevel === 'albums') {
         items = $scope.albums[$scope.currentArtistId];
@@ -317,16 +317,12 @@ rekodiApp.controller('rkMusicCtrl', ['$scope', '$element', 'kodiApiService', 'rk
     }
 
     var init = function() {
-      if(!$scope.isInitialized) {
-        rkCacheService.setCategory($scope.identifier);
-        initConnectionChange();
+      _cache = rkCacheService.create($scope.identifier);
+      initConnectionChange();
 
-        $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
-          initConnectionChange();
-        });
-        
-        $scope.isInitialized = true;
-      }
+      $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
+        initConnectionChange();
+      });
     };
     
     $timeout(function() {

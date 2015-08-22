@@ -1,101 +1,83 @@
-rekodiApp.service('rkCacheService', ['$localStorage',
-  function($localStorage) {
-    var _identifier = null;
-    
-    this.setCategory = function(identifier) {
-      _identifier = identifier;
+rekodiApp.factory('rkCacheService', ['rkHelperService',
+  function(rkHelperService) {
+    var create = function(identifier) {
+      var fs = require('fs');
+      var mkpath = require('mkpath');
+      var cacheDir = __dirname+'/cache/';
+      var cacheFile = cacheDir+identifier+'.json';
+      var cacheData = {};
       
-      if(!$localStorage.cache[_identifier]) {
-        $localStorage.cache[_identifier] = {};
-      }
-    };
-    
-    this.set = function(properties) {
-      /*
-       * properties = {
-       *  data: Object/Array, (required)
-       *  key: String/Int, (required)
-       *  index: String/Int (optional)
-       * };
-       */
-
-      if(properties.index) {
-        if($localStorage.cache[_identifier][properties.key]) {
-          var cachedDataObject = JSON.parse($localStorage.cache[_identifier][properties.key]);
-          cachedDataObject[properties.index] = properties.data;
-          $localStorage.cache[_identifier][properties.key] = JSON.stringify(cachedDataObject);
+      function init() {
+        if(fs.existsSync(cacheFile)) {
+          cacheData = require(cacheFile);
         }
-        else {
-          var dataObject = {};
-          dataObject[properties.index] = properties.data;
-          $localStorage.cache[_identifier][properties.key] = JSON.stringify(dataObject);
-        }
-      }
-      else {
-        $localStorage.cache[_identifier][properties.key] = JSON.stringify(properties.data);
-      }
-    };
-    
-    this.get = function(properties) {
-      /*
-       * properties = {
-       *  key: String/Int, (required)
-       *  index: String/Int (optional)
-       * };
-       */
-
-      if($localStorage.cache[_identifier][properties.key]) {
-        if(properties.index) {
-          var cachedDataObject = JSON.parse($localStorage.cache[_identifier][properties.key]);
-          return (cachedDataObject[properties.index])? cachedDataObject[properties.index] : [];
-        }
-        else {
-          return JSON.parse($localStorage.cache[_identifier][properties.key]);
+        else if(!fs.existsSync(cacheDir)) {
+          mkpath.sync(cacheDir);
+          writeData(cacheData);
         }
       }
       
-      return [];
-    };
-    
-    this.update = function(properties) {
-      /*
-       * properties = {
-       *  data: Object/Array, (required)
-       *  key: String/Int, (required)
-       *  index: String/Int (optional)
-       * };
-       */
+      init();
+      
+      function writeData(data) {
+        fs.writeFile(cacheFile, JSON.stringify(data), 'utf8', function(error) {
+          rkHelperService.handleError(error);
+        });
+      }
 
-      if(properties.index) {
-        if(!$localStorage.cache[_identifier][properties.key]) {
+      function formatKey(properties) {
+        return (properties.index === undefined)? properties.key : properties.key+'_'+properties.index;
+      }
+
+      this.set = function(properties) {
+        /*
+         * properties = {
+         *  data: Object/Array, (required)
+         *  key: String/Int, (required)
+         *  index: String/Int (optional)
+         * };
+         */
+
+        var key = formatKey(properties);
+        cacheData[key] = properties.data;
+        writeData(cacheData);
+      };
+
+      this.get = function(properties) {
+        /*
+         * properties = {
+         *  key: String/Int, (required)
+         *  index: String/Int (optional)
+         * };
+         */
+
+        var key = formatKey(properties);
+        return (cacheData[key])? cacheData[key] : [];
+      };
+
+      this.update = function(properties) {
+        /*
+         * properties = {
+         *  data: Object/Array, (required)
+         *  key: String/Int, (required)
+         *  index: String/Int (optional)
+         * };
+         */
+
+        var key = formatKey(properties);
+
+        if(!cacheData[key] || !angular.equals(cacheData[key], properties.data)) {
           this.set(properties);
           return true;
         }
-        else {
-          var cachedDataObject = JSON.parse($localStorage.cache[_identifier][properties.key]);
-          
-          if(!cachedDataObject[properties.index] || angular.equals(cachedDataObject[properties.index], properties.data)) {
-            this.set(properties);
-            return true;
-          }
-        }
-      }
-      else {
-        if(!$localStorage.cache[_identifier][properties.key] || $localStorage.cache[_identifier][properties.key] !== JSON.stringify(properties.data)) {
-          this.set(properties);
-          return true;
-        }
-      }
-      
-      return false;
-    };
 
-    function init() {
-      if(!$localStorage.cache) {
-        $localStorage.cache = {};
-      }
-    }
+        return false;
+      };
+    };
     
-    init();
+
+    return {
+      create: create
+    };
   }
 ]);

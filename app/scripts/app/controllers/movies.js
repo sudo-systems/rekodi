@@ -9,6 +9,7 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'r
     $scope.scrollItems = [];
     $scope.displayLimit = 3;
     $scope.isInitialized = false;
+    var _cache = null;
     $scope.resumeMovie = {};
     var kodiApi = null;
     $scope.filter = {
@@ -41,11 +42,11 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'r
     
     function getMoviesFromCache() {
       if(Object.keys($scope.moviesCategorised).length === 0) {
-        $scope.moviesCategorised = rkCacheService.get({key: 'moviesCategorised'});
+        $scope.moviesCategorised = _cache.get({key: 'moviesCategorised'});
       }
 
       if($scope.moviesIndex.length === 0) {
-        $scope.moviesIndex = rkCacheService.get({key: 'moviesIndex'});
+        $scope.moviesIndex = _cache.get({key: 'moviesIndex'});
       }
 
       if($scope.moviesIndex.length > 0) {
@@ -66,7 +67,7 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'r
         $scope.moviesCategorised[firstLetter].push(movies[key]);
       }
  
-      rkCacheService.set({
+      _cache.set({
         data: $scope.moviesCategorised,
         key: 'moviesCategorised'
       });
@@ -83,7 +84,7 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'r
         }
       }
       
-      rkCacheService.set({
+      _cache.set({
         data: $scope.moviesIndex,
         key: 'moviesIndex'
       });
@@ -121,7 +122,7 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'r
             key: 'movies'
           };
           
-          if(rkCacheService.update(properties)) {
+          if(_cache.update(properties)) {
             createMoviesCategorised(data.movies);
           }
           else {
@@ -184,7 +185,7 @@ rekodiApp.controller('rkMoviesCtrl', ['$scope', '$element', 'kodiApiService', 'r
 
     var init = function() {
       if(!$scope.isInitialized) {
-        rkCacheService.setCategory($scope.identifier);
+        _cache = new rkCacheService.create($scope.identifier);
         initConnectionChange();
 
         $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {

@@ -1,5 +1,5 @@
-rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', '$attrs', 'rkCacheService', 'rkHelperService', 'rkRemoteControlService', '$timeout',
-  function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, $attrs, rkCacheService, rkHelperService, rkRemoteControlService, $timeout) {
+rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', '$attrs', 'rkCacheService', 'rkHelperService', 'rkRemoteControlService', '$timeout', 'rkFilesService',
+  function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, $attrs, rkCacheService, rkHelperService, rkRemoteControlService, $timeout, rkFilesService) {
     $scope.identifier = $attrs.id;
     $scope.files = {};
     $scope.sources = [];
@@ -9,6 +9,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
     $scope.scrollItems = [];
     $scope.displayLimit = 15;
     $scope.isInitialized = false;
+    var _cache = null;
     var sourcesPaths = [];
     var kodiApi = null;
     $scope.filter = {
@@ -50,8 +51,8 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
     
     function getSourcesFromCache() {
       if($scope.sources.length === 0) {
-        $scope.sources = rkCacheService.get({key: 'sources'});
-        sourcesPaths = rkCacheService.get({key: 'sourcesPaths'});
+        $scope.sources = _cache.get({key: 'sources'});
+        sourcesPaths = _cache.get({key: 'sourcesPaths'});
       }
       
       $scope.showItems(true);
@@ -79,7 +80,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
             key: 'sources'
           };
           
-          if(rkCacheService.update(properties)) {
+          if(_cache.update(properties)) {
             $scope.sources = data.sources;
 
             for(var key in data.sources) {
@@ -88,7 +89,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
             
             $scope.showItems(true);
 
-            rkCacheService.update({
+            _cache.update({
               data: sourcesPaths,
               key: 'sourcesPaths' 
             });
@@ -108,7 +109,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
 
     function getFilesFromCache(index) {
       if(!$scope.files[index]) {
-        $scope.files[index] = rkCacheService.get({
+        $scope.files[index] = _cache.get({
           key: 'files',
           index: index
         });
@@ -153,7 +154,7 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
             index: indexKey
           };
           
-          if(rkCacheService.update(properties)) {
+          if(_cache.update(properties)) {
             $scope.files[indexKey] = data.files;
             $scope.showItems(true);
           }
@@ -264,8 +265,10 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
     }
 
     var init = function() {
-      if(!$scope.isInitialized) { 
-        rkCacheService.setCategory($scope.identifier);
+      //rkFilesService.setType();
+      
+      if(!$scope.isInitialized) {
+        _cache = new rkCacheService.create($scope.identifier);
         initConnectionChange();
 
         $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {

@@ -95,7 +95,6 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
       });
       
       angular.element(document).bind('keypress', function(event) {
-        //console.dir(event);
         if($('input:focus, textarea:focus').length === 0) {
           if(event.keyCode === 32) {
             $scope.playPause();
