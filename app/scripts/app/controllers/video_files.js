@@ -1,4 +1,4 @@
-rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', 'rkHelperService', 'rkRemoteControlService', '$timeout', 'rkFilesService',
+rekodiApp.controller('rkVideoFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', 'rkHelperService', 'rkRemoteControlService', '$timeout', 'rkFilesService',
   function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, rkHelperService, rkRemoteControlService, $timeout, rkFilesService) {
     var displayLimit = 15;
     var kodiApi = null;
@@ -143,10 +143,10 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService'
     $scope.addToPlaylist = function(entry) {
       if(kodiApi) {
         kodiApi.Playlist.GetItems({
-          playlistid: rkEnumsService.PlaylistId.AUDIO
+          playlistid: rkEnumsService.PlaylistId.VIDEO
         }).then(function(data) {
           var options = {
-            playlistid: rkEnumsService.PlaylistId.AUDIO,
+            playlistid: rkEnumsService.PlaylistId.VIDEO,
             position: (data.items)? data.items.length : 0,
             item: {}
           };
@@ -194,7 +194,7 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService'
     }
 
     var init = function() {
-      filesService = new rkFilesService.instance('music');
+      filesService = new rkFilesService.instance('video');
       initConnectionChange();
       
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {

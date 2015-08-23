@@ -110,6 +110,7 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', '$element', 'kodiApiServic
     function applyArtistsData(artistsCategorised) {
       $scope.artistsIndex = createCategorisedIndex(artistsCategorised);
       $scope.guiModels.selectedIndex = getDefaultIndex($scope.artistsIndex);
+      
       $scope.showItems({
         key: $scope.currentLevel,
         reset: true,
@@ -140,6 +141,7 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', '$element', 'kodiApiServic
       rkAudioLibraryService.getAlbums(artistId, function(albums) {
         if(albums && !angular.equals(albums, $scope.albums[artistId])) {
           $scope.albums[artistId] = albums;
+          
           $scope.showItems({
             key: $scope.currentLevel,
             reset: true,

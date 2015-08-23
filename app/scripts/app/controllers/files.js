@@ -1,5 +1,6 @@
 rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', '$attrs', 'rkCacheService', 'rkHelperService', 'rkRemoteControlService', '$timeout', 'rkFilesService',
   function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, $attrs, rkCacheService, rkHelperService, rkRemoteControlService, $timeout, rkFilesService) {
+    var displayLimit = 15;
     $scope.identifier = $attrs.id;
     $scope.files = {};
     $scope.sources = [];
@@ -7,8 +8,9 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
     $scope.currentLevel = null;
     $scope.currentDirectory = null;
     $scope.scrollItems = [];
-    $scope.displayLimit = 15;
     $scope.isInitialized = false;
+    $scope.isFiltering = false;
+    $scope.filteredItems = [];
     var _cache = null;
     var sourcesPaths = [];
     var kodiApi = null;
@@ -16,31 +18,47 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
       value: ''
     };
     
-    $scope.showItems = function(reset) {
-      if(reset || !$scope.scrollItems[$scope.currentLevel]) {
-        $scope.scrollItems[$scope.currentLevel] = [];
+    $scope.showItems = function(options) {
+      var _scrollItemsCount = 0;
+      var _options = angular.extend({}, {
+        key: null,
+        reset: false, //optional
+        data: null //required
+      }, options);
+
+      if($scope.isFiltering && !_options.reset) {
+        _options.data = $scope.filteredItems;
       }
-      
-      var items = [];
-      
-      if($scope.currentLevel === 'sources') {
-        items = $scope.sources;
+
+      if(_options.key !== null) {
+        if(!$scope.scrollItems[_options.key] || _options.reset) {
+          $scope.scrollItems[_options.key] = [];
+        }
+        
+        _scrollItemsCount = $scope.scrollItems[_options.key].length;
       }
-      else if($scope.currentLevel === 'files') {
-        items = $scope.files[$scope.currentDirectoryIndexKey];
+      else {
+        if(_options.reset) {
+          $scope.scrollItems = [];
+        }
+        
+        _scrollItemsCount = $scope.scrollItems.length;
       }
-      
-      var scrollItemsCount = $scope.scrollItems[$scope.currentLevel].length;
-      
-      if(!items[scrollItemsCount]) {
+
+      if(!_options.data || !_options.data[_scrollItemsCount]) {
         return;
       }
+      
+      for(var x = 0; x < displayLimit; x++) {
+        var nextIndex = ((_scrollItemsCount)+x);
 
-      for(var x = 0; x < $scope.displayLimit; x++) {
-        var nextIndex = ((scrollItemsCount)+x);
-
-        if(items[nextIndex]) {
-          $scope.scrollItems[$scope.currentLevel].push(items[nextIndex]);
+        if(_options.data[nextIndex]) {
+          if(_options.key) {
+            $scope.scrollItems[_options.key].push(_options.data[nextIndex]);
+          }
+          else {
+            $scope.scrollItems.push(_options.data[nextIndex]);
+          }
         }
       }
 
@@ -55,7 +73,11 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
         sourcesPaths = _cache.get({key: 'sourcesPaths'});
       }
       
-      $scope.showItems(true);
+      $scope.showItems({
+        key: $scope.currentLevel,
+        reset: true,
+        data: $scope.sources
+      });
     }
 
     $scope.getSources = function() {
@@ -86,8 +108,12 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
             for(var key in data.sources) {
               sourcesPaths.push(data.sources[key].file);
             }
-            
-            $scope.showItems(true);
+
+            $scope.showItems({
+              key: $scope.currentLevel,
+              reset: true,
+              data: $scope.sources
+            });
 
             _cache.update({
               data: sourcesPaths,
@@ -115,7 +141,11 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
         });
       }
       
-      $scope.showItems(true);
+      $scope.showItems({
+        key: $scope.currentLevel,
+        reset: true,
+        data: $scope.files[index]
+      });
     }
     
     $scope.getDirectory = function(directory) {
@@ -156,7 +186,12 @@ rekodiApp.controller('rkFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rk
           
           if(_cache.update(properties)) {
             $scope.files[indexKey] = data.files;
-            $scope.showItems(true);
+            
+            $scope.showItems({
+              key: $scope.currentLevel,
+              reset: true,
+              data: $scope.files[indexKey]
+            });
           }
           else {
             getFilesFromCache(indexKey);
