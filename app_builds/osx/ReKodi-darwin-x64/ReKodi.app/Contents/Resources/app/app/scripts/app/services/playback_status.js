@@ -119,7 +119,7 @@ rekodiApp.factory('rkPlaybackStatusService', ['$rootScope', 'kodiApiService', 'r
         updateCurrentStatus();
       });
 
-      $rootScope.$on('rkWsConnectionStatusChange', function (event, data) {
+      $rootScope.$on('rkWsConnectionStatusChange', function (event, connection) {
         initConnectionChange();
       });
     }

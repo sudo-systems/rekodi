@@ -3,6 +3,8 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
     $scope.showPlayButton = true;
     $scope.showPauseButton = false;
     $scope.showStopButton = false;
+    $scope.showPreviousButton = false;
+    $scope.showNextButton = false;
     $scope.playerProperties = null;
     $scope.kodiProperties = null;
     $scope.status = {};
@@ -32,7 +34,8 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
     };
 
     $scope.setVolume = function(percentage) {
-      percentage = parseInt(Math.ceil(percentage));
+      percentage = parseInt(Math.floor(percentage));
+      styl.inject('.volume-slider-wrapper input[type=range]:hover::-webkit-slider-thumb:after, .volume-slider-wrapper input[type=range]:focus::-webkit-slider-thumb:after', {content: "'"+percentage+"%'"}).apply();
       rkRemoteControlService.setVolume(percentage);
     };
     
@@ -59,9 +62,11 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
 
     function setButtonStates() {
       $timeout(function() {
-        $scope.showPlayButton = ($scope.status.isPaused || !$scope.status.isPlaying || $scope.status.isRewinding || $scope.status.isFastForwarding);
+        $scope.showPlayButton = ($scope.status.isPaused || $scope.status.isRewinding || $scope.status.isFastForwarding);
         $scope.showPauseButton = ($scope.status.isPlaying && !$scope.status.isPaused && !$scope.status.isRewinding && !$scope.status.isFastForwarding);
         $scope.showStopButton = ($scope.status.isPlaying || $scope.status.isPaused || $scope.status.isRewinding || $scope.status.isFastForwarding);
+        $scope.showPreviousButton = ($scope.showPauseButton || $scope.showStopButton);
+        $scope.showNextButton = ($scope.showPreviousButton);
       });
     }
 
@@ -85,14 +90,11 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
         $scope.$apply();
       });
       
-      $('.volume-slider-wrapper input[type="range"]').on('mouseout', function() {
+      $('.volume-slider-wrapper input[type="range"]').on('mouseup', function() {
         this.blur();
-      }).on('mouseover input', function() {
-        styl.inject('.volume-slider-wrapper input[type=range]:hover::-webkit-slider-thumb:after', {content: "'"+this.value+"%'"}).apply();
       });
       
       angular.element(document).bind('keypress', function(event) {
-        //console.dir(event);
         if($('input:focus, textarea:focus').length === 0) {
           if(event.keyCode === 32) {
             $scope.playPause();
@@ -113,15 +115,15 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
             $scope.fastForward();
           }
           else if(event.keyCode === 45) { //-
-            if($scope.kodiProperties.volume && $scope.kodiProperties.volume >= 5) {
-              var newVolume = Math.floor($scope.kodiProperties.volume - 5);
+            if($scope.kodiProperties.volume !== undefined) {
+              var newVolume = ($scope.kodiProperties.volume >= 5)? Math.floor($scope.kodiProperties.volume - 5) : 0;
               $scope.setVolume(newVolume);
               rkNotificationService.notifyVolume(newVolume);
             }
           }
           else if(event.keyCode === 61) { //=
-            if($scope.kodiProperties.volume && $scope.kodiProperties.volume <= 95) {
-              var newVolume = Math.floor($scope.kodiProperties.volume+ 5);
+            if($scope.kodiProperties.volume !== undefined) {
+              var newVolume = ($scope.kodiProperties.volume <= 95)? Math.floor($scope.kodiProperties.volume + 5) : 100;
               $scope.setVolume(newVolume);
               rkNotificationService.notifyVolume(newVolume);
             }

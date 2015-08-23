@@ -18,9 +18,9 @@
     "clean:win": "rm -rf ./app_builds/win",
     "clean:linux": "rm -rf ./app_builds/linux",
     "build": "npm run clean && npm run build:osx && npm run build:win && npm run build:linux",
-    "build:osx": "npm run clean:osx && electron-packager ./ \"ReKodi\" --out=app_builds/osx --platform=darwin --arch=x64 --version=0.30.4 --icon=assets/osx/rekodi.icns --ignore=\"(nbproject|app_builds|electron-packager|electron-prebuilt|electron-builder)\"",
-    "build:win": "npm run clean:win && electron-packager ./ \"ReKodi\" --out=app_builds/win --platform=win32 --arch=ia32 --version=0.30.4 --icon=assets/win/icon.ico --ignore=\"(nbproject|app_builds|electron-packager|electron-prebuilt|electron-builder)\"",
-    "build:linux": "npm run clean:linux && electron-packager ./ \"ReKodi\" --out=app_builds/linux --platform=linux --arch=all --version=0.30.4 --icon=assets/linux/icon.png --ignore=\"(nbproject|app_builds|electron-packager|electron-prebuilt|electron-builder)\"",
+    "build:osx": "npm run clean:osx && electron-packager ./ \"ReKodi\" --out=app_builds/osx --platform=darwin --arch=x64 --version=0.30.4 --icon=assets/osx/rekodi.icns --ignore=\"(nbproject|app_builds|electron-packager|electron-prebuilt|electron-builder|.tmp|.cache)\"",
+    "build:win": "npm run clean:win && electron-packager ./ \"ReKodi\" --out=app_builds/win --platform=win32 --arch=ia32 --version=0.30.4 --icon=assets/win/icon.ico --ignore=\"(nbproject|app_builds|electron-packager|electron-prebuilt|electron-builder|.tmp|.cache)\"",
+    "build:linux": "npm run clean:linux && electron-packager ./ \"ReKodi\" --out=app_builds/linux --platform=linux --arch=all --version=0.30.4 --icon=assets/linux/icon.png --ignore=\"(nbproject|app_builds|electron-packager|electron-prebuilt|electron-builder|.tmp|.cache)\"",
     "pack": "npm run pack:osx && npm run pack:win && npm run clean:linux && npm run build:linux",
     "pack:osx": "npm run build:osx && electron-builder \"app_builds/osx/ReKodi-darwin-x64/ReKodi.app\" --platform=osx --out=\"app_builds/osx\" --config=packager.json",
     "pack:win": "npm run build:win && electron-builder \"app_builds/win/ReKodi-win32-ia32\" --platform=win --out=\"app_builds/win\" --config=packager.json"

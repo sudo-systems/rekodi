@@ -1,0 +1,81 @@
+<div class="options clearfix">
+  <div class="page-specific">
+    <a ng-click="getSources()" title="Back to video sources" ng-show="currentLevel !== 'sources'"><i class="mdi mdi-home"></i></a> 
+  </div>
+  <div class="filter-container">
+    <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+  </div>
+</div>
+<div class="data-list-wrapper" su-endless-scroll="showItems({key: currentLevel, data: souces})" ng-show="currentLevel === 'sources'">
+  <ul class="vertical">
+    <li ng-repeat="source in scrollItems['sources'] | filter:filterList track by source.file" class="clearfix">
+      <div class="label" ng-click="getDirectory(source.file)">
+        <i class="mdi mdi-folder"></i> {{source.label}}
+      </div>
+    </li>
+  </ul>
+</div>
+<div class="data-list-wrapper" su-endless-scroll="showItems({key: currentLevel, data: files[filesKey]})" ng-show="currentLevel === 'files'">
+  <ul class="vertical">
+    <li class="clearfix" ng-show="currentLevel === 'files'">
+      <div class="label" ng-click="directoryUp()">
+        <i class="mdi mdi-folder"></i> ..
+      </div>
+    </li>
+    <li ng-repeat="file in scrollItems['files'] | filter:filterList track by file.file" class="clearfix">
+      <div class="label" ng-if="file.type !== 'movie'" ng-click="file.filetype === 'file'? play(file.file, file.filetype) : getDirectory(file.file)">
+        <i class="mdi mdi-folder" ng-show="!file.filetype || file.filetype === 'directory'"></i>
+        <i class="mdi mdi-movie" ng-show="file.filetype === 'file'"></i> {{file.label}}
+      </div>
+      <div class="thumbnail" ng-if="file.type === 'movie'">
+        <img ng-src="{{file.thumbnail_src}}" alt="" ng-if="file.thumbnail_src" />
+        <i class="mdi mdi-movie" ng-if="!file.thumbnail_src"></i>
+      </div>
+      <div class="details" ng-if="file.type === 'movie'">
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr>
+            <td colspan="2" class="title">
+              <h2>{{file.label}}</h2>
+            </td>
+          </tr>
+          <tr ng-if="file.display_genre">
+            <td class="infoLabel">
+              genre
+            </td>
+            <td class="infoContent">
+              {{file.display_genre}}
+            </td>
+          </tr>
+          <tr ng-if="file.rating_rounded">
+            <td class="infoLabel">
+              rating
+            </td>
+            <td class="infoContent">
+              {{file.rating_rounded}}
+            </td>
+          </tr>
+          <tr ng-if="file.year">
+            <td class="infoLabel">
+              year
+            </td>
+            <td class="infoContent">
+              {{file.year}}
+            </td>
+          </tr>
+          <tr ng-if="file.plotoutline">
+            <td class="infoLabel">
+              plot
+            </td>
+            <td class="infoContent">
+              {{file.plotoutline}}
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="controls">
+        <i class="mdi mdi-play-box-outline" ng-show="file.filetype === 'file' || file.filetype === 'directory'" title="Play" ng-click="play(file)"></i>
+        <i class="mdi mdi-playlist-plus" title="Append to playlist" ng-click="addToPlaylist(file)"></i>
+      </div>
+    </li>
+  </ul>
+</div>

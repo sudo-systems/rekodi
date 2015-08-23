@@ -1,5 +1,5 @@
-rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'kodiApiService', '$sessionStorage', 'rkNowPlayingService', 'rkKodiPropertiesService',
-  function($scope, $localStorage, $timeout, kodiApiService, $sessionStorage, rkNowPlayingService, rkKodiPropertiesService) {
+rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'kodiApiService', '$sessionStorage', 'rkNowPlayingService', 'rkKodiPropertiesService', 'rkNotificationService',
+  function($scope, $localStorage, $timeout, kodiApiService, $sessionStorage, rkNowPlayingService, rkKodiPropertiesService, rkNotificationService) {
     $scope.storage = $localStorage;
     $scope.sessionStorage = $sessionStorage;
     $scope.isConfigured = true;
@@ -48,8 +48,15 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'kodiA
         setIfConnectionConfigured();
       });
       
-      $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
-        $scope.isConnected = data.connected;
+      $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
+        $scope.isConnected = (connection);
+        
+        if(connection) {
+          rkNotificationService.notifyConnection(true, 'Connection with Kodi has been established');
+        }
+        else {
+          rkNotificationService.notifyConnection(false, 'Could not connect with Kodi');
+        }
       });
 
       var loadRequiredControllersWatch = $scope.$root.$watch('rkRequiredControllers', function(newValue, oldValue) {

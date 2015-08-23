@@ -1,5 +1,5 @@
-rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkNotificationService',
-  function($rootScope, $localStorage, rkNotificationService) {
+rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkHelperService',
+  function($rootScope, $localStorage, rkHelperService) {
     var kodiWs = require('xbmc-ws');
     var connectingInProgress = false;
     var connection = null;
@@ -7,14 +7,6 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkNotificat
     var retryInterval;
     var pingIntervalTime = 5000;
     var pingInterval;
-    var connectingMessage = 'connecting...';
-    var connectedMessage = 'successfully connected to Kodi';
-    var connectionErrorMessage = 'could not connect to Kodi';
-    var connectionStatus = {
-      connecting: false,
-      connected: false,
-      statusMessage: 'offline'
-    };
 
     function bindEvents() {
       connection.System.OnQuit(function() {
@@ -23,39 +15,24 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkNotificat
 
       connection.System.OnRestart(function() {
         setDisconnected();
-        connectionStatus.statusMessage = 'rebooting';
       });
 
       connection.System.OnSleep(function() {
         setDisconnected();
-        connectionStatus.statusMessage = 'sleeping';
       });
 
       connection.System.OnWake(function() {
         setConnected();
-        rkNotificationService.notifyConnection(true, 'Kodi woke up');
       });
     }
 
     function createConnection() {
       if(!isConfigured() || connectingInProgress) {
-        var statusMessage = (connectingInProgress)? 'connecting' : 'offline';
-                
-        connectionStatus = {
-          connecting: connectingInProgress,
-          connected: false, 
-          statusMessage: statusMessage
-        };
-
         connection = null;
         return;
       }
 
       connectingInProgress = true;
-      
-      $rootScope.$emit('rkStartConnecting', {
-        message: connectingMessage
-      });
 
       kodiWs($localStorage.settings.serverAddress, $localStorage.settings.jsonRpcPort).then(function(link) {
         if(link) {
@@ -64,12 +41,13 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkNotificat
         }
         else {
           setDisconnected();
-          connection = false;
+          connection = null;
         }
       },
       function(error) {
         setDisconnected();
-        connection = false;
+        connection = null;
+        rkHelperService.handleError(error)
       });
     };
     
@@ -77,41 +55,22 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkNotificat
       connectingInProgress = false;
       connection = link;
       startPing();
-      
-  
-      connectionStatus = {
-        connecting: false,
-        connected: true, 
-        statusMessage: 'online'
-      };
-        
-      $rootScope.$emit('rkStopConnecting', {message: connectedMessage});
-      $rootScope.$emit('rkWsConnectionStatusChange', connectionStatus);
-      rkNotificationService.notifyConnection(true, 'Connection with Kodi has been established');
+      $rootScope.$emit('rkWsConnectionStatusChange', connection);
     };
     
     function setDisconnected() {
-      if(connection !== false) {
+      if(connection) {
         connection = null;
         connectingInProgress = false;
         stopPing();
- 
-        connectionStatus = {
-          connecting: false,
-          connected: false, 
-          statusMessage: 'offline'
-        };
-
-        $rootScope.$emit('rkStopConnecting', {message: connectionErrorMessage});
-        $rootScope.$emit('rkWsConnectionStatusChange', connectionStatus);
-        rkNotificationService.notifyConnection(false, 'Connection with Kodi has been lost');
+        $rootScope.$emit('rkWsConnectionStatusChange', connection);
       }
     };
     
     function ping() {
       if(connection === null) {
         setDisconnected();
-        connection = false;
+        connection = null;
         return;
       }
       
@@ -119,11 +78,11 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkNotificat
         if(data !== 'pong') {
           stopPing();
           setDisconnected();
-          connection = false;
+          connection = null;
         }
       }, function(error) {
         setDisconnected();
-        connection = false;
+        connection = null;
       });
     };
     

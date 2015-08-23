@@ -4,6 +4,9 @@ rekodiApp.factory('rkNotificationService', ['rkHelperService',
     var notifier = require('node-notifier');
     var mainWindow = remote.getCurrentWindow();
     var iconsPath = __dirname+'/images/icons/';
+    var isNotifying = false;
+    var minNotificationInterval = 1000;
+    var notificationLimitTimeout = null;
     var icons = {
       default: iconsPath+'rekodi.png',
       volume: iconsPath+'volume.png',
@@ -14,6 +17,11 @@ rekodiApp.factory('rkNotificationService', ['rkHelperService',
     };
 
     var notify = function(options) {
+      if(isNotifying) {
+        return;
+      }
+      
+      isNotifying = true;
       var _options = angular.extend({}, {
         title: 'ReKodi',
         message: '',
@@ -23,10 +31,17 @@ rekodiApp.factory('rkNotificationService', ['rkHelperService',
         wait: false
       }, options);
       
+      notificationLimitTimeout = setTimeout(function() {
+        isNotifying = false;
+      }, minNotificationInterval);
+
       notifier.notify(_options, function (error, response) {
         if(error) {
-          console.error(error);
+          rkHelperService.handleError(error);
         }
+        
+        isNotifying = false;
+        clearInterval(notificationLimitTimeout);
       });
     };
     

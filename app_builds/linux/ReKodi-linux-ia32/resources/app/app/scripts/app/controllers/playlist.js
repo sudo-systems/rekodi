@@ -1,5 +1,5 @@
-rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', '$sessionStorage', 'rkHelperService',
-  function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, $sessionStorage, rkHelperService) {
+rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', '$sessionStorage', 'rkHelperService', '$timeout',
+  function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, $sessionStorage, rkHelperService, $timeout) {
     var kodiApi = null;
     $scope.type = '';
     $scope.playlistId = null;
@@ -74,11 +74,11 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', 'kodiApiService', 
       }
     }
 
-    $scope.init = function() {
+    var init = function() {
       if(!$scope.isInitialized) {
         initConnectionChange();
 
-        $scope.$root.$on('rkWsConnectionStatusChange', function (event, data) {
+        $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
           initConnectionChange();
         });
 
@@ -92,5 +92,9 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', '$element', 'kodiApiService', 
         $scope.isInitialized = true;
       }
     };
+    
+    $timeout(function() {
+      init();
+    });
   }
 ]);

@@ -15,7 +15,7 @@ rekodiApp.controller('rkWindowCtrl', ['$scope', '$element', 'rkTooltipsService',
     };
 
     function deleteTempDirectory() {
-      rimraf(__dirname+'/tmp/', function(error) {
+      rimraf(__dirname+'/.tmp/', function(error) {
         if(error) {
           console.error('Error: '+error);
         } 

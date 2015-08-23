@@ -61,8 +61,8 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'kodiApiService', 'rkEnu
         defaultWallpaper = imagePath;
       });
       
-      $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
-        kodiApi = kodiApiService.getConnection();
+      $rootScope.$on('rkWsConnectionStatusChange', function(event, connection) {
+        kodiApi = connection;
         
         if(kodiApi) {
           kodiApi.Player.OnPlay(function(response) {

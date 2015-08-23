@@ -42,10 +42,12 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 
             }
           }, function(error) {
             rkHelperService.handleError(error);
+            currentProperties = defaultProperties;
             $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
           });
         }
         else {
+          currentProperties = defaultProperties;
           $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
         }
       });
@@ -65,8 +67,8 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 
     };
 
     function init() {
-      $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
-        kodiApi = kodiApiService.getConnection();
+      $rootScope.$on('rkWsConnectionStatusChange', function(event, connection) {
+        kodiApi = connection;
         
         if(kodiApi) {
           getProperties();
@@ -74,8 +76,14 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 
           kodiApi.Player.OnPropertyChanged(function(response) {
             getProperties();
           });
+          
+          kodiApi.Player.OnStop(function(data) {
+            currentProperties = defaultProperties;
+            $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
+          });
         }
         else {
+          currentProperties = defaultProperties;
           $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
         }
       });

@@ -7,7 +7,7 @@
 </div>
 <div class="controls-wrapper" ng-show="status.isConnected">
   <ul class="horizontal">
-    <li ng-click="skipPrevious()">
+    <li ng-click="skipPrevious()" ng-show="showPreviousButton">
       <i class="mdi mdi-skip-previous"></i>
     </li>
     <li ng-click="rewind()" ng-class="{active: status.isRewinding}" ng-show="playerProperties.canchangespeed">
@@ -25,7 +25,7 @@
     <li ng-click="fastForward()" ng-class="{active: status.isFastForwarding}" ng-show="playerProperties.canchangespeed">
       <i class="mdi mdi-fast-forward"></i>
     </li>
-    <li ng-click="skipNext()">
+    <li ng-click="skipNext()" ng-show="showNextButton">
       <i class="mdi mdi-skip-next"></i>
     </li>
   </ul>
@@ -48,10 +48,10 @@
       <i class="mdi mdi-repeat-once active" title="Disable repeat"></i>
     </li>
     <li ng-click="togglePartymode()" ng-show="!playerProperties.partymode">
-      <i class="mdi mdi-dice" title="Enable partymode"></i>
+      <i class="mdi mdi-dice" title="Start partymode"></i>
     </li>
     <li ng-click="togglePartymode()" ng-show="playerProperties.partymode">
-      <i class="mdi mdi-dice active" title="Disable partymode"></i>
+      <i class="mdi mdi-dice active" title="Stop partymode"></i>
     </li>
   </ul>
 </div>

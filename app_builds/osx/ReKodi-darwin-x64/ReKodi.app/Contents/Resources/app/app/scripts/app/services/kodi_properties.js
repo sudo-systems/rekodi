@@ -35,8 +35,8 @@ rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'kodiApiService', 'r
     };
     
     function init() {
-      $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
-        kodiApi = kodiApiService.getConnection();
+      $rootScope.$on('rkWsConnectionStatusChange', function(event, connection) {
+        kodiApi = connection;
         
         if(kodiApi) {
           kodiApi.Application.OnVolumeChanged(function(response) {

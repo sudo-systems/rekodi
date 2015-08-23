@@ -1,15 +1,14 @@
 <div class="options">
-  <div class="page-specific">
-    <a ng-click="getMovies()" title="Refresh list"><i class="mdi mdi-refresh"></i></a>
-    <select name="index" ng-model="selectedIndex" class="index" title="Select the category" ng-change="showItems(selectedIndex, true)">
-      <option ng-repeat="indexLetter in moviesIndex" ng-value="indexLetter" ng-selected="indexLetter === selectedIndex">{{indexLetter}}</option>
+  <div class="page-specific" ng-show="moviesIndex.length > 0 && !isFiltering">
+    <select name="index" ng-model="guiModels.selectedIndex" class="index" title="Select the category" ng-change="showItems({reset: true, data: moviesCategorised[guiModels.selectedIndex]})">
+      <option ng-repeat="indexLetter in moviesIndex" ng-value="indexLetter" ng-selected="indexLetter === guiModels.selectedIndex">{{indexLetter}}</option>
     </select>
   </div>
   <div class="filter-container">
-    <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list"  /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+    <input type="text" class="filter" ng-model="guiModels.filterValue" ng-change="applyFilter(guiModels.filterValue)" placeholder="search" title="Find movies (2 characters minimal)" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="guiModels.filterValue !== ''"></i>
   </div>
 </div>
-<div class="data-list-wrapper" su-endless-scroll="showItems(selectedIndex)">
+<div class="data-list-wrapper" su-endless-scroll="showItems({data: moviesCategorised[guiModels.selectedIndex]})">
   <ul class="vertical">
     <li ng-repeat="movie in scrollItems | filter:filterList track by movie.movieid" rk-tooltips class="clearfix" ng-click="handlePlay(movie)">
       <div class="thumbnail">

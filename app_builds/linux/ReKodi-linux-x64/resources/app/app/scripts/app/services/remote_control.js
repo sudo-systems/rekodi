@@ -214,8 +214,8 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
     };
     
     function init() {
-      $rootScope.$on('rkWsConnectionStatusChange', function(event, data) {
-        kodiApi = kodiApiService.getConnection();
+      $rootScope.$on('rkWsConnectionStatusChange', function(event, connection) {
+        kodiApi = connection;
       });
     }
 

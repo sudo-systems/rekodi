@@ -1,2 +1,5 @@
 /nbproject/
 /app/tmp/
+/app/.tmp/
+/app/cache/
+/app/.cache/

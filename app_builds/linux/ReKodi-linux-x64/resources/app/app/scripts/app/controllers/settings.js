@@ -14,13 +14,9 @@ rekodiApp.controller('rkSettingsCtrl', ['$scope', '$localStorage', 'kodiApiServi
       
     };
     
-    $scope.setConnectionStatus = function(newData) {
-      if(newData.connected) {
+    $scope.setConnectionStatus = function(connection) {
+      if(connection) {
         $scope.connectButton.text = 'connected';
-        $scope.connectButton.disabled = true;
-      }
-      else if(newData.connecting) {
-        $scope.connectButton.text = 'connecting...';
         $scope.connectButton.disabled = true;
       }
       else {
@@ -50,8 +46,8 @@ rekodiApp.controller('rkSettingsCtrl', ['$scope', '$localStorage', 'kodiApiServi
       
       $scope.storage = $localStorage.settings;
       
-      $scope.$on('rkWsConnectionStatusChange', function(event, data) {
-        $scope.setConnectionStatus(data);
+      $scope.$on('rkWsConnectionStatusChange', function(event, connection) {
+        $scope.setConnectionStatus(connection);
       });
 
 
