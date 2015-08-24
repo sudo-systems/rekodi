@@ -192,10 +192,12 @@ ul.vertical {
   margin: 0;
   padding: 0; }
 
-ul.horizontal li {
-  display: inline;
-  padding: 0;
-  margin: 0; }
+ul.horizontal {
+  white-space: nowrap; }
+  ul.horizontal li {
+    display: inline-block;
+    padding: 0;
+    margin: 0; }
 
 tbody {
   border: 0; }
@@ -559,7 +561,8 @@ html {
   -webkit-text-size-adjust: none; }
 
 ::-webkit-scrollbar {
-  width: 10px; }
+  width: 10px;
+  height: 6px; }
 
 ::-webkit-scrollbar-track {
   background: #262626; }
@@ -1492,6 +1495,100 @@ section#tabs {
   border: 0;
   height: auto;
   overflow: hidden; }
+
+section#recentlyAdded > .wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  padding: 0 12px; }
+  section#recentlyAdded > .wrapper .section-title {
+    margin: 12px 0 0 0;
+    color: #AAA;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 6px 6px 3px 6px;
+    margin-bottom: 6px;
+    background: #2C2C2C; }
+  section#recentlyAdded > .wrapper .horizontal-list-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin: 0 0 24px 0; }
+    section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li {
+      width: 120px;
+      height: 100%;
+      margin: 0 3px 6px 3px;
+      padding: 6px;
+      background: #2C2C2C;
+      color: #FFF;
+      font-size: 11px;
+      line-height: 18px;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      -webkit-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out; }
+      section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li > div {
+        overflow-x: hidden;
+        text-overflow: ellipsis; }
+      section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li:first-of-type {
+        margin-left: 0; }
+      section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li:last-of-type {
+        margin-right: 0; }
+      section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li:hover {
+        background: #333; }
+        section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li:hover .thumbnail {
+          -webkit-filter: opacity(100%); }
+          section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li:hover .thumbnail img {
+            -webkit-filter: grayscale(0%); }
+        section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li:hover .parent-title {
+          color: #CCC; }
+        section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li:hover .title {
+          color: #E6802E; }
+      section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li .thumbnail {
+        text-align: center;
+        -webkit-filter: opacity(25%);
+        -moz-transition: all 0.4s ease-in-out;
+        -o-transition: all 0.4s ease-in-out;
+        -webkit-transition: all 0.4s ease-in-out;
+        transition: all 0.4s ease-in-out;
+        width: 108px;
+        margin-bottom: 3px; }
+        section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li .thumbnail img {
+          -webkit-filter: grayscale(100%);
+          width: 100%;
+          height: 100%;
+          display: block; }
+        section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li .thumbnail i.mdi {
+          font-size: 50px; }
+      section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li .parent-title {
+        line-height: 14px;
+        -moz-transition: all 0.4s ease-in-out;
+        -o-transition: all 0.4s ease-in-out;
+        -webkit-transition: all 0.4s ease-in-out;
+        transition: all 0.4s ease-in-out;
+        color: #666; }
+      section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li .title {
+        font-size: 12px;
+        -moz-transition: all 0.4s ease-in-out;
+        -o-transition: all 0.4s ease-in-out;
+        -webkit-transition: all 0.4s ease-in-out;
+        transition: all 0.4s ease-in-out;
+        color: #777; }
+section#recentlyAdded .horizontal-list-wrapper.episodes ul .thumbnail {
+  height: 61px; }
+  section#recentlyAdded .horizontal-list-wrapper.episodes ul .thumbnail i.mdi {
+    line-height: 61px; }
+section#recentlyAdded .horizontal-list-wrapper.movies ul .thumbnail {
+  height: 162px; }
+  section#recentlyAdded .horizontal-list-wrapper.movies ul .thumbnail i.mdi {
+    line-height: 162px; }
+section#recentlyAdded .horizontal-list-wrapper.albums ul .thumbnail {
+  height: 108px; }
+  section#recentlyAdded .horizontal-list-wrapper.albums ul .thumbnail i.mdi {
+    line-height: 108px; }
 
 section#footer {
   position: fixed;

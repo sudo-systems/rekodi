@@ -181,6 +181,84 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
       
       callback([]);
     };
+    
+    var getRecentlyAddedMoviesFromCache = function() {
+      var _data = _cache.get({key: 'recentlyAddedMovies'});
+      return (_data)? _data : [];
+    };
+    
+    var getRecentlyAddedMovies = function(limit, callback) {
+      if(_kodiApi) {
+        limit = (!limit)? 10 : limit;
+        
+        _kodiApi.VideoLibrary.GetRecentlyAddedMovies({
+          properties: ['thumbnail', 'year', 'rating', 'plotoutline', 'genre', 'runtime', 'resume', 'lastplayed', 'file'],
+          limits: {
+            start: 0,
+            end: limit
+          },
+          sort: {
+            order: 'descending',
+            method: 'dateadded'
+          }
+        }).then(function(data) {
+          data.movies = (!data.movies)? [] : rkHelperService.addCustomFields(data.movies);
+
+          if(_cache.update({data: data.movies, key: 'recentlyAddedMovies'})) {
+            callback(data.movies);
+          }
+          else {
+            callback(null);
+          }
+        }, function(error) {
+          callback([]);
+          rkHelperService.handleError(error);
+        });
+        
+        return;
+      }
+      
+      callback([]);
+    };
+ 
+    var getRecentlyAddedEpisodesFromCache = function() {
+      var _data = _cache.get({key: 'recentlyAddedEpisodes'});
+      return (_data)? _data : [];
+    };
+    
+    var getRecentlyAddedEpisodes = function(limit, callback) {
+      if(_kodiApi) {
+        limit = (!limit)? 10 : limit;
+        
+        _kodiApi.VideoLibrary.GetRecentlyAddedEpisodes({
+          properties: ['thumbnail', 'showtitle', 'plot', 'rating', 'season', 'episode', 'firstaired', 'runtime', 'streamdetails', 'lastplayed', 'resume'],
+          limits: {
+            start: 0,
+            end: limit
+          },
+          sort: {
+            order: 'descending',
+            method: 'dateadded'
+          }
+        }).then(function(data) {
+          data.episodes = (!data.episodes)? [] : rkHelperService.addCustomFields(data.episodes);
+
+          if(_cache.update({data: data.episodes, key: 'recentlyAddedEpisodes'})) {
+            callback(data.episodes);
+          }
+          else {
+            callback(null);
+          }
+        }, function(error) {
+          callback([]);
+          rkHelperService.handleError(error);
+        });
+        
+        return;
+      }
+      
+      callback([]);
+    };
  
     function init() {
       _kodiApi = kodiApiService.getConnection();
@@ -196,13 +274,17 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
       getMoviesFromCache: getMoviesFromCache,
       getMoviesCategorisedFromCache: getMoviesCategorisedFromCache,
       getMoviesCategorised: getMoviesCategorised,
+      getRecentlyAddedMoviesFromCache: getRecentlyAddedMoviesFromCache,
+      getRecentlyAddedMovies: getRecentlyAddedMovies,
       getTvShowsFromCache: getTvShowsFromCache,
       getTvShowsCategorisedFromCache: getTvShowsCategorisedFromCache,
       getTvShowsCategorised: getTvShowsCategorised,
       getSeasonsFromCache: getSeasonsFromCache,
       getSeasons: getSeasons,
       getEpisodesFromCache: getEpisodesFromCache,
-      getEpisodes: getEpisodes
+      getEpisodes: getEpisodes,
+      getRecentlyAddedEpisodesFromCache: getRecentlyAddedEpisodesFromCache,
+      getRecentlyAddedEpisodes: getRecentlyAddedEpisodes
     };
   }
 ]);

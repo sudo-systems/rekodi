@@ -3,7 +3,7 @@
     <a ng-click="getSources()" title="Back to photo sources" ng-show="currentLevel !== 'sources'"><i class="mdi mdi-home"></i></a> 
   </div>
   <div class="filter-container">
-    <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+    <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" rk-focus-element /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
   </div>
 </div>
 <div class="data-list-wrapper" su-endless-scroll="showItems({key: currentLevel, data: souces})" ng-show="currentLevel === 'sources'">
