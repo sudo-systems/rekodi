@@ -1,7 +1,7 @@
 rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkRemoteControlService', 'rkVideoLibraryService', 'rkSettingsService',
   function($scope, $element, kodiApiService, rkTooltipsService, rkRemoteControlService, rkVideoLibraryService, rkSettingsService) {
     var modal = {};
-    var displayLimit = 3;
+    var displayLimit = 5;
     var kodiApi = null;
     $scope.tvShowsCategorised = {};
     $scope.seasons = [];
@@ -12,6 +12,7 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
     $scope.isInitialized = false;
     $scope.currentLevel = null;
     $scope.currentTvShowId = null;
+    $scope.currentSeason = null;
     $scope.currentSeasonId = null;
     $scope.settings = rkSettingsService.get({category: 'tvShowsLibrary'});
     $scope.resumeTvShow = {};
@@ -68,6 +69,21 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
         $scope.$apply();
       }
     };
+    
+    function refreshData() {
+      if($scope.currentLevel === 'tvShows') {
+        $scope.tvShowsCategorised = {};
+        $scope.getTvShowsCategorised();
+      }
+      else if ($scope.currentLevel === 'seasons'){
+        $scope.seasons = [];
+        $scope.getSeasons($scope.currentTvShowId);
+      }
+      else if($scope.currentLevel === 'episodes') {
+        $scope.episodes = [];
+        $scope.getEpisodes($scope.currentTvShowId, $scope.currentSeason);
+      }
+    }
 
     function getDefaultIndex(tvShowsIndex) {
       for(var key in tvShowsIndex) {
@@ -79,27 +95,30 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
       return null;
     }
     
-    function removeWatchedSTvShows(tvShowsCategorised) {
-      tvShowsCategorised = (!tvShowsCategorised)? {} : tvShowsCategorised;
+    function getUnwatchedTvShows(tvShowsCategorised) {
+      var newCategorisedLibrary = {};
       
       for(var key in tvShowsCategorised) {
+        var indexCollection = [];
+        
         for(var index in tvShowsCategorised[key]) {
-          if(!tvShowsCategorised[key][index].episode || tvShowsCategorised[key][index].watchedepisodes === tvShowsCategorised[key][index].episode) {
-            tvShowsCategorised[key].splice(index, 1);
+          if(tvShowsCategorised[key][index].episode !== 0 && tvShowsCategorised[key][index].episode !== tvShowsCategorised[key][index].watchedepisodes) {
+            indexCollection.push(tvShowsCategorised[key][index]);
           }
         }
 
-        if(tvShowsCategorised[key].length === 0) {
-          delete tvShowsCategorised[key];
+        if(indexCollection.length > 0) {
+          newCategorisedLibrary[key] = indexCollection;
         }
       }
       
-      return tvShowsCategorised;
+      return newCategorisedLibrary;
     }
     
     $scope.getTvShowsCategorised = function() {
       $scope.currentLevel = 'tvShows';
       $scope.currentTvShowId = null;
+      $scope.currentSeason = null;
       $scope.currentSeasonId = null;
       $scope.clearFilter();
       
@@ -107,7 +126,7 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
         $scope.tvShowsCategorised = rkVideoLibraryService.getTvShowsCategorisedFromCache();
         
         if($scope.settings.hideWatched) {
-          $scope.tvShowsCategorised = removeWatchedSTvShows($scope.tvShowsCategorised);
+          $scope.tvShowsCategorised = getUnwatchedTvShows($scope.tvShowsCategorised);
         }
 
         $scope.tvShowsIndex = Object.keys($scope.tvShowsCategorised);
@@ -121,8 +140,8 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
       });
 
       rkVideoLibraryService.getTvShowsCategorised(function(tvShowsCategorised) {
-        if($scope.settings.hideWatched) {
-          tvShowsCategorised = removeWatchedSTvShows(tvShowsCategorised);
+        if(tvShowsCategorised && $scope.settings.hideWatched) {
+          tvShowsCategorised = getUnwatchedTvShows(tvShowsCategorised);
         }
 
         if(tvShowsCategorised && !angular.equals(tvShowsCategorised, $scope.tvShowsCategorised)) {
@@ -138,10 +157,23 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
         }
       });
     };
+    
+    function getUnwatchedSeasons(seasons) {
+      var newSeasons = [];
+      
+      for(var index in seasons) {
+        if(seasons[index].episode !== 0 && seasons[index].episode !== seasons[index].watchedepisodes) {
+          newSeasons.push(seasons[index]);
+        }
+      }
+
+      return newSeasons;
+    }
 
     $scope.getSeasons = function(tvShowId) {
       $scope.currentLevel = 'seasons';
       $scope.currentTvShowId = tvShowId;
+      $scope.currentSeason = null;
       $scope.currentSeasonId = null;
       $scope.clearFilter();
       
@@ -151,6 +183,15 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
       
       if($scope.seasons[tvShowId].length === 0) {
         $scope.seasons[tvShowId] = rkVideoLibraryService.getSeasonsFromCache(tvShowId);
+        
+        if($scope.settings.hideWatched) {
+          $scope.seasons[tvShowId] = getUnwatchedSeasons($scope.seasons[tvShowId]);
+        }
+      }
+      
+      if($scope.seasons[tvShowId].length === 1) {
+        $scope.getEpisodes(tvShowId, $scope.seasons[tvShowId][0].season);
+        return;
       }
       
       $scope.showItems({
@@ -160,6 +201,10 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
       });
 
       rkVideoLibraryService.getSeasons(tvShowId, function(seasons) {
+        if(seasons && $scope.settings.hideWatched) {
+          seasons = getUnwatchedSeasons(seasons);
+        }
+
         if(seasons && !angular.equals(seasons, $scope.seasons[tvShowId])) {
           $scope.seasons[tvShowId] = seasons;
 
@@ -170,16 +215,31 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
               data: $scope.seasons[tvShowId]
             });
           }
-        }
-        
-        if($scope.seasons[tvShowId].length === 1) {
-          $scope.getEpisodes(tvShowId, $scope.seasons[tvShowId][0].season);
+          
+          if($scope.seasons[tvShowId].length === 1) {
+            $scope.getEpisodes(tvShowId, $scope.seasons[tvShowId][0].season);
+          }
         }
       });
     };
     
+    function getUnwatchedEpisodes(episodes) {
+      var newEpisodes = [];
+      
+      //console.dir(episodes);
+      
+      for(var index in episodes) {
+        if(episodes[index].lastplayed === '') {
+          newEpisodes.push(episodes[index]);
+        }
+      }
+
+      return newEpisodes;
+    }
+    
     $scope.getEpisodes = function(tvShowId, season) {
       $scope.currentLevel = 'episodes';
+      $scope.currentSeason = season;
       $scope.currentSeasonId = tvShowId+'_'+season;
       $scope.clearFilter();
       
@@ -189,6 +249,10 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
       
       if($scope.episodes[$scope.currentSeasonId].length === 0) {
         $scope.episodes[$scope.currentSeasonId] = rkVideoLibraryService.getEpisodesFromCache(tvShowId, season);
+        
+        if($scope.settings.hideWatched) {
+          $scope.episodes[$scope.currentSeasonId] = getUnwatchedEpisodes($scope.episodes[$scope.currentSeasonId]);
+        }
       }
       
       $scope.showItems({
@@ -198,6 +262,11 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
       });
 
       rkVideoLibraryService.getEpisodes(tvShowId, season, function(episodes) {
+        console.dir(episodes);
+        if(episodes && $scope.settings.hideWatched) {
+          episodes = getUnwatchedEpisodes(episodes);
+        }
+        
         if(episodes && !angular.equals(episodes, $scope.episodes[$scope.currentSeasonId])) {
           $scope.episodes[$scope.currentSeasonId] = episodes;
           
@@ -309,6 +378,10 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
             key: key,
             value: newData[key]
           });
+        }
+        
+        if(newData.hideWatched !== oldData.hideWatched) {
+          refreshData();
         }
       });
 

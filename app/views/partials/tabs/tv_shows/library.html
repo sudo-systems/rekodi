@@ -1,13 +1,16 @@
 <div class="options">
   <div class="page-specific">
-    <a ng-click="getTvShowsCategorised()" title="Back to TV Shows" ng-show="currentLevel !== 'tvShows'"><i class="mdi mdi-home"></i></a>
+    <span ng-show="currentLevel !== 'tvShows'">
+      <a ng-click="getTvShowsCategorised()" title="Back to TV Shows"><i class="mdi mdi-home"></i></a>
+    </span>
     <span ng-show="currentLevel ==='tvShows' && tvShowsIndex.length > 0 && !isFiltering">
       <select name="index" ng-model="guiModels.selectedIndex" class="index" title="Select the category" ng-change="showItems({key: 'tvShows', reset: true, data: tvShowsCategorised[guiModels.selectedIndex]})">
         <option ng-repeat="indexLetter in tvShowsIndex track by indexLetter" ng-value="indexLetter" ng-selected="indexLetter === guiModels.selectedIndex">{{indexLetter}}</option>
       </select>
     </span>
     <span>
-      <input type="checkbox" ng-model="settings.hideWatched" /> hide watched
+      <i class="mdi mdi-eye-off" title="hide watched items" ng-show="!settings.hideWatched" ng-click="settings.hideWatched = true"></i>
+      <i class="mdi mdi-eye-off active" title="show watched items" ng-show="settings.hideWatched" ng-click="settings.hideWatched = false"></i>
     </span>
   </div>
   <div class="filter-container">
@@ -26,8 +29,7 @@
           <tr>
             <td colspan="2" class="title">
               <h2>
-                <i class="mdi mdi-eye watched-label" ng-if="tvShow.lastplayed !== '' && tvShow.resume.position === 0" title="Watched"></i> 
-                <i class="mdi mdi-redo partially-watched-label" ng-if="tvShow.resume.position !== 0" title="Partially watched"></i>
+                <i class="mdi mdi-eye watched-label" ng-if="tvShow.is_watched" title="Watched"></i>
                 {{tvShow.label}}
               </h2>
             </td>
@@ -50,18 +52,10 @@
           </tr>
           <tr>
             <td class="infoLabel">
-              episodes
-            </td>
-            <td class="infoContent">
-              {{tvShow.episode}}
-            </td>
-          </tr>
-          <tr>
-            <td class="infoLabel">
               unwatched
             </td>
             <td class="infoContent">
-              {{(tvShow.episode - tvShow.watchedepisodes)}}
+              <b title="unwatched">{{(tvShow.episode - tvShow.watchedepisodes)}}</b> / <span title="episodes in library">{{tvShow.episode}}</span>
             </td>
           </tr>
           <tr ng-if="tvShow.premiered">
@@ -102,10 +96,17 @@
           <tr>
             <td class="title">
               <h2>
-                <i class="mdi mdi-eye watched-label" ng-if="season.lastplayed !== '' && season.resume.position === 0" title="Watched"></i> 
-                <i class="mdi mdi-redo partially-watched-label" ng-if="season.resume.position !== 0" title="Partially watched"></i>
+                <i class="mdi mdi-eye watched-label" ng-if="season.is_watched" title="Watched"></i>
                 {{season.label}}
               </h2>
+            </td>
+          </tr>
+          <tr>
+            <td class="infoLabel">
+              unwatched
+            </td>
+            <td class="infoContent">
+              <b title="unwatched">{{(tvShow.episode - tvShow.watchedepisodes)}}</b> / <span title="episodes in library">{{tvShow.episode}}</span>
             </td>
           </tr>
         </table>
@@ -130,8 +131,8 @@
           <tr>
             <td colspan="2" class="title">
               <h2>
-                <i class="mdi mdi-eye watched-label" ng-if="episode.lastplayed !== '' && episode.resume.position === 0" title="Watched"></i> 
-                <i class="mdi mdi-redo partially-watched-label" ng-if="episode.resume.position !== 0" title="Partially watched"></i>
+                <i class="mdi mdi-eye watched-label" ng-if="episode.is_watched" title="Watched"></i> 
+                <i class="mdi mdi-redo partially-watched-label" ng-if="episode.is_resumable" title="Partially watched"></i>
                 {{episode.label}}
               </h2>
             </td>

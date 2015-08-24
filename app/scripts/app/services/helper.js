@@ -66,8 +66,19 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService',
         item.duration_readable =  secondsToDuration(item.runtime);
       }
 
-      if(item.resume && item.resume.position) {
+      if(item.resume && item.resume.position && item.resume.position !== 0) {
+        item.is_resumable = true;
         item.resume.position_readable = secondsToDuration(item.resume.position);
+      }
+      
+      if(!item.is_resumable && item.episode !== undefined && item.watchedepisodes !== undefined) {
+        if(item.episode === 0 || item.episode === item.watchedepisodes) {
+          item.is_watched = true;
+        }
+      }
+      
+      if(item.lastplayed && item.lastplayed !== '') {
+        item.is_watched = true;
       }
       
       return item;

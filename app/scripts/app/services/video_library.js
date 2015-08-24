@@ -121,7 +121,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     var getSeasons = function(tvShowId, callback) {
       if(_kodiApi) {
         _kodiApi.VideoLibrary.GetSeasons({
-          properties: ['thumbnail', 'showtitle', 'season', 'watchedepisodes'],
+          properties: ['thumbnail', 'showtitle', 'season', 'watchedepisodes', 'episode'],
           tvshowid: tvShowId,
           sort: {
             order: 'ascending',

@@ -1,7 +1,7 @@
 rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkRemoteControlService', '$timeout', 'rkVideoLibraryService',
   function($scope, $element, kodiApiService, rkTooltipsService, rkRemoteControlService, $timeout, rkVideoLibraryService) {
     var modal = {};
-    var displayLimit = 3;
+    var displayLimit = 5;
     var kodiApi = null;
     $scope.moviesCategorised = {};
     $scope.moviesIndex = [];

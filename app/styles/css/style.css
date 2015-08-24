@@ -1226,6 +1226,10 @@ section.tabsContainer {
       border-radius: 0; }
     section.tabsContainer .options .page-specific {
       float: left; }
+      section.tabsContainer .options .page-specific > span {
+        margin-right: 12px; }
+        section.tabsContainer .options .page-specific > span i.mdi.active {
+          color: #E6802E; }
     section.tabsContainer .options .filter-container {
       float: right; }
     section.tabsContainer .options input.filter {
