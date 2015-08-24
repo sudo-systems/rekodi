@@ -9,6 +9,7 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService'
     $scope.currentLevel = null;
     $scope.scrollItems = [];
     $scope.isFiltering = false;
+    $scope.isInitialized = false;
     $scope.filteredItems = [];
     $scope.filter = {value: ''};
     
@@ -19,7 +20,7 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService'
         reset: false, //optional
         data: null //required
       }, options);
-
+      
       if($scope.isFiltering && !_options.reset) {
         _options.data = $scope.filteredItems;
       }
@@ -68,7 +69,7 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService'
       if($scope.sources.length === 0) {
         $scope.sources = filesService.getSourcesFromCache();
       }
-      
+
       $scope.showItems({
         key: $scope.currentLevel,
         reset: true,
@@ -76,9 +77,9 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService'
       });
       
       filesService.getSources(function(sources) {
-        if(sources && !angular.equals(sources, $scope.sources)) {
+        if(sources !== null && !angular.equals(sources, $scope.sources)) {
           $scope.sources = sources;
-          
+
           $scope.showItems({
             key: $scope.currentLevel,
             reset: true,
@@ -176,7 +177,7 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService'
     
     function initConnectionChange() {
       kodiApi = kodiApiService.getConnection();
-      
+
       if(kodiApi) {
         $scope.getSources();
       }
@@ -193,17 +194,19 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService'
       }
     }
 
-    var init = function() {
+    $scope.init = function() {
+      if($scope.isInitialized) {
+        return;
+      }
+
       filesService = new rkFilesService.instance('music');
       initConnectionChange();
       
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         initConnectionChange();
       });
+      
+      $scope.isInitialized = true;
     };
-    
-    $timeout(function() {
-      init();
-    });
   }
 ]);

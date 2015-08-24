@@ -2,9 +2,9 @@ rekodiApp.controller('rkTabsCtrl', ['$scope', '$localStorage', '$timeout',
   function($scope, $localStorage, $timeout) {
     $scope.storage = null;
     
-    $scope.initTab = function(tabSelector) {
-      for(var i in tabSelector) {
-        angular.element(tabSelector[i]).scope().init();
+    $scope.initTab = function(tabSelectors) {
+      for(var i in tabSelectors) {
+        angular.element('#'+tabSelectors[i]).scope().init();
       }
     };
     

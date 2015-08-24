@@ -1,5 +1,5 @@
-rekodiApp.factory('rkFilesService', ['$rootScope', 'rkCacheService', 'rkHelperService',
-  function($rootScope, rkCacheService, rkHelperService) {
+rekodiApp.factory('rkFilesService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService',
+  function($rootScope, rkCacheService, rkHelperService, kodiApiService) {
     var instance = function(type) {
       var _currentDirectory = null;
       var _sourcesPaths = [];
@@ -30,7 +30,7 @@ rekodiApp.factory('rkFilesService', ['$rootScope', 'rkCacheService', 'rkHelperSe
 
       this.getSources = function(callback) {
         _currentDirectory = null;
-
+ 
         if(_kodiApi) {
           _kodiApi.Files.GetSources({
             media: type,
@@ -115,6 +115,7 @@ rekodiApp.factory('rkFilesService', ['$rootScope', 'rkCacheService', 'rkHelperSe
 
       function init() {
         _cache = new rkCacheService.create(type+'Files');
+        _kodiApi = kodiApiService.getConnection();
         
         $rootScope.$on('rkWsConnectionStatusChange', function (event, connection) {
           _kodiApi = connection;

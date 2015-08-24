@@ -9,6 +9,7 @@ rekodiApp.controller('rkVideoFilesCtrl', ['$scope', '$element', 'kodiApiService'
     $scope.currentLevel = null;
     $scope.scrollItems = [];
     $scope.isFiltering = false;
+    $scope.isInitialized = false;
     $scope.filteredItems = [];
     $scope.filter = {value: ''};
     
@@ -193,17 +194,19 @@ rekodiApp.controller('rkVideoFilesCtrl', ['$scope', '$element', 'kodiApiService'
       }
     }
 
-    var init = function() {
+    $scope.init = function() {
+      if($scope.isInitialized) {
+        return;
+      }
+      
       filesService = new rkFilesService.instance('video');
       initConnectionChange();
       
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         initConnectionChange();
       });
+      
+      $scope.isInitialized = true;
     };
-    
-    $timeout(function() {
-      init();
-    });
   }
 ]);

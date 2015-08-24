@@ -1,5 +1,5 @@
-rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkHelperService',
-  function($rootScope, $localStorage, rkHelperService) {
+rekodiApp.factory('kodiApiService', ['$rootScope', 'rkHelperService', 'rkSettingsService',
+  function($rootScope, rkHelperService, rkSettingsService) {
     var kodiWs = require('xbmc-ws');
     var connectingInProgress = false;
     var connection = null;
@@ -7,7 +7,8 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkHelperSer
     var retryInterval;
     var pingIntervalTime = 5000;
     var pingInterval;
-
+    var settings = rkSettingsService.get({category: 'connection'});
+    
     function bindEvents() {
       connection.System.OnQuit(function() {
         setDisconnected();
@@ -27,14 +28,14 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkHelperSer
     }
 
     function createConnection() {
-      if(!isConfigured() || connectingInProgress) {
+      if(!rkSettingsService.isConnectionConfigured() || connectingInProgress) {
         connection = null;
         return;
       }
 
       connectingInProgress = true;
 
-      kodiWs($localStorage.settings.serverAddress, $localStorage.settings.jsonRpcPort).then(function(link) {
+      kodiWs(settings.serverAddress, settings.jsonRpcPort).then(function(link) {
         if(link) {
           setConnected(link);
           bindEvents();
@@ -47,7 +48,7 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkHelperSer
       function(error) {
         setDisconnected();
         connection = null;
-        rkHelperService.handleError(error)
+        rkHelperService.handleError(error);
       });
     };
     
@@ -97,15 +98,6 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkHelperSer
     function stopPing() {
       clearInterval(pingInterval);
     };
-    
-    var isConfigured = function() {
-      return (!$localStorage.settings ||
-        $localStorage.settings.constructor !== Object ||
-        !$localStorage.settings.serverAddress || 
-        !$localStorage.settings.jsonRpcPort || 
-        $localStorage.settings.serverAddress === '' || 
-        $localStorage.settings.jsonRpcPort === '')? false : true;
-    };
 
     var connect = function(immmediately) {
       immmediately = (immmediately === undefined)? true : immmediately;
@@ -133,8 +125,7 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkHelperSer
     return {
       connect: connect,
       isConnected: isConnected,
-      getConnection: getConnection,
-      isConfigured: isConfigured
+      getConnection: getConnection
     };
   }
 ]);

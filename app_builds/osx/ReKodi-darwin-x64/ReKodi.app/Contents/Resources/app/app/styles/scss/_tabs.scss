@@ -96,7 +96,7 @@ section.tabsContainer {
     height: map-get($tabs, options-height);
     font-size: 14px;
     overflow: hidden;
-    
+
     select,
     input[type="text"] {
       background: #2D2D2D;
@@ -109,9 +109,17 @@ section.tabsContainer {
       letter-spacing: 1px;
       border-radius: 0;
     }
-    
+
     .page-specific {
       float: left;
+      
+      &> span {
+        margin-right: 6px;
+        
+        i.mdi.active {
+          color: map-get($global, highlight-color);
+        }
+      }
     }
     
     .filter-container {
@@ -320,9 +328,10 @@ section.tabsContainer {
         td.infoLabel {
           color: #666;
           text-align: right;
-          width: 50px;
+          width: 55px;
           padding-right: 6px;
           line-height: 18px;
+          white-space: nowrap;
         }
         
         td.infoContent {

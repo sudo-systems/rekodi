@@ -3,19 +3,19 @@
     <li class="active" title="Now playing" ng-click="setActive($event)" rel="nowPlayingDetails" data-level="1">
       <i class="mdi mdi-play-box-outline"></i>
     </li>
-    <li title="Playlist" ng-click="setActive($event);" rel="playlist" data-level="1">
+    <li title="Playlist" ng-click="setActive($event); initTab(['audioPlaylist']);" rel="playlist" data-level="1">
       <i class="mdi mdi-view-list"></i>
     </li>
-    <li title="Music" ng-click="setActive($event);" rel="music" data-level="1">
+    <li title="Music" ng-click="setActive($event); initTab(['musicLibrary']);" rel="music" data-level="1">
       <i class="mdi mdi-music-note"></i>
     </li>
-    <li title="Movies" ng-click="setActive($event);" rel="movies" data-level="1">
+    <li title="Movies" ng-click="setActive($event); initTab(['moviesLibrary']);" rel="movies" data-level="1">
       <i class="mdi mdi-movie"></i>
     </li>
-    <li title="TV shows" ng-click="setActive($event);" rel="tvShows" data-level="1">
+    <li title="TV shows" ng-click="setActive($event); initTab(['tvShowsLibrary']);" rel="tvShows" data-level="1">
       <i class="mdi mdi-television"></i>
     </li>
-    <li title="Photos" ng-click="setActive($event);" rel="photos" data-level="1">
+    <li title="Photos" ng-click="setActive($event); initTab(['photos']);" rel="photos" data-level="1">
       <i class="mdi mdi-camera"></i>
     </li>
     <li title="Addons" ng-click="setActive($event)" rel="addons" data-level="1">
@@ -24,7 +24,7 @@
     <li title="Remote" ng-click="setActive($event)" rel="remote" data-level="1">
       <i class="mdi mdi-remote"></i>
     </li>
-    <li title="Settings" ng-click="setActive($event)" rel="settings" data-level="1">
+    <li title="Settings" ng-click="setActive($event); initTab(['settings']);" rel="settings" data-level="1">
       <i class="mdi mdi-settings"></i>
     </li>
   </ul>
@@ -36,7 +36,7 @@
   <section ng-include="'views/partials/tabs/music.html'" rk-tooltips rk-tabs id="music" class="tabsContainer sub" data-level="1"></section>
   <section ng-include="'views/partials/tabs/movies.html'" rk-tooltips rk-tabs id="movies" class="tabsContainer sub" data-level="1"></section>
   <section ng-include="'views/partials/tabs/tv_shows.html'" rk-tooltips rk-tabs id="tvShows" class="tabsContainer sub" data-level="1"></section>
-  <section ng-include="'views/partials/tabs/photos.html'" ng-controller="rkFilesCtrl" ng-init="type='pictures'" rk-tooltips id="photos" class="tabsContainer" data-level="1"></section>
+  <section ng-include="'views/partials/tabs/pictures.html'" ng-controller="rkPicturesCtrl" rk-tooltips id="photos" class="tabsContainer" data-level="1"></section>
   <section ng-include="'views/partials/tabs/addons.html'" ng-controller="rkAddonsCtrl" rk-tooltips id="addons" class="tabsContainer" data-level="1"></section>
   <section ng-include="'views/partials/tabs/remote.html'" ng-controller="rkRemoteCtrl" rk-tooltips id="remote" class="tabsContainer" data-level="1"></section>
   <section ng-include="'views/partials/tabs/settings.html'" ng-controller="rkSettingsCtrl" rk-tooltips id="settings" class="tabsContainer" data-level="1"></section>

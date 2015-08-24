@@ -1,12 +1,14 @@
-rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkRemoteControlService', '$timeout', 'rkVideoLibraryService',
-  function($scope, $element, kodiApiService, rkTooltipsService, rkRemoteControlService, $timeout, rkVideoLibraryService) {
+rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkRemoteControlService', 'rkVideoLibraryService', 'rkSettingsService',
+  function($scope, $element, kodiApiService, rkTooltipsService, rkRemoteControlService, rkVideoLibraryService, rkSettingsService) {
     var modal = {};
-    var displayLimit = 3;
+    var displayLimit = 5;
     var kodiApi = null;
     $scope.moviesCategorised = {};
     $scope.moviesIndex = [];
     $scope.scrollItems = [];
     $scope.isFiltering = false;
+    $scope.isInitialized = false;
+    $scope.settings = rkSettingsService.get({category: 'moviesLibrary'});
     $scope.resumeMovie = {};
     $scope.guiModels = {
       filterValue: '',
@@ -62,18 +64,6 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiServi
       }
     };
 
-    function createCategorisedIndex(moviesCategorised) {
-      $scope.moviesIndex = [];
-
-      for (var key in moviesCategorised) {
-        if (moviesCategorised.hasOwnProperty(key)) {
-          $scope.moviesIndex.push(key);
-        }
-      }
-
-      return $scope.moviesIndex;
-    }
-    
     function getDefaultIndex(moviesIndex) {
       for(var key in moviesIndex) {
         if(moviesIndex[key].toLowerCase() !== moviesIndex[key].toUpperCase()) {
@@ -84,32 +74,63 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiServi
       return null;
     }
     
+    function getUnwatchedMovies(moviesCategorised) {
+      var newCategorisedLibrary = {};
+      
+      for(var key in moviesCategorised) {
+        var indexCollection = [];
+        
+        for(var index in moviesCategorised[key]) {
+          if(!moviesCategorised[key][index].is_watched) {
+            indexCollection.push(moviesCategorised[key][index]);
+          }
+        }
+
+        if(indexCollection.length > 0) {
+          newCategorisedLibrary[key] = indexCollection;
+        }
+      }
+      
+      return newCategorisedLibrary;
+    }
+    
     $scope.getMoviesCategorised = function() {
       $scope.clearFilter();
       
       if(Object.keys($scope.moviesCategorised).length === 0) {
         $scope.moviesCategorised = rkVideoLibraryService.getMoviesCategorisedFromCache();
-        applyMoviesData($scope.moviesCategorised);
+        
+        if($scope.settings.hideWatched) {
+          $scope.moviesCategorised = getUnwatchedMovies($scope.moviesCategorised);
+        }
+        
+        $scope.moviesIndex = Object.keys($scope.moviesCategorised);
+        $scope.guiModels.selectedIndex = getDefaultIndex($scope.moviesIndex);
       }
+      
+      $scope.showItems({
+        reset: true,
+        data: $scope.moviesCategorised[$scope.guiModels.selectedIndex]
+      });
 
       rkVideoLibraryService.getMoviesCategorised(function(moviesCategorised) {
+        if(moviesCategorised && $scope.settings.hideWatched) {
+          moviesCategorised = getUnwatchedMovies(moviesCategorised);
+        }
+        
         if(moviesCategorised && !angular.equals(moviesCategorised, $scope.moviesCategorised)) {
           $scope.moviesCategorised = moviesCategorised;
-          applyMoviesData($scope.moviesCategorised);
+          $scope.moviesIndex = Object.keys(moviesCategorised);
+          $scope.guiModels.selectedIndex = getDefaultIndex($scope.moviesIndex);
+
+          $scope.showItems({
+            reset: true,
+            data: $scope.moviesCategorised[$scope.guiModels.selectedIndex]
+          });
         }
       });
     };
-    
-    function applyMoviesData(moviesCategorised) {
-      $scope.moviesIndex = createCategorisedIndex(moviesCategorised);
-      $scope.guiModels.selectedIndex = getDefaultIndex($scope.moviesIndex);
 
-      $scope.showItems({
-        reset: true,
-        data: moviesCategorised[$scope.guiModels.selectedIndex]
-      });
-    }
-    
     $scope.applyFilter = function(filterValue) {
       if(filterValue.length < 2) {
         $scope.isFiltering = false;
@@ -186,25 +207,38 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiServi
       }
     }
 
-    var init = function() {
-      if(!$scope.isInitialized) {
-        initConnectionChange();
-
-        $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
-          initConnectionChange();
-        });
-
-        $(document).on('closed', '[data-remodal-id=resumeMovieModal]', function(e) {
-          $scope.resumeMovie = {};
-          modal.resumeMovie = null;
-        });
-        
-        $scope.isInitialized = true;
+    $scope.init = function() {
+      if($scope.isInitialized) {
+        return;
       }
+      
+      initConnectionChange();
+
+      $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
+        initConnectionChange();
+      });
+
+      $(document).on('closed', '[data-remodal-id=resumeMovieModal]', function(e) {
+        $scope.resumeMovie = {};
+        modal.resumeMovie = null;
+      });
+      
+      $scope.$watchCollection('settings', function(newData, oldData) {
+        for(var key in newData) {
+          rkSettingsService.set({
+            category: 'moviesLibrary',
+            key: key,
+            value: newData[key]
+          });
+        }
+
+        if(newData.hideWatched !== oldData.hideWatched) {
+          $scope.moviesCategorised = {};
+          $scope.getMoviesCategorised();
+        }
+      });
+
+      $scope.isInitialized = true;
     };
-    
-    $timeout(function() {
-      init();
-    });
   }
 ]);
