@@ -114,7 +114,7 @@ section.tabsContainer {
       float: left;
       
       &> span {
-        margin-right: 12px;
+        margin-right: 6px;
         
         i.mdi.active {
           color: map-get($global, highlight-color);
@@ -328,9 +328,10 @@ section.tabsContainer {
         td.infoLabel {
           color: #666;
           text-align: right;
-          width: 50px;
+          width: 55px;
           padding-right: 6px;
           line-height: 18px;
+          white-space: nowrap;
         }
         
         td.infoContent {

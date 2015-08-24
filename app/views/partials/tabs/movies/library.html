@@ -9,6 +9,10 @@
       <i class="mdi mdi-eye-off" title="hide watched items" ng-show="!settings.hideWatched" ng-click="settings.hideWatched = true"></i>
       <i class="mdi mdi-eye-off active" title="show watched items" ng-show="settings.hideWatched" ng-click="settings.hideWatched = false"></i>
     </span>
+    <span>
+      <i class="mdi mdi-message-text" title="show plot" ng-show="!settings.showPlot" ng-click="settings.showPlot = true"></i>
+      <i class="mdi mdi-message-text active" title="hide plot" ng-show="settings.showPlot" ng-click="settings.showPlot = false"></i>
+    </span>
   </div>
   <div class="filter-container">
     <input type="text" class="filter" ng-model="guiModels.filterValue" ng-change="applyFilter(guiModels.filterValue)" placeholder="search" title="Find movies (2 characters minimal)" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="guiModels.filterValue !== ''"></i>
@@ -64,7 +68,7 @@
               {{movie.year}}
             </td>
           </tr>
-          <tr ng-if="movie.plotoutline">
+          <tr ng-if="movie.plotoutline" ng-show="settings.showPlot">
             <td class="infoLabel">
               plot
             </td>

@@ -225,9 +225,7 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
     
     function getUnwatchedEpisodes(episodes) {
       var newEpisodes = [];
-      
-      //console.dir(episodes);
-      
+
       for(var index in episodes) {
         if(episodes[index].lastplayed === '') {
           newEpisodes.push(episodes[index]);
@@ -262,7 +260,6 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
       });
 
       rkVideoLibraryService.getEpisodes(tvShowId, season, function(episodes) {
-        console.dir(episodes);
         if(episodes && $scope.settings.hideWatched) {
           episodes = getUnwatchedEpisodes(episodes);
         }
@@ -279,43 +276,69 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
       });
     };
     
-    $scope.applyFilter = function(filterValue) {
+$scope.applyFilter = function(filterValue) {
       if(filterValue.length < 2) {
-        $scope.isFiltering = false;
-        $scope.showItems({
-          reset: true,
-          data: $scope.tvShowsCategorised[$scope.guiModels.selectedIndex]
-        });
-        
+        $scope.clearFilter(false);
         return;
       }
-
+      
       $scope.isFiltering = true;
       $scope.filteredItems = [];
-      var items = rkVideoLibraryService.getTvShowsFromCache();
+      var items = [];
+
+      if($scope.currentLevel === 'tvShows') {
+        items = rkVideoLibraryService.getTvShowsFromCache();
+      }
+      else if($scope.currentLevel === 'seasons') {
+        items = ($scope.currentTvShowId !== null)? $scope.seasons[$scope.currentTvShowId] : [];
+      }
+      else if($scope.currentLevel === 'episodes') {
+        items = ($scope.currentSeasonId !== null)? $scope.episodes[$scope.currentSeasonId] : [];
+      }
 
       for(var key in items) {
         if(items[key].label && items[key].label.toLowerCase().indexOf(filterValue.toLowerCase()) !== -1) {
           $scope.filteredItems.push(items[key]);
         }
       }
-      
+
       $scope.showItems({
+        key: $scope.currentLevel,
         reset: true,
         data: $scope.filteredItems
       });
     };
     
-    $scope.clearFilter = function() {
+    $scope.clearFilter = function(clearValue) {
       $scope.isFiltering = false;
       $scope.filteredItems = [];
-      $scope.guiModels.filterValue = '';
+      clearValue = (clearValue === undefined)? true : clearValue;
       
-      $scope.showItems({
-        index: $scope.guiModels.selectedIndex,
-        reset: true,
-        data: $scope.tvShowsCategorised[$scope.guiModels.selectedIndex]
-      });
+      if(clearValue) {
+        $scope.guiModels.filterValue = '';
+      }
+ 
+      if($scope.currentLevel === 'seasons') {        
+        $scope.showItems({
+          key: $scope.currentLevel,
+          reset: true,
+          data: $scope.seasons[$scope.currentTvShowId]
+        });
+      }
+      else if($scope.currentLevel === 'episodes') {
+        $scope.showItems({
+          key: $scope.currentLevel,
+          reset: true,
+          data: $scope.episodes[$scope.currentSeasonId]
+        });
+      }
+      else if($scope.currentLevel === 'tvShows') {
+        $scope.showItems({
+          key: $scope.currentLevel,
+          reset: true,
+          data: $scope.tvShowsCategorised[$scope.guiModels.selectedIndex]
+        });
+      }
     };
 
     $scope.handlePlay = function(tvShow) {

@@ -60,10 +60,13 @@ rekodiApp.factory('rkSettingsService', ['$localStorage',
             fanartWallpaper: true
           },
           tvShowsLibrary: {
-            hideWatched: false
+            hideWatched: false,
+            showEpisodePlot: false,
+            showTvShowDescription: false
           },
           moviesLibrary: {
-            hideWatched: false
+            hideWatched: false,
+            showPlot: false
           }
         };
       }
