@@ -7,6 +7,7 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiServi
     $scope.moviesIndex = [];
     $scope.scrollItems = [];
     $scope.isFiltering = false;
+    $scope.isInitialized = false;
     $scope.resumeMovie = {};
     $scope.guiModels = {
       filterValue: '',
@@ -186,25 +187,23 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiServi
       }
     }
 
-    var init = function() {
-      if(!$scope.isInitialized) {
-        initConnectionChange();
-
-        $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
-          initConnectionChange();
-        });
-
-        $(document).on('closed', '[data-remodal-id=resumeMovieModal]', function(e) {
-          $scope.resumeMovie = {};
-          modal.resumeMovie = null;
-        });
-        
-        $scope.isInitialized = true;
+    $scope.init = function() {
+      if($scope.isInitialized) {
+        return;
       }
+      
+      initConnectionChange();
+
+      $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
+        initConnectionChange();
+      });
+
+      $(document).on('closed', '[data-remodal-id=resumeMovieModal]', function(e) {
+        $scope.resumeMovie = {};
+        modal.resumeMovie = null;
+      });
+
+      $scope.isInitialized = true;
     };
-    
-    $timeout(function() {
-      init();
-    });
   }
 ]);

@@ -3,7 +3,7 @@
     <li class="active" title="TV Shows library" ng-click="setActive($event)" rel="tvShowsLibrary" data-level="2">
       <i class="mdi mdi-database-outline"></i>
     </li>
-    <li title="Video files" ng-click="setActive($event)" rel="tvShowsFiles" data-level="2">
+    <li title="Video files" ng-click="setActive($event); initTab(['tvShowsFiles']);" rel="tvShowsFiles" data-level="2">
       <i class="mdi mdi-folder-outline"></i>
     </li>
     <li title="Video addons" ng-click="setActive($event)" rel="tvShowsAddons" data-level="2">

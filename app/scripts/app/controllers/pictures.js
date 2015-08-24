@@ -10,6 +10,7 @@ rekodiApp.controller('rkPicturesCtrl', ['$scope', '$element', 'kodiApiService', 
     $scope.scrollItems = [];
     $scope.isFiltering = false;
     $scope.filteredItems = [];
+    $scope.isInitialized = false;
     $scope.filter = {value: ''};
     
     $scope.showItems = function(options) {
@@ -167,17 +168,19 @@ rekodiApp.controller('rkPicturesCtrl', ['$scope', '$element', 'kodiApiService', 
       }
     }
 
-    var init = function() {
+    $scope.init = function() {
+      if($scope.isInitialized) {
+        return;
+      }
+      
       filesService = new rkFilesService.instance('pictures');
       initConnectionChange();
       
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         initConnectionChange();
       });
+      
+      $scope.isInitialized = true;
     };
-    
-    $timeout(function() {
-      init();
-    });
   }
 ]);

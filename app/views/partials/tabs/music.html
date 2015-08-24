@@ -3,7 +3,7 @@
     <li class="active" title="Music library" ng-click="setActive($event)" rel="musicLibrary" data-level="2">
       <i class="mdi mdi-database-outline"></i>
     </li>
-    <li title="Music files" ng-click="setActive($event)" rel="musicFiles" data-level="2">
+    <li title="Music files" ng-click="setActive($event); initTab(['musicFiles']);" rel="musicFiles" data-level="2">
       <i class="mdi mdi-folder-outline"></i>
     </li>
     <li title="Music addons" ng-click="setActive($event)" rel="musicAddons" data-level="2">

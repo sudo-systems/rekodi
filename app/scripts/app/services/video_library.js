@@ -1,5 +1,5 @@
-rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService',
-  function($rootScope, rkCacheService, rkHelperService) {
+rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService',
+  function($rootScope, rkCacheService, rkHelperService, kodiApiService) {
     var _kodiApi = null;
     var _cache = new rkCacheService.create('videoLibrary');
 
@@ -59,6 +59,8 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     };
  
     function init() {
+      _kodiApi = kodiApiService.getConnection();
+      
       $rootScope.$on('rkWsConnectionStatusChange', function (event, connection) {
         _kodiApi = connection;
       });
