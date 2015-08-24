@@ -1,8 +1,14 @@
 <div class="options">
-  <div class="page-specific" ng-show="moviesIndex.length > 0 && !isFiltering">
-    <select name="index" ng-model="guiModels.selectedIndex" class="index" title="Select the category" ng-change="showItems({reset: true, data: moviesCategorised[guiModels.selectedIndex]})">
-      <option ng-repeat="indexLetter in moviesIndex" ng-value="indexLetter" ng-selected="indexLetter === guiModels.selectedIndex">{{indexLetter}}</option>
-    </select>
+  <div class="page-specific">
+    <span ng-show="moviesIndex.length > 0 && !isFiltering">
+      <select name="index" ng-model="guiModels.selectedIndex" class="index" title="Select the category" ng-change="showItems({reset: true, data: moviesCategorised[guiModels.selectedIndex]})">
+        <option ng-repeat="indexLetter in moviesIndex" ng-value="indexLetter" ng-selected="indexLetter === guiModels.selectedIndex">{{indexLetter}}</option>
+      </select>
+    </span>
+    <span>
+      <i class="mdi mdi-eye-off" title="hide watched items" ng-show="!settings.hideWatched" ng-click="settings.hideWatched = true"></i>
+      <i class="mdi mdi-eye-off active" title="show watched items" ng-show="settings.hideWatched" ng-click="settings.hideWatched = false"></i>
+    </span>
   </div>
   <div class="filter-container">
     <input type="text" class="filter" ng-model="guiModels.filterValue" ng-change="applyFilter(guiModels.filterValue)" placeholder="search" title="Find movies (2 characters minimal)" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="guiModels.filterValue !== ''"></i>
@@ -20,8 +26,8 @@
           <tr>
             <td colspan="2" class="title">
               <h2>
-                <i class="mdi mdi-eye watched-label" ng-if="movie.lastplayed !== '' && movie.resume.position === 0" title="Watched"></i> 
-                <i class="mdi mdi-redo partially-watched-label" ng-if="movie.resume.position !== 0" title="Partially watched"></i>
+                <i class="mdi mdi-eye watched-label" ng-if="movie.is_watched" title="Watched"></i> 
+                <i class="mdi mdi-redo partially-watched-label" ng-if="movie.is_resumable" title="Partially watched"></i>
                 {{movie.label}}
               </h2>
             </td>
