@@ -1,14 +1,15 @@
-rekodiApp.factory('rkHelperService', ['$localStorage',
-  function($localStorage) {
+rekodiApp.factory('rkHelperService', ['rkSettingsService',
+  function(rkSettingsService) {
     var wallpaper = require('wallpaper');
     var http = require('http');
     var fs = require('fs');
     var mkpath = require('mkpath');
     var tempDownloadDirectory = __dirname+'/.tmp/';
+    var connectionSettings = rkSettingsService.get({category: 'connection'});
 
     var getImageUrl = function(specialPath) {
-      var usernameAndPassword = ($localStorage.settings.password && $localStorage.settings.password !== '')? $localStorage.settings.username+':'+$localStorage.settings.password+'@' : '';
-      var downloadPath = 'http://'+usernameAndPassword+$localStorage.settings.serverAddress+':'+$localStorage.settings.httpPort+'/image/';
+      var usernameAndPassword = (connectionSettings.password && connectionSettings.password !== '')? connectionSettings.username+':'+connectionSettings.password+'@' : '';
+      var downloadPath = 'http://'+usernameAndPassword+connectionSettings.serverAddress+':'+connectionSettings.httpPort+'/image/';
       var urlEncodedImagePath = encodeURIComponent(specialPath);
       var imageUrl = downloadPath+urlEncodedImagePath;
 

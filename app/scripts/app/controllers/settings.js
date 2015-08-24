@@ -1,6 +1,7 @@
-rekodiApp.controller('rkSettingsCtrl', ['$scope', '$localStorage', 'kodiApiService', 'rkNowPlayingService', '$timeout',
-  function($scope, $localStorage, kodiApiService, rkNowPlayingService, $timeout) {
-    $scope.storage = null;
+rekodiApp.controller('rkSettingsCtrl', ['$scope', 'kodiApiService', 'rkNowPlayingService', 'rkSettingsService',
+  function($scope, kodiApiService, rkNowPlayingService, rkSettingsService) {
+    var sections = ['connection', 'nowPlaying'];
+    $scope.settings = {};
     $scope.connectButton = {
       text: 'connect',
       disabled: false
@@ -9,11 +10,7 @@ rekodiApp.controller('rkSettingsCtrl', ['$scope', '$localStorage', 'kodiApiServi
     $scope.connect = function() {
       kodiApiService.connect(true);
     };
-    
-    $scope.setDefaultTab = function(tabPath) {
-      
-    };
-    
+
     $scope.setConnectionStatus = function(connection) {
       if(connection) {
         $scope.connectButton.text = 'connected';
@@ -24,49 +21,34 @@ rekodiApp.controller('rkSettingsCtrl', ['$scope', '$localStorage', 'kodiApiServi
         $scope.connectButton.disabled = false;
       }
     };
-    
-    $scope.setButtonStatus = function(newData, oldData) {
-      if(newData.serverAddress !== oldData.serverAddress || newData.jsonRpcPort !== oldData.jsonRpcPort) {
-        $scope.connectButton.text = 'connect';
-        $scope.connectButton.disabled = false;
-      }
-    };
 
-    function init() {
-      if(!$localStorage.settings || $localStorage.settings.constructor !== Object) {
-        $localStorage.settings = {
-          serverAddress: '',
-          jsonRpcPort: '9090',
-          httpPort: '8080',
-          username: 'kodi',
-          password: '',
-          fanartWallpaper: false
-        };
+    $scope.init = function() {
+      for(var key in sections) {
+        $scope.settings[sections[key]] = rkSettingsService.get({category: sections[key]});
+        
+        $scope.$watchCollection('settings.'+sections[key], function(newData, oldData) {
+          if(newData) {
+            for(var key in newData) {
+              rkSettingsService.set({
+                category: sections[key],
+                key: key,
+                value: newData[key]
+              });
+            }
+            
+            if(newData.fanartWallpaper) {
+              rkNowPlayingService.applyCurrentFanartWallpaper();
+            }
+            else {
+              rkNowPlayingService.applyDefaultWallpaper();
+            }
+          }
+        }, true);
       }
-      
-      $scope.storage = $localStorage.settings;
-      
+
       $scope.$on('rkWsConnectionStatusChange', function(event, connection) {
         $scope.setConnectionStatus(connection);
       });
-
-
-      $scope.$watchCollection(function() { 
-        return $localStorage.settings; 
-      }, function(newData, oldData) {
-        $scope.setButtonStatus(newData, oldData);
-
-        if(newData.fanartWallpaper) {
-          rkNowPlayingService.applyCurrentFanartWallpaper();
-        }
-        else {
-          rkNowPlayingService.applyDefaultWallpaper();
-        }
-      });
-    }
-    
-    $timeout(function() {
-      init();
-    });
+    };
   }
 ]);

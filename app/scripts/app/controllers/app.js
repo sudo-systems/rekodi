@@ -1,17 +1,15 @@
-rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'kodiApiService', '$sessionStorage', 'rkNowPlayingService', 'rkKodiPropertiesService', 'rkNotificationService',
-  function($scope, $localStorage, $timeout, kodiApiService, $sessionStorage, rkNowPlayingService, rkKodiPropertiesService, rkNotificationService) {
+rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'kodiApiService', '$sessionStorage', 'rkNowPlayingService', 'rkKodiPropertiesService', 'rkNotificationService', 'rkSettingsService',
+  function($scope, $localStorage, $timeout, kodiApiService, $sessionStorage, rkNowPlayingService, rkKodiPropertiesService, rkNotificationService, rkSettingsService) {
     $scope.storage = $localStorage;
     $scope.sessionStorage = $sessionStorage;
-    $scope.isConfigured = true;
+    $scope.isConfigured = rkSettingsService.isConnectionConfigured();
     $scope.isConnected = true;
     $scope.controllersLoaded = false;
     $scope.$root.rkRequiredControllers = {};
     var rkRequiredControllers = ['footer', 'now_playing', 'playback_controls', 'tabs', 'window'];
     
     for(var key in rkRequiredControllers) {
-      $scope.$root.rkRequiredControllers[rkRequiredControllers[key]] = {
-        loaded: false
-      };
+      $scope.$root.rkRequiredControllers[rkRequiredControllers[key]] = {loaded: false};
     }
 
     $scope.setActiveTab = function(tab, subTab) {
@@ -20,35 +18,19 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$localStorage', '$timeout', 'kodiA
       });
 
       if(subTab) {
-        $timeout(function() {
+        $timeout(function() {å
           angular.element('nav li[rel='+subTab+']').trigger('click');
         });
       }
     };
-    
-    function setIfConnectionConfigured() {
-      $scope.isConfigured = (!$localStorage.settings ||
-        $localStorage.settings.constructor !== Object ||
-        !$localStorage.settings.serverAddress || 
-        !$localStorage.settings.jsonRpcPort || 
-        $localStorage.settings.serverAddress === '' || 
-        $localStorage.settings.jsonRpcPort === '')? false : true;
-    };
 
     function init() {
-      setIfConnectionConfigured();
-
       if($scope.storage.tabs && $scope.storage.tabs.currentlyActiveTab) {
         $scope.storage.tabs.currentlyActiveTab = '';
       }
-      
-      $scope.$watchCollection(function() { 
-        return $localStorage.settings; 
-      }, function(newData, oldData) {
-        setIfConnectionConfigured();
-      });
-      
+
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
+        $scope.isConfigured = rkSettingsService.isConnectionConfigured();
         $scope.isConnected = (connection);
         
         if(connection) {

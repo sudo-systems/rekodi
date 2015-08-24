@@ -1,5 +1,5 @@
-rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkRemoteControlService', '$timeout', 'rkVideoLibraryService',
-  function($scope, $element, kodiApiService, rkTooltipsService, rkRemoteControlService, $timeout, rkVideoLibraryService) {
+rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkRemoteControlService', 'rkVideoLibraryService', 'rkSettingsService',
+  function($scope, $element, kodiApiService, rkTooltipsService, rkRemoteControlService, rkVideoLibraryService, rkSettingsService) {
     var modal = {};
     var displayLimit = 3;
     var kodiApi = null;
@@ -13,6 +13,7 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
     $scope.currentLevel = null;
     $scope.currentTvShowId = null;
     $scope.currentSeasonId = null;
+    $scope.settings = rkSettingsService.get({category: 'tvShowsLibrary'});
     $scope.resumeTvShow = {};
     $scope.guiModels = {
       filterValue: '',
@@ -68,18 +69,6 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
       }
     };
 
-    function createCategorisedIndex(tvShowsCategorised) {
-      $scope.tvShowsIndex = [];
-
-      for (var key in tvShowsCategorised) {
-        if (tvShowsCategorised.hasOwnProperty(key)) {
-          $scope.tvShowsIndex.push(key);
-        }
-      }
-
-      return $scope.tvShowsIndex;
-    }
-    
     function getDefaultIndex(tvShowsIndex) {
       for(var key in tvShowsIndex) {
         if(tvShowsIndex[key].toLowerCase() !== tvShowsIndex[key].toUpperCase()) {
@@ -90,6 +79,24 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
       return null;
     }
     
+    function removeWatchedSTvShows(tvShowsCategorised) {
+      tvShowsCategorised = (!tvShowsCategorised)? {} : tvShowsCategorised;
+      
+      for(var key in tvShowsCategorised) {
+        for(var index in tvShowsCategorised[key]) {
+          if(!tvShowsCategorised[key][index].episode || tvShowsCategorised[key][index].watchedepisodes === tvShowsCategorised[key][index].episode) {
+            tvShowsCategorised[key].splice(index, 1);
+          }
+        }
+
+        if(tvShowsCategorised[key].length === 0) {
+          delete tvShowsCategorised[key];
+        }
+      }
+      
+      return tvShowsCategorised;
+    }
+    
     $scope.getTvShowsCategorised = function() {
       $scope.currentLevel = 'tvShows';
       $scope.currentTvShowId = null;
@@ -98,7 +105,12 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
       
       if(Object.keys($scope.tvShowsCategorised).length === 0) {
         $scope.tvShowsCategorised = rkVideoLibraryService.getTvShowsCategorisedFromCache();
-        $scope.tvShowsIndex = createCategorisedIndex($scope.tvShowsCategorised);
+        
+        if($scope.settings.hideWatched) {
+          $scope.tvShowsCategorised = removeWatchedSTvShows($scope.tvShowsCategorised);
+        }
+
+        $scope.tvShowsIndex = Object.keys($scope.tvShowsCategorised);
         $scope.guiModels.selectedIndex = getDefaultIndex($scope.tvShowsIndex);
       }
       
@@ -109,9 +121,13 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
       });
 
       rkVideoLibraryService.getTvShowsCategorised(function(tvShowsCategorised) {
+        if($scope.settings.hideWatched) {
+          tvShowsCategorised = removeWatchedSTvShows(tvShowsCategorised);
+        }
+
         if(tvShowsCategorised && !angular.equals(tvShowsCategorised, $scope.tvShowsCategorised)) {
           $scope.tvShowsCategorised = tvShowsCategorised;
-          $scope.tvShowsIndex = createCategorisedIndex(tvShowsCategorised);
+          $scope.tvShowsIndex = Object.keys(tvShowsCategorised);
           $scope.guiModels.selectedIndex = getDefaultIndex($scope.tvShowsIndex);
 
           $scope.showItems({
@@ -284,6 +300,16 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
       $(document).on('closed', '[data-remodal-id=resumeTvShowModal]', function(e) {
         $scope.resumeTvShow = {};
         modal.resumeTvShow = null;
+      });
+      
+      $scope.$watchCollection('settings', function(newData, oldData) {
+        for(var key in newData) {
+          rkSettingsService.set({
+            category: 'tvShowsLibrary',
+            key: key,
+            value: newData[key]
+          });
+        }
       });
 
       $scope.isInitialized = true;

@@ -6,6 +6,9 @@
         <option ng-repeat="indexLetter in tvShowsIndex track by indexLetter" ng-value="indexLetter" ng-selected="indexLetter === guiModels.selectedIndex">{{indexLetter}}</option>
       </select>
     </span>
+    <span>
+      <input type="checkbox" ng-model="settings.hideWatched" /> hide watched
+    </span>
   </div>
   <div class="filter-container">
     <input type="text" class="filter" ng-model="guiModels.filterValue" ng-change="applyFilter(guiModels.filterValue)" placeholder="search" title="Find tvShows (2 characters minimal)" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="guiModels.filterValue !== ''"></i>
@@ -45,6 +48,22 @@
               {{tvShow.rating_rounded}}
             </td>
           </tr>
+          <tr>
+            <td class="infoLabel">
+              episodes
+            </td>
+            <td class="infoContent">
+              {{tvShow.episode}}
+            </td>
+          </tr>
+          <tr>
+            <td class="infoLabel">
+              unwatched
+            </td>
+            <td class="infoContent">
+              {{(tvShow.episode - tvShow.watchedepisodes)}}
+            </td>
+          </tr>
           <tr ng-if="tvShow.premiered">
             <td class="infoLabel">
               premiered
@@ -53,14 +72,14 @@
               {{tvShow.premiered | date: 'dd-MM-yyyy'}}
             </td>
           </tr>
-          <tr ng-if="tvShow.plot">
+          <!--<tr ng-if="tvShow.plot">
             <td class="infoLabel">
               plot
             </td>
             <td class="infoContent">
               {{tvShow.plot}}
             </td>
-          </tr>
+          </tr>-->
         </table>
       </div>
     </li>

@@ -88,7 +88,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     var getTvShowsCategorised = function(callback) {
       if(_kodiApi) {
         _kodiApi.VideoLibrary.GetTVShows({
-          properties: ['thumbnail', 'watchedepisodes', 'premiered', 'rating', 'plot', 'genre', 'file'],
+          properties: ['thumbnail', 'watchedepisodes', 'episode', 'premiered', 'rating', 'plot', 'genre', 'file'],
           sort: {
             order: 'ascending',
             method: 'label'
