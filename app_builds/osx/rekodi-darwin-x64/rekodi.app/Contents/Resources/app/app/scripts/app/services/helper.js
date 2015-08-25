@@ -1,11 +1,16 @@
 rekodiApp.factory('rkHelperService', ['rkSettingsService',
   function(rkSettingsService) {
     var wallpaper = require('wallpaper');
+    var homedir = require('homedir');
     var http = require('http');
     var fs = require('fs');
     var mkpath = require('mkpath');
-    var tempDownloadDirectory = __dirname+'/.tmp/';
+    var tempDownloadDirectory = '.tmp/';
     var connectionSettings = rkSettingsService.get({category: 'connection'});
+    
+    var getStorageRootPath = function() {
+      return homedir()+'/.rekodi/'
+    };
 
     var getImageUrl = function(specialPath) {
       var usernameAndPassword = (connectionSettings.password && connectionSettings.password !== '')? connectionSettings.username+':'+connectionSettings.password+'@' : '';
@@ -97,7 +102,7 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService',
     };
     
     var handleError = function(error) {
-      console.dir(error);
+      console.error(error);
     };
     
     var secondsToDuration = function(seconds) {
@@ -131,7 +136,8 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService',
     };
 
     var downloadFile = function(url, targetDirectory, filename, overwrite, callback) {
-      var downloadDirectory = tempDownloadDirectory+targetDirectory;
+      var rootPath = getStorageRootPath();
+      var downloadDirectory = rootPath+tempDownloadDirectory+targetDirectory;
       downloadDirectory = (downloadDirectory.substr(-1) !== '/')? downloadDirectory+'/' : downloadDirectory;
 
       if(filename && filename !== '') {
@@ -253,7 +259,8 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService',
       setDesktopWallpaper: setDesktopWallpaper,
       getDesktopWallpaper: getDesktopWallpaper,
       secondsToTimeObject: secondsToTimeObject,
-      timeObjectToSeconds: timeObjectToSeconds
+      timeObjectToSeconds: timeObjectToSeconds,
+      getStorageRootPath: getStorageRootPath
     };
   }
 ]);

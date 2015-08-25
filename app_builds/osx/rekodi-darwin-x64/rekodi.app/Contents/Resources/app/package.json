@@ -33,6 +33,7 @@
     "electron-builder": "^2.0.0",
     "electron-packager": "^5.0.1",
     "electron-prebuilt": "^0.31.0",
+    "homedir": "^0.6.0",
     "lodash": "^3.10.1",
     "lodash.template": "^3.6.2",
     "mkpath": "^0.1.0",

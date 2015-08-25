@@ -3,10 +3,11 @@ rekodiApp.factory('rkCacheService', ['rkHelperService',
     var create = function(identifier) {
       var fs = require('fs');
       var mkpath = require('mkpath');
-      var cacheDir = __dirname+'/.cache/';
+      var rootPath = rkHelperService.getStorageRootPath();
+      var cacheDir = rootPath+'.cache/';
       var cacheFile = cacheDir+identifier+'.json';
       var cacheData = {};
-      
+
       function init() {
         if(fs.existsSync(cacheFile)) {
           cacheData = require(cacheFile);
