@@ -1,0 +1,29 @@
+section#settings {
+  .settings-section {
+    padding: 0 map-get($global, window-padding);
+    
+    .title {
+      margin: 8px 0;
+      border-bottom: 1px solid #AAA;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: #FFF;
+      line-height: 24px;
+      text-transform: uppercase;
+    }
+    
+    li {
+      padding: 6px 0;
+      white-space: nowrap;
+      
+      label {
+        width: 140px;
+      }
+
+      input {
+        width: 336px;
+      }
+    }
+  }
+    
+}

@@ -1,0 +1,64 @@
+{
+  "name": "rekodi",
+  "version": "0.1.0",
+  "main": "index.js",
+  "description": "A cross platform desktop remote for Kodi/Xbmc",
+  "author": "Bram van Oploo <bram@sudo-systems.com>",
+  "contributors": [
+    {
+      "name": "Bram van Oploo",
+      "email": "bram@sudo-systems.com"
+    }
+  ],
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "clean": "rm -rf ./app_builds",
+    "clean:osx": "rm -rf ./app_builds/osx",
+    "clean:win": "rm -rf ./app_builds/win",
+    "clean:linux": "rm -rf ./app_builds/linux",
+    "build": "npm run clean && npm run build:osx && npm run build:win && npm run build:linux",
+    "build:osx": "npm run clean:osx && electron-packager ./ \"rekodi\" --out=app_builds/osx --platform=darwin --arch=x64 --version=0.30.4 --icon=assets/osx/rekodi.icns --ignore=\"(nbproject|app_builds|electron-packager|electron-prebuilt|electron-builder)\" --ignore=\"app/.cache\" --ignore=\"app/.tmp\"",
+    "build:win": "npm run clean:win && electron-packager ./ \"rekodi\" --out=app_builds/win --platform=win32 --arch=ia32 --version=0.30.4 --icon=assets/win/icon.ico --ignore=\"(nbproject|app_builds|electron-packager|electron-prebuilt|electron-builder)\" --ignore=\"app/.cache\" --ignore=\"app/.tmp\"",
+    "build:linux": "npm run clean:linux && electron-packager ./ \"rekodi\" --out=app_builds/linux --platform=linux --arch=all --version=0.30.4 --icon=assets/linux/icon.png --ignore=\"(nbproject|app_builds|electron-packager|electron-prebuilt|electron-builder)\" --ignore=\"app/.cache\" --ignore=\"app/.tmp\"",
+    "pack": "npm run pack:osx && npm run pack:win && npm run pack:deb_ia32 && npm run pack:deb_x64 && npm run pack:rpm_ia32 && npm run pack:rpm_x64",
+    "pack:osx": "npm run build:osx && electron-builder \"app_builds/osx/rekodi-darwin-x64/rekodi.app\" --platform=osx --out=\"app_builds/osx\" --config=packager.json",
+    "pack:win": "npm run build:win && electron-builder \"app_builds/win/rekodi-win32-ia32\" --platform=win --out=\"app_builds/win\" --config=packager.json",
+    "pack:deb_ia32": "npm run build:linux && fpm -f -t deb -a i386 -n rekodi -v 0.1.0 --vendor \"sudo-systems.com\" -m \"<bram@sudo-systems.com>\" --description \"A cross platform desktop remote for Kodi/Xbmc\" -p ./app_builds/linux --prefix /etc -C ./app_builds/linux -s dir rekodi-linux-ia32",
+    "pack:deb_x64": "fpm -f -t deb -a x86_64 -n rekodi -v 0.1.0 --vendor \"sudo-systems.com\" -m \"<bram@sudo-systems.com>\" --description \"A cross platform desktop remote for Kodi/Xbmc\" -p ./app_builds/linux --prefix /etc -C ./app_builds/linux -s dir rekodi-linux-x64",
+    "pack:rpm_ia32": "npm run build:linux && fpm -f -t rpm -a i386 -n rekodi -v 0.1.0 --vendor \"sudo-systems.com\" -m \"<bram@sudo-systems.com>\" --description \"A cross platform desktop remote for Kodi/Xbmc\" -p ./app_builds/linux --prefix /etc -C ./app_builds/linux -s dir rekodi-linux-ia32",
+    "pack:rpm_x64": "fpm -f -t rpm -a x86_64 -n rekodi -v 0.1.0 --vendor \"sudo-systems.com\" -m \"<bram@sudo-systems.com>\" --description \"A cross platform desktop remote for Kodi/Xbmc\" -p ./app_builds/linux --prefix /etc -C ./app_builds/linux -s dir rekodi-linux-x64"
+  },
+  "dependencies": {
+    "electron-builder": "^2.0.0",
+    "electron-packager": "^5.0.1",
+    "electron-prebuilt": "^0.30.4",
+    "lodash": "^3.10.1",
+    "lodash.template": "^3.6.2",
+    "mkpath": "^0.1.0",
+    "node-notifier": "^4.2.3",
+    "rimraf": "^2.4.2",
+    "wallpaper": "^1.1.0",
+    "wiredep": "^2.2.2",
+    "xbmc-event-client": "^0.0.2",
+    "xbmc-ws": "^2.1.2"
+  },
+  "license": "GPL v2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bram77/rekodi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Bram77/rekodi/issues"
+  },
+  "keywords": [
+    "kodi",
+    "xbmc",
+    "remote",
+    "cross-platform",
+    "windows",
+    "linux",
+    "osx"
+  ],
+  "private": false
+}

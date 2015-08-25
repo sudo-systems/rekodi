@@ -1,0 +1,39 @@
+{
+  "name": "rekodi",
+  "version": "0.1.0",
+  "authors": [
+    "Bram van Oploo <bram@sudo-systems.com>"
+  ],
+  "description": "A cross platform desktop remote for Kodi/Xbmc",
+  "main": "index.js",
+  "keywords": [
+    "Kodi",
+    "Xbmc",
+    "Remote",
+    "Cross-platform"
+  ],
+  "license": "GPL v2",
+  "homepage": "https://github.com/Bram77/rekodi",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "dist",
+    "nbproject",
+    "assets",
+    "test",
+    "tests",
+    "app/tmp"
+  ],
+  "dependencies": {
+    "font-awesome": "~4.3.0",
+    "angular": "~1.4.3",
+    "jbox": "~0.3.2",
+    "mdi": "~1.1.70",
+    "ngstorage": "~0.3.7",
+    "bower": "*",
+    "install": "~1.0.4",
+    "remodal": "~1.0.2",
+    "angular-su-endless-scroll": "~1.0.0"
+  }
+}

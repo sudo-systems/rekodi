@@ -1,0 +1,114 @@
+<!doctype html>
+<html ng-app="rekodiApp">
+  <head>
+    <title>ReKodi</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="HandheldFriendly" content="true" />
+    
+    <!-- bower:css -->
+    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="../bower_components/mdi/css/materialdesignicons.css" />
+    <link rel="stylesheet" href="../bower_components/mdi/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="../bower_components/remodal/dist/remodal.css" />
+    <link rel="stylesheet" href="../bower_components/remodal/dist/remodal-default-theme.css" />
+    <!-- endbower -->
+
+    <link rel="stylesheet" href="../bower_components/jbox/source/jBox.css" />
+    <link rel="stylesheet" href="styles/css/style.css" />
+ 
+    <!-- alternate loading of jquery lib; workaround -->
+    <script type="text/javascript">
+      window.$ = window.jQuery = require('../bower_components/jquery/dist/jquery.min.js');
+    </script>
+    <!-- end:jquery -->
+ 
+    <!-- bower:js -->
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/ngstorage/ngStorage.js"></script>
+    <script src="../bower_components/remodal/dist/remodal.js"></script>
+    <script src="../bower_components/angular-su-endless-scroll/su-endless-scroll.min.js"></script>
+    <!-- endbower -->
+    
+    <script src="scripts/vendor/styl.min.js"></script>
+    <script src="../bower_components/jbox/source/jBox.min.js"></script>
+    
+    <!-- app:rekodiApp -->
+    <script src="scripts/app/app.js"></script>
+    <script src="scripts/app/config.js"></script>
+    <!-- end:rekodiApp -->
+    
+    <!-- app:controllers -->
+    <script src="scripts/app/controllers/app.js"></script>
+    <script src="scripts/app/controllers/window.js"></script>
+    <script src="scripts/app/controllers/now_playing.js"></script>
+    <script src="scripts/app/controllers/playback_controls.js"></script>
+    <script src="scripts/app/controllers/tabs.js"></script>
+    <script src="scripts/app/controllers/recently_added.js"></script>
+    <script src="scripts/app/controllers/audio_playlist.js"></script>
+    <script src="scripts/app/controllers/video_playlist.js"></script>
+    <script src="scripts/app/controllers/music_files.js"></script>
+    <script src="scripts/app/controllers/music_library.js"></script>
+    <script src="scripts/app/controllers/video_files.js"></script>
+    <script src="scripts/app/controllers/movies_library.js"></script>
+    <script src="scripts/app/controllers/tv_shows_library.js"></script>
+    <script src="scripts/app/controllers/pictures.js"></script>
+    <script src="scripts/app/controllers/addons.js"></script>
+    <script src="scripts/app/controllers/remote.js"></script>
+    <script src="scripts/app/controllers/settings.js"></script>
+    <script src="scripts/app/controllers/footer.js"></script>
+    <!-- end:controllers -->
+    
+    <!-- app:directives -->
+    <script src="scripts/app/directives/tabs.js"></script>
+    <script src="scripts/app/directives/tooltips.js"></script>
+    <!-- end:directives -->
+    
+    <!-- app:services -->
+    <script src="scripts/app/services/enums.js"></script>
+    <script src="scripts/app/services/settings.js"></script>
+    <script src="scripts/app/services/helper.js"></script>
+    <script src="scripts/app/services/cache.js"></script>
+    <script src="scripts/app/services/notification.js"></script>
+    <script src="scripts/app/services/kodi_api.js"></script>
+    <script src="scripts/app/services/files.js"></script>
+    <script src="scripts/app/services/audio_library.js"></script>
+    <script src="scripts/app/services/video_library.js"></script>
+    <script src="scripts/app/services/kodi_properties.js"></script>
+    <script src="scripts/app/services/player_properties.js"></script>
+    <script src="scripts/app/services/playback_status.js"></script>
+    <script src="scripts/app/services/remote_control.js"></script>
+    <script src="scripts/app/services/now_playing.js"></script>
+    <script src="scripts/app/services/tooltips.js"></script>
+    <!-- end:services -->
+  </head>
+  <body ng-controller="rkAppCtrl">
+    <div class="remodal-bg">
+      <div id="notConfiguredOverlay" class="bodyOverlay" ng-show="!isConfigured && storage.tabs.currentlyActiveTab !== 'settings'">
+        Welcome to ReKodi
+        <br />
+        <br />
+        <br />
+        <small>
+          Please <a href="javascript: void(0);" title="Go to the settings tab" ng-click="setActiveTab('settings')">configure your connection</a> and start remotely controlling Kodi.
+        </small>
+      </div>
+      <div id="notConnectedOverlay" class="bodyOverlay" ng-show="!isConnected && isConfigured && storage.tabs.currentlyActiveTab !== 'settings'">
+        No connection with Kodi. 
+        <br />
+        <br />
+        <br />
+        <small>
+          Please check if your Kodi machine is up and running or <a href="javascript: void(0);" title="Go to the settings tab" ng-click="setActiveTab('settings')">reconfigure your Kodi connection</a>.
+        </small>
+      </div>
+      <section ng-include="'views/partials/window_controls.html'" ng-controller="rkWindowCtrl" rk-tooltips id="windowControls"></section>
+      <section ng-include="'views/partials/now_playing.html'" ng-controller="rkNowPlayingCtrl" rk-tooltips id="nowPlaying"></section>
+      <section ng-include="'views/partials/playback_controls.html'" ng-controller="rkPlaybackControlsCtrl" rk-tooltips id="playbackControls"></section>
+      <section ng-include="'views/partials/tabs.html'" ng-controller="rkTabsCtrl" rk-tooltips rk-tabs class="tabsContainer" id="tabs"></section>
+      <section ng-include="'views/partials/footer.html'" ng-controller="rkFooterCtrl" rk-tooltips id="footer" class="clearfix"></section>
+    </div>
+  </body>
+</html>
+    

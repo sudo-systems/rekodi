@@ -1,0 +1,73 @@
+<div class="wrapper">
+  <div class="recently-added-section" ng-show="recentlyAddedEpisodes.length > 0">
+    <div class="section-title">
+      Recently added episodes
+    </div>
+    <div class="horizontal-list-wrapper episodes">
+      <ul class="horizontal">
+        <li ng-repeat="episode in recentlyAddedEpisodes track by episode.episodeid">
+          <div class="thumbnail">
+            <div class="indicators">
+              <i class="mdi mdi-eye" ng-if="episode.is_watched" title="watched"></i>
+              <i class="mdi mdi-redo" ng-if="episode.is_resumable" title="partially watched"></i>
+            </div>
+            <img ng-src="{{episode.thumbnail_src}}" alt="" ng-if="episode.thumbnail_src" />
+            <i class="mdi mdi-theater" ng-if="!episode.thumbnail_src"></i>
+          </div>
+          <div class="parent-title">
+            {{episode.showtitle}}
+          </div>
+          <div class="title">
+            {{episode.label}}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="recently-added-section" ng-show="recentlyAddedMovies.length > 0">
+    <div class="section-title">
+      Recently added movies
+    </div>
+    <div class="horizontal-list-wrapper movies">
+      <ul class="horizontal">
+        <li ng-repeat="movie in recentlyAddedMovies track by movie.movieid">
+          <div class="thumbnail">
+            <div class="indicators">
+              <i class="mdi mdi-eye" ng-if="movie.is_watched" title="watched"></i>
+              <i class="mdi mdi-redo" ng-if="movie.is_resumable" title="partially watched"></i>
+            </div>
+            <img ng-src="{{movie.thumbnail_src}}" alt="" ng-if="movie.thumbnail_src" />
+            <i class="mdi mdi-movie" ng-if="!movie.thumbnail_src"></i>
+          </div>
+          <div class="parent-title">
+            {{movie.year}}
+          </div>
+          <div class="title">
+            {{movie.label}}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="recently-added-section" ng-show="recentlyAddedAlbums.length > 0">
+    <div class="section-title">
+      Recently added albums
+    </div>
+    <div class="horizontal-list-wrapper albums">
+      <ul class="horizontal">
+        <li ng-repeat="album in recentlyAddedAlbums track by album.albumid">
+          <div class="thumbnail">
+            <img ng-src="{{album.thumbnail_src}}" alt="" ng-if="album.thumbnail_src" />
+            <i class="mdi mdi-music-note" ng-if="!album.thumbnail_src"></i>
+          </div>
+          <div class="parent-title">
+            {{album.displayartist}}
+          </div>
+          <div class="title">
+            {{album.label}}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
