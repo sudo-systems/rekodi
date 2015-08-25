@@ -11,8 +11,8 @@
     }
   ],
   "scripts": {
-    "start": "electron .",
-    "dev": "electron .",
+    "start": "electron ./",
+    "dev": "electron ./",
     "clean:osx": "rm -rf ./app_builds/osx",
     "clean:win": "rm -rf ./app_builds/win",
     "clean:linux": "rm -rf ./app_builds/linux",

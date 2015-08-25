@@ -5,7 +5,7 @@
     </div>
     <div class="horizontal-list-wrapper episodes">
       <ul class="horizontal">
-        <li ng-repeat="episode in recentlyAddedEpisodes track by episode.episodeid">
+        <li ng-repeat="episode in recentlyAddedEpisodes track by episode.episodeid" ng-click="showPlayDialog('episode', episode)">
           <div class="thumbnail">
             <div class="indicators">
               <i class="mdi mdi-eye" ng-if="episode.is_watched" title="watched"></i>
@@ -30,7 +30,7 @@
     </div>
     <div class="horizontal-list-wrapper movies">
       <ul class="horizontal">
-        <li ng-repeat="movie in recentlyAddedMovies track by movie.movieid">
+        <li ng-repeat="movie in recentlyAddedMovies track by movie.movieid" ng-click="showPlayDialog('movie', movie)">
           <div class="thumbnail">
             <div class="indicators">
               <i class="mdi mdi-eye" ng-if="movie.is_watched" title="watched"></i>
@@ -55,7 +55,7 @@
     </div>
     <div class="horizontal-list-wrapper albums">
       <ul class="horizontal">
-        <li ng-repeat="album in recentlyAddedAlbums track by album.albumid">
+        <li ng-repeat="album in recentlyAddedAlbums track by album.albumid" ng-click="showPlayDialog('album', album)">
           <div class="thumbnail">
             <img ng-src="{{album.thumbnail_src}}" alt="" ng-if="album.thumbnail_src" />
             <i class="mdi mdi-music-note" ng-if="!album.thumbnail_src"></i>

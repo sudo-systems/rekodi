@@ -82,7 +82,7 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService',
         }
       }
       
-      if(item.lastplayed && item.lastplayed !== '') {
+      if(!item.is_resumable && item.lastplayed && item.lastplayed !== '') {
         item.is_watched = true;
       }
       

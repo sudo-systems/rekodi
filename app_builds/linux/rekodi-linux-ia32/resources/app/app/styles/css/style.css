@@ -1622,6 +1622,78 @@ section#recentlyAdded > .wrapper {
         transition: all 0.4s ease-in-out;
         color: #777; }
 
+.ngdialog.ngdialog-theme-default.ngdialog-closing .ngdialog-content {
+  -webkit-animation: ngdialog-flyout .2s; }
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+  border-radius: 0;
+  font-family: Quicksand;
+  -webkit-animation: ngdialog-flyin .3s; }
+  .ngdialog.ngdialog-theme-default .ngdialog-content .title {
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    color: #000; }
+  .ngdialog.ngdialog-theme-default .ngdialog-content .description {
+    font-size: 15px;
+    margin: 6px 0 32px 0;
+    line-height: 18px; }
+  .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-close {
+    border-radius: 0; }
+    .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-close:before {
+      border-radius: 0; }
+  .ngdialog.ngdialog-theme-default .ngdialog-content textarea,
+  .ngdialog.ngdialog-theme-default .ngdialog-content input,
+  .ngdialog.ngdialog-theme-default .ngdialog-content button {
+    border-radius: 0; }
+  .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button {
+    border-radius: 0;
+    height: auto;
+    line-height: 20px;
+    padding: 0 6px;
+    font-size: 11px;
+    width: auto;
+    min-width: 60px; }
+  .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-buttons {
+    border-top: 1px dotted #E6802E;
+    padding: 10px 0 0 0; }
+  .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-primary {
+    background: #E6802E;
+    border: 1px solid #E6802E; }
+    .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-primary:hover {
+      border: 1px dotted #FFF;
+      -ms-transform: scale(1.05);
+      -webkit-transform: scale(1.05);
+      -moz-transform: scale(1.05);
+      -o-transform: scale(1.05);
+      transform: scale(1.05); }
+    .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-primary:active {
+      -ms-transform: scale(1);
+      -webkit-transform: scale(1);
+      -moz-transform: scale(1);
+      -o-transform: scale(1);
+      transform: scale(1); }
+  .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-secondary {
+    background: #CCC;
+    border: 1px solid #CCC;
+    color: #333; }
+    .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-secondary:hover {
+      background: #AAA;
+      border: 1px dotted #FFF;
+      color: #FFF;
+      -ms-transform: scale(1.05);
+      -webkit-transform: scale(1.05);
+      -moz-transform: scale(1.05);
+      -o-transform: scale(1.05);
+      transform: scale(1.05); }
+    .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-secondary:active {
+      -ms-transform: scale(1);
+      -webkit-transform: scale(1);
+      -moz-transform: scale(1);
+      -o-transform: scale(1);
+      transform: scale(1); }
+
 section#footer {
   position: fixed;
   left: 0;

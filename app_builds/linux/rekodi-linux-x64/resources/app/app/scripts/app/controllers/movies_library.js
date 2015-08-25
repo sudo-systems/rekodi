@@ -170,10 +170,10 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiServi
       });
     };
 
-    $scope.handlePlay = function(movie) {
-      if(movie.resume.position > 0) {
+    $scope.showOptionsModal = function(movie) {
+      if(movie.is_resumable) {
         $scope.resumeMovie = movie;
-        modal.resumeMovie = $('[data-remodal-id=resumeMovieModal]').remodal();
+        modal.resumeMovie = $('[data-remodal-id=movieOptions]').remodal();
         modal.resumeMovie.open();
       }
       else {

@@ -1,0 +1,13 @@
+<div class="title">
+  Episode options
+</div>
+<div class="description">
+  What would you like to do with episode <u>{{selected.episode.label}}</u> from the TV show <u>{{selected.episode.showtitle}}</u>?
+</div>
+<div class="ngdialog-buttons">
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="playMovie(selected.episode) && closeThisDialog()">Play</button>
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="playMovie(selected.episode, true) && closeThisDialog()" ng-if="selected.episode.is_resumable">Resume from {{selected.episode.resume.position_readable}}</button>
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="markEpisodeWatched(selected.episode, false) && closeThisDialog()" ng-if="selected.episode.is_watched">Mark unwatched</button>
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="markEpisodeWatched(selected.episode, true) && closeThisDialog()" ng-if="!selected.episode.is_watched">Mark watched</button>
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">Cancel</button>
+</div>
