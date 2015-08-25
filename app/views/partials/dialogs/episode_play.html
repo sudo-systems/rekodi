@@ -1,0 +1,18 @@
+<div class="title">
+  Play episode
+</div>
+<div class="description" ng-if="!selected.episode.is_resumable">
+  Are you sure you want to play episode <u>{{selected.episode.label}}</u> from the TV show <u>{{selected.episode.showtitle}}</u>?
+</div>
+<div class="description" ng-if="selected.episode.is_resumable">
+  Do you want resume playback of episode <u>{{selected.episode.label}}</u> from the TV show <u>{{selected.episode.showtitle}}</u> from {{selected.episode.resume.position_readable}}?
+</div>
+<div class="ngdialog-buttons" ng-if="selected.episode.is_resumable">
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="playEpisode(selected.episode) && closeThisDialog()">Play</button>
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="playEpisode(selected.episode, true) && closeThisDialog()">Resume</button> 
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">No</button>
+</div>
+<div class="ngdialog-buttons" ng-if="!selected.episode.is_resumable">
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="playEpisode(selected.episode) && closeThisDialog()">Play</button> 
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">Cancel</button>
+</div>

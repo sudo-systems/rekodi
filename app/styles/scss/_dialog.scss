@@ -1,0 +1,75 @@
+.ngdialog.ngdialog-theme-default {
+  .ngdialog-content {
+    border-radius: 0;
+    font-family: map-get($body, font-family);
+    
+    .title {
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 4px;
+      color: #000;
+    }
+    
+    .description {
+      font-size: 15px;
+      margin: 6px 0 32px 0;
+      line-height: 18px;
+    }
+    
+    .ngdialog-close {
+      border-radius: 0;
+
+      &:before {
+        border-radius: 0;
+      }
+    }
+
+    textarea,
+    input,
+    button {
+      border-radius: 0;
+    }
+
+    .ngdialog-button {
+      border-radius: 0;
+    }
+    
+    .ngdialog-buttons {
+      border-top: 1px dotted map-get($global, highlight-color);
+      padding: 10px 0 0 0;
+    }
+    
+    .ngdialog-button-primary {
+      background: map-get($global, highlight-color);
+      border: 1px solid map-get($global, highlight-color);
+      
+      &:hover {
+        border: 1px dotted #FFF;
+        @include scale(1.1);
+      }
+      
+      &:active {
+        @include scale(1.0);
+      }
+    }
+    
+    .ngdialog-button-secondary {
+      background: #CCC;
+      border: 1px solid #CCC;
+      color: #333;
+      
+      &:hover {
+        background: #BBB;
+        border: 1px dotted #FFF;
+        color: #FFF;
+        @include scale(1.1);
+      }
+      
+      &:active {
+        @include scale(1.0);
+      }
+    }
+  }
+}

@@ -1,10 +1,20 @@
-rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 'rkAudioLibraryService', '$timeout', 'kodiApiService',
-  function($scope, rkVideoLibraryService, rkAudioLibraryService, $timeout, kodiApiService) {
+rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 'rkAudioLibraryService', '$timeout', 'kodiApiService', 'ngDialog', 'rkRemoteControlService',
+  function($scope, rkVideoLibraryService, rkAudioLibraryService, $timeout, kodiApiService, ngDialog, rkRemoteControlService) {
     var itemsLimit = 10;
     var kodiApi = null;
+    $scope.selected = {};
     $scope.recentlyAddedMovies = [];
     $scope.recentlyAddedEpisodes = [];
     $scope.recentlyAddedAlbums = [];
+    
+    $scope.showPlayDialog = function(type, data) {
+      $scope.selected[type] = data;
+
+      ngDialog.open({ 
+        template: 'views/partials/dialogs/'+type+'_play.html',
+        scope: $scope
+      });
+    };
     
     $scope.getRecentlyAddedMovies = function() {
       if(kodiApi) {
@@ -20,6 +30,15 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
       }
     };
     
+    $scope.playMovie = function(movie, resume) {
+      rkRemoteControlService.play({
+        item: { movieid: movie.movieid },
+        options: { resume: (resume) }
+      });
+
+      return true;
+    };
+
     $scope.getRecentlyAddedEpisodes = function() {
       if(kodiApi) {
         if($scope.recentlyAddedEpisodes.length === 0) {
@@ -34,6 +53,15 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
       }
     };
     
+    $scope.playEpisode = function(episode, resume) {
+      rkRemoteControlService.play({
+        item: { episodeid: episode.episodeid },
+        options: { resume: (resume) }
+      });
+
+      return true;
+    };
+    
     $scope.getRecentlyAddedAlbums = function() {
       if(kodiApi) {
         if($scope.recentlyAddedAlbums.length === 0) {
@@ -46,6 +74,14 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
           }
         });
       }
+    };
+    
+    $scope.playAlbum = function(album) {
+      rkRemoteControlService.play({
+        item: { albumid: album.albumid }
+      });
+
+      return true;
     };
     
     function initConnectionChange() {

@@ -1,6 +1,7 @@
 rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rkHelperService', 'rkEnumsService',
   function($rootScope, kodiApiService, rkHelperService, rkEnumsService) {
     var kodiApi = null;
+    var playerProperties = {};
     var currentSpeed = 0;
     
     var getActivePlayerId = function(callback) {
@@ -60,8 +61,11 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
     
     var play = function(options) {
       if(kodiApi) {
+        if(playerProperties.partymode) {
+          togglePartymode();
+        }
+        
         kodiApi.Player.Open(options).then(function(data) {
-          
         }, function(error) {
           rkHelperService.handleError(error);
         });
@@ -216,6 +220,10 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
     function init() {
       $rootScope.$on('rkWsConnectionStatusChange', function(event, connection) {
         kodiApi = connection;
+      });
+      
+      $rootScope.$on('rkPlayerPropertiesChange', function(event, properties) {
+        playerProperties = properties;
       });
     }
 

@@ -1,0 +1,18 @@
+<div class="title">
+  Play movie
+</div>
+<div class="description" ng-if="!selected.movie.is_resumable">
+  Are you sure you want to play the movie <u>{{selected.movie.label}}</u>?
+</div>
+<div class="description" ng-if="selected.movie.is_resumable">
+  Do you want resume playback of the movie <u>{{selected.movie.label}}</u> from {{selected.movie.resume.position_readable}}?
+</div>
+<div class="ngdialog-buttons" ng-if="selected.movie.is_resumable">
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="playMovie(selected.movie) && closeThisDialog()">Play</button>
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="playMovie(selected.movie, true) && closeThisDialog()">Resume</button> 
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">Cancel</button>
+</div>
+<div class="ngdialog-buttons" ng-if="!selected.movie.is_resumable">
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="playMovie(selected.movie) && closeThisDialog()">Play</button> 
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">Cancel</button>
+</div>
