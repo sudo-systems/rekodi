@@ -1,5 +1,5 @@
-rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 'rkAudioLibraryService', '$timeout', 'kodiApiService', 'ngDialog', 'rkRemoteControlService',
-  function($scope, rkVideoLibraryService, rkAudioLibraryService, $timeout, kodiApiService, ngDialog, rkRemoteControlService) {
+rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 'rkAudioLibraryService', '$timeout', 'kodiApiService', 'ngDialog', 'rkRemoteControlService', 'rkVideoLibraryService',
+  function($scope, rkVideoLibraryService, rkAudioLibraryService, $timeout, kodiApiService, ngDialog, rkRemoteControlService, rkVideoLibraryService) {
     var itemsLimit = 10;
     var kodiApi = null;
     $scope.selected = {};
@@ -25,6 +25,10 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
         rkVideoLibraryService.getRecentlyAddedMovies(itemsLimit, function(recentlyAddedMovies) {
           if(recentlyAddedMovies && !angular.equals(recentlyAddedMovies, $scope.recentlyAddedMovies)) {
             $scope.recentlyAddedMovies = recentlyAddedMovies;
+            
+            if(!$scope.$$phase){
+              $scope.$apply();
+            }
           }
         });
       }
@@ -38,6 +42,16 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
 
       return true;
     };
+    
+    $scope.markMovieWatched = function(movie, watched) {
+      rkVideoLibraryService.markMovieWatched(movie, watched, function(success) {
+        if(success) {
+          $scope.getRecentlyAddedMovies();
+        }
+      });
+      
+      return true;
+    };
 
     $scope.getRecentlyAddedEpisodes = function() {
       if(kodiApi) {
@@ -48,6 +62,10 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
         rkVideoLibraryService.getRecentlyAddedEpisodes(itemsLimit, function(recentlyAddedEpisodes) {
           if(recentlyAddedEpisodes && !angular.equals(recentlyAddedEpisodes, $scope.recentlyAddedEpisodes)) {
             $scope.recentlyAddedEpisodes = recentlyAddedEpisodes;
+            
+            if(!$scope.$$phase){
+              $scope.$apply();
+            }
           }
         });
       }
@@ -59,6 +77,16 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
         options: { resume: (resume) }
       });
 
+      return true;
+    };
+    
+    $scope.markEpisodeWatched = function(episode, watched) {
+      rkVideoLibraryService.markEpisodeWatched(episode, watched, function(success) {
+        if(success) {
+          $scope.getRecentlyAddedEpisodes();
+        }
+      });
+      
       return true;
     };
     

@@ -10,6 +10,7 @@
 <div class="ngdialog-buttons">
   <button class="ngdialog-button ngdialog-button-primary" ng-click="playMovie(selected.movie) && closeThisDialog()">Play</button>
   <button class="ngdialog-button ngdialog-button-primary" ng-click="playMovie(selected.movie, true) && closeThisDialog()" ng-if="selected.movie.is_resumable">Resume</button>
-  <button class="ngdialog-button ngdialog-button-secondary" ng-click="markWatched(selected.movie, false) && closeThisDialog()" ng-if="selected.movie.is_watched">Mark unwatched</button>
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="markMovieWatched(selected.movie, false) && closeThisDialog()" ng-if="selected.movie.is_watched">Mark unwatched</button>
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="markMovieWatched(selected.movie, true) && closeThisDialog()" ng-if="!selected.movie.is_watched && !selected.movie.is_resumable">Mark watched</button>
   <button class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">Cancel</button>
 </div>
