@@ -802,7 +802,7 @@ section#windowControls {
       transform: scale(1); }
   section#windowControls .drag {
     float: left;
-    width: 450px;
+    width: 420px;
     height: 100%;
     -webkit-app-region: drag;
     cursor: move; }
