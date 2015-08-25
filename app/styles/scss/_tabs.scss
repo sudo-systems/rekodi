@@ -24,31 +24,32 @@ section.tabsContainer {
       font-size: 24px;
       border-bottom: 1px solid transparent;
       @include transitionAll(map-get($global, transition-speed));
-    }
-
-    li:hover {
-      color: #EEE;
-      @include transitionAll(0.15s);
-      @include scale(1.15);
-    }
-
-    li:active {
-      @include scale(1.0);
-    }
-
-    li.active {
-      color: #E6802E;
+      
+      &:hover {
+        color: #EEE;
+        @include transitionAll(0.15s);
+        @include scale(1.15);
+      }
+      
+      &:active {
+        @include scale(1.0);
+      }
+      
+      &.active {
+        color: #E6802E;
+      }
     }
 
     .magic-line {
       position: absolute; 
-      bottom: -1;
+      bottom: 0;
       left: 0;
       width: map-get($tabs, tab-width);
       height: 1px;
-      background: #E6802E;
+      background: map-get($global, highlight-color);
     }
   }
+  
 
   .tabs.inline {
     font-size: 0;

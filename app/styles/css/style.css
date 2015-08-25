@@ -561,8 +561,8 @@ html {
   -webkit-text-size-adjust: none; }
 
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 6px; }
+  width: 6px;
+  height: 3px; }
 
 ::-webkit-scrollbar-track {
   background: #262626; }
@@ -1135,28 +1135,28 @@ section.tabsContainer {
       -o-transition: all 0.2s ease-in-out;
       -webkit-transition: all 0.2s ease-in-out;
       transition: all 0.2s ease-in-out; }
-    section.tabsContainer nav li:hover {
-      color: #EEE;
-      -moz-transition: all 0.15s ease-in-out;
-      -o-transition: all 0.15s ease-in-out;
-      -webkit-transition: all 0.15s ease-in-out;
-      transition: all 0.15s ease-in-out;
-      -ms-transform: scale(1.15);
-      -webkit-transform: scale(1.15);
-      -moz-transform: scale(1.15);
-      -o-transform: scale(1.15);
-      transform: scale(1.15); }
-    section.tabsContainer nav li:active {
-      -ms-transform: scale(1);
-      -webkit-transform: scale(1);
-      -moz-transform: scale(1);
-      -o-transform: scale(1);
-      transform: scale(1); }
-    section.tabsContainer nav li.active {
-      color: #E6802E; }
+      section.tabsContainer nav li:hover {
+        color: #EEE;
+        -moz-transition: all 0.15s ease-in-out;
+        -o-transition: all 0.15s ease-in-out;
+        -webkit-transition: all 0.15s ease-in-out;
+        transition: all 0.15s ease-in-out;
+        -ms-transform: scale(1.15);
+        -webkit-transform: scale(1.15);
+        -moz-transform: scale(1.15);
+        -o-transform: scale(1.15);
+        transform: scale(1.15); }
+      section.tabsContainer nav li:active {
+        -ms-transform: scale(1);
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        transform: scale(1); }
+      section.tabsContainer nav li.active {
+        color: #E6802E; }
     section.tabsContainer nav .magic-line {
       position: absolute;
-      bottom: -1;
+      bottom: 0;
       left: 0;
       width: 55.56px;
       height: 1px;
@@ -1504,20 +1504,42 @@ section#recentlyAdded > .wrapper {
   bottom: 0;
   overflow-y: auto;
   padding: 0 12px; }
-  section#recentlyAdded > .wrapper .section-title {
+  section#recentlyAdded > .wrapper .recently-added-section:hover .section-title {
+    color: #FFF;
+    border-bottom-color: #E6802E; }
+  section#recentlyAdded > .wrapper .recently-added-section:hover ::-webkit-scrollbar-thumb {
+    background: #E6802E; }
+  section#recentlyAdded > .wrapper .recently-added-section .section-title {
     margin: 12px 0 0 0;
-    color: #AAA;
+    color: #999;
     text-transform: uppercase;
     font-size: 10px;
     letter-spacing: 2px;
     padding: 6px 6px 3px 6px;
     margin-bottom: 6px;
-    background: #2C2C2C; }
-  section#recentlyAdded > .wrapper .horizontal-list-wrapper {
+    background: #2C2C2C;
+    border-bottom: 1px dotted transparent;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out; }
+  section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper {
     width: 100%;
     overflow-x: auto;
     margin: 0 0 24px 0; }
-    section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li {
+    section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper.episodes ul .thumbnail {
+      height: 61px; }
+      section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper.episodes ul .thumbnail > i.mdi {
+        line-height: 61px; }
+    section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper.movies ul .thumbnail {
+      height: 162px; }
+      section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper.movies ul .thumbnail > i.mdi {
+        line-height: 162px; }
+    section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper.albums ul .thumbnail {
+      height: 108px; }
+      section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper.albums ul .thumbnail > i.mdi {
+        line-height: 108px; }
+    section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li {
       width: 120px;
       height: 100%;
       margin: 0 3px 6px 3px;
@@ -1530,24 +1552,27 @@ section#recentlyAdded > .wrapper {
       -o-transition: all 0.2s ease-in-out;
       -webkit-transition: all 0.2s ease-in-out;
       transition: all 0.2s ease-in-out; }
-      section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li > div {
+      section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li > div {
         overflow-x: hidden;
         text-overflow: ellipsis; }
-      section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li:first-of-type {
+      section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li:first-of-type {
         margin-left: 0; }
-      section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li:last-of-type {
+      section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li:last-of-type {
         margin-right: 0; }
-      section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li:hover {
+      section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li:hover {
         background: #333; }
-        section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li:hover .thumbnail {
+        section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li:hover .thumbnail {
           -webkit-filter: opacity(100%); }
-          section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li:hover .thumbnail img {
+          section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li:hover .thumbnail .indicators {
+            top: 0; }
+          section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li:hover .thumbnail img {
             -webkit-filter: grayscale(0%); }
-        section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li:hover .parent-title {
+        section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li:hover .parent-title {
           color: #CCC; }
-        section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li:hover .title {
+        section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li:hover .title {
           color: #E6802E; }
-      section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li .thumbnail {
+      section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li .thumbnail {
+        position: relative;
         text-align: center;
         -webkit-filter: opacity(25%);
         -moz-transition: all 0.4s ease-in-out;
@@ -1556,39 +1581,45 @@ section#recentlyAdded > .wrapper {
         transition: all 0.4s ease-in-out;
         width: 108px;
         margin-bottom: 3px; }
-        section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li .thumbnail img {
+        section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li .thumbnail .indicators {
+          position: absolute;
+          top: -16px;
+          left: 0;
+          right: 0;
+          text-align: left;
+          z-index: 2;
+          background: rgba(34, 34, 34, 0.6);
+          padding: 0 3px;
+          -moz-transition: all 0.2s ease-in-out;
+          -o-transition: all 0.2s ease-in-out;
+          -webkit-transition: all 0.2s ease-in-out;
+          transition: all 0.2s ease-in-out; }
+          section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li .thumbnail .indicators > i.mdi {
+            line-height: 16px;
+            font-size: 12px;
+            color: #FFF; }
+        section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li .thumbnail > img {
           -webkit-filter: grayscale(100%);
           width: 100%;
           height: 100%;
           display: block; }
-        section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li .thumbnail i.mdi {
-          font-size: 50px; }
-      section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li .parent-title {
+        section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li .thumbnail > i.mdi {
+          font-size: 60px;
+          display: block; }
+      section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li .parent-title {
         line-height: 14px;
         -moz-transition: all 0.4s ease-in-out;
         -o-transition: all 0.4s ease-in-out;
         -webkit-transition: all 0.4s ease-in-out;
         transition: all 0.4s ease-in-out;
-        color: #666; }
-      section#recentlyAdded > .wrapper .horizontal-list-wrapper ul.horizontal li .title {
-        font-size: 12px;
+        color: #555; }
+      section#recentlyAdded > .wrapper .recently-added-section .horizontal-list-wrapper ul.horizontal li .title {
+        font-size: 13px;
         -moz-transition: all 0.4s ease-in-out;
         -o-transition: all 0.4s ease-in-out;
         -webkit-transition: all 0.4s ease-in-out;
         transition: all 0.4s ease-in-out;
         color: #777; }
-section#recentlyAdded .horizontal-list-wrapper.episodes ul .thumbnail {
-  height: 61px; }
-  section#recentlyAdded .horizontal-list-wrapper.episodes ul .thumbnail i.mdi {
-    line-height: 61px; }
-section#recentlyAdded .horizontal-list-wrapper.movies ul .thumbnail {
-  height: 162px; }
-  section#recentlyAdded .horizontal-list-wrapper.movies ul .thumbnail i.mdi {
-    line-height: 162px; }
-section#recentlyAdded .horizontal-list-wrapper.albums ul .thumbnail {
-  height: 108px; }
-  section#recentlyAdded .horizontal-list-wrapper.albums ul .thumbnail i.mdi {
-    line-height: 108px; }
 
 section#footer {
   position: fixed;
