@@ -1,5 +1,5 @@
-rekodiApp.controller('rkSettingsCtrl', ['$scope', 'kodiApiService', 'rkNowPlayingService', 'rkSettingsService',
-  function($scope, kodiApiService, rkNowPlayingService, rkSettingsService) {
+rekodiApp.controller('rkSettingsCtrl', ['$scope', 'kodiApiService', 'rkNowPlayingService', 'rkSettingsService', '$timeout',
+  function($scope, kodiApiService, rkNowPlayingService, rkSettingsService, $timeout) {
     var sections = ['connection', 'nowPlaying'];
     $scope.settings = {};
     $scope.connectButton = {
@@ -50,5 +50,9 @@ rekodiApp.controller('rkSettingsCtrl', ['$scope', 'kodiApiService', 'rkNowPlayin
         $scope.setConnectionStatus(connection);
       });
     };
+    
+    $timeout(function() {
+      $scope.init();
+    });
   }
 ]);

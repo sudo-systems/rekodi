@@ -12,7 +12,7 @@
     "Remote",
     "Cross-platform"
   ],
-  "license": "GPL v2",
+  "license": "GPL-2.0",
   "homepage": "https://github.com/Bram77/rekodi",
   "ignore": [
     "**/.*",
