@@ -1,7 +1,14 @@
 .ngdialog.ngdialog-theme-default {
+  &.ngdialog-closing {
+    .ngdialog-content {
+      -webkit-animation: ngdialog-flyout .2s;
+    }
+  }
+  
   .ngdialog-content {
     border-radius: 0;
     font-family: map-get($body, font-family);
+    -webkit-animation: ngdialog-flyin .3s;
     
     .title {
       text-transform: uppercase;
@@ -34,6 +41,12 @@
 
     .ngdialog-button {
       border-radius: 0;
+      height: auto;
+      line-height: 22px;
+      padding: 0 12px;
+      font-size: 11px;
+      width: auto;
+      min-width: 70px;
     }
     
     .ngdialog-buttons {
@@ -47,7 +60,7 @@
       
       &:hover {
         border: 1px dotted #FFF;
-        @include scale(1.1);
+        @include scale(1.05);
       }
       
       &:active {
@@ -61,10 +74,10 @@
       color: #333;
       
       &:hover {
-        background: #BBB;
+        background: #AAA;
         border: 1px dotted #FFF;
         color: #FFF;
-        @include scale(1.1);
+        @include scale(1.05);
       }
       
       &:active {
