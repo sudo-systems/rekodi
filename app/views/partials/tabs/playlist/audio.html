@@ -1,12 +1,13 @@
-<div class="data-list-wrapper">
-  <div class="options">
-    <i class="mdi mdi-settings"></i> <input type="text" class="filter" ng-model="filter.value" placeholder="filter" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+<div class="options clearfix">
+  <div class="filter-container">
+    <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
   </div>
+</div>
+<div class="data-list-wrapper" su-endless-scroll="showItems({data: items})">
   <ul class="vertical">
-    <li ng-repeat="entry in items | filter:filterList" class="clearfix" ng-class="{playing: playStatus.item.file === entry.file}">
+    <li ng-repeat="entry in scrollItems | filter:filterList" class="clearfix">
       <div class="label">
-        <i class="mdi mdi-file-music"></i>
-        {{entry.label}}
+        <i class="mdi mdi-file-music"></i> {{entry.label}}
       </div>
       <div class="controls">
         <i class="mdi mdi-play-box-outline" title="Play" ng-click="play(entry)"></i>
