@@ -5,7 +5,10 @@ rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', '$element', 'kodiApiServi
     $scope.playlistId = rkEnumsService.PlaylistId.VIDEO;
     $scope.items = [];
     $scope.scrollItems = [];
-    $scope.isInitialized = false;
+    $scope.status = {
+      isInitialized: false,
+      isLoading: false
+    };
     $scope.filter = {
       value: ''
     };
@@ -61,6 +64,8 @@ rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', '$element', 'kodiApiServi
 
     $scope.get = function() {
       if(kodiApi) {
+        $scope.status.isLoading = true;
+        
         kodiApi.Playlist.GetItems({
           playlistid: rkEnumsService.PlaylistId.VIDEO,
           properties: ['file']
@@ -71,10 +76,21 @@ rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', '$element', 'kodiApiServi
             reset: true,
             data: $scope.items
           });
+          
+          $scope.status.isLoading = false;
         }, function(error) {
+          $scope.status.isLoading = false;
           rkHelperService.handleError(error);
         });
+        
+        return;
       }
+      
+      $scope.items = [];
+      $scope.showItems({
+        reset: true,
+        data: $scope.items
+      });
     };
     
     $scope.filterList = function(entry) {
@@ -83,6 +99,10 @@ rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', '$element', 'kodiApiServi
     
     $scope.clearFilter = function() {
       $scope.filter.value = '';
+      $scope.showItems({
+        reset: true,
+        data: $scope.items
+      });
     };
     
     function initConnectionChange() {
@@ -114,7 +134,7 @@ rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', '$element', 'kodiApiServi
     }
 
     $scope.init = function() {
-      if($scope.isInitialized) {
+      if($scope.status.isInitialized) {
         return;
       }
       
@@ -124,7 +144,7 @@ rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', '$element', 'kodiApiServi
         initConnectionChange();
       });
 
-      $scope.isInitialized = true;
+      $scope.status.isInitialized = true;
     };
   }
 ]);

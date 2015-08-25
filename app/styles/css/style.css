@@ -688,20 +688,21 @@ body {
   body a:hover {
     color: #E6802E; }
   body .jBox-container {
-    background: #FFF; }
+    background: rgba(255, 255, 255, 0.9); }
   body .jBox-content {
-    padding: 3px 8px;
+    padding: 2px 4px;
     overflow: auto;
     color: #000;
     font-weight: 500;
-    font-size: 14px;
-    white-space: nowrap; }
+    font-size: 13px;
+    white-space: nowrap;
+    text-transform: lowercase; }
   body .jBox-Tooltip .jBox-container,
   body .jBox-Mouse .jBox-container {
     border: 0;
-    border-radius: 1px; }
+    border-radius: 0; }
   body .jBox-pointer:after {
-    background: #FFF;
+    background: rgba(255, 255, 255, 0.9);
     border: 0; }
   body .bodyOverlay {
     position: fixed;

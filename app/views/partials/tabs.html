@@ -18,8 +18,8 @@
     <li title="Photos" ng-click="setActive($event); initTab(['photos']);" rel="photos" data-level="1">
       <i class="mdi mdi-camera"></i>
     </li>
-    <li title="Addons" ng-click="setActive($event)" rel="addons" data-level="1">
-      <i class="mdi mdi-puzzle"></i>
+    <li title="Programs" ng-click="setActive($event)" rel="programAddons" data-level="1">
+      <i class="mdi mdi-floppy"></i>
     </li>
     <li title="Remote" ng-click="setActive($event)" rel="remote" data-level="1">
       <i class="mdi mdi-remote"></i>
@@ -37,7 +37,7 @@
   <section ng-include="'views/partials/tabs/movies.html'" rk-tooltips rk-tabs id="movies" class="tabsContainer sub" data-level="1"></section>
   <section ng-include="'views/partials/tabs/tv_shows.html'" rk-tooltips rk-tabs id="tvShows" class="tabsContainer sub" data-level="1"></section>
   <section ng-include="'views/partials/tabs/pictures.html'" ng-controller="rkPicturesCtrl" rk-tooltips id="photos" class="tabsContainer" data-level="1"></section>
-  <section ng-include="'views/partials/tabs/addons.html'" ng-controller="rkAddonsCtrl" rk-tooltips id="addons" class="tabsContainer" data-level="1"></section>
+  <section ng-include="'views/partials/tabs/addons.html'" ng-controller="rkAddonsCtrl" rk-tooltips id="programAddons" class="tabsContainer" data-level="1"></section>
   <section ng-include="'views/partials/tabs/remote.html'" ng-controller="rkRemoteCtrl" rk-tooltips id="remote" class="tabsContainer" data-level="1"></section>
   <section ng-include="'views/partials/tabs/settings.html'" ng-controller="rkSettingsCtrl" rk-tooltips id="settings" class="tabsContainer" data-level="1"></section>
 </div>

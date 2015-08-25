@@ -5,6 +5,12 @@
 </div>
 <div class="data-list-wrapper" su-endless-scroll="showItems({data: items})">
   <ul class="vertical">
+    <li class="center-content" ng-show="!isLoading && scrollItems.length === 0">
+      ... nothing to show ...
+    </li>
+    <li class="center-content" ng-show="isLoading && scrollItems.length === 0">
+      ... loading playlist ...
+    </li>
     <li ng-repeat="entry in scrollItems | filter:filterList track by $index" class="clearfix">
       <div class="label">
         <i class="mdi mdi-movie"></i> {{entry.label}}
