@@ -27,7 +27,7 @@
     "pack:linux": "npm run build:linux && npm run copy:linux_install && npm run pack:deb_ia32 && npm run pack:deb_x64 && npm run pack:rpm",
     "pack:deb_ia32": "fpm -f -t deb -a i386 -n rekodi -v 0.1.0 --vendor \"sudo-systems.com\" -m \"<bram@sudo-systems.com>\" --description \"A cross platform desktop remote for Kodi/Xbmc\" --deb-no-default-config-files --after-install ./app_builds/linux/rekodi-linux-ia32/install.sh -p ./app_builds/linux --prefix /usr/share -C ./app_builds/linux -s dir rekodi-linux-ia32",
     "pack:deb_x64": "fpm -f -t deb -a x86_64 -n rekodi -v 0.1.0 --vendor \"sudo-systems.com\" -m \"<bram@sudo-systems.com>\" --description \"A cross platform desktop remote for Kodi/Xbmc\" --deb-no-default-config-files --after-install ./app_builds/linux/rekodi-linux-x64/install.sh -p ./app_builds/linux --prefix /usr/share -C ./app_builds/linux -s dir rekodi-linux-x64",
-    "pack:rpm": "fpm -f -t rpm -a noarch -n rekodi -v 0.1.0 --vendor \"sudo-systems.com\" -m \"<bram@sudo-systems.com>\" --description \"A cross platform desktop remote for Kodi/Xbmc\" --epoch 1 -p --after-install ./app_builds/linux/rekodi-linux-ia32/install.sh ./app_builds/linux --prefix /etc -C ./app_builds/linux -s dir rekodi-linux-ia32"
+    "pack:rpm": "fpm -f -t rpm -a noarch -n rekodi -v 0.1.0 --vendor \"sudo-systems.com\" -m \"<bram@sudo-systems.com>\" --description \"A cross platform desktop remote for Kodi/Xbmc\" --epoch 1 --after-install ./app_builds/linux/rekodi-linux-ia32/install.sh -p ./app_builds/linux --prefix /etc -C ./app_builds/linux -s dir rekodi-linux-ia32"
   },
   "dependencies": {
     "electron-builder": "^2.0.0",
