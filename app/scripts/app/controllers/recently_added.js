@@ -11,7 +11,7 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
       $scope.selected[type] = data;
 
       ngDialog.open({ 
-        template: 'views/partials/dialogs/'+type+'_play.html',
+        template: 'views/partials/dialogs/'+type+'_options.html',
         scope: $scope
       });
     };
