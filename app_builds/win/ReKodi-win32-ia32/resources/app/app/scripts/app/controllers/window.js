@@ -5,6 +5,9 @@ rekodiApp.controller('rkWindowCtrl', ['$scope', '$element', 'rkTooltipsService',
     var mainWindow = remote.getCurrentWindow();
     var defaultWallpaperApplied = false;
     var isClosing = false;
+    var minWindowHeight = 227;
+    var maxWindowHeight = 700;
+    var windowWidth = 500;
     
     $scope.close = function() {
       mainWindow.close();
@@ -12,6 +15,50 @@ rekodiApp.controller('rkWindowCtrl', ['$scope', '$element', 'rkTooltipsService',
     
     $scope.minimize = function() {
       mainWindow.minimize();
+    };
+    
+    $scope.toggleCompact = function() {
+      var currentWindowSize = mainWindow.getSize();
+      var resizeAnimationInterval = null;
+      var animationSpeed = 1;
+      var animationSteps = 100;
+      
+      if(currentWindowSize[1] >= maxWindowHeight) {
+        var tempHeight = currentWindowSize[1];
+        
+        resizeAnimationInterval = setInterval(function() {
+          if(tempHeight === minWindowHeight) {
+            clearInterval(resizeAnimationInterval);
+          }
+          else {
+            tempHeight -= animationSteps;
+            
+            if(tempHeight < minWindowHeight) {
+              tempHeight = minWindowHeight;
+            }
+            
+            mainWindow.setSize(windowWidth, tempHeight);
+          }
+        }, animationSpeed);
+      }
+      else if(currentWindowSize[1] < maxWindowHeight) {
+        var tempHeight = currentWindowSize[1];
+        
+        resizeAnimationInterval = setInterval(function() {
+          if(tempHeight === maxWindowHeight) {
+            clearInterval(resizeAnimationInterval);
+          }
+          else {
+            tempHeight += animationSteps;
+            
+            if(tempHeight > maxWindowHeight) {
+              tempHeight = maxWindowHeight;
+            }
+            
+            mainWindow.setSize(windowWidth, tempHeight);
+          }
+        }, animationSpeed);
+      }
     };
 
     function deleteTempDirectory() {

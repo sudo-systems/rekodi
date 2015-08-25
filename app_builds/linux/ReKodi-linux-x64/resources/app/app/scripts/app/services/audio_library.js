@@ -129,6 +129,45 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
       
       callback([]);
     };
+    
+    var getRecentlyAddedAlbumsFromCache = function() {
+      var _data = _cache.get({key: 'recentlyAddedAlbums'});
+      return (_data)? _data : [];
+    };
+    
+    var getRecentlyAddedAlbums = function(limit, callback) {
+      if(_kodiApi) {
+        limit = (!limit)? 10 : limit;
+        
+        _kodiApi.AudioLibrary.GetRecentlyAddedAlbums({
+          properties: ['thumbnail', 'year', 'genre', 'displayartist'],
+          limits: {
+            start: 0,
+            end: limit
+          },
+          sort: {
+            order: 'descending',
+            method: 'dateadded'
+          }
+        }).then(function(data) {
+          data.albums = (!data.albums)? [] : rkHelperService.addCustomFields(data.albums);
+
+          if(_cache.update({data: data.albums, key: 'recentlyAddedAlbums'})) {
+            callback(data.albums);
+          }
+          else {
+            callback(null);
+          }
+        }, function(error) {
+          callback([]);
+          rkHelperService.handleError(error);
+        });
+        
+        return;
+      }
+      
+      callback([]);
+    };
 
     function init() {
       _kodiApi = kodiApiService.getConnection();
@@ -146,6 +185,8 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
       getArtistsCategorised: getArtistsCategorised,
       getAlbumsFromCache: getAlbumsFromCache,
       getAlbums: getAlbums,
+      getRecentlyAddedAlbumsFromCache: getRecentlyAddedAlbumsFromCache,
+      getRecentlyAddedAlbums: getRecentlyAddedAlbums,
       getSongsFromCache: getSongsFromCache,
       getSongs: getSongs
     };
