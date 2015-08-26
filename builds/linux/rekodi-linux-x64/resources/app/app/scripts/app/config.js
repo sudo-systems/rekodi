@@ -1,4 +1,0 @@
-rekodiApp.config([
-  function() {
-  }
-]);
