@@ -1,0 +1,18 @@
+<div class="indicator connecting clearfix">
+  <i class="fa fa-link"></i> <span class="message">{{connectionMessage}}</span>
+</div>
+<div class="indicator loading blink clearfix">
+  <i class="fa fa-spinner fa-pulse"></i> <span class="message">{{loadingMessage}}</span>
+</div>
+<div class="indicator playback clearfix">
+  <i class="mdi mdi-play-box-outline"></i> <span class="message">{{playbackMessage}}</span>
+</div>
+<div class="indicator playlist clearfix">
+  <i class="mdi mdi-view-list"></i> <span class="message">{{playlistMessage}}</span>
+</div>
+<div class="indicator error clearfix">
+  <i class="mdi mdi-alert"></i> <span class="message">{{errorMessage}}</span>
+</div>
+<div class="heartbeat" ng-class="connected? 'online' : 'offline'" title="{{statusMessage}}">
+  <i class="mdi mdi-heart"></i>
+</div>

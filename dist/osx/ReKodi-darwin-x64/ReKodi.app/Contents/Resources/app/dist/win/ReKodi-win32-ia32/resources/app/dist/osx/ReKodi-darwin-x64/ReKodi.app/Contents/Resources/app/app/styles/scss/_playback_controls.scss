@@ -1,0 +1,44 @@
+section#playbackControls {
+  text-align: center;
+  border-bottom: 1px solid #464646;
+  background-color: map-get($playback-controls, background-color);
+  @include boxShadow(0 4px 4px -4px, #222);
+  height: map-get($playback-controls, height);
+  
+  .wrapper {
+    ul {
+      font-size: 0;
+    }
+
+    li {
+      color: map-get($global, text-highlight-color);
+      text-align: center;
+      line-height: 45px;
+      width: 42px;
+      display: inline-block;
+      font-size: 32px;
+      @include transitionAll(map-get($global, transition-speed));
+    }
+    
+    li[data-button="play"],
+    li[data-button="pause"],
+    li[data-button="stop"] {
+      font-size: 36px;
+    }
+
+    li:hover,
+    li.active {
+      color: map-get($global, highlight-color);
+      @include scale(1.15);
+    }
+
+    li:active {
+      @include scale(1.0);
+    }
+
+    li[data-button="pause"],
+    li[data-button="stop"] {
+      display: none;
+    }
+  }
+}

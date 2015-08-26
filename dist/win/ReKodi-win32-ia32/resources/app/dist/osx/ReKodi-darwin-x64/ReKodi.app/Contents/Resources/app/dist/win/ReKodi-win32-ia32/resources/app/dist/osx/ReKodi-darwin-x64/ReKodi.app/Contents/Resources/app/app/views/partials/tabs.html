@@ -1,0 +1,43 @@
+<nav>
+  <ul class="horizontal">
+    <li class="active" title="Now playing" ng-click="setActive($event)" rel="nowPlayingDetails" data-level="1">
+      <i class="mdi mdi-play-box-outline"></i>
+    </li>
+    <li title="Playlist" ng-click="initTab(['#audioPlaylist', '#videoPlaylist']); setActive($event);" rel="playlist" data-level="1">
+      <i class="mdi mdi-view-list"></i>
+    </li>
+    <li title="Music" ng-click="initTab(['#musicLibrary', '#musicFiles']); setActive($event);" rel="music" data-level="1">
+      <i class="mdi mdi-music-note"></i>
+    </li>
+    <li title="Movies" ng-click="initTab(['#moviesLibrary', '#moviesFiles']); setActive($event);" rel="movies" data-level="1">
+      <i class="mdi mdi-movie"></i>
+    </li>
+    <li title="TV shows" ng-click="initTab(['#tvShowsFiles']); setActive($event);" rel="tvShows" data-level="1">
+      <i class="mdi mdi-television"></i>
+    </li>
+    <li title="Photos" ng-click="initTab(['#photos']); setActive($event);" rel="photos" data-level="1">
+      <i class="mdi mdi-camera"></i>
+    </li>
+    <li title="Addons" ng-click="setActive($event)" rel="addons" data-level="1">
+      <i class="mdi mdi-puzzle"></i>
+    </li>
+    <li title="Remote" ng-click="setActive($event)" rel="remote" data-level="1">
+      <i class="mdi mdi-remote"></i>
+    </li>
+    <li title="Settings" ng-click="setActive($event)" rel="settings" data-level="1">
+      <i class="mdi mdi-settings"></i>
+    </li>
+  </ul>
+  <div class="magic-line"></div>
+</nav>
+<div class="tabs inline">
+  <section ng-include="'views/partials/tabs/now_playing_details.html'" ng-controller="rkNowPlayingCtrl" rk-tooltips id="nowPlayingDetails" class="tabsContainer"></section>
+  <section ng-include="'views/partials/tabs/playlist.html'" rk-tooltips rk-tabs id="playlist" class="tabsContainer sub"></section>
+  <section ng-include="'views/partials/tabs/music.html'" rk-tooltips rk-tabs id="music" class="tabsContainer sub"></section>
+  <section ng-include="'views/partials/tabs/movies.html'" rk-tooltips rk-tabs id="movies" class="tabsContainer sub"></section>
+  <section ng-include="'views/partials/tabs/tv_shows.html'" rk-tooltips rk-tabs id="tvShows" class="tabsContainer sub"></section>
+  <section ng-include="'views/partials/tabs/photos.html'" ng-controller="rkFilesCtrl" ng-init="type='pictures'" rk-tooltips id="photos" class="tabsContainer"></section>
+  <section ng-include="'views/partials/tabs/addons.html'" ng-controller="rkAddonsCtrl" rk-tooltips id="addons" class="tabsContainer"></section>
+  <section ng-include="'views/partials/tabs/remote.html'" ng-controller="rkRemoteCtrl" rk-tooltips id="remote" class="tabsContainer"></section>
+  <section ng-include="'views/partials/tabs/settings.html'" ng-controller="rkSettingsCtrl" rk-tooltips id="settings" class="tabsContainer"></section>
+</div>

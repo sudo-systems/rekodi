@@ -1,0 +1,19 @@
+<nav>
+  <ul class="horizontal">
+    <li class="active" title="Music library" ng-click="setActive($event)" rel="musicLibrary" data-level="2">
+      <i class="mdi mdi-database-outline"></i>
+    </li>
+    <li title="Music files" ng-click="setActive($event)" rel="musicFiles" data-level="2">
+      <i class="mdi mdi-folder-outline"></i>
+    </li>
+    <li title="Music addons" ng-click="setActive($event)" rel="musicAddons" data-level="2">
+      <i class="mdi mdi-puzzle"></i>
+    </li>
+  </ul>
+  <div class="magic-line"></div>
+</nav>
+<div class="tabs inline">
+  <div ng-include="'views/partials/tabs/music/library.html'" id="musicLibrary" ng-controller="rkMusicCtrl" rk-tooltips class="tabsContainer"></div>
+  <div ng-include="'views/partials/tabs/music/files.html'" id="musicFiles" ng-controller="rkFilesCtrl" rk-tooltips ng-init="type='music'" class="tabsContainer"></div>
+  <div ng-include="'views/partials/tabs/music/addons.html'" id="musicAddons" ng-controller="rkAddonsCtrl" rk-tooltips ng-init="type='audio'" class="tabsContainer"></div>
+</div>

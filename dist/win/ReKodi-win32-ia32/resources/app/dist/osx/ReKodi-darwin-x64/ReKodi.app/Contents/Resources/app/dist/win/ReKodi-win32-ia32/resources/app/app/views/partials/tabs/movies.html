@@ -1,0 +1,19 @@
+<nav>
+  <ul class="horizontal">
+    <li class="active" title="Movies library" ng-click="setActive($event)" rel="moviesLibrary" data-level="2">
+      <i class="mdi mdi-database-outline"></i>
+    </li>
+    <li title="Video files" ng-click="setActive($event)" rel="moviesFiles" data-level="2">
+      <i class="mdi mdi-folder-outline"></i>
+    </li>
+    <li title="Video addons" ng-click="setActive($event)" rel="moviesAddons" data-level="2">
+      <i class="mdi mdi-puzzle"></i>
+    </li>
+  </ul>
+  <div class="magic-line"></div>
+</nav>
+<div class="tabs inline">
+  <div ng-include="'views/partials/tabs/movies/library.html'" id="moviesLibrary" ng-controller="rkMoviesCtrl" rk-tooltips class="tabsContainer"></div>
+  <div ng-include="'views/partials/tabs/movies/files.html'" id="moviesFiles" ng-controller="rkFilesCtrl" rk-tooltips ng-init="type='video'" class="tabsContainer"></div>
+  <div ng-include="'views/partials/tabs/movies/addons.html'" id="moviesAddons" ng-controller="rkAddonsCtrl" rk-tooltips ng-init="type='video'" class="tabsContainer"></div>
+</div>

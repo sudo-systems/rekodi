@@ -1,0 +1,15 @@
+<nav>
+  <ul class="horizontal">
+    <li class="active" title="Audio playlist" ng-click="setActive($event)" rel="audioPlaylist" data-level="2">
+      <i class="mdi mdi-music-note"></i>
+    </li>
+    <li title="Video playlist" ng-click="setActive($event)" rel="videoPlaylist" data-level="2">
+      <i class="mdi mdi-video"></i>
+    </li>
+  </ul>
+  <div class="magic-line"></div>
+</nav>
+<div class="tabs inline">
+  <div ng-include="'views/partials/tabs/playlist/audio.html'" id="audioPlaylist" ng-controller="rkPlaylistCtrl" ng-init="type='audio'" class="tabsContainer"></div>
+  <div ng-include="'views/partials/tabs/playlist/video.html'" id="videoPlaylist" ng-controller="rkPlaylistCtrl" ng-init="type='video'" class="tabsContainer"></div>
+</div>
