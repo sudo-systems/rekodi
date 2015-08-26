@@ -1,5 +1,5 @@
-rekodiApp.factory('rkNotificationService', ['rkHelperService',
-  function(rkHelperService) {
+rekodiApp.factory('rkNotificationService', ['rkHelperService', 'rkLogService',
+  function(rkHelperService, rkLogService) {
     var remote = require('remote');
     var notifier = require('node-notifier');
     var mainWindow = remote.getCurrentWindow();
@@ -37,7 +37,7 @@ rekodiApp.factory('rkNotificationService', ['rkHelperService',
 
       notifier.notify(_options, function (error, response) {
         if(error) {
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         }
         
         isNotifying = false;

@@ -1,5 +1,5 @@
-rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService',
-  function($rootScope, rkCacheService, rkHelperService, kodiApiService) {
+rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService', 'rkLogService',
+  function($rootScope, rkCacheService, rkHelperService, kodiApiService, rkLogService) {
     var _kodiApi = null;
     var _cache = new rkCacheService.create('audioLibrary');
 
@@ -49,7 +49,7 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback([]);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;
@@ -85,7 +85,7 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback(null);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;
@@ -121,7 +121,7 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback(null);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;
@@ -160,7 +160,7 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback([]);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;

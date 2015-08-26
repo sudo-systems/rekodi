@@ -1,5 +1,5 @@
-rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'kodiApiService', 'rkHelperService',
-  function($rootScope, kodiApiService, rkHelperService) {
+rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'kodiApiService', 'rkLogService',
+  function($rootScope, kodiApiService, rkLogService) {
     var kodiApi = null;
     var currentProperties = {};
     var defaultProperties = {
@@ -21,7 +21,7 @@ rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'kodiApiService', 'r
             $rootScope.$emit('rkKodiPropertiesChange', data);
           }
         }, function(error) {
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
           setDefaults();
         });
       }

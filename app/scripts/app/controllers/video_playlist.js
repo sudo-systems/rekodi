@@ -1,5 +1,5 @@
-rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', 'rkHelperService',
-  function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, rkHelperService) {
+rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', 'rkLogService',
+  function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, rkLogService) {
     var kodiApi = null;
     var displayLimit = 15;
     $scope.playlistId = rkEnumsService.PlaylistId.VIDEO;
@@ -80,7 +80,7 @@ rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', '$element', 'kodiApiServi
           $scope.status.isLoading = false;
         }, function(error) {
           $scope.status.isLoading = false;
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;

@@ -1,5 +1,5 @@
-rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 'rkHelperService', 'rkRemoteControlService',
-  function($rootScope, kodiApiService, rkHelperService, rkRemoteControlService) {
+rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkLogService', 'rkRemoteControlService',
+  function($rootScope, rkLogService, rkRemoteControlService) {
     var kodiApi = null;
     var updatePropertiesInterval = null;
     var currentProperties = {};
@@ -41,7 +41,7 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 
               $rootScope.$emit('rkPlayerPropertiesChange', data);
             }
           }, function(error) {
-            rkHelperService.handleError(error);
+            rkLogService.error(error);
             currentProperties = defaultProperties;
             $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
           });

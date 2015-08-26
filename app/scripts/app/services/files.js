@@ -1,5 +1,5 @@
-rekodiApp.factory('rkFilesService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService',
-  function($rootScope, rkCacheService, rkHelperService, kodiApiService) {
+rekodiApp.factory('rkFilesService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService', 'rkLogService',
+  function($rootScope, rkCacheService, rkHelperService, kodiApiService, rkLogService) {
     var instance = function(type) {
       var _currentDirectory = null;
       var _sourcesPaths = [];
@@ -50,7 +50,7 @@ rekodiApp.factory('rkFilesService', ['$rootScope', 'rkCacheService', 'rkHelperSe
             }
           }, function(error) {
             callback([]);
-            rkHelperService.handleError(error);
+            rkLogService.error(error);
           });
 
           return;
@@ -88,7 +88,7 @@ rekodiApp.factory('rkFilesService', ['$rootScope', 'rkCacheService', 'rkHelperSe
             }
           }, function(error) {
             callback(null);
-            rkHelperService.handleError(error);
+            rkLogService.error(error);
           });
 
           return;

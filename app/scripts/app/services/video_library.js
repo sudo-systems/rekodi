@@ -1,5 +1,5 @@
-rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService',
-  function($rootScope, rkCacheService, rkHelperService, kodiApiService) {
+rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService', 'rkLogService',
+  function($rootScope, rkCacheService, rkHelperService, kodiApiService, rkLogService) {
     var _kodiApi = null;
     var _cache = new rkCacheService.create('videoLibrary');
 
@@ -49,7 +49,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback([]);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;
@@ -104,7 +104,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback([]);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;
@@ -138,7 +138,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback([]);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;
@@ -173,7 +173,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback([]);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;
@@ -212,7 +212,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback([]);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;
@@ -234,7 +234,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         callback((result === 'OK'));
       }, function(error) {
         callback(false);
-        rkHelperService.handleError(error);
+        rkLogService.error(error);
       });
     };
  
@@ -268,7 +268,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback([]);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;
@@ -290,7 +290,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         callback((result === 'OK'));
       }, function(error) {
         callback(false);
-        rkHelperService.handleError(error);
+        rkLogService.error(error);
       });
     };
  

@@ -1,5 +1,5 @@
-rekodiApp.controller('rkVideoFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', 'rkHelperService', 'rkRemoteControlService', '$timeout', 'rkFilesService',
-  function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, rkHelperService, rkRemoteControlService, $timeout, rkFilesService) {
+rekodiApp.controller('rkVideoFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', 'rkLogService', 'rkRemoteControlService', 'rkFilesService',
+  function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, rkLogService, rkRemoteControlService, rkFilesService) {
     var displayLimit = 15;
     var kodiApi = null;
     var filesService = null;
@@ -159,10 +159,10 @@ rekodiApp.controller('rkVideoFilesCtrl', ['$scope', '$element', 'kodiApiService'
               
             }
           }, function(error) {
-            rkHelperService.handleError(error);
+            rkLogService.error(error);
           });
         }, function(error) {
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
       }
     };

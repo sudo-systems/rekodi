@@ -1,5 +1,5 @@
-rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'kodiApiService', 'rkEnumsService', 'rkHelperService', 'rkRemoteControlService', '$localStorage',
-  function($rootScope, kodiApiService, rkEnumsService, rkHelperService, rkRemoteControlService, $localStorage) {
+rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkEnumsService', 'rkHelperService', 'rkRemoteControlService', '$localStorage', 'rkLogService',
+  function($rootScope, rkEnumsService, rkHelperService, rkRemoteControlService, $localStorage, rkLogService) {
     var kodiApi = null;
     var playingItem = null;
     var defaultWallpaper = null;
@@ -47,7 +47,7 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'kodiApiService', 'rkEnu
             }
           }, function(error) {
             setNotPlaying();
-            rkHelperService.handleError(error);
+            rkLogService.error(error);
           });
         }
         else {
