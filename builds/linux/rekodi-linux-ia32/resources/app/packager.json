@@ -1,6 +1,6 @@
 {
   "osx" : {
-    "title": "ReKodi",
+    "title": "rekodi",
     "background": "assets/osx/installer.png",
     "icon": "assets/osx/mount.icns",
     "icon-size": 80,
@@ -10,7 +10,7 @@
     ]
   },
   "win" : {
-    "title" : "ReKodi",
+    "title" : "rekodi",
     "icon" : "assets/win/icon.ico"
   }
 }

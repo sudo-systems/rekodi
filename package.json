@@ -25,9 +25,9 @@
     "pack:win": "npm run build:win && electron-builder \"./builds/win/rekodi-win32-ia32\" --platform=win --out=\"./builds/win\" --config=./packager.json",
     "copy:linux_install": "cp ./build_scripts/linux_install_ia32.sh ./builds/linux/rekodi-linux-ia32/install.sh && cp ./build_scripts/linux_install_x64.sh ./builds/linux/rekodi-linux-x64/install.sh",
     "pack:linux": "npm run build:linux && npm run copy:linux_install && npm run pack:deb_ia32 && npm run pack:deb_x64 && npm run pack:rpm",
-    "pack:deb_ia32": "fpm -f -t deb -a i386 -n rekodi -v 0.1.0 --vendor \"sudo-systems.com\" -m \"Bram van Oploo <bram@sudo-systems.com>\" --url \"https://github.com/Bram77/rekodi\" --license \"GPL-2.0\" --description \"A cross platform desktop remote for Kodi/Xbmc\" --deb-no-default-config-files --after-install ./builds/linux/rekodi-linux-ia32/install.sh -p ./builds/linux --prefix /usr/share -C ./builds/linux -s dir ./rekodi-linux-ia32",
-    "pack:deb_x64": "fpm -f -t deb -a x86_64 -n rekodi -v 0.1.0 --vendor \"sudo-systems.com\" -m \"Bram van Oploo <bram@sudo-systems.com>\" --url \"https://github.com/Bram77/rekodi\" --license \"GPL-2.0\" --description \"A cross platform desktop remote for Kodi/Xbmc\" --deb-no-default-config-files --after-install ./builds/linux/rekodi-linux-x64/install.sh -p ./builds/linux --prefix /usr/share -C ./builds/linux -s dir ./rekodi-linux-x64",
-    "pack:rpm": "fpm -f -t rpm -a noarch -n rekodi -v 0.1.0 --vendor \"sudo-systems.com\" -m \"Bram van Oploo <bram@sudo-systems.com>\" --url \"https://github.com/Bram77/rekodi\" --license \"GPL-2.0\" --description \"A cross platform desktop remote for Kodi/Xbmc\" --epoch 1 --after-install ./builds/linux/rekodi-linux-ia32/install.sh -p ./builds/linux --prefix /usr/share -C ./builds/linux -s dir ./rekodi-linux-ia32"
+    "pack:deb_ia32": "fpm -f -t deb -a i386 -n rekodi -v 0.1.0 --vendor \"sudo-systems.com\" -m \"Bram van Oploo <bram@sudo-systems.com>\" --url \"https://github.com/sudo-systems/rekodi\" --license \"GPL-2.0\" --description \"A cross platform desktop remote for Kodi/Xbmc\" --deb-no-default-config-files --after-install ./builds/linux/rekodi-linux-ia32/install.sh -p ./builds/linux --prefix /usr/share -C ./builds/linux -s dir ./rekodi-linux-ia32",
+    "pack:deb_x64": "fpm -f -t deb -a x86_64 -n rekodi -v 0.1.0 --vendor \"sudo-systems.com\" -m \"Bram van Oploo <bram@sudo-systems.com>\" --url \"https://github.com/sudo-systems/rekodi\" --license \"GPL-2.0\" --description \"A cross platform desktop remote for Kodi/Xbmc\" --deb-no-default-config-files --after-install ./builds/linux/rekodi-linux-x64/install.sh -p ./builds/linux --prefix /usr/share -C ./builds/linux -s dir ./rekodi-linux-x64",
+    "pack:rpm": "fpm -f -t rpm -a noarch -n rekodi -v 0.1.0 --vendor \"sudo-systems.com\" -m \"Bram van Oploo <bram@sudo-systems.com>\" --url \"https://github.com/sudo-systems/rekodi\" --license \"GPL-2.0\" --description \"A cross platform desktop remote for Kodi/Xbmc\" --epoch 1 --after-install ./builds/linux/rekodi-linux-ia32/install.sh -p ./builds/linux --prefix /usr/share -C ./builds/linux -s dir ./rekodi-linux-ia32"
   },
   "dependencies": {
     "electron-builder": "^2.0.0",
@@ -48,10 +48,10 @@
   "license": "GPL-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Bram77/rekodi.git"
+    "url": "https://github.com/sudo-systems/rekodi.git"
   },
   "bugs": {
-    "url": "https://github.com/Bram77/rekodi/issues"
+    "url": "https://github.com/sudo-systems/rekodi/issues"
   },
   "keywords": [
     "kodi",

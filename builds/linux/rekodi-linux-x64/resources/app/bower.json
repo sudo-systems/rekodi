@@ -13,7 +13,7 @@
     "Cross-platform"
   ],
   "license": "GPL-2.0",
-  "homepage": "https://github.com/Bram77/rekodi",
+  "homepage": "https://github.com/sudo-systems/rekodi",
   "ignore": [
     "**/.*",
     "node_modules",

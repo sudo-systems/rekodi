@@ -19,7 +19,7 @@ rekodiApp.factory('rkConfigService', [
       root: storageRootPath,
       logs: storageRootPath+'logs/',
       cache: storageRootPath+'cache/',
-      temp: storageRootPath+'tmp/',
+      temp: storageRootPath+'tmp/'
     };
     
     config.storageDirectories.cacheData = config.storageDirectories.cache+'data/';
