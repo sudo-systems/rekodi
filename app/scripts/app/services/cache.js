@@ -3,7 +3,7 @@ rekodiApp.factory('rkCacheService', ['rkConfigService',
     var create = function(identifier) {
       var fs = require('fs');
       var config = rkConfigService.get();
-      var cacheFile = config.directories.cache+identifier+'.json';
+      var cacheFile = config.storageDirectories.cache+identifier+'.json';
       var cacheData = {};
 
       function writeData(data) {

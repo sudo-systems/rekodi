@@ -1,0 +1,40 @@
+<div class="settings-section clearfix">
+  <div class="title">
+    Connection
+  </div>
+  <form name="connectionSettings">
+    <ul class="vertical">
+      <li title="[REQUIRED] I.e. 192.168.1.10 or mydomain.com">
+        <label for="kodiIp">server address *</label><input type="text" placeholder="192.168.1.10" ng-model="settings.connection.serverAddress" name="kodi_ip" id="kodiIp" value="" ng-required="true" />
+      </li>
+      <li title="[REQUIRED] Leave at 9090 unless changed in advancedsettings.connection.xml">
+        <label for="kodiJsonrpcPort">api port *</label><input type="number" placeholder="9090" name="kodi_jsonrpc_port" id="kodiJsonrpcPort" ng-model="settings.connection.jsonRpcPort" ng-required="true" />
+      </li>
+      <li title="[REQUIRED] This port can be changed in the Kodi settings)">
+        <label for="kodiHttpPort">http port *</label><input type="number" placeholder="8080" name="kodi_http_port" id="kodiHttpPort" ng-model="settings.connection.httpPort" ng-required="true" />
+      </li>
+      <li title="The username configured in Kodi. Defaults to 'kodi'">
+        <label for="kodiUsername">username</label><input type="text" name="kodi_username" id="kodiUsername" ng-model="settings.connection.username" />
+      </li>
+      <li title="The password configured in Kodi">
+        <label for="kodiPassword">password</label><input type="password" name="kodi_password" id="kodiPassword" ng-model="settings.connection.password" />
+      </li>
+      <li class="float-right">
+        <button ng-click="connect()" ng-disabled="connectButton.disabled" ng-hide="connectionSettings.$invalid">{{connectButton.text}}</button>
+      </li>
+    </ul>
+  </form>
+</div>
+
+<div class="settings-section clearfix">
+  <div class="title">
+    Now playing
+  </div>
+  <form name="connectionSettings">
+    <ul class="vertical">
+      <li title="Use currently playing fanart as desktop wallpaper if available">
+        <label for="fanartWallpaper">fanart wallpaper</label><input type="checkbox" ng-model="settings.nowPlaying.fanartWallpaper" name="fanart_wallpaper" id="fanartWallpaper" />
+      </li>
+    </ul>
+  </form>
+</div>

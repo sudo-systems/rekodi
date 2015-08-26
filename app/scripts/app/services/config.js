@@ -5,28 +5,31 @@ rekodiApp.factory('rkConfigService', [
     var mkpath = require('mkpath');
 
     var config = {
-      application: require('../app.json')
+      application: require('../app.json'),
+      directories: {
+        application: __dirname,
+        views: './views/'
+      }
     };
-    var storageRootPath = homedir()+'/.'+config.application.name.toLowerCase()+'/';
     
-    config.directories = {
-      application: __dirname,
-      storageRoot: storageRootPath,
+    config.directories.dialogTemplates = config.directories.views+'partials/dialogs/';
+    var storageRootPath = homedir()+'/.'+config.application.name.toLowerCase()+'/';
+
+    config.storageDirectories = {
+      root: storageRootPath,
       logs: storageRootPath+'logs/',
       cache: storageRootPath+'cache/',
       temp: storageRootPath+'tmp/',
-      views: './views/'
     };
     
-    config.directories.cacheData = config.directories.cache+'data/';
-    config.directories.cacheImages = config.directories.cache+'images/';
-    config.directories.cacheThumbnails = config.directories.cacheImages+'thumbnails/';
-    config.directories.cacheFanart = config.directories.cacheImages+'fanart/';
-    config.directories.dialogTemplates = config.directories.views+'partials/dialogs/';
-    
+    config.storageDirectories.cacheData = config.storageDirectories.cache+'data/';
+    config.storageDirectories.cacheImages = config.storageDirectories.cache+'images/';
+    config.storageDirectories.cacheThumbnails = config.storageDirectories.cacheImages+'thumbnails/';
+    config.storageDirectories.cacheFanart = config.storageDirectories.cacheImages+'fanart/';
+
     config.files = {
-      errorLog: config.directories.logs+'error.log',
-      debugLog: config.directories.logs+'debug.log'
+      errorLog: config.storageDirectories.logs+'error.log',
+      debugLog: config.storageDirectories.logs+'debug.log'
     };
 
     config.apiRequestProperties = {
@@ -106,9 +109,9 @@ rekodiApp.factory('rkConfigService', [
     };
     
     function init() {
-      for(var key in config.directories) {
-        if(!fs.existsSync(config.directories[key])) {
-          mkpath.sync(config.directories[key]);
+      for(var key in config.storageDirectories) {
+        if(!fs.existsSync(config.storageDirectories[key])) {
+          mkpath.sync(config.storageDirectories[key]);
         }
       }
     }

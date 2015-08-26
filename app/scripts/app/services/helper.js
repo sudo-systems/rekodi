@@ -124,7 +124,7 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService', 'rkLogService', 'rkCo
     };
 
     var downloadFile = function(url, targetDirectory, filename, overwrite, callback) {
-      var downloadDirectory = config.directories.temp+targetDirectory;
+      var downloadDirectory = config.storageDirectories.temp+targetDirectory;
       downloadDirectory = (downloadDirectory.substr(-1) !== '/')? downloadDirectory+'/' : downloadDirectory;
 
       if(filename && filename !== '') {

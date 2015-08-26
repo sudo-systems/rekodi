@@ -1,0 +1,199 @@
+html {
+  -webkit-text-size-adjust: none;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: #262626;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555;
+  border: 0;
+  cursor: all-scroll;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: map-get($global, highlight-color);
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+  visibility: hidden;
+  height: 0;
+}
+
+body {
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  background: map-get($body, background-color);
+  color: map-get($body, font-color);
+  font-family: map-get($body, font-family);
+  font-size: map-get($body, font-size);
+  font-weight: map-get($body, font-weight);
+  overflow: hidden;
+
+  input,
+  select,
+  textarea {
+    font-family: map-get($body, font-family);
+    font-size: map-get($body, font-size);
+    font-weight: map-get($body, font-weight);
+    font-family: MaterialDesignIcons;
+    background: #2D2D2D;
+    border: 0;
+    border-bottom: 1px dotted #AAA;
+    line-height: 26px; 
+    color: #EEE;
+    padding: 0 10px;
+    font-family: map-get($body, font-family);
+  }
+  
+  label {
+    display: inline-block;
+    line-height: 26px;
+    color: #999;
+    font-size: 14px;
+    text-align: right;
+    padding: 0 10px 0 0;
+  }
+
+  button,
+  input[type=submit] {
+    background: #AAA;
+    line-height: 26px;
+    color: #262626;
+    text-transform: uppercase;
+    min-width: 100px;
+    width: auto;
+    padding: 0 20px;
+    letter-spacing: 3px;
+    font-size: 11px;
+    border: 0;
+    border-bottom: 1px dotted #FFF;
+    @include transitionAll();
+    font-family: map-get($body, font-family);
+  }
+
+  button:hover,
+    input[type=submit]:hover {
+    background: map-get($global, highlight-color);
+    color: #FFF;
+  }
+
+  button:disabled,
+    input[type=submit]:disabled {
+    background: #666;
+    color: #AAA;
+  }
+  
+  input[type=range] {
+    -webkit-appearance: none;
+    background: transparent;
+    outline: none;
+    border: 0;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background: #999;
+    cursor: default;
+    margin-top: -4.5px;
+    @include transitionAll(map-get($global, transition-speed));
+    position: relative;
+  }
+
+  input[type=range]:focus,
+  input[type=range]:hover {
+    &::-webkit-slider-thumb:after {
+      position: absolute;
+      z-index: 999;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: transparent;
+      color: #999;
+      font-size: 10px;
+    }
+  }
+  
+  input[type=range]:hover::-webkit-slider-thumb,
+  input[type=range]:focus::-webkit-slider-thumb {
+    background: map-get($global, highlight-color);
+  }
+  
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 1px;
+    cursor: default;
+    background: #555;
+    @include transitionAll(map-get($global, transition-speed));
+  }
+
+  input[type=range]:hover::-webkit-slider-runnable-track,
+  input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #999;
+  }
+
+  a {
+    color: map-get($body, anchor-color);
+  }
+
+  a:hover {
+    color: map-get($body, anchor-color-hover);
+  }
+
+  .jBox-container {
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .jBox-content {
+    padding: 2px 4px;
+    overflow: auto;
+    color: #000;
+    font-weight: 500;
+    font-size: 13px;
+    white-space: nowrap;
+    text-transform: lowercase;
+  }
+
+  .jBox-Tooltip .jBox-container,
+  .jBox-Mouse .jBox-container {
+    border: 0;
+    border-radius: 0;
+  }
+
+  .jBox-pointer:after {
+    background: rgba(255, 255, 255, 0.9);
+    border: 0;
+  }
+
+  .bodyOverlay {
+    position: fixed;
+    top: map-get($now-playing, height);
+    left: 0;
+    right: 0;
+    bottom: map-get($footer, height);
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+    color: #FFF;
+    text-align: center;
+    padding: 100px 60px;
+    font-size: 18px;
+
+    a {
+      color: map-get($global, highlight-color);
+    }
+  }
+}
