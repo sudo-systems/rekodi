@@ -1,6 +1,7 @@
 rekodiApp.factory('rkHelperService', ['rkSettingsService', 'rkLogService', 'rkConfigService',
   function(rkSettingsService, rkLogService, rkConfigService) {
     var wallpaper = require('wallpaper');
+    var mkpath = require('mkpath');
     var fs = require('fs');
     var http = require('http');
     var config = rkConfigService.get();
@@ -126,6 +127,10 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService', 'rkLogService', 'rkCo
     var downloadFile = function(url, targetDirectory, filename, overwrite, callback) {
       var downloadDirectory = config.storageDirectories.temp+targetDirectory;
       downloadDirectory = (downloadDirectory.substr(-1) !== '/')? downloadDirectory+'/' : downloadDirectory;
+      
+      if(!fs.existsSync(downloadDirectory)) {
+        mkpath.sync(downloadDirectory);
+      }
 
       if(filename && filename !== '') {
         filename = filename.toString();

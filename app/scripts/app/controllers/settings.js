@@ -25,7 +25,7 @@ rekodiApp.controller('rkSettingsCtrl', ['$scope', 'kodiApiService', 'rkNowPlayin
     $scope.init = function() {
       for(var key in sections) {
         $scope.settings[sections[key]] = rkSettingsService.get({category: sections[key]});
-        
+
         $scope.$watchCollection('settings.'+sections[key], function(newData, oldData) {
           if(newData) {
             for(var key in newData) {

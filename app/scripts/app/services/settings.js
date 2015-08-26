@@ -1,36 +1,40 @@
 rekodiApp.factory('rkSettingsService', ['$localStorage',
   function($localStorage) {
     var set = function(options) {
-      var _options = angular.extend({}, {
+      var config = angular.extend({}, {
         category: null, //optional
         key: null, //required
         value: null //required
       }, options);
 
-      if(_options.category) {
-        if(!$localStorage.settings[_options.category] || $localStorage.settings[_options.category].constructor !== Object) {
-          $localStorage.settings[_options.category] = {};
+      if(config.category) {
+        if(!$localStorage.settings[config.category] || $localStorage.settings[config.category].constructor !== Object) {
+          $localStorage.settings[config.category] = {};
         }
         
-        $localStorage.settings[_options.category][_options.key] = _options.value;
+        $localStorage.settings[config.category][config.key] = config.value;
       }
       else {
-        $localStorage.settings[_options.key] = _options.value;
+        $localStorage.settings[config.key] = config.value;
       }
     };
     
     var get = function(options) {
-      var _options = angular.extend({}, {
+      var config = angular.extend({}, {
         category: null, //optional
-        key: null, //optional
+        key: null //optional
       }, options);
 
-      if(_options.category && $localStorage.settings[_options.category] && $localStorage.settings[_options.category].constructor === Object) {
-        return (_options.key && $localStorage.settings[_options.category][_options.key])? $localStorage.settings[_options.category][_options.key] : null;
-        return ($localStorage.settings[_options.category])? $localStorage.settings[_options.category] : null;
+      if(config.category && config.key) {
+        if($localStorage.settings[config.category] && $localStorage.settings[config.category].constructor === Object && $localStorage.settings[config.category][config.key]) {
+          return $localStorage.settings[config.category][config.key];
+        }
       }
-      else if(_options.key) {
-        return ($localStorage.settings[_options.key])? $localStorage.settings[_options.key] : null;
+      else if(config.category) {
+        return ($localStorage.settings[config.category])? $localStorage.settings[config.category] : null;
+      }
+      else if(config.key) {
+        return ($localStorage.settings[config.key])? $localStorage.settings[config.key] : null;
       }
       
       return null;
