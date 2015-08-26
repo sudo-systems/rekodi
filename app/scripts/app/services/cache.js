@@ -4,7 +4,7 @@ rekodiApp.factory('rkCacheService', ['rkHelperService',
       var fs = require('fs');
       var mkpath = require('mkpath');
       var rootPath = rkHelperService.getStorageRootPath();
-      var cacheDir = rootPath+'.cache/';
+      var cacheDir = rootPath+'cache/';
       var cacheFile = cacheDir+identifier+'.json';
       var cacheData = {};
 

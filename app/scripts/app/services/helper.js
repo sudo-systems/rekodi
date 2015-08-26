@@ -5,7 +5,7 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService',
     var http = require('http');
     var fs = require('fs');
     var mkpath = require('mkpath');
-    var tempDownloadDirectory = '.tmp/';
+    var tempDownloadDirectory = 'tmp/';
     var connectionSettings = rkSettingsService.get({category: 'connection'});
     
     var getStorageRootPath = function() {
