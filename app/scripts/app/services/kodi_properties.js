@@ -1,20 +1,15 @@
-rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'kodiApiService', 'rkLogService',
-  function($rootScope, kodiApiService, rkLogService) {
+rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'kodiApiService', 'rkLogService', 'rkConfigService',
+  function($rootScope, kodiApiService, rkLogService, rkConfigService) {
     var kodiApi = null;
     var currentProperties = {};
-    var defaultProperties = {
-      volume: 0, 
-      muted: false, 
-      name: 'Kodi', 
-      version: ''
-    };
+    var requestProperties = rkConfigService.get('apiRequestProperties', 'kodi');
 
     var get = function() {
       kodiApi = kodiApiService.getConnection();
 
       if(kodiApi) {
         kodiApi.Application.GetProperties({
-          properties: Object.keys(defaultProperties)
+          properties: Object.keys(requestProperties)
         }).then(function(data) {
           if(!angular.equals(currentProperties, data)) {
             currentProperties = data;
@@ -31,7 +26,7 @@ rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'kodiApiService', 'r
     };
     
     var setDefaults = function() {
-      $rootScope.$emit('rkKodiPropertiesChange', defaultProperties);
+      $rootScope.$emit('rkKodiPropertiesChange', requestProperties);
     };
     
     function init() {
@@ -59,8 +54,6 @@ rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'kodiApiService', 'r
 
     init();
     
-    return {
-      
-    };
+    return {};
   }
 ]);

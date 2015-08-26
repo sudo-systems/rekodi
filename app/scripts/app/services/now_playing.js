@@ -1,12 +1,10 @@
-rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkEnumsService', 'rkHelperService', 'rkRemoteControlService', '$localStorage', 'rkLogService',
-  function($rootScope, rkEnumsService, rkHelperService, rkRemoteControlService, $localStorage, rkLogService) {
+rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkHelperService', 'rkRemoteControlService', '$localStorage', 'rkLogService', 'rkConfigService', 'rkEnumsService',
+  function($rootScope, rkHelperService, rkRemoteControlService, $localStorage, rkLogService, rkConfigService, rkEnumsService) { 
     var kodiApi = null;
     var playingItem = null;
     var defaultWallpaper = null;
-    var itemProperties = [];
-    itemProperties[rkEnumsService.PlayerId.AUDIO] = ['title', 'displayartist', 'album', 'track', 'year', 'genre', 'thumbnail', 'file', 'duration', 'fanart'];
-    itemProperties[rkEnumsService.PlayerId.VIDEO] = ['title', 'file', 'thumbnail', 'plotoutline', 'year', 'season', 'episode', 'showtitle', 'plot', 'runtime', 'fanart'];
-    
+    var requestProperties = rkConfigService.get('apiRequestProperties', 'nowPlaying');
+
     var setNotPlaying = function() {
       playingItem = null;
       applyDefaultWallpaper();
@@ -29,9 +27,18 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkEnumsService', 'rkHel
     var getItem = function() {
       rkRemoteControlService.getActivePlayerId(function(playerId) {
         if(playerId !== null) {
+          var properties = {};
+          
+          if(playerId === rkEnumsService.PlayerId.AUDIO) {
+            properties = requestProperties.audio;
+          }
+          else if(playerId === rkEnumsService.PlayerId.VIDEO) {
+            properties = requestProperties.video;
+          }
+          
           kodiApi.Player.GetItem({
             playerid: playerId,
-            properties: itemProperties[playerId]
+            properties: properties
           }).then(function(data) {
             if(data.item) {
               data.item = rkHelperService.addCustomFields(data.item);

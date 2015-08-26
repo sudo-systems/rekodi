@@ -1,16 +1,17 @@
-rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService', 'rkLogService',
-  function($rootScope, rkCacheService, rkHelperService, kodiApiService, rkLogService) {
-    var _kodiApi = null;
-    var _cache = new rkCacheService.create('audioLibrary');
+rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService', 'rkLogService', 'rkConfigService',
+  function($rootScope, rkCacheService, rkHelperService, kodiApiService, rkLogService, rkConfigService) {
+    var kodiApi = null;
+    var cache = new rkCacheService.create('audioLibrary');
+    var requestProperties = rkConfigService.get('apiRequestProperties', 'audioLibrary');
 
     var getArtsistsFromCache = function() {
-      var _data = _cache.get({key: 'artists'});
-      return (_data)? _data : [];
+      var data = cache.get({key: 'artists'});
+      return (data)? data : [];
     };
     
     var getArtistsCategorisedFromCache = function() {
-      var _data = _cache.get({key: 'artistsCategorised'});
-      return (_data)? _data : [];
+      var data = cache.get({key: 'artistsCategorised'});
+      return (data)? data : [];
     };
     
     function updateArtistsCategorised(artists, callback) {
@@ -27,12 +28,12 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
       }
 
       callback(artistsCategorised);
-      _cache.set({data: artistsCategorised, key: 'artistsCategorised'});
+      cache.set({data: artistsCategorised, key: 'artistsCategorised'});
     }
 
     var getArtistsCategorised = function(callback) {
-      if(_kodiApi) {
-        _kodiApi.AudioLibrary.GetArtists({
+      if(kodiApi) {
+        kodiApi.AudioLibrary.GetArtists({
           albumartistsonly: false,
           sort: {
             order: 'ascending',
@@ -41,7 +42,7 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         }).then(function(data) {
           data.artists = (!data.artists)? [] : data.artists;
 
-          if(_cache.update({data: data.artists, key: 'artists'})) {
+          if(cache.update({data: data.artists, key: 'artists'})) {
             updateArtistsCategorised(data.artists, callback);
           }
           else {
@@ -59,14 +60,14 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     };
     
     var getAlbumsFromCache = function(artistId) {
-      var _data = _cache.get({key: 'albums', index: artistId});
-      return (_data)? _data : [];
+      var data = cache.get({key: 'albums', index: artistId});
+      return (data)? data : [];
     };
 
     var getAlbums = function(artistId, callback) {
-      if(_kodiApi) {
-        _kodiApi.AudioLibrary.GetAlbums({
-          properties: ['thumbnail', 'year', 'genre', 'displayartist'],
+      if(kodiApi) {
+        kodiApi.AudioLibrary.GetAlbums({
+          properties: requestProperties.albums,
           filter: {
             artistid: artistId
           },
@@ -77,7 +78,7 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         }).then(function(data) {
           data.albums = (!data.albums)? [] : rkHelperService.addCustomFields(data.albums);
 
-          if(_cache.update({data: data.albums, key: 'albums', index: artistId})) {
+          if(cache.update({data: data.albums, key: 'albums', index: artistId})) {
             callback(data.albums);
           }
           else {
@@ -95,14 +96,14 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     };
     
     var getSongsFromCache = function(albumId) {
-      var _data = _cache.get({key: 'songs', index: albumId});
-      return (_data)? _data : [];
+      var data = cache.get({key: 'songs', index: albumId});
+      return (data)? data : [];
     };
 
     var getSongs = function(albumId, callback) {
-      if(_kodiApi) {
-        _kodiApi.AudioLibrary.GetSongs({
-          properties: ['thumbnail', 'year', 'genre', 'displayartist', 'track', 'album', 'duration'],
+      if(kodiApi) {
+        kodiApi.AudioLibrary.GetSongs({
+          properties: requestProperties.songs,
           filter: {
             albumid: albumId
           },
@@ -113,7 +114,7 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         }).then(function(data) {
           data.songs = (!data.songs)? [] : rkHelperService.addCustomFields(data.songs);
 
-          if(_cache.update({data: data.songs, key: 'songs', index: albumId})) {
+          if(cache.update({data: data.songs, key: 'songs', index: albumId})) {
             callback(data.songs);
           }
           else {
@@ -131,16 +132,16 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     };
     
     var getRecentlyAddedAlbumsFromCache = function() {
-      var _data = _cache.get({key: 'recentlyAddedAlbums'});
-      return (_data)? _data : [];
+      var data = cache.get({key: 'recentlyAddedAlbums'});
+      return (data)? data : [];
     };
     
     var getRecentlyAddedAlbums = function(limit, callback) {
-      if(_kodiApi) {
+      if(kodiApi) {
         limit = (!limit)? 10 : limit;
         
-        _kodiApi.AudioLibrary.GetRecentlyAddedAlbums({
-          properties: ['thumbnail', 'year', 'genre', 'displayartist'],
+        kodiApi.AudioLibrary.GetRecentlyAddedAlbums({
+          properties: requestProperties.albums,
           limits: {
             start: 0,
             end: limit
@@ -152,7 +153,7 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         }).then(function(data) {
           data.albums = (!data.albums)? [] : rkHelperService.addCustomFields(data.albums);
 
-          if(_cache.update({data: data.albums, key: 'recentlyAddedAlbums'})) {
+          if(cache.update({data: data.albums, key: 'recentlyAddedAlbums'})) {
             callback(data.albums);
           }
           else {
@@ -170,10 +171,10 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     };
 
     function init() {
-      _kodiApi = kodiApiService.getConnection();
+      kodiApi = kodiApiService.getConnection();
       
       $rootScope.$on('rkWsConnectionStatusChange', function (event, connection) {
-        _kodiApi = connection;
+        kodiApi = connection;
       });
     };
 
