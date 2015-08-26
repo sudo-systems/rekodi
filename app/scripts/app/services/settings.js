@@ -25,11 +25,8 @@ rekodiApp.factory('rkSettingsService', ['$localStorage',
         key: null, //optional
       }, options);
 
-      if(_options.category && $localStorage.settings[_options.category].constructor === Object) {
-        if(_options.key) {
-          return ($localStorage.settings[_options.category][_options.key])? $localStorage.settings[_options.category][_options.key] : null;
-        }
-
+      if(_options.category && $localStorage.settings[_options.category] && $localStorage.settings[_options.category].constructor === Object) {
+        return (_options.key && $localStorage.settings[_options.category][_options.key])? $localStorage.settings[_options.category][_options.key] : null;
         return ($localStorage.settings[_options.category])? $localStorage.settings[_options.category] : null;
       }
       else if(_options.key) {
