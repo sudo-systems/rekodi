@@ -1,7 +1,8 @@
-rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService',
-  function($rootScope, rkCacheService, rkHelperService, kodiApiService) {
+rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService', 'rkLogService', 'rkConfigService',
+  function($rootScope, rkCacheService, rkHelperService, kodiApiService, rkLogService, rkConfigService) {
     var _kodiApi = null;
     var _cache = new rkCacheService.create('videoLibrary');
+    var requestProperties = rkConfigService.get('apiRequestProperties', 'videoLibrary');
 
     var getMoviesFromCache = function() {
       var _data = _cache.get({key: 'movies'});
@@ -33,7 +34,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     var getMoviesCategorised = function(callback) {
       if(_kodiApi) {
         _kodiApi.VideoLibrary.GetMovies({
-          properties: ['thumbnail', 'year', 'rating', 'plotoutline', 'genre', 'runtime', 'resume', 'lastplayed', 'file'],
+          properties: requestProperties.movies,
           sort: {
             order: 'ascending',
             method: 'label'
@@ -49,7 +50,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback([]);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;
@@ -88,7 +89,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     var getTvShowsCategorised = function(callback) {
       if(_kodiApi) {
         _kodiApi.VideoLibrary.GetTVShows({
-          properties: ['thumbnail', 'watchedepisodes', 'episode', 'premiered', 'rating', 'plot', 'genre', 'file'],
+          properties: requestProperties.tvShows,
           sort: {
             order: 'ascending',
             method: 'label'
@@ -104,7 +105,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback([]);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;
@@ -121,7 +122,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     var getSeasons = function(tvShowId, callback) {
       if(_kodiApi) {
         _kodiApi.VideoLibrary.GetSeasons({
-          properties: ['thumbnail', 'showtitle', 'season', 'watchedepisodes', 'episode'],
+          properties: requestProperties.seasons,
           tvshowid: tvShowId,
           sort: {
             order: 'ascending',
@@ -138,7 +139,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback([]);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;
@@ -155,7 +156,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     var getEpisodes = function(tvShowId, season, callback) {
       if(_kodiApi) {
         _kodiApi.VideoLibrary.GetEpisodes({
-          properties: ['thumbnail', 'showtitle', 'plot', 'rating', 'season', 'episode', 'firstaired', 'runtime', 'streamdetails', 'lastplayed', 'resume'],
+          properties: requestProperties.episodes,
           tvshowid: tvShowId,
           season: season,
           sort: {
@@ -173,7 +174,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback([]);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;
@@ -192,7 +193,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         limit = (!limit)? 10 : limit;
         
         _kodiApi.VideoLibrary.GetRecentlyAddedMovies({
-          properties: ['thumbnail', 'year', 'rating', 'plotoutline', 'genre', 'runtime', 'resume', 'lastplayed', 'file'],
+          properties: requestProperties.movies,
           limits: {
             start: 0,
             end: limit
@@ -212,7 +213,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback([]);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;
@@ -234,7 +235,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         callback((result === 'OK'));
       }, function(error) {
         callback(false);
-        rkHelperService.handleError(error);
+        rkLogService.error(error);
       });
     };
  
@@ -248,7 +249,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         limit = (!limit)? 10 : limit;
         
         _kodiApi.VideoLibrary.GetRecentlyAddedEpisodes({
-          properties: ['thumbnail', 'showtitle', 'plot', 'rating', 'season', 'episode', 'firstaired', 'runtime', 'streamdetails', 'lastplayed', 'resume'],
+          properties: requestProperties.episodes,
           limits: {
             start: 0,
             end: limit
@@ -268,7 +269,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }, function(error) {
           callback([]);
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
         
         return;
@@ -290,7 +291,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         callback((result === 'OK'));
       }, function(error) {
         callback(false);
-        rkHelperService.handleError(error);
+        rkLogService.error(error);
       });
     };
  

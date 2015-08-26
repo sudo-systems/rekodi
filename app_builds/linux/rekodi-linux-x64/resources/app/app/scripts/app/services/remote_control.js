@@ -1,5 +1,5 @@
-rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rkHelperService', 'rkEnumsService',
-  function($rootScope, kodiApiService, rkHelperService, rkEnumsService) {
+rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEnumsService',
+  function($rootScope, rkLogService, rkEnumsService) {
     var kodiApi = null;
     var playerProperties = {};
     var currentSpeed = 0;
@@ -10,7 +10,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
           var playerId = (data[0])? data[0].playerid : null;
           callback(playerId);
         }, function(error) {
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
           callback(null);
         });
       }
@@ -30,7 +30,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
               //some error
             }
           }, function(error) {
-            rkHelperService.handleError(error);
+            rkLogService.error(error);
           });
         }
       });
@@ -53,7 +53,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
           }).then(function(data) {
               currentSpeed = data.speed;
           }, function(error) {
-            rkHelperService.handleError(error);
+            rkLogService.error(error);
           });
         }
       });
@@ -67,7 +67,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
         
         kodiApi.Player.Open(options).then(function(data) {
         }, function(error) {
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
       }
     };
@@ -83,7 +83,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
           }).then(function(data) {
               currentSpeed = data.speed;
           }, function(error) {
-            rkHelperService.handleError(error);
+            rkLogService.error(error);
           });
         }
       });
@@ -131,7 +131,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
           }).then(function(data) {
               currentSpeed = 0;
           }, function(error) {
-            rkHelperService.handleError(error);
+            rkLogService.error(error);
           });
         }
       });
@@ -144,7 +144,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
         }).then(function(data) {
             //console.log(data);
         }, function(error) {
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
       }
     };
@@ -156,7 +156,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
         }).then(function(data) {
             //console.log(data);
         }, function(error) {
-          rkHelperService.handleError(error);
+          rkLogService.error(error);
         });
       }
     };
@@ -172,7 +172,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
           }).then(function(data) {
               callback(data);
           }, function(error) {
-            rkHelperService.handleError(error);
+            rkLogService.error(error);
             callback(null);
           });
         }
@@ -185,7 +185,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
         partymode: 'toggle'
       }).then(function(data) {
       }, function(error) {
-        rkHelperService.handleError(error);
+        rkLogService.error(error);
       });
     };
     
@@ -197,7 +197,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
             repeat: 'cycle'
           }).then(function(data) {
           }, function(error) {
-            rkHelperService.handleError(error);
+            rkLogService.error(error);
           });
         }
       });
@@ -211,7 +211,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'kodiApiService', 'rk
             shuffle: 'toggle'
           }).then(function(data) {
           }, function(error) {
-            rkHelperService.handleError(error);
+            rkLogService.error(error);
           });
         }
       });

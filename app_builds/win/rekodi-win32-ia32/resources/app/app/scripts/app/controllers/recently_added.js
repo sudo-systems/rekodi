@@ -1,20 +1,11 @@
-rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 'rkAudioLibraryService', '$timeout', 'kodiApiService', 'ngDialog', 'rkRemoteControlService', 'rkVideoLibraryService',
-  function($scope, rkVideoLibraryService, rkAudioLibraryService, $timeout, kodiApiService, ngDialog, rkRemoteControlService, rkVideoLibraryService) {
+rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 'rkAudioLibraryService', '$timeout', 'kodiApiService', 'ngDialog', 'rkRemoteControlService', 'rkVideoLibraryService', 'rkDialogService',
+  function($scope, rkVideoLibraryService, rkAudioLibraryService, $timeout, kodiApiService, ngDialog, rkRemoteControlService, rkVideoLibraryService, rkDialogService) {
     var itemsLimit = 10;
     var kodiApi = null;
     $scope.selected = {};
     $scope.recentlyAddedMovies = [];
     $scope.recentlyAddedEpisodes = [];
     $scope.recentlyAddedAlbums = [];
-    
-    $scope.showPlayDialog = function(type, data) {
-      $scope.selected[type] = data;
-
-      ngDialog.open({ 
-        template: 'views/partials/dialogs/'+type+'_options.html',
-        scope: $scope
-      });
-    };
     
     $scope.getRecentlyAddedMovies = function() {
       if(kodiApi) {
@@ -34,23 +25,12 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
       }
     };
     
-    $scope.playMovie = function(movie, resume) {
-      rkRemoteControlService.play({
-        item: { movieid: movie.movieid },
-        options: { resume: (resume) }
-      });
-
-      return true;
-    };
-    
-    $scope.markMovieWatched = function(movie, watched) {
-      rkVideoLibraryService.markMovieWatched(movie, watched, function(success) {
-        if(success) {
+    $scope.showMovieOptionsDialog = function(movie) {
+      rkDialogService.showMovieOptions(movie, function(markWatchedSuccess) {
+        if(markWatchedSuccess) {
           $scope.getRecentlyAddedMovies();
         }
       });
-      
-      return true;
     };
 
     $scope.getRecentlyAddedEpisodes = function() {
@@ -71,23 +51,12 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
       }
     };
     
-    $scope.playEpisode = function(episode, resume) {
-      rkRemoteControlService.play({
-        item: { episodeid: episode.episodeid },
-        options: { resume: (resume) }
-      });
-
-      return true;
-    };
-    
-    $scope.markEpisodeWatched = function(episode, watched) {
-      rkVideoLibraryService.markEpisodeWatched(episode, watched, function(success) {
-        if(success) {
+    $scope.showEpisodeOptionsDialog = function(episode) {
+      rkDialogService.showEpisodeOptions(episode, function(markWatchedSuccess) {
+        if(markWatchedSuccess) {
           $scope.getRecentlyAddedEpisodes();
         }
       });
-      
-      return true;
     };
     
     $scope.getRecentlyAddedAlbums = function() {
@@ -104,12 +73,8 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
       }
     };
     
-    $scope.playAlbum = function(album) {
-      rkRemoteControlService.play({
-        item: { albumid: album.albumid }
-      });
-
-      return true;
+    $scope.showAlbumOptionsDialog = function(album) {
+      rkDialogService.showAlbumOptions(album);
     };
     
     function initConnectionChange() {

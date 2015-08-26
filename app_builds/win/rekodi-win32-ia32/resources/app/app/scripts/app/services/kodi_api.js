@@ -1,5 +1,5 @@
-rekodiApp.factory('kodiApiService', ['$rootScope', 'rkHelperService', 'rkSettingsService',
-  function($rootScope, rkHelperService, rkSettingsService) {
+rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsService',
+  function($rootScope, rkLogService, rkSettingsService) {
     var kodiWs = require('xbmc-ws');
     var connectingInProgress = false;
     var connection = null;
@@ -48,7 +48,7 @@ rekodiApp.factory('kodiApiService', ['$rootScope', 'rkHelperService', 'rkSetting
       function(error) {
         setDisconnected();
         connection = null;
-        rkHelperService.handleError(error);
+        rkLogService.error(error);
       });
     };
     

@@ -1,54 +1,30 @@
-rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 'rkHelperService', 'rkRemoteControlService',
-  function($rootScope, kodiApiService, rkHelperService, rkRemoteControlService) {
+rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkLogService', 'rkRemoteControlService', 'rkConfigService',
+  function($rootScope, rkLogService, rkRemoteControlService, rkConfigService) {
     var kodiApi = null;
     var updatePropertiesInterval = null;
     var currentProperties = {};
-    var defaultProperties = {
-      audiostreams: [],
-      canchangespeed: false,
-      canmove: false,
-      canrepeat: false,
-      canrotate: false,
-      canseek: false,
-      canshuffle: false,
-      canzoom: false,
-      currentaudiostream: {},
-      currentsubtitle: {},
-      live: false,
-      partymode: false,
-      percentage: 0,
-      playlistid: -1,
-      position: 0,
-      repeat: 'off',
-      shuffled: false,
-      speed: 0,
-      subtitleenabled: false,
-      subtitles: [],
-      time: {},
-      totaltime: {},
-      type: null
-    };
+    var requestProperties = rkConfigService.get('apiRequestProperties', 'player');
 
     var getProperties = function() {
       rkRemoteControlService.getActivePlayerId(function(playerId) {
         if(playerId !== null) {
           kodiApi.Player.GetProperties({
             playerid: playerId,
-            properties: Object.keys(defaultProperties)
+            properties: Object.keys(requestProperties)
           }).then(function(data) {
             if(!angular.equals(currentProperties, data)) {
               currentProperties = data;
               $rootScope.$emit('rkPlayerPropertiesChange', data);
             }
           }, function(error) {
-            rkHelperService.handleError(error);
-            currentProperties = defaultProperties;
-            $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
+            rkLogService.error(error);
+            currentProperties = requestProperties;
+            $rootScope.$emit('rkPlayerPropertiesChange', requestProperties);
           });
         }
         else {
-          currentProperties = defaultProperties;
-          $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
+          currentProperties = requestProperties;
+          $rootScope.$emit('rkPlayerPropertiesChange', requestProperties);
         }
       });
     };
@@ -78,13 +54,13 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'kodiApiService', 
           });
           
           kodiApi.Player.OnStop(function(data) {
-            currentProperties = defaultProperties;
-            $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
+            currentProperties = requestProperties;
+            $rootScope.$emit('rkPlayerPropertiesChange', requestProperties);
           });
         }
         else {
-          currentProperties = defaultProperties;
-          $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
+          currentProperties = requestProperties;
+          $rootScope.$emit('rkPlayerPropertiesChange', requestProperties);
         }
       });
     }

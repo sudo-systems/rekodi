@@ -1,5 +1,5 @@
-rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkRemoteControlService', 'rkVideoLibraryService', 'rkSettingsService',
-  function($scope, $element, kodiApiService, rkTooltipsService, rkRemoteControlService, rkVideoLibraryService, rkSettingsService) {
+rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVideoLibraryService', 'rkSettingsService',
+  function($scope, kodiApiService, rkVideoLibraryService, rkSettingsService) {
     var modal = {};
     var displayLimit = 5;
     var kodiApi = null;
@@ -180,25 +180,7 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', '$element', 'kodiApiServi
         $scope.play(movie, false);
       }
     };
-    
-    $scope.play = function(movie, resume) {
-      if(modal.resumeMovie) {
-        modal.resumeMovie.close();
-      }
-      
-      resume = (resume)? true : false;
-      var options = {
-        item: {
-          movieid: movie.movieid
-        },
-        options: {
-          resume: resume
-        }
-      };
 
-      rkRemoteControlService.play(options);
-    };
-    
     function initConnectionChange() {
       kodiApi = kodiApiService.getConnection();
 

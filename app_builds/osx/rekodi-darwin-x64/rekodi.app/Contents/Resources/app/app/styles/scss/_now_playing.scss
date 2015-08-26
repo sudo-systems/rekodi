@@ -1,0 +1,228 @@
+section#nowPlaying {
+  height: map-get($now-playing, height);
+  @include backgroundGradientVertical(#595959, map-get($playback-controls, background-color));
+  position: fixed;
+  top: map-get($window-controls, height);
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid map-get($global, highlight-color);
+  overflow: hidden;
+  
+  .inactive {
+    line-height: map-get($now-playing, height);
+    margin-top: -(map-get($window-controls, height));
+    text-align: center;
+    color: #221E1F;
+    letter-spacing: 8px;
+    text-align: center; 
+    font-size: 46px;
+    font-weight: 300;
+    @include textShadow(0 0 2px, #4C4E4F);
+  }
+
+  .data-wrapper {
+    position: relative;
+    height: 100%;
+    
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+      text-align: center;
+      
+      i.mdi {
+        color: rgba(255, 255, 255, 0.7);
+        @include fadeInAndOut(1s);
+        font-size: 120px;
+        line-height: map-get($now-playing, height);
+      }
+      
+      .current-speed {
+        font-family: sans-serif, arial, verdana;
+        position: absolute;
+        display: inline-block;
+        top: 55px;
+        left: 230px;
+        font-size: 45px;
+        font-weight: bold;
+        color: map-get($global, highlight-color);
+        line-height: initial;
+      }
+    }
+    
+    .seek-slider-wrapper {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      padding: 0 map-get($global, window-padding);
+      height: 12px;
+      
+      .total-time,
+      .seek-time {
+        width: 60px;
+        text-align: center;
+        color: #AAA;
+        font-size: 12px;
+        line-height: 12px;
+      }
+      
+      .seek-time {
+        color: #FFF;
+        text-align: right;
+        padding-right: 6px;
+      }
+      
+      .total-time {
+        float: right;
+        text-align: left;
+        padding-left: 6px;
+      }
+      
+      .range-slider {
+        width: 354px;
+        padding: 0;
+        
+        input[type=range] {
+          height: 12px;
+          margin: 0;
+          border: 0;
+          border-left: 1px solid #666;
+          border-right: 1px solid #666;
+
+          &::-webkit-slider-thumb {
+            border-radius: 0;
+            height: 12px;
+            width: 6px;
+            background: map-get($global, highlight-color);
+            margin-top: -6px;
+          }
+          
+          &::-webkit-slider-runnable-track {
+            height: 0;
+          }
+        }
+        
+        input[type=range]:focus,
+        input[type=range]:hover {
+          &::-webkit-slider-thumb:after {
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #FFF;
+          }
+        }
+      }
+    }
+    
+    .seek-slider-wrapper > div {
+      display: inline-block;
+      float: left;
+    }
+    
+    .active {
+      padding: 0 map-get($global, window-padding);
+      overflow: hidden;
+      height: 100%;
+      
+      .thumbnail {
+        display: inline-block;
+        float: left;
+        height: 90px;
+        width: 80px;
+        text-align: center;
+        -webkit-perspective: 150px;
+        margin-top: 6px;
+        margin-left: 6px;
+
+        i.mdi {
+          font-size: 80px;
+          line-height: 90px;
+          -webkit-transform: rotateY(25deg);
+          -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
+          @include transitionAll(0.5s);
+        }
+
+        img {
+          max-height: 100%;
+          max-width: 100%;
+          -webkit-transform: rotateY(25deg);
+          -webkit-box-reflect: below 2px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent) , to(rgba(250, 250, 250, 0.5)));
+          border-radius: 3px;
+          @include transitionAll(0.5s);
+        }
+      }
+
+      .details {
+        display: inline-block;
+        float: right;
+        width: 380px;
+        color: #999;
+        height: 100px;
+        margin-top: 10px;
+
+        i.mdi {
+          color: #666;
+          font-size: 14px;
+        }
+        
+        & > div {
+          width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .artist {
+        }
+
+        .album {
+          color: #BBB;
+          font-size: 15px;
+        }
+
+        .title {
+          color: #FFF;
+          font-size: 16px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .time {
+          font-size: 12px;
+        }
+
+        .plot {
+          overflow-y: hidden;
+          text-overflow: ellipsis;
+          text-align: justify;
+          font-size: 12px;
+        }
+      }
+
+      .details > div {
+        line-height: 20px;
+      }
+    }
+  }
+  
+  .active:hover .thumbnail img,
+  .active:hover .thumbnail i.mdi {
+    -webkit-transform: rotateY(0deg);
+  }
+  
+  .active.episode {
+    .thumbnail {
+      width: 120px;
+    }
+    
+    .details {
+      width: 340px;
+    }
+  }
+}

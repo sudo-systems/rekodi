@@ -1,25 +1,11 @@
-rekodiApp.factory('rkCacheService', ['rkHelperService',
-  function(rkHelperService) {
+rekodiApp.factory('rkCacheService', ['rkConfigService',
+  function(rkConfigService) {
     var create = function(identifier) {
       var fs = require('fs');
-      var mkpath = require('mkpath');
-      var rootPath = rkHelperService.getStorageRootPath();
-      var cacheDir = rootPath+'.cache/';
-      var cacheFile = cacheDir+identifier+'.json';
+      var config = rkConfigService.get();
+      var cacheFile = config.directories.cache+identifier+'.json';
       var cacheData = {};
 
-      function init() {
-        if(fs.existsSync(cacheFile)) {
-          cacheData = require(cacheFile);
-        }
-        else if(!fs.existsSync(cacheDir)) {
-          mkpath.sync(cacheDir);
-          writeData(cacheData);
-        }
-      }
-      
-      init();
-      
       function writeData(data) {
         var fileStream = fs.createWriteStream(cacheFile, {flags: 'w'});
         fileStream.write(JSON.stringify(data));
