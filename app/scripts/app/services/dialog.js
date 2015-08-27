@@ -1,6 +1,7 @@
 rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService',
   function($rootScope, ngDialog, rkConfigService) {
     var templates = rkConfigService.get('templates', 'dialog');
+    var playerProperties;
     
     var movieOptionsController = ['$scope', 'rkRemoteControlService', 'rkVideoLibraryService',
       function($scope, rkRemoteControlService, rkVideoLibraryService) {
@@ -70,11 +71,55 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
     };
     
     
-     var albumOptionsController = ['$scope', 'rkRemoteControlService',
+    var artistOptionsController = ['$scope', 'rkRemoteControlService',
+      function($scope, rkRemoteControlService) {
+        $scope.play = function(artist) {
+          rkRemoteControlService.play({
+            item: { artistid: artist.artistid[0] },
+            options: { shuffled: false }
+          });
+
+          return true;
+        };
+        
+        $scope.shufflePlay = function(artist) {
+          rkRemoteControlService.play({
+            item: { artistid: artist.artistid[0] },
+            options: { shuffled: true }
+          });
+
+          return true;
+        };
+      }
+    ];
+    
+    var showArtistOptions = function(artist) {
+      var localScope = $rootScope.$new();
+      localScope.artist = artist;
+      
+      ngDialog.open({ 
+        template: templates.artistOptions,
+        scope: localScope,
+        controller: artistOptionsController
+      });
+    };
+    
+    
+    var albumOptionsController = ['$scope', 'rkRemoteControlService',
       function($scope, rkRemoteControlService) {
         $scope.play = function(album) {
           rkRemoteControlService.play({
-            item: { albumid: album.albumid }
+            item: { albumid: album.albumid },
+            options: { shuffled: false }
+          });
+
+          return true;
+        };
+        
+        $scope.shufflePlay = function(album) {
+          rkRemoteControlService.play({
+            item: { albumid: album.albumid },
+            options: { shuffled: true }
           });
 
           return true;
@@ -93,10 +138,56 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
       });
     };
     
+    
+    var songOptionsController = ['$scope', 'rkRemoteControlService',
+      function($scope, rkRemoteControlService) {
+        $scope.play = function(song) {
+          rkRemoteControlService.play({
+            item: { file: song.file }
+          });
+
+          return true;
+        };
+        
+        /*$scope.repeatPlay = function(song) {
+          if(!playerProperties.repeat || playerProperties.repeat === 'off' || playerProperties.repeat === 'one') {
+            rkRemoteControlService.setRepeat('one');
+          }
+          
+          rkRemoteControlService.play({
+            item: { file: song.file }
+          });
+
+          return true;
+        };*/
+      }
+    ];
+    
+    var showSongOptions = function(song) {
+      var localScope = $rootScope.$new();
+      localScope.song = song;
+      
+      ngDialog.open({ 
+        template: templates.songOptions,
+        scope: localScope,
+        controller: songOptionsController
+      });
+    };
+    
+    function init() {
+      $rootScope.$root.$on('rkPlayerPropertiesChange', function(event, data) {
+        playerProperties = data;
+      });
+    }
+    
+    init();
+    
     return {
       showMovieOptions: showMovieOptions,
       showEpisodeOptions: showEpisodeOptions,
-      showAlbumOptions: showAlbumOptions
+      showAlbumOptions: showAlbumOptions,
+      showArtistOptions: showArtistOptions,
+      showSongOptions: showSongOptions
     };
   }
 ]);

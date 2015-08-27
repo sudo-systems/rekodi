@@ -171,10 +171,20 @@ section#nowPlaying {
         }
         
         & > div {
-          width: 100%;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          width: auto;
+          max-width: 100%;
+          display: inline-block;
+          float: left;
+          clear: left;
+          line-height: 22px;
+          @include transitionAll(map-get($global, transition-speed));
+          
+          &:hover {
+            color: map-get($global, highlight-color);
+          }
         }
 
         .artist {
@@ -203,10 +213,6 @@ section#nowPlaying {
           text-align: justify;
           font-size: 12px;
         }
-      }
-
-      .details > div {
-        line-height: 20px;
       }
     }
   }

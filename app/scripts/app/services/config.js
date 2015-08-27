@@ -84,8 +84,8 @@ rekodiApp.factory('rkConfigService', [
         type: null
       },
       nowPlaying: {
-        audio: ['title', 'displayartist', 'album', 'track', 'year', 'genre', 'thumbnail', 'file', 'duration', 'fanart'],
-        video: ['title', 'file', 'thumbnail', 'plotoutline', 'year', 'season', 'episode', 'showtitle', 'plot', 'runtime', 'fanart']
+        audio: ['title', 'displayartist', 'album', 'track', 'year', 'genre', 'thumbnail', 'file', 'duration', 'fanart', 'artistid', 'albumid', 'streamdetails'],
+        video: ['title', 'file', 'thumbnail', 'plotoutline', 'year', 'season', 'episode', 'showtitle', 'plot', 'runtime', 'fanart','streamdetails']
       }
     };
     
@@ -93,7 +93,10 @@ rekodiApp.factory('rkConfigService', [
       dialog: {
         movieOptions: config.directories.dialogTemplates+'movie_options.html',
         episodeOptions: config.directories.dialogTemplates+'episode_options.html',
-        albumOptions: config.directories.dialogTemplates+'album_options.html'
+        albumOptions: config.directories.dialogTemplates+'album_options.html',
+        artistOptions: config.directories.dialogTemplates+'artist_options.html',
+        songOptions: config.directories.dialogTemplates+'song_options.html',
+        pictureOptions: config.directories.dialogTemplates+'picture_options.html'
       }
     };
 

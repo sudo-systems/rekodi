@@ -1,5 +1,5 @@
-rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVideoLibraryService', 'rkSettingsService',
-  function($scope, kodiApiService, rkVideoLibraryService, rkSettingsService) {
+rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVideoLibraryService', 'rkSettingsService', 'rkDialogService',
+  function($scope, kodiApiService, rkVideoLibraryService, rkSettingsService, rkDialogService) {
     var modal = {};
     var displayLimit = 5;
     var kodiApi = null;
@@ -170,15 +170,12 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
       });
     };
 
-    $scope.showOptionsModal = function(movie) {
-      if(movie.is_resumable) {
-        $scope.resumeMovie = movie;
-        modal.resumeMovie = $('[data-remodal-id=movieOptions]').remodal();
-        modal.resumeMovie.open();
-      }
-      else {
-        $scope.play(movie, false);
-      }
+    $scope.showMovieOptionsDialog = function(movie) {
+      rkDialogService.showMovieOptions(movie, function(markWatchedSuccess) {
+        if(markWatchedSuccess) {
+          $scope.getMoviesCategorised();
+        }
+      });
     };
 
     function initConnectionChange() {

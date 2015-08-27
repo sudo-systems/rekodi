@@ -1,5 +1,5 @@
-rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkRemoteControlService', 'rkVideoLibraryService', 'rkSettingsService',
-  function($scope, $element, kodiApiService, rkTooltipsService, rkRemoteControlService, rkVideoLibraryService, rkSettingsService) {
+rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVideoLibraryService', 'rkSettingsService', 'rkDialogService',
+  function($scope, kodiApiService, rkVideoLibraryService, rkSettingsService, rkDialogService) {
     var modal = {};
     var displayLimit = 5;
     var kodiApi = null;
@@ -227,7 +227,7 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
       var newEpisodes = [];
 
       for(var index in episodes) {
-        if(episodes[index].lastplayed === '') {
+        if(!episodes[index].is_watched) {
           newEpisodes.push(episodes[index]);
         }
       }
@@ -276,7 +276,15 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', '$element', 'kodiApiServ
       });
     };
     
-$scope.applyFilter = function(filterValue) {
+    $scope.showEpisodeOptionsDialog = function(episode) {
+      rkDialogService.showEpisodeOptions(episode, function(markWatchedSuccess) {
+        if(markWatchedSuccess) {
+          $scope.getEpisodes($scope.currentTvShowId, $scope.currentSeason);
+        }
+      });
+    };
+    
+    $scope.applyFilter = function(filterValue) {
       if(filterValue.length < 2) {
         $scope.clearFilter(false);
         return;
@@ -341,35 +349,6 @@ $scope.applyFilter = function(filterValue) {
       }
     };
 
-    $scope.handlePlay = function(tvShow) {
-      if(tvShow.resume.position > 0) {
-        $scope.resumeTvShow = tvShow;
-        modal.resumeTvShow = $('[data-remodal-id=resumeTvShowModal]').remodal();
-        modal.resumeTvShow.open();
-      }
-      else {
-        $scope.play(tvShow, false);
-      }
-    };
-    
-    $scope.play = function(tvShow, resume) {
-      if(modal.resumeTvShow) {
-        modal.resumeTvShow.close();
-      }
-      
-      resume = (resume)? true : false;
-      var options = {
-        item: {
-          tvShowid: tvShow.tvShowid
-        },
-        options: {
-          resume: resume
-        }
-      };
-
-      rkRemoteControlService.play(options);
-    };
-    
     function initConnectionChange() {
       kodiApi = kodiApiService.getConnection();
 

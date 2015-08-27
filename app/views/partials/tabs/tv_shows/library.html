@@ -140,7 +140,7 @@
         <i class="mdi mdi-worker"></i> [back to {{seasons[currentTvShowId].length < 2? 'tv shows' : 'seasons'}}] ..
       </div>
     </li>
-    <li ng-repeat="episode in scrollItems['episodes'] track by episode.episodeid" rk-tooltips class="clearfix">
+    <li ng-repeat="episode in scrollItems['episodes'] track by episode.episodeid" rk-tooltips class="clearfix" ng-click="showEpisodeOptionsDialog(episode)">
       <div class="thumbnail">
         <img ng-src="{{episode.thumbnail_src}}" alt="" ng-if="episode.thumbnail_src" />
         <i class="mdi mdi-tvShow" ng-if="!episode.thumbnail_src"></i>

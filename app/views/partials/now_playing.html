@@ -33,13 +33,13 @@
       <img ng-src="{{nowPlaying.thumbnail_src}}" alt="" ng-show="nowPlaying.thumbnail_src" />
     </div>
     <div class="details">
-      <div class="artist" ng-show="nowPlaying.displayartist && nowPlaying.displayartist !== ''">
+      <div class="artist" ng-show="nowPlaying.displayartist && nowPlaying.displayartist !== ''" ng-click="showArtistOptionsDialog(nowPlaying)" title="Show artist options">
         <i class="mdi mdi-worker"></i> {{nowPlaying.displayartist}}
       </div>
-      <div class="album" ng-show="nowPlaying.album && nowPlaying.album !== ''">
+      <div class="album" ng-show="nowPlaying.album && nowPlaying.album !== ''" ng-click="showAlbumOptionsDialog(nowPlaying)" title="Show album options">
         <i class="mdi mdi-album"></i> {{nowPlaying.album}}
       </div>
-      <div class="title">
+      <div class="title" ng-click="showSongOptionsDialog(nowPlaying)">
         <i class="mdi mdi-music-note"></i> <span ng-show="nowPlaying.track !== ''">{{nowPlaying.track}}.</span> {{nowPlaying.label}}
       </div>
     </div>

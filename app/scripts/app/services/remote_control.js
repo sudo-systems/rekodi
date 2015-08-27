@@ -189,12 +189,18 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEn
       });
     };
     
-    var cycleRepeat = function() {
+    var cycleRepeat = function(repeatType) {
+      setRepeat('cycle');
+    };
+    
+    var setRepeat = function(mode) {
+      mode = (!mode)? 'off' : mode;
+      
       getActivePlayerId(function(playerId) {
         if(playerId !== null) {
           kodiApi.Player.SetRepeat({
             playerid: playerId,
-            repeat: 'cycle'
+            repeat: mode
           }).then(function(data) {
           }, function(error) {
             rkLogService.error(error);
@@ -244,6 +250,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEn
       toggleMute: toggleMute,
       seek: seek,
       togglePartymode: togglePartymode,
+      setRepeat: setRepeat,
       cycleRepeat: cycleRepeat,
       toggleShuffle: toggleShuffle
     };

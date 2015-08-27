@@ -1,5 +1,5 @@
-rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService', 'rkPlaybackStatusService', 'rkRemoteControlService', 'rkNotificationService',
-  function($scope, $timeout, rkHelperService, rkPlaybackStatusService, rkRemoteControlService, rkNotificationService) {
+rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService', 'rkPlaybackStatusService', 'rkRemoteControlService', 'rkNotificationService', 'rkDialogService',
+  function($scope, $timeout, rkHelperService, rkPlaybackStatusService, rkRemoteControlService, rkNotificationService, rkDialogService) {
     $scope.nowPlaying = null;
     $scope.timePlaying = '00:00:00';
     $scope.isManuallySeeking = false;
@@ -46,6 +46,22 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
         var seekTime = rkHelperService.secondsToDuration(seconds);
         styl.inject(sliderWrapperHoverSelector+', '+sliderWrapperFocusSelector, {content: "'"+seekTime+"'"}).apply();
       }
+    };
+    
+    $scope.showAlbumOptionsDialog = function(nowPlayingData) {
+      var _album = angular.extend({}, {}, nowPlayingData);
+      _album.label = nowPlayingData.album;
+      rkDialogService.showAlbumOptions(_album);
+    };
+    
+    $scope.showArtistOptionsDialog = function(nowPlayingData) {
+      var _artist = angular.extend({}, {}, nowPlayingData);
+      _artist.label = nowPlayingData.displayartist;
+      rkDialogService.showArtistOptions(_artist);
+    };
+    
+    $scope.showSongOptionsDialog = function(nowPlayingData) {
+      rkDialogService.showSongOptions(nowPlayingData);
     };
 
     function init() {

@@ -1,5 +1,5 @@
-rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', '$timeout', 'rkAudioLibraryService',
-  function($scope, $element, kodiApiService, rkTooltipsService, $timeout, rkAudioLibraryService) {
+rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudioLibraryService', 'rkDialogService',
+  function($scope, kodiApiService, rkAudioLibraryService, rkDialogService) {
     var displayLimit = 15;
     var kodiApi = null;
     $scope.currentLevel = null;
@@ -150,6 +150,10 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', '$element', 'kodiApiServic
           });
         }
       });
+    };
+    
+    $scope.showAlbumOptionsDialog = function(album) {
+      rkDialogService.showAlbumOptions(album);
     };
 
     $scope.getSongs = function(albumId) {
