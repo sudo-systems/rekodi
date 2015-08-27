@@ -4,11 +4,11 @@
 <div class="description">
   What would you like to do with episode <u>{{episode.label}}</u> from the TV show <u>{{episode.showtitle}}</u>?
 </div>
-<div class="ngdialog-buttons">
-  <button class="ngdialog-button ngdialog-button-primary" ng-click="play(episode) && closeThisDialog()">Play</button>
-  <button class="ngdialog-button ngdialog-button-primary" ng-click="play(episode, true) && closeThisDialog()" ng-if="episode.is_resumable">Resume from {{episode.resume.position_readable}}</button>
-  <button class="ngdialog-button ngdialog-button-secondary" ng-click="markWatched(episode, false, callback) && closeThisDialog()" ng-if="episode.is_watched && !episode.is_resumable">Mark unwatched</button>
-  <button class="ngdialog-button ngdialog-button-secondary" ng-click="markWatched(episode, true, callback) && closeThisDialog()" ng-if="!episode.is_watched && !episode.is_resumable">Mark watched</button>
-  <button class="ngdialog-button ngdialog-button-danger" ng-click="remove(episode, callback) && closeThisDialog()">Delete</button>
-  <button class="ngdialog-button ngdialog-button-cancel" ng-click="closeThisDialog()">Cancel</button>
+<div class="ngdialog-buttons" rk-tooltips="true">
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="play(episode) && closeThisDialog()" title="Play"><i class="mdi mdi-play"></i></button>
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="play(episode, true) && closeThisDialog()" ng-if="episode.is_resumable" title="Resume"><i class="mdi mdi-redo"></i></button>
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="markWatched(episode, false, callback) && closeThisDialog()" ng-if="episode.is_watched && !episode.is_resumable" title="Mark unwatched"><i class="mdi mdi-eye-off"></i></button>
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="markWatched(episode, true, callback) && closeThisDialog()" ng-if="!episode.is_watched && !episode.is_resumable" title="Mark watched"><i class="mdi mdi-eye"></i></button>
+  <button class="ngdialog-button ngdialog-button-favorite" ng-click="favorite(song) && closeThisDialog()" title="Add to favorites"><i class="mdi mdi-star"></i></button>
+  <button class="ngdialog-button ngdialog-button-danger" ng-click="remove(episode, callback) && closeThisDialog()" title="Remove from library"><i class="mdi mdi-delete"></i></button>
 </div>

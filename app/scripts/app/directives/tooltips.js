@@ -13,16 +13,23 @@ rekodiApp.directive('rkTooltips', ['$timeout',
           });
         }
         
-        scope.$on('$includeContentLoaded', function () {
+        if(attrs.rkTooltips === 'true') {
           $timeout(function() {
             applyTooltips();
           });
-        });
-        
-        if(scope.$last === true) {
-          $timeout(function() {
-            applyTooltips();
+        }
+        else {
+          scope.$on('$includeContentLoaded', function () {
+            $timeout(function() {
+              applyTooltips();
+            });
           });
+
+          if(scope.$last === true) {
+            $timeout(function() {
+              applyTooltips();
+            });
+          }
         }
       }
   	};

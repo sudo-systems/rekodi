@@ -39,7 +39,7 @@
       <div class="album" ng-show="nowPlaying.album && nowPlaying.album !== ''" ng-click="showAlbumOptionsDialog(nowPlaying)" title="Show album options">
         <i class="mdi mdi-album"></i> {{nowPlaying.album}}
       </div>
-      <div class="title" ng-click="showSongOptionsDialog(nowPlaying)">
+      <div class="title" ng-click="showSongOptionsDialog(nowPlaying)" title="Show song options">
         <i class="mdi mdi-music-note"></i> <span ng-show="nowPlaying.track !== ''">{{nowPlaying.track}}.</span> {{nowPlaying.label}}
       </div>
     </div>

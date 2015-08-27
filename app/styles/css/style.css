@@ -1663,12 +1663,15 @@ section#recentlyAdded > .wrapper {
   .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button {
     border-radius: 0;
     height: auto;
-    line-height: 18px;
-    padding: 0 6px;
-    font-size: 11px;
-    width: auto;
-    min-width: 20px;
-    letter-spacing: 1px; }
+    line-height: 30px;
+    padding: 0;
+    font-size: 24px;
+    text-align: center;
+    width: 32px;
+    min-width: 0;
+    letter-spacing: 1px;
+    float: right;
+    margin-left: 6px; }
     .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button:active {
       -ms-transform: scale(0.95);
       -webkit-transform: scale(0.95);
@@ -1680,24 +1683,35 @@ section#recentlyAdded > .wrapper {
     padding: 10px 0 0 0; }
   .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-primary {
     color: #FFF;
-    background: #E6802E;
-    border: 1px solid #E6802E; }
+    background: #87B952;
+    border: 1px solid #87B952; }
     .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-primary:hover {
       background: #FFF;
-      color: #E6802E;
-      border: 1px solid #E6802E; }
+      color: #87B952;
+      border: 1px solid #87B952; }
   .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-secondary {
-    background: #FFF;
-    border: 1px solid #FFF;
-    color: #E6802E; }
+    background: #1483C4;
+    border: 1px solid #1483C4;
+    color: #FFF; }
     .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-secondary:hover {
-      background: #E6802E;
-      color: #FFF;
-      border: 1px solid #FFF; }
+      background: #FFF;
+      color: #1483C4;
+      border: 1px solid #1483C4; }
+  .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-favorite {
+    background: #EEC118;
+    border: 1px solid #EEC118;
+    color: #FFF; }
+    .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-favorite:hover {
+      background: #FFF;
+      color: #EEC118;
+      border: 1px solid #EEC118; }
   .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-danger {
     background: #E34F16;
     color: #FFF;
-    border: 1px solid #E34F16; }
+    border: 1px solid #FFF;
+    float: left;
+    margin-left: 0;
+    margin-right: 6px; }
     .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-danger:hover {
       background: #FFF;
       color: #E34F16;
@@ -1705,7 +1719,8 @@ section#recentlyAdded > .wrapper {
   .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-cancel {
     background: #CCC;
     color: #333;
-    border: 1px solid #CCC; }
+    border: 1px solid #333;
+    float: left; }
     .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-cancel:hover {
       background: #AAA;
       color: #FFF;

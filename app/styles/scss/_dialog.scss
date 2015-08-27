@@ -42,12 +42,15 @@
     .ngdialog-button {
       border-radius: 0;
       height: auto;
-      line-height: 18px;
-      padding: 0 6px;
-      font-size: 11px;
-      width: auto;
-      min-width: 20px;
+      line-height: 30px;
+      padding: 0;
+      font-size: 24px;
+      text-align: center;
+      width: 32px;
+      min-width: 0;
       letter-spacing: 1px;
+      float: right;
+      margin-left: 6px;
 
       &:active {
         @include scale(0.95);
@@ -61,32 +64,47 @@
     
     .ngdialog-button-primary {
       color: #FFF;
-      background: map-get($global, highlight-color);
-      border: 1px solid map-get($global, highlight-color);
+      background: #87B952;
+      border: 1px solid #87B952;
       
       &:hover {
         background: #FFF;
-        color: map-get($global, highlight-color);
-        border: 1px solid map-get($global, highlight-color);
+        color: #87B952;
+        border: 1px solid #87B952;
       }
     }
     
     .ngdialog-button-secondary {
-      background: #FFF;
-      border: 1px solid #FFF;
-      color: map-get($global, highlight-color);
+      background: #1483C4;
+      border: 1px solid #1483C4;
+      color: #FFF;
       
       &:hover {
-        background: map-get($global, highlight-color);
-        color: #FFF;
-        border: 1px solid #FFF;
+        background: #FFF;
+        color: #1483C4;
+        border: 1px solid #1483C4;
+      }
+    }
+    
+    .ngdialog-button-favorite {
+      background: #EEC118;
+      border: 1px solid #EEC118;
+      color: #FFF;
+      
+      &:hover {
+        background: #FFF;
+        color: #EEC118;
+        border: 1px solid #EEC118;
       }
     }
     
     .ngdialog-button-danger {
       background: #E34F16;
       color: #FFF;
-      border: 1px solid #E34F16;
+      border: 1px solid #FFF;
+      float: left;
+      margin-left: 0;
+      margin-right: 6px;
       
       &:hover {
         background: #FFF;
@@ -98,7 +116,8 @@
     .ngdialog-button-cancel {
       background: #CCC;
       color: #333;
-      border: 1px solid #CCC;
+      border: 1px solid #333;
+      float: left;
       
       &:hover {
         background: #AAA;
