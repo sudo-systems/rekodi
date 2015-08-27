@@ -118,6 +118,10 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
         data: artistsCategorised[$scope.guiModels.selectedIndex]
       });
     }
+    
+    $scope.showArtistOptionsDialog = function(artist) {
+      rkDialogService.showArtistOptions(artist);
+    };
 
     $scope.getAlbums = function(artistId) {
       $scope.currentLevel = 'albums';
@@ -186,6 +190,10 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
           });
         }
       });
+    };
+    
+    $scope.showSongOptionsDialog = function(song) {
+      rkDialogService.showSongOptions(song);
     };
 
     $scope.applyFilter = function(filterValue) {

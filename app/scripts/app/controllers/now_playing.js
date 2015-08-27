@@ -48,16 +48,16 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
       }
     };
     
-    $scope.showAlbumOptionsDialog = function(nowPlayingData) {
-      var _album = angular.extend({}, {}, nowPlayingData);
-      _album.label = nowPlayingData.album;
-      rkDialogService.showAlbumOptions(_album);
-    };
-    
     $scope.showArtistOptionsDialog = function(nowPlayingData) {
       var _artist = angular.extend({}, {}, nowPlayingData);
       _artist.label = nowPlayingData.displayartist;
       rkDialogService.showArtistOptions(_artist);
+    };
+    
+    $scope.showAlbumOptionsDialog = function(nowPlayingData) {
+      var _album = angular.extend({}, {}, nowPlayingData);
+      _album.label = nowPlayingData.album;
+      rkDialogService.showAlbumOptions(_album);
     };
     
     $scope.showSongOptionsDialog = function(nowPlayingData) {
