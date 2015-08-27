@@ -41,9 +41,9 @@ rekodiApp.factory('rkSettingsService', ['$localStorage',
     };
     
     var isConnectionConfigured = function() {
-      return (!$localStorage.settings.serverAddress || 
+      return (!$localStorage.settings.serverAddress === '' || 
         $localStorage.settings.serverAddress.lenght < 4 ||
-        !$localStorage.settings.jsonRpcPort || 
+        !$localStorage.settings.jsonRpcPort === '' || 
         $localStorage.settings.jsonRpcPort.length < 2)? false : true;
     };
     

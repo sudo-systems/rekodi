@@ -4,9 +4,12 @@
       <a ng-click="getTvShowsCategorised()" title="Back to TV Shows"><i class="mdi mdi-home"></i></a>
     </span>
     <span ng-show="currentLevel ==='tvShows' && tvShowsIndex.length > 0 && !isFiltering">
-      <select name="index" ng-model="guiModels.selectedIndex" class="index" title="Select the category" ng-change="showItems({key: 'tvShows', reset: true, data: tvShowsCategorised[guiModels.selectedIndex]})">
-        <option ng-repeat="indexLetter in tvShowsIndex track by indexLetter" ng-value="indexLetter" ng-selected="indexLetter === guiModels.selectedIndex">{{indexLetter}}</option>
-      </select>
+      <ui-select ng-model="guiModels.selectedIndex" search-enabled="false" on-select="showItems({key: 'tvShows', reset: true, data: tvShowsCategorised[guiModels.selectedIndex]})">
+        <ui-select-match>{{$select.selected}}</ui-select-match>
+        <ui-select-choices repeat="indexLetter in tvShowsIndex track by indexLetter">
+          <div ng-bind-html="indexLetter | highlight: $select.search"></div>
+        </ui-select-choices>
+      </ui-select>
     </span>
     <span>
       <i class="mdi mdi-eye-off" title="hide watched items" ng-show="!settings.hideWatched" ng-click="settings.hideWatched = true"></i>

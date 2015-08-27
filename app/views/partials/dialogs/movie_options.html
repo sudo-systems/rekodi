@@ -2,12 +2,13 @@
   Movie options
 </div>
 <div class="description">
-  What would you like to do with the movie <u>{{movie.label}}</u><span ng-if="movie.year"> ({{movie.year}})</span>?
+  What would you like to do with the movie <u class="nowrap">{{movie.label}}<span ng-if="movie.year"> ({{movie.year}})</span></u>?
 </div>
 <div class="ngdialog-buttons">
   <button class="ngdialog-button ngdialog-button-primary" ng-click="play(movie) && closeThisDialog()">Play</button>
   <button class="ngdialog-button ngdialog-button-primary" ng-click="play(movie, true) && closeThisDialog()" ng-if="movie.is_resumable">Resume from {{movie.resume.position_readable}}</button>
   <button class="ngdialog-button ngdialog-button-secondary" ng-click="markWatched(movie, false, callback) && closeThisDialog()" ng-if="movie.is_watched">Mark unwatched</button>
   <button class="ngdialog-button ngdialog-button-secondary" ng-click="markWatched(movie, true, callback) && closeThisDialog()" ng-if="!movie.is_watched && !movie.is_resumable">Mark watched</button>
-  <button class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">Cancel</button>
+  <button class="ngdialog-button ngdialog-button-danger" ng-click="delete(movie, callback) && closeThisDialog()">Delete</button>
+  <button class="ngdialog-button ngdialog-button-cancel" ng-click="closeThisDialog()">Cancel</button>
 </div>

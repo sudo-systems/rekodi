@@ -96,7 +96,7 @@ section.tabsContainer {
     line-height: map-get($tabs, options-height);
     height: map-get($tabs, options-height);
     font-size: 14px;
-    overflow: hidden;
+    overflow: visible;
 
     select,
     input[type="text"] {
@@ -113,6 +113,7 @@ section.tabsContainer {
 
     .page-specific {
       float: left;
+      white-space: nowrap;
       
       &> span {
         margin-right: 6px;

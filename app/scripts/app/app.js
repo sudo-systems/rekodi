@@ -1,5 +1,7 @@
 var rekodiApp = angular.module('rekodiApp', [
   'ngStorage',
   'suEndlessScroll',
-  'ngDialog'
+  'ngDialog',
+  'ngSanitize',
+  'ui.select'
 ]);

@@ -26,14 +26,19 @@
     "app/tmp"
   ],
   "dependencies": {
-    "font-awesome": "~4.3.0",
     "angular": "~1.4.3",
+    "angular-sanitize": "~1.4.4",
+    "angular-su-endless-scroll": "~1.0.0",
+    "bower": "*",
+    "font-awesome": "~4.3.0",
+    "install": "~1.0.4",
     "jbox": "~0.3.2",
     "mdi": "~1.1.70",
+    "ngDialog": "~0.5.1",
     "ngstorage": "~0.3.7",
-    "bower": "*",
-    "install": "~1.0.4",
-    "angular-su-endless-scroll": "~1.0.0",
-    "ngDialog": "~0.5.1"
+    "ui-select": "angular-ui-select#~0.12.1"
+  },
+  "devDependencies": {
+    "select2": "~3.4.5"
   }
 }

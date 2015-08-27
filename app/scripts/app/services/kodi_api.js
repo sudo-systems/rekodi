@@ -1,13 +1,11 @@
 rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsService',
   function($rootScope, rkLogService, rkSettingsService) {
     var kodiWs = require('xbmc-ws');
-    var connectingInProgress = false;
+    var isConnecting = false;
     var connection = null;
     var retyIntervalTime = 10000;
-    var retryInterval;
     var pingIntervalTime = 5000;
-    var pingInterval;
-    var settings = rkSettingsService.get({category: 'connection'});
+    var pingInterval, retryInterval;
     
     function bindEvents() {
       connection.System.OnQuit(function() {
@@ -28,12 +26,22 @@ rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsSe
     }
 
     function createConnection() {
-      if(!rkSettingsService.isConnectionConfigured() || connectingInProgress) {
+      var settings = rkSettingsService.get({category: 'connection'});
+      
+      if(!rkSettingsService.isConnectionConfigured() || !settings || isConnecting) {
+        if(!rkSettingsService.isConnectionConfigured()) {
+          $rootScope.$emit('rkNotConfigured');
+        }
+        
+        if(!settings) {
+          rkLogService.error('Settings object not available. System fault.');
+        }
+        
         connection = null;
         return;
       }
 
-      connectingInProgress = true;
+      isConnecting = true;
 
       kodiWs(settings.serverAddress, settings.jsonRpcPort).then(function(link) {
         if(link) {
@@ -53,7 +61,7 @@ rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsSe
     };
     
     function setConnected(link) {
-      connectingInProgress = false;
+      isConnecting = false;
       connection = link;
       startPing();
       $rootScope.$emit('rkWsConnectionStatusChange', connection);
@@ -62,7 +70,7 @@ rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsSe
     function setDisconnected() {
       if(connection) {
         connection = null;
-        connectingInProgress = false;
+        isConnecting = false;
         stopPing();
         $rootScope.$emit('rkWsConnectionStatusChange', connection);
       }
