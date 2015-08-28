@@ -1,11 +1,8 @@
-rekodiApp.factory('kodiApiService', ['$rootScope', '$timeout', 'rkLogService', 'rkSettingsService', 'rkDialogService', 'rkNotificationService',
-  function($rootScope, $timeout, rkLogService, rkSettingsService, rkDialogService, rkNotificationService) {
+rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsService', 'rkDialogService', 'rkNotificationService', 'rkConfigService',
+  function($rootScope, rkLogService, rkSettingsService, rkDialogService, rkNotificationService, rkConfigService) {
     var kodiWs = require('xbmc-ws');
     var isConnecting = false;
     var connection = null;
-    var retyIntervalTime = 10000;
-    var pingIntervalTime = 5000;
-    var pingInterval, retryInterval;
     
     function bindEvents(link) {
       link.System.OnQuit(function() {
@@ -25,11 +22,10 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$timeout', 'rkLogService', '
       });
     }
 
-    function createConnection() {
-      var settings = rkSettingsService.get({category: 'connection'});
+    var connect = function() {
       var isConfigured = rkSettingsService.isConnectionConfigured();
       
-      if(!isConfigured || !settings || isConnecting) {
+      if(!isConfigured || isConnecting) {
         if(!isConfigured && !isConnecting) {
           rkDialogService.showNotConfigured();
         }
@@ -38,6 +34,7 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$timeout', 'rkLogService', '
         return;
       }
 
+      var settings = rkSettingsService.get({category: 'connection'});
       setIsConnecting();
 
       kodiWs(settings.serverAddress, settings.jsonRpcPort).then(function(link) {
@@ -45,90 +42,40 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$timeout', 'rkLogService', '
           setIsConnected(link);
           bindEvents(link);
         }
-        else {
-          connection = null;
-          setIsDisconnected();
-        }
       },
       function(error) {
-        connection = null;
-        rkLogService.error(error);
-        setIsDisconnected();
+        setIsDisconnected(error);
       });
     };
     
     function setIsConnecting() {
       isConnecting = true;
       //rkDialogService.showConnecting();
-      stopPing();
     }
     
     function setIsConnected(link) {
       isConnecting = false;
       connection = link;
-      startPing();
+      bindEvents(link);
       $rootScope.$emit('rkWsConnectionStatusChange', connection);
       rkNotificationService.notifyConnection(true, 'Connection with Kodi has been established');
       rkDialogService.closeAll();
     };
     
-    function setIsDisconnected() {
-      if(connection) {
-        connection = null;
-        isConnecting = false;
-        stopPing();
-        $rootScope.$emit('rkWsConnectionStatusChange', connection);
-        rkDialogService.showNotConnected();
-        rkNotificationService.notifyConnection(false, 'Could not connect with Kodi');
-      }
-    };
-    
-    function ping() {
-      if(connection === null) {
-        setIsDisconnected();
-        connection = null;
-        return;
-      }
+    function setIsDisconnected(error) {
+      connection = null;
+      isConnecting = false;
+      connect();
+      $rootScope.$emit('rkWsConnectionStatusChange', connection);
+      rkDialogService.showNotConnected();
+      rkNotificationService.notifyConnection(false, 'Could not connect with Kodi');
+      connect();
       
-      connection.JSONRPC.Ping().then(function(data) {
-        if(data !== 'pong') {
-          stopPing();
-          setIsDisconnected();
-          connection = null;
-        }
-      }, function(error) {
-        setIsDisconnected();
-        connection = null;
-      });
-    };
-    
-    function startPing() {
-      stopPing();
-      
-      pingInterval = setInterval(function() {
-        ping();
-      }, pingIntervalTime);
-    };
-    
-    function stopPing() {
-      clearInterval(pingInterval);
+      if(error) {
+        rkLogService.error(error);
+      }
     };
 
-    var connect = function(immmediately) {
-      immmediately = (immmediately === undefined)? true : immmediately;
-      
-      if(immmediately) {
-        createConnection();
-      }
-      
-      clearInterval(retryInterval);
-      retryInterval = setInterval(function() {
-        if(connection === null) {
-          createConnection();
-        }
-      }, retyIntervalTime);
-    };
-    
     var isConnected = function() {
       return (connection);
     };
@@ -136,7 +83,7 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$timeout', 'rkLogService', '
     var getConnection = function() {
       return connection;
     };
-    
+
     return {
       connect: connect,
       isConnected: isConnected,
