@@ -1,0 +1,129 @@
+.ngdialog.ngdialog-theme-default {
+  &.ngdialog-closing {
+    .ngdialog-content {
+      -webkit-animation: ngdialog-flyout .2s;
+    }
+  }
+  
+  .ngdialog-content {
+    border-radius: 0;
+    font-family: map-get($body, font-family);
+    -webkit-animation: ngdialog-flyin .3s;
+    
+    .title {
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      letter-spacing: 4px;
+      color: #000;
+    }
+    
+    .description {
+      font-size: 15px;
+      margin: 6px 0 32px 0;
+      line-height: 18px;
+    }
+    
+    .ngdialog-close {
+      border-radius: 0;
+
+      &:before {
+        border-radius: 0;
+      }
+    }
+
+    textarea,
+    input,
+    button {
+      border-radius: 0;
+    }
+
+    .ngdialog-button {
+      border-radius: 0;
+      height: auto;
+      line-height: 30px;
+      padding: 0;
+      font-size: 24px;
+      text-align: center;
+      width: 32px;
+      min-width: 0;
+      letter-spacing: 1px;
+      float: right;
+      margin-left: 6px;
+
+      &:active {
+        @include scale(0.95);
+      }
+    }
+    
+    .ngdialog-buttons {
+      border-top: 1px dotted map-get($global, highlight-color);
+      padding: 10px 0 0 0;
+    }
+    
+    .ngdialog-button-primary {
+      color: #FFF;
+      background: #87B952;
+      border: 1px solid #87B952;
+      
+      &:hover {
+        background: #FFF;
+        color: #87B952;
+        border: 1px solid #87B952;
+      }
+    }
+    
+    .ngdialog-button-secondary {
+      background: #1483C4;
+      border: 1px solid #1483C4;
+      color: #FFF;
+      
+      &:hover {
+        background: #FFF;
+        color: #1483C4;
+        border: 1px solid #1483C4;
+      }
+    }
+    
+    .ngdialog-button-favorite {
+      background: #EEC118;
+      border: 1px solid #EEC118;
+      color: #FFF;
+      
+      &:hover {
+        background: #FFF;
+        color: #EEC118;
+        border: 1px solid #EEC118;
+      }
+    }
+    
+    .ngdialog-button-danger {
+      background: #E34F16;
+      color: #FFF;
+      border: 1px solid #FFF;
+      float: left;
+      margin-left: 0;
+      margin-right: 6px;
+      
+      &:hover {
+        background: #FFF;
+        color: #E34F16;
+        border: 1px solid #E34F16;
+      }
+    }
+    
+    .ngdialog-button-cancel {
+      background: #CCC;
+      color: #333;
+      border: 1px solid #333;
+      float: left;
+      
+      &:hover {
+        background: #AAA;
+        color: #FFF;
+        border: 1px solid #FFF;
+      }
+    }
+  }
+}

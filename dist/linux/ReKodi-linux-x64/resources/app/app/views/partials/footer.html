@@ -1,0 +1,9 @@
+<div class="indicator loading blink clearfix">
+  <i class="fa fa-spinner fa-pulse"></i> <span class="message">{{loadingMessage}}</span>
+</div>
+<div class="heartbeat offline" ng-show="!isConnected" title="Not connected with Kodi">
+  <i class="mdi mdi-heart"></i>
+</div>
+<div class="heartbeat online" ng-show="isConnected" title="Connected with Kodi">
+  <i class="mdi mdi-heart"></i>
+</div>

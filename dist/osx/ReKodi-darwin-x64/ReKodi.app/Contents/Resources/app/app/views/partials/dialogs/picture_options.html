@@ -1,0 +1,12 @@
+<div class="title">
+  Picture options
+</div>
+<div class="description">
+  What would you like to do with the picture <u>{{ngDialogData.item.label}}</u>?
+</div>
+<div class="ngdialog-buttons">
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="play() && closeThisDialog()">Play</button>
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="repeatPlay() && closeThisDialog()">Repeat play</button>
+  <button class="ngdialog-button ngdialog-button-danger" ng-click="remove() && closeThisDialog()">Delete</button>
+  <button class="ngdialog-button ngdialog-button-cancel" ng-click="closeThisDialog()">Cancel</button>
+</div>

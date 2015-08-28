@@ -1,0 +1,10 @@
+nbproject
+builds/osx/rekodi-darwin-x64
+builds/win/rekodi-win32-ia32
+builds/linux/rekodi-linux-ia32
+builds/linux/rekodi-linux-x64
+node_modules
+bower_components
+.DS_Store
+.DS_Store?
+._*

@@ -1,0 +1,141 @@
+<div class="options clearfix">
+  <div class="page-specific">
+    <a ng-click="getArtistsCategorised()" title="Back to artists" ng-show="currentLevel !== 'artists'"><i class="mdi mdi-home"></i></a>
+    <span ng-show="currentLevel ==='artists' && artistsIndex.length > 0 && !isFiltering">
+      <ui-select ng-model="guiModels.selectedIndex" search-enabled="false" on-select="showItems({key: 'artists', reset: true, data: artistsCategorised[guiModels.selectedIndex]})">
+        <ui-select-match>{{$select.selected}}</ui-select-match>
+        <ui-select-choices repeat="indexLetter in artistsIndex track by indexLetter">
+          <div ng-bind-html="indexLetter | highlight: $select.search"></div>
+        </ui-select-choices>
+      </ui-select>
+    </span>
+  </div>
+  <div class="filter-container">
+    <input type="text" class="filter" ng-model="guiModels.filterValue" ng-change="applyFilter(guiModels.filterValue)" placeholder="search" title="Find artists (2 characters minimal)" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="guiModels.filterValue !== ''"></i>
+  </div>
+</div>
+<div class="data-list-wrapper" su-endless-scroll="showItems({key: currentLevel, data: artistsCategorised[guiModels.selectedIndex]})" ng-show="currentLevel ==='artists'">
+  <ul class="vertical" ng-show="currentLevel ==='artists'">
+    <li ng-repeat="artist in scrollItems['artists'] track by artist.artistid" class="clearfix" ng-click="getAlbums(artist.artistid)">
+      <div class="label">
+        <i class="mdi mdi-worker"></i> {{artist.label}}
+      </div>
+    </li>
+  </ul>
+</div>
+<div class="data-list-wrapper" su-endless-scroll="showItems({key: currentLevel, data: albums[currentAlbumId]})" ng-show="currentLevel ==='albums'">
+  <ul class="vertical" ng-show="currentLevel === 'albums'">
+    <li class="clearfix" ng-click="getArtistsCategorised()">
+      <div class="label">
+        <i class="mdi mdi-worker"></i> [back to artists] ..
+      </div>
+    </li>
+    <li ng-repeat="album in scrollItems['albums'] track by album.albumid" class="clearfix" ng-click="getSongs(album.albumid)">
+      <div class="thumbnail">
+        <div ng-if="album.thumbnail_src">
+          <img ng-src="{{album.thumbnail_src}}" alt="" />
+        </div>
+        <i class="mdi mdi-album" ng-if="!album.thumbnail_src"></i>
+      </div>
+      <div class="details">
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr>
+            <td colspan="2" class="title">
+              <h2>{{album.label}}</h2>
+            </td>
+          </tr>
+          <tr ng-if="album.displayartist">
+            <td class="infoLabel">
+              artist
+            </td>
+            <td class="infoContent">
+              {{album.displayartist}}
+            </td>
+          </tr>
+          <tr ng-if="album.year">
+            <td class="infoLabel">
+              year
+            </td>
+            <td class="infoContent">
+              {{album.year}}
+            </td>
+          </tr>
+          <tr ng-if="album.display_genre">
+            <td class="infoLabel">
+              genre
+            </td>
+            <td class="infoContent">
+              {{album.display_genre}}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </li>
+  </ul>
+</div>
+<div class="data-list-wrapper" su-endless-scroll="showItems({key: currentLevel, data: songs[currentArtistId]})" ng-show="currentLevel ==='songs'">
+  <ul class="vertical">
+    <li ng-click="getAlbums(currentArtistId)">
+      <div class="label">
+        <i class="mdi mdi-album"></i> [back to albums] ..
+      </div>
+    </li>
+    <li ng-repeat="song in scrollItems['songs'] track by song.songid" class="clearfix" ng-click="showSongOptionsDialog(song)">
+      <div class="thumbnail">
+        <div ng-if="song.thumbnail_src">
+          <img ng-src="{{song.thumbnail_src}}" alt="" />
+        </div>
+        <i class="mdi mdi-music-note" ng-if="!song.thumbnail_src"></i>
+      </div>
+      <div class="details">
+        <table width="100%" cellspacing="0" cellpadding="0">
+          <tr>
+            <td colspan="2" class="title">
+              <h2><span class="track" ng-if="song.track">{{song.track}}. </span>{{song.label}}</h2>
+            </td>
+          </tr>
+          <tr ng-if="song.duration_readable">
+            <td class="infoLabel">
+              duration
+            </td>
+            <td class="infoContent">
+              {{song.duration_readable}}
+            </td>
+          </tr>
+          <tr ng-if="song.displayartist">
+            <td class="infoLabel">
+              artist
+            </td>
+            <td class="infoContent">
+              {{song.displayartist}}
+            </td>
+          </tr>
+          <tr ng-if="song.album">
+            <td class="infoLabel">
+              album
+            </td>
+            <td class="infoContent">
+              {{song.album}}
+            </td>
+          </tr>
+          <tr ng-if="song.year">
+            <td class="infoLabel">
+              year
+            </td>
+            <td class="infoContent">
+              {{song.year}}
+            </td>
+          </tr>
+          <tr ng-if="album.display_genre">
+            <td class="infoLabel">
+              genre
+            </td>
+            <td class="infoContent">
+              {{song.display_genre}}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </li>
+  </ul>
+</div>
