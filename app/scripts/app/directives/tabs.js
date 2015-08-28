@@ -1,5 +1,5 @@
-rekodiApp.directive('rkTabs', [
-  function() {
+rekodiApp.directive('rkTabs', ['rkTabsService',
+  function(rkTabsService) {
   	return {
       restrict: 'A',
       link: function(scope, element, attrs) {
@@ -7,8 +7,10 @@ rekodiApp.directive('rkTabs', [
         magicLine.css('left', $(element).find('nav li.active:first').position().left).data('origLeft', magicLine.position().left).data('origWidth', magicLine.width());
         var tabsContainer = $(element).find('.tabs:first').attr('data-tab', 0);
 
-        $(element).find('nav li').on('click', function(e) {
+        $(element).find('nav:first li').on('click', function(e) {
           e.preventDefault();
+
+          rkTabsService.setActiveTab($(this).attr('data-rel'));
 
           $(element).find('nav li.active:first').removeClass('active');
           $(this).addClass('active');

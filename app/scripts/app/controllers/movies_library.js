@@ -7,12 +7,14 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
     $scope.moviesIndex = [];
     $scope.scrollItems = [];
     $scope.isFiltering = false;
-    $scope.isInitialized = false;
     $scope.settings = rkSettingsService.get({category: 'moviesLibrary'});
     $scope.resumeMovie = {};
     $scope.guiModels = {
       filterValue: '',
       selectedIndex: null
+    };
+    $scope.status = {
+      isInitalized: false
     };
 
     $scope.showItems = function(options) {
@@ -187,10 +189,6 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
     }
 
     $scope.init = function() {
-      if($scope.isInitialized) {
-        return;
-      }
-      
       initConnectionChange();
 
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
@@ -217,7 +215,15 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
         }
       });
 
-      $scope.isInitialized = true;
+      $scope.status.isInitialized = true;
     };
+    
+    $scope.$root.$on('rkMoviesLibraryCtrlInit', function (event, connection) {
+      if($scope.status.isInitialized) {
+        return;
+      }
+
+      $scope.init();
+    });
   }
 ]);

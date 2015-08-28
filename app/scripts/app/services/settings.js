@@ -41,10 +41,12 @@ rekodiApp.factory('rkSettingsService', ['$localStorage',
     };
     
     var isConnectionConfigured = function() {
-      return (!$localStorage.settings.serverAddress === '' || 
-        $localStorage.settings.serverAddress.lenght < 4 ||
-        !$localStorage.settings.jsonRpcPort === '' || 
-        $localStorage.settings.jsonRpcPort.length < 2)? false : true;
+      return (!$localStorage.settings.connection.serverAddress === '' || 
+        $localStorage.settings.connection.serverAddress.lenght < 4 ||
+        !$localStorage.settings.connection.jsonRpcPort === '' || 
+        $localStorage.settings.connection.jsonRpcPort.length < 2 ||
+        !$localStorage.settings.connection.httpPort === '' || 
+        $localStorage.settings.connection.httpPort.length < 2)? false : true;
     };
     
     function init() {
@@ -54,7 +56,7 @@ rekodiApp.factory('rkSettingsService', ['$localStorage',
             serverAddress: '',
             jsonRpcPort: 9090,
             httpPort: 8080,
-            username: 'kodi',
+            username: '',
             password: ''
           },
           nowPlaying: {

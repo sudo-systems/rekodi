@@ -2,13 +2,13 @@
   Movie options
 </div>
 <div class="description">
-  What would you like to do with the movie <u>{{movie.label}}<span ng-if="movie.year"> ({{movie.year}})</span></u>?
+  What would you like to do with the movie <u>{{ngDialogData.movie.label}}<span ng-if="ngDialogData.movie.year"> ({{ngDialogData.movie.year}})</span></u>?
 </div>
 <div class="ngdialog-buttons" rk-tooltips="true">
-  <button class="ngdialog-button ngdialog-button-primary" ng-click="play(movie) && closeThisDialog()" title="Play"><i class="mdi mdi-play"></i></button>
-  <button class="ngdialog-button ngdialog-button-secondary" ng-click="play(movie, true) && closeThisDialog()" ng-if="movie.is_resumable" title="Resume"><i class="mdi mdi-redo"></i></button>
-  <button class="ngdialog-button ngdialog-button-secondary" ng-click="markWatched(movie, false, callback) && closeThisDialog()" ng-if="movie.is_watched && !movie.is_resumable" title="Mark unwatched"><i class="mdi mdi-eye-off"></i></button>
-  <button class="ngdialog-button ngdialog-button-secondary" ng-click="markWatched(movie, true, callback) && closeThisDialog()" ng-if="!movie.is_watched && !movie.is_resumable" title="Mark watched"><i class="mdi mdi-eye"></i></button>
-  <button class="ngdialog-button ngdialog-button-favorite" ng-click="favorite(song) && closeThisDialog()" title="Add to favorites"><i class="mdi mdi-star"></i></button>
-  <button class="ngdialog-button ngdialog-button-danger" ng-click="remove(movie, callback) && closeThisDialog()" title="Remove from library"><i class="mdi mdi-delete"></i></button>
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="play() && closeThisDialog()" title="Play"><i class="mdi mdi-play"></i></button>
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="play(true) && closeThisDialog()" ng-if="ngDialogData.movie.is_resumable" title="Resume"><i class="mdi mdi-redo"></i></button>
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="markWatched(false) && closeThisDialog()" ng-if="ngDialogData.movie.is_watched && !ngDialogData.movie.is_resumable" title="Mark unwatched"><i class="mdi mdi-eye-off"></i></button>
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="markWatched(true) && closeThisDialog()" ng-if="!ngDialogData.movie.is_watched && !ngDialogData.movie.is_resumable" title="Mark watched"><i class="mdi mdi-eye"></i></button>
+  <button class="ngdialog-button ngdialog-button-favorite" ng-click="favorite() && closeThisDialog()" title="Add to favorites"><i class="mdi mdi-star"></i></button>
+  <button class="ngdialog-button ngdialog-button-danger" ng-click="remove() && closeThisDialog()" title="Remove from library"><i class="mdi mdi-delete"></i></button>
 </div>

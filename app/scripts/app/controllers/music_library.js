@@ -10,12 +10,14 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
     $scope.currentArtistId = null;
     $scope.currentAlbumId = null;
     $scope.filteredItems = [];
-    $scope.isInitialized = false;
     $scope.albums = {};
     $scope.songs = {};
     $scope.guiModels = {
       filterValue: '',
       selectedIndex: null
+    };
+    $scope.status = {
+      isInitalized: false
     };
     
     $scope.showItems = function(options) {
@@ -270,17 +272,21 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
     }
 
     $scope.init = function() {
-      if($scope.isInitialized) {
-        return;
-      }
-      
       initConnectionChange();
 
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         initConnectionChange();
       });
 
-      $scope.isInitialized = true;
+      $scope.status.isInitialized = true;
     };
+    
+    $scope.$root.$on('rkMusicLibraryCtrlInit', function (event, connection) {
+      if($scope.status.isInitialized) {
+        return;
+      }
+
+      $scope.init();
+    });
   }
 ]);

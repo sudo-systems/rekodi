@@ -1,6 +1,5 @@
 rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVideoLibraryService', 'rkSettingsService', 'rkDialogService',
   function($scope, kodiApiService, rkVideoLibraryService, rkSettingsService, rkDialogService) {
-    var modal = {};
     var displayLimit = 5;
     var kodiApi = null;
     $scope.tvShowsCategorised = {};
@@ -9,16 +8,17 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVid
     $scope.tvShowsIndex = [];
     $scope.scrollItems = [];
     $scope.isFiltering = false;
-    $scope.isInitialized = false;
     $scope.currentLevel = null;
     $scope.currentTvShowId = null;
     $scope.currentSeason = null;
     $scope.currentSeasonId = null;
     $scope.settings = rkSettingsService.get({category: 'tvShowsLibrary'});
-    $scope.resumeTvShow = {};
     $scope.guiModels = {
       filterValue: '',
       selectedIndex: null
+    };
+    $scope.status = {
+      isInitalized: false
     };
 
     $scope.showItems = function(options) {
@@ -358,21 +358,12 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVid
     }
 
     $scope.init = function() {
-      if($scope.isInitialized) {
-        return;
-      }
-      
       initConnectionChange();
 
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         initConnectionChange();
       });
 
-      $(document).on('closed', '[data-remodal-id=resumeTvShowModal]', function(e) {
-        $scope.resumeTvShow = {};
-        modal.resumeTvShow = null;
-      });
-      
       $scope.$watchCollection('settings', function(newData, oldData) {
         for(var key in newData) {
           rkSettingsService.set({
@@ -387,7 +378,15 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVid
         }
       });
 
-      $scope.isInitialized = true;
+      $scope.status.isInitialized = true;
     };
+    
+    $scope.$root.$on('rkTvShowsLibraryCtrlInit', function (event, connection) {
+      if($scope.status.isInitialized) {
+        return;
+      }
+
+      $scope.init();
+    });
   }
 ]);

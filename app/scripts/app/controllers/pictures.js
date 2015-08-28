@@ -1,5 +1,5 @@
-rekodiApp.controller('rkPicturesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', 'rkHelperService', 'rkRemoteControlService', '$timeout', 'rkFilesService',
-  function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, rkHelperService, rkRemoteControlService, $timeout, rkFilesService) {
+rekodiApp.controller('rkPicturesCtrl', ['$scope', 'kodiApiService', 'rkRemoteControlService', 'rkFilesService',
+  function($scope, kodiApiService,rkRemoteControlService, rkFilesService) {
     var displayLimit = 15;
     var kodiApi = null;
     var filesService = null;
@@ -10,8 +10,10 @@ rekodiApp.controller('rkPicturesCtrl', ['$scope', '$element', 'kodiApiService', 
     $scope.scrollItems = [];
     $scope.isFiltering = false;
     $scope.filteredItems = [];
-    $scope.isInitialized = false;
     $scope.filter = {value: ''};
+    $scope.status = {
+      isInitalized: false
+    };
     
     $scope.showItems = function(options) {
       var _scrollItemsCount = 0;
@@ -169,10 +171,6 @@ rekodiApp.controller('rkPicturesCtrl', ['$scope', '$element', 'kodiApiService', 
     }
 
     $scope.init = function() {
-      if($scope.isInitialized) {
-        return;
-      }
-      
       filesService = new rkFilesService.instance('pictures');
       initConnectionChange();
       
@@ -180,7 +178,15 @@ rekodiApp.controller('rkPicturesCtrl', ['$scope', '$element', 'kodiApiService', 
         initConnectionChange();
       });
       
-      $scope.isInitialized = true;
+      $scope.status.isInitialized = true;
     };
+    
+    $scope.$root.$on('rkPicturesCtrlInit', function (event, connection) {
+      if($scope.status.isInitialized) {
+        return;
+      }
+
+      $scope.init();
+    });
   }
 ]);

@@ -1,5 +1,5 @@
-rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsService',
-  function($rootScope, rkLogService, rkSettingsService) {
+rekodiApp.factory('kodiApiService', ['$rootScope', '$timeout', 'rkLogService', 'rkSettingsService', 'rkDialogService', 'rkNotificationService',
+  function($rootScope, $timeout, rkLogService, rkSettingsService, rkDialogService, rkNotificationService) {
     var kodiWs = require('xbmc-ws');
     var isConnecting = false;
     var connection = null;
@@ -7,78 +7,85 @@ rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsSe
     var pingIntervalTime = 5000;
     var pingInterval, retryInterval;
     
-    function bindEvents() {
-      connection.System.OnQuit(function() {
-        setDisconnected();
+    function bindEvents(link) {
+      link.System.OnQuit(function() {
+        setIsDisconnected();
       });
 
-      connection.System.OnRestart(function() {
-        setDisconnected();
+      link.System.OnRestart(function() {
+        setIsDisconnected();
       });
 
-      connection.System.OnSleep(function() {
-        setDisconnected();
+      link.System.OnSleep(function() {
+        setIsDisconnected();
       });
 
-      connection.System.OnWake(function() {
-        setConnected();
+      link.System.OnWake(function() {
+        setIsConnected();
       });
     }
 
     function createConnection() {
       var settings = rkSettingsService.get({category: 'connection'});
+      var isConfigured = rkSettingsService.isConnectionConfigured();
       
-      if(!rkSettingsService.isConnectionConfigured() || !settings || isConnecting) {
-        if(!rkSettingsService.isConnectionConfigured()) {
-          $rootScope.$emit('rkNotConfigured');
+      if(!isConfigured || !settings || isConnecting) {
+        if(!isConfigured && !isConnecting) {
+          rkDialogService.showNotConfigured();
         }
-        
-        if(!settings) {
-          rkLogService.error('Settings object not available. System fault.');
-        }
-        
+
         connection = null;
         return;
       }
 
-      isConnecting = true;
+      setIsConnecting();
 
       kodiWs(settings.serverAddress, settings.jsonRpcPort).then(function(link) {
         if(link) {
-          setConnected(link);
-          bindEvents();
+          setIsConnected(link);
+          bindEvents(link);
         }
         else {
-          setDisconnected();
           connection = null;
+          setIsDisconnected();
         }
       },
       function(error) {
-        setDisconnected();
         connection = null;
         rkLogService.error(error);
+        setIsDisconnected();
       });
     };
     
-    function setConnected(link) {
+    function setIsConnecting() {
+      isConnecting = true;
+      //rkDialogService.showConnecting();
+      stopPing();
+    }
+    
+    function setIsConnected(link) {
       isConnecting = false;
       connection = link;
       startPing();
       $rootScope.$emit('rkWsConnectionStatusChange', connection);
+      rkNotificationService.notifyConnection(true, 'Connection with Kodi has been established');
+      rkDialogService.closeAll();
     };
     
-    function setDisconnected() {
+    function setIsDisconnected() {
       if(connection) {
         connection = null;
         isConnecting = false;
         stopPing();
         $rootScope.$emit('rkWsConnectionStatusChange', connection);
+        rkDialogService.showNotConnected();
+        rkNotificationService.notifyConnection(false, 'Could not connect with Kodi');
       }
     };
     
     function ping() {
       if(connection === null) {
-        setDisconnected();
+        setIsDisconnected();
         connection = null;
         return;
       }
@@ -86,11 +93,11 @@ rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsSe
       connection.JSONRPC.Ping().then(function(data) {
         if(data !== 'pong') {
           stopPing();
-          setDisconnected();
+          setIsDisconnected();
           connection = null;
         }
       }, function(error) {
-        setDisconnected();
+        setIsDisconnected();
         connection = null;
       });
     };

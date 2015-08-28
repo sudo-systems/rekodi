@@ -2,11 +2,11 @@
   Artist options
 </div>
 <div class="description">
-  What would you like to do with artist <u>{{artist.label}}</u>?
+  What would you like to do with artist <u>{{ngDialogData.artist.label}}</u>?
 </div>
 <div class="ngdialog-buttons" rk-tooltips="true">
-  <button class="ngdialog-button ngdialog-button-primary" ng-click="play(artist) && closeThisDialog()" title="Play"><i class="mdi mdi-play"></i></button>
-  <button class="ngdialog-button ngdialog-button-secondary" ng-click="shufflePlay(artist) && closeThisDialog()" title="Shuffle play"><i class="mdi mdi-shuffle"></i></button>
-  <button class="ngdialog-button ngdialog-button-favorite" ng-click="favorite(artist) && closeThisDialog()" title="Add to favorites"><i class="mdi mdi-star"></i></button>
-  <button class="ngdialog-button ngdialog-button-danger" ng-click="remove(artist, callback) && closeThisDialog()" title="Remove from library"><i class="mdi mdi-delete"></i></button>
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="play() && closeThisDialog()" title="Play"><i class="mdi mdi-play"></i></button>
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="play(true) && closeThisDialog()" title="Play shuffled"><i class="mdi mdi-shuffle"></i></button>
+  <button class="ngdialog-button ngdialog-button-favorite" ng-click="favorite() && closeThisDialog()" title="Add to favorites"><i class="mdi mdi-star"></i></button>
+  <button class="ngdialog-button ngdialog-button-danger" ng-click="remove() && closeThisDialog()" title="Remove from library"><i class="mdi mdi-delete"></i></button>
 </div>

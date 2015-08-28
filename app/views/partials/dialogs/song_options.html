@@ -2,11 +2,10 @@
   Song options
 </div>
 <div class="description">
-  What would you like to do with the song <u>{{song.label}}</u><span ng-if="song.displayartist"> by <u>{{song.displayartist}}</u></span><span ng-if="song.album"> from the album <u>{{song.album}}</u></span>?
+  What would you like to do with the song <u>{{ngDialogData.song.label}}</u><span ng-if="ngDialogData.song.displayartist"> by <u>{{ngDialogData.song.displayartist}}</u></span><span ng-if="ngDialogData.song.album"> from the album <u>{{ngDialogData.song.album}}</u></span>?
 </div>
 <div class="ngdialog-buttons" rk-tooltips="true">
-  <button class="ngdialog-button ngdialog-button-primary" ng-click="play(song) && closeThisDialog()" title="Play"><i class="mdi mdi-play"></i></button>
-  <button class="ngdialog-button ngdialog-button-favorite" ng-click="favorite(song) && closeThisDialog()" title="Add to favorites"><i class="mdi mdi-star"></i></button>
-  <!--<button class="ngdialog-button ngdialog-button-secondary" ng-click="repeatPlay(song) && closeThisDialog()">Repeat play</button>-->
-  <button class="ngdialog-button ngdialog-button-danger" ng-click="remove(song, callback) && closeThisDialog()" title="Remove from library"><i class="mdi mdi-delete"></i></button>
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="play() && closeThisDialog()" title="Play"><i class="mdi mdi-play"></i></button>
+  <button class="ngdialog-button ngdialog-button-favorite" ng-click="favorite() && closeThisDialog()" title="Add to favorites"><i class="mdi mdi-star"></i></button>
+  <button class="ngdialog-button ngdialog-button-danger" ng-click="remove() && closeThisDialog()" title="Remove from library"><i class="mdi mdi-delete"></i></button>
 </div>

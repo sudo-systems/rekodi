@@ -5,33 +5,32 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
     
     var movieOptionsController = ['$scope', 'rkRemoteControlService', 'rkVideoLibraryService',
       function($scope, rkRemoteControlService, rkVideoLibraryService) {
-        $scope.play = function(movie, resume) {
+        $scope.play = function(resume) {
           rkRemoteControlService.play({
-            item: { movieid: movie.movieid },
+            item: { movieid: $scope.ngDialogData.movie.movieid },
             options: { resume: (resume) }
           });
-
           return true;
         };
 
-        $scope.markWatched = function(movie, watched, callback) {
-          rkVideoLibraryService.markMovieWatched(movie, watched, function(success) {
-            callback(success);
+        $scope.markWatched = function(watched) {
+          rkVideoLibraryService.markMovieWatched($scope.ngDialogData.movie, watched, function(success) {
+            $scope.ngDialogData.callback(success);
           });
-
           return true;
         };
       }
     ];
     
     var showMovieOptions = function(movie, callback) {
-      var localScope = $rootScope.$new();
-      localScope.movie = movie;
-      localScope.callback = callback;
-      
+      closeAll();
+
       ngDialog.open({ 
         template: templates.movieOptions,
-        scope: localScope,
+        data: {
+          movie: movie,
+          callback: callback
+        },
         controller: movieOptionsController
       });
     };
@@ -39,33 +38,32 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
     
     var episodeOptionsController = ['$scope', 'rkRemoteControlService', 'rkVideoLibraryService',
       function($scope, rkRemoteControlService, rkVideoLibraryService) {
-        $scope.play = function(episode, resume) {
+        $scope.play = function(resume) {
           rkRemoteControlService.play({
-            item: { episodeid: episode.episodeid },
+            item: { episodeid: $scope.ngDialogData.episode.episodeid },
             options: { resume: (resume) }
           });
-
           return true;
         };
 
-        $scope.markWatched = function(episode, watched, callback) {
-          rkVideoLibraryService.markEpisodeWatched(episode, watched, function(success) {
-            callback(success);
+        $scope.markWatched = function(watched) {
+          rkVideoLibraryService.markEpisodeWatched($scope.ngDialogData.episode, watched, function(success) {
+            $scope.ngDialogData.callback(success);
           });
-
           return true;
         };
       }
     ];
     
     var showEpisodeOptions = function(episode, callback) {
-      var localScope = $rootScope.$new();
-      localScope.episode = episode;
-      localScope.callback = callback;
-      
+      closeAll();
+
       ngDialog.open({ 
         template: templates.episodeOptions,
-        scope: localScope,
+        data: {
+          episode: episode,
+          callback: callback
+        },
         controller: episodeOptionsController
       });
     };
@@ -73,33 +71,22 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
     
     var artistOptionsController = ['$scope', 'rkRemoteControlService',
       function($scope, rkRemoteControlService) {
-        $scope.play = function(artist) {
+        $scope.play = function(shuffle) {
           rkRemoteControlService.play({
-            item: { artistid: artist.artistid[0] },
-            options: { shuffled: false }
+            item: { artistid: $scope.ngDialogData.artist.artistid[0] },
+            options: { shuffled: (shuffle) }
           });
-
-          return true;
-        };
-        
-        $scope.shufflePlay = function(artist) {
-          rkRemoteControlService.play({
-            item: { artistid: artist.artistid[0] },
-            options: { shuffled: true }
-          });
-
           return true;
         };
       }
     ];
     
     var showArtistOptions = function(artist) {
-      var localScope = $rootScope.$new();
-      localScope.artist = artist;
-      
+      closeAll();
+
       ngDialog.open({ 
         template: templates.artistOptions,
-        scope: localScope,
+        data: {artist: artist},
         controller: artistOptionsController
       });
     };
@@ -107,33 +94,22 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
     
     var albumOptionsController = ['$scope', 'rkRemoteControlService',
       function($scope, rkRemoteControlService) {
-        $scope.play = function(album) {
+        $scope.play = function(shuffle) {
           rkRemoteControlService.play({
-            item: { albumid: album.albumid },
-            options: { shuffled: false }
+            item: { albumid: $scope.ngDialogData.album.albumid },
+            options: { shuffled: (shuffle) }
           });
-
-          return true;
-        };
-        
-        $scope.shufflePlay = function(album) {
-          rkRemoteControlService.play({
-            item: { albumid: album.albumid },
-            options: { shuffled: true }
-          });
-
           return true;
         };
       }
     ];
     
     var showAlbumOptions = function(album) {
-      var localScope = $rootScope.$new();
-      localScope.album = album;
-      
+      closeAll();
+
       ngDialog.open({ 
         template: templates.albumOptions,
-        scope: localScope,
+        data: { album: album },
         controller: albumOptionsController
       });
     };
@@ -141,38 +117,86 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
     
     var songOptionsController = ['$scope', 'rkRemoteControlService',
       function($scope, rkRemoteControlService) {
-        $scope.play = function(song) {
+        $scope.play = function() {
           rkRemoteControlService.play({
-            item: { file: song.file }
+            item: { file: $scope.ngDialogData.song.file }
           });
-
           return true;
         };
-        
-        /*$scope.repeatPlay = function(song) {
-          if(!playerProperties.repeat || playerProperties.repeat === 'off' || playerProperties.repeat === 'one') {
-            rkRemoteControlService.setRepeat('one');
-          }
-          
-          rkRemoteControlService.play({
-            item: { file: song.file }
-          });
-
-          return true;
-        };*/
       }
     ];
     
     var showSongOptions = function(song) {
-      var localScope = $rootScope.$new();
-      localScope.song = song;
-      
+      closeAll();
+
       ngDialog.open({ 
         template: templates.songOptions,
-        scope: localScope,
+        data: {song: song},
         controller: songOptionsController
       });
     };
+    
+    
+    var notConfiguredController = ['$scope', 'rkTabsService',
+      function($scope, rkTabsService) {
+        $scope.showSettingsTab = function() {
+          rkTabsService.navigateTo('settings');
+          return true;
+        };
+      }
+    ];
+    
+    var showNotConfigured = function() {
+      closeAll();
+      
+      ngDialog.open({ 
+        template: templates.notConfigured,
+        controller: notConfiguredController,
+        showClose: false,
+        closeByEscape: false,
+        closeByDocument: false
+      });
+    };
+    
+    
+    var notConnectedController = ['$scope', 'rkTabsService',
+      function($scope, rkTabsService) {
+        $scope.showSettingsTab = function() {
+          rkTabsService.navigateTo('settings');
+          return true;
+        };
+      }
+    ];
+    
+    var showNotConnected = function() {
+      closeAll();
+      
+      ngDialog.open({ 
+        template: templates.notConnected,
+        controller: notConnectedController,
+        showClose: false,
+        closeByEscape: false,
+        closeByDocument: false
+      });
+    };
+    
+
+    var showConnecting = function() {
+      closeAll();
+      
+      ngDialog.open({ 
+        template: templates.connecting,
+        showClose: false,
+        closeByEscape: false,
+        closeByDocument: false
+      });
+    };
+    
+    
+    var closeAll = function() {
+      ngDialog.closeAll();
+    };
+    
     
     function init() {
       $rootScope.$root.$on('rkPlayerPropertiesChange', function(event, data) {
@@ -187,7 +211,11 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
       showEpisodeOptions: showEpisodeOptions,
       showAlbumOptions: showAlbumOptions,
       showArtistOptions: showArtistOptions,
-      showSongOptions: showSongOptions
+      showSongOptions: showSongOptions,
+      showNotConfigured: showNotConfigured,
+      showNotConnected: showNotConnected,
+      showConnecting: showConnecting,
+      closeAll: closeAll
     };
   }
 ]);

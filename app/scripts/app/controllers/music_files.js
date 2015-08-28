@@ -1,5 +1,5 @@
-rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService', 'rkTooltipsService', 'rkEnumsService', 'rkLogService', 'rkRemoteControlService', '$timeout', 'rkFilesService',
-  function($scope, $element, kodiApiService, rkTooltipsService, rkEnumsService, rkLogService, rkRemoteControlService, $timeout, rkFilesService) {
+rekodiApp.controller('rkMusicFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkRemoteControlService', '$timeout', 'rkFilesService',
+  function($scope, kodiApiService, rkEnumsService, rkLogService, rkRemoteControlService, $timeout, rkFilesService) {
     var displayLimit = 15;
     var kodiApi = null;
     var filesService = null;
@@ -9,9 +9,11 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService'
     $scope.currentLevel = null;
     $scope.scrollItems = [];
     $scope.isFiltering = false;
-    $scope.isInitialized = false;
     $scope.filteredItems = [];
     $scope.filter = {value: ''};
+    $scope.status = {
+      isInitalized: false
+    };
     
     $scope.showItems = function(options) {
       var _scrollItemsCount = 0;
@@ -195,10 +197,6 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService'
     }
 
     $scope.init = function() {
-      if($scope.isInitialized) {
-        return;
-      }
-
       filesService = new rkFilesService.instance('music');
       initConnectionChange();
       
@@ -206,7 +204,15 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', '$element', 'kodiApiService'
         initConnectionChange();
       });
       
-      $scope.isInitialized = true;
+      $scope.status.isInitialized = true;
     };
+    
+    $scope.$root.$on('rkMusicFilesCtrlInit', function (event, connection) {
+      if($scope.status.isInitialized) {
+        return;
+      }
+
+      $scope.init();
+    });
   }
 ]);

@@ -96,7 +96,10 @@ rekodiApp.factory('rkConfigService', [
         albumOptions: config.directories.dialogTemplates+'album_options.html',
         artistOptions: config.directories.dialogTemplates+'artist_options.html',
         songOptions: config.directories.dialogTemplates+'song_options.html',
-        pictureOptions: config.directories.dialogTemplates+'picture_options.html'
+        pictureOptions: config.directories.dialogTemplates+'picture_options.html',
+        notConfigured: config.directories.dialogTemplates+'not_configured.html',
+        notConnected: config.directories.dialogTemplates+'not_connected.html',
+        connecting: config.directories.dialogTemplates+'connecting.html'
       }
     };
 
