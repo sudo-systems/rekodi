@@ -384,7 +384,7 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVid
       $scope.status.isInitialized = true;
     };
     
-    $scope.$root.$on('rkTvShowsLibraryCtrlInit', function (event, connection) {
+    $scope.$root.$on('rkTvShowsLibraryCtrlInit', function (event) {
       if($scope.status.isInitialized) {
         return;
       }

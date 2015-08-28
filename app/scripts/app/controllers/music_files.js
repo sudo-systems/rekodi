@@ -201,7 +201,7 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsSe
       $scope.status.isInitialized = true;
     };
     
-    $scope.$root.$on('rkMusicFilesCtrlInit', function (event, connection) {
+    $scope.$root.$on('rkMusicFilesCtrlInit', function (event) {
       if($scope.status.isInitialized) {
         return;
       }

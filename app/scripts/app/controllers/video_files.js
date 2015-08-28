@@ -199,7 +199,7 @@ rekodiApp.controller('rkVideoFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsSe
       $scope.status.isInitialized = true;
     };
     
-    $scope.$root.$on('rkVideoFilesCtrlInit', function (event, connection) {
+    $scope.$root.$on('rkVideoFilesCtrlInit', function (event) {
       if($scope.status.isInitialized) {
         return;
       }

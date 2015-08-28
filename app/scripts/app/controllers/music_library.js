@@ -284,7 +284,7 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
       $scope.status.isInitialized = true;
     };
     
-    $scope.$root.$on('rkMusicLibraryCtrlInit', function (event, connection) {
+    $scope.$root.$on('rkMusicLibraryCtrlInit', function (event) {
       if($scope.status.isInitialized) {
         return;
       }

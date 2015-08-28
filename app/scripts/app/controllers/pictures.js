@@ -173,7 +173,7 @@ rekodiApp.controller('rkPicturesCtrl', ['$scope', 'kodiApiService', 'rkRemoteCon
       $scope.status.isInitialized = true;
     };
     
-    $scope.$root.$on('rkPicturesCtrlInit', function (event, connection) {
+    $scope.$root.$on('rkPicturesCtrlInit', function (event) {
       if($scope.status.isInitialized) {
         return;
       }

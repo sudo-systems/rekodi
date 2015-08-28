@@ -216,7 +216,7 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
       $scope.status.isInitialized = true;
     };
     
-    $scope.$root.$on('rkMoviesLibraryCtrlInit', function (event, connection) {
+    $scope.$root.$on('rkMoviesLibraryCtrlInit', function (event) {
       if($scope.status.isInitialized) {
         return;
       }

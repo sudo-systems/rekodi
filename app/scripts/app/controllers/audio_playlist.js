@@ -148,7 +148,7 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
       $scope.status.isInitialized = true;
     };
     
-    $scope.$root.$on('rkAudioPlaylistCtrlInit', function (event, connection) {
+    $scope.$root.$on('rkAudioPlaylistCtrlInit', function (event) {
       if($scope.status.isInitialized) {
         return;
       }
