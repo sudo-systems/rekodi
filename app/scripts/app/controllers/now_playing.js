@@ -44,7 +44,7 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
       if($scope.nowPlaying && $scope.nowPlaying.duration) {
         var seconds = Math.ceil(($scope.nowPlaying.duration / $scope.seekbarResolution) * seekPosition);
         var seekTime = rkHelperService.secondsToDuration(seconds);
-        styl.inject(sliderWrapperHoverSelector+', '+sliderWrapperFocusSelector, {content: "'"+seekTime+"'"}).apply();
+        styl.inject(sliderWrapperHoverSelector+', '+sliderWrapperFocusSelector, {content: '\''+seekTime+'\''}).apply();
       }
     };
     

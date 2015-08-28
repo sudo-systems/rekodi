@@ -17,9 +17,9 @@
     "clean:win": "rm -rf ./builds/win",
     "clean:linux": "rm -rf ./builds/linux",
     "build": "npm run build:osx && npm run build:win && npm run build:linux",
-    "build:osx": "npm run clean:osx && electron-packager ./ \"rekodi\" --out=./builds/osx --platform=darwin --arch=x64 --version=0.30.6 --icon=./assets/osx/rekodi.icns --ignore=\"(nbproject|electron-packager|electron-prebuilt|electron-builder)\" --ignore=\"builds\" --ignore=\"build_scripts\"",
-    "build:win": "npm run clean:win && electron-packager ./ \"rekodi\" --out=./builds/win --platform=win32 --arch=ia32 --version=0.30.6 --icon=./assets/win/icon.ico --ignore=\"(nbproject|electron-packager|electron-prebuilt|electron-builder)\" --ignore=\"builds\" --ignore=\"build_scripts\"",
-    "build:linux": "npm run clean:linux && electron-packager ./ \"rekodi\" --out=./builds/linux --platform=linux --arch=all --version=0.30.6 --icon=./assets/linux/icon.png --ignore=\"(nbproject|electron-packager|electron-prebuilt|electron-builder)\" --ignore=\"builds\" --ignore=\"build_scripts\"",
+    "build:osx": "npm run clean:osx && electron-packager ./ \"ReKodi\" --out=./builds/osx --platform=darwin --arch=x64 --version=0.30.6 --icon=./assets/osx/rekodi.icns --ignore=\"(nbproject|electron-packager|electron-prebuilt|electron-builder)\" --ignore=\"builds\" --ignore=\"build_scripts\"",
+    "build:win": "npm run clean:win && electron-packager ./ \"ReKodi\" --out=./builds/win --platform=win32 --arch=ia32 --version=0.30.6 --icon=./assets/win/icon.ico --ignore=\"(nbproject|electron-packager|electron-prebuilt|electron-builder)\" --ignore=\"builds\" --ignore=\"build_scripts\"",
+    "build:linux": "npm run clean:linux && electron-packager ./ \"ReKodi\" --out=./builds/linux --platform=linux --arch=all --version=0.30.6 --icon=./assets/linux/icon.png --ignore=\"(nbproject|electron-packager|electron-prebuilt|electron-builder)\" --ignore=\"builds\" --ignore=\"build_scripts\"",
     "pack": "npm run pack:osx && npm run pack:win && npm run pack:linux",
     "pack:osx": "npm run build:osx && electron-builder \"./builds/osx/rekodi-darwin-x64/rekodi.app\" --platform=osx --out=\"./builds/osx\" --config=./packager.json",
     "pack:win": "npm run build:win && electron-builder \"./builds/win/rekodi-win32-ia32\" --platform=win --out=\"./builds/win\" --config=./packager.json",
@@ -62,5 +62,29 @@
     "linux",
     "osx"
   ],
-  "private": false
+  "private": false,
+  "devDependencies": {
+    "eslint": "^1.2.1",
+    "eslint-plugin-angular": "^0.9.0",
+    "version-bump": "^0.1.0"
+  },
+  "eslintConfig": {
+    "env": {
+      "es6": true,
+      "node": false
+    },
+    "rules": {
+      "curly": [
+        2,
+        "multi-line"
+      ],
+      "quotes": [
+        2,
+        "single"
+      ]
+    },
+    "ecmaFeatures": {
+      "modules": false
+    }
+  }
 }

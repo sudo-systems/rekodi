@@ -35,7 +35,7 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
 
     $scope.setVolume = function(percentage) {
       percentage = parseInt(Math.floor(percentage));
-      styl.inject('.volume-slider-wrapper input[type=range]:hover::-webkit-slider-thumb:after, .volume-slider-wrapper input[type=range]:focus::-webkit-slider-thumb:after', {content: "'"+percentage+"%'"}).apply();
+      styl.inject('.volume-slider-wrapper input[type=range]:hover::-webkit-slider-thumb:after, .volume-slider-wrapper input[type=range]:focus::-webkit-slider-thumb:after', {content: '\''+percentage+'%\''}).apply();
       rkRemoteControlService.setVolume(percentage);
     };
     
