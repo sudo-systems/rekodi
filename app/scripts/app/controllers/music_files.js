@@ -184,23 +184,17 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsSe
         $scope.getSources();
       }
       else {
-        $scope.sources = [];
-        $scope.files = {};
-        $scope.filesKey = null;
-        
-        $scope.showItems({
-          key: $scope.currentLevel,
-          reset: true,
-          data: []
-        });
+        $scope.scrollItems = [];
       }
     }
 
     $scope.init = function() {
       filesService = new rkFilesService.instance('music');
+      kodiApi = kodiApiService.getConnection();
       initConnectionChange();
       
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
+        kodiApi = connection;
         initConnectionChange();
       });
       

@@ -1,5 +1,5 @@
-rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsService', 'rkDialogService', 'rkNotificationService', 'rkConfigService',
-  function($rootScope, rkLogService, rkSettingsService, rkDialogService, rkNotificationService, rkConfigService) {
+rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsService', 'rkDialogService', 'rkNotificationService',
+  function($rootScope, rkLogService, rkSettingsService, rkDialogService, rkNotificationService) {
     var kodiWs = require('xbmc-ws');
     var isConnecting = false;
     var connection = null;
@@ -58,7 +58,7 @@ rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsSe
       connection = link;
       bindEvents(link);
       $rootScope.$emit('rkWsConnectionStatusChange', connection);
-      rkNotificationService.notifyConnection(true, 'Connection with Kodi has been established');
+      rkNotificationService.notifyConnection(true, 'The connection with Kodi has been established');
       rkDialogService.closeAll();
     };
     
@@ -68,9 +68,8 @@ rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsSe
       connect();
       $rootScope.$emit('rkWsConnectionStatusChange', connection);
       rkDialogService.showNotConnected();
-      rkNotificationService.notifyConnection(false, 'Could not connect with Kodi');
       connect();
-      
+
       if(error) {
         rkLogService.error(error);
       }

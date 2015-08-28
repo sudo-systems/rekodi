@@ -78,19 +78,24 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
     };
     
     function initConnectionChange() {
-      kodiApi = kodiApiService.getConnection();
-     
       if(kodiApi) {
         $scope.getRecentlyAddedMovies();
         $scope.getRecentlyAddedEpisodes();
         $scope.getRecentlyAddedAlbums();
       }
+      else {
+        $scope.recentlyAddedMovies = [];
+        $scope.recentlyAddedEpisodes = [];
+        $scope.recentlyAddedAlbums = [];
+      }
     }
     
     function init() {
+      kodiApi = kodiApiService.getConnection();
       initConnectionChange();
       
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
+         kodiApi = connection;
         initConnectionChange();
       });
     }

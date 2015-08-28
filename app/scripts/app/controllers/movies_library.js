@@ -181,25 +181,23 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
     };
 
     function initConnectionChange() {
-      kodiApi = kodiApiService.getConnection();
-
-      if(kodiApi && Object.keys($scope.moviesCategorised).length === 0) {
+      if(kodiApi) {
         $scope.getMoviesCategorised();
+      }
+      else {
+        $scope.scrollItems = [];
       }
     }
 
     $scope.init = function() {
+      kodiApi = kodiApiService.getConnection();
       initConnectionChange();
 
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
+        kodiApi = connection;
         initConnectionChange();
       });
 
-      $(document).on('closed', '[data-remodal-id=resumeMovieModal]', function(e) {
-        $scope.resumeMovie = {};
-        modal.resumeMovie = null;
-      });
-      
       $scope.$watchCollection('settings', function(newData, oldData) {
         for(var key in newData) {
           rkSettingsService.set({

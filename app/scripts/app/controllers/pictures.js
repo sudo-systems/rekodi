@@ -152,29 +152,21 @@ rekodiApp.controller('rkPicturesCtrl', ['$scope', 'kodiApiService', 'rkRemoteCon
     };
     
     function initConnectionChange() {
-      kodiApi = kodiApiService.getConnection();
-      
       if(kodiApi) {
         $scope.getSources();
       }
       else {
-        $scope.sources = [];
-        $scope.files = {};
-        $scope.filesKey = null;
-        
-        $scope.showItems({
-          key: $scope.currentLevel,
-          reset: true,
-          data: []
-        });
+        $scope.scrollItems = [];
       }
     }
 
     $scope.init = function() {
       filesService = new rkFilesService.instance('pictures');
+      kodiApi = kodiApiService.getConnection();
       initConnectionChange();
       
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
+        kodiApi = connection;
         initConnectionChange();
       });
       

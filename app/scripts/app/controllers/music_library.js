@@ -264,17 +264,20 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
     };
 
     function initConnectionChange() {
-      kodiApi = kodiApiService.getConnection();
-
-      if(kodiApi && Object.keys($scope.artistsCategorised).length === 0) {
+      if(kodiApi) {
         $scope.getArtistsCategorised();
+      }
+      else {
+        $scope.scrollItems = [];
       }
     }
 
     $scope.init = function() {
+      kodiApi = kodiApiService.getConnection();
       initConnectionChange();
 
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
+        kodiApi = connection;
         initConnectionChange();
       });
 

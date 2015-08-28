@@ -108,8 +108,6 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
     };
     
     function initConnectionChange() {
-      kodiApi = kodiApiService.getConnection();
-
       if(kodiApi) {
         if($scope.items.length === 0) {
           $scope.get();
@@ -133,12 +131,17 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
           }
         });
       }
+      else {
+        $scope.scrollItems = [];
+      }
     }
 
     $scope.init = function() {
+      kodiApi = kodiApiService.getConnection();
       initConnectionChange();
 
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
+        kodiApi = connection;
         initConnectionChange();
       });
 
