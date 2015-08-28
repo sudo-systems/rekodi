@@ -9,14 +9,14 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
         function($scope, rkRemoteControlService, rkVideoLibraryService) {
           $scope.play = function(resume) {
             rkRemoteControlService.play({
-              item: { movieid: $scope.ngDialogData.movie.movieid },
+              item: { movieid: $scope.ngDialogData.item.movieid },
               options: { resume: (resume) }
             });
             return true;
           };
 
           $scope.markWatched = function(watched) {
-            rkVideoLibraryService.markMovieWatched($scope.ngDialogData.movie, watched, function(success) {
+            rkVideoLibraryService.markMovieWatched($scope.ngDialogData.item, watched, function(success) {
               $scope.ngDialogData.callback(success);
             });
             return true;
@@ -27,14 +27,14 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
         function($scope, rkRemoteControlService, rkVideoLibraryService) {
           $scope.play = function(resume) {
             rkRemoteControlService.play({
-              item: { episodeid: $scope.ngDialogData.episode.episodeid },
+              item: { episodeid: $scope.ngDialogData.item.episodeid },
               options: { resume: (resume) }
             });
             return true;
           };
 
           $scope.markWatched = function(watched) {
-            rkVideoLibraryService.markEpisodeWatched($scope.ngDialogData.episode, watched, function(success) {
+            rkVideoLibraryService.markEpisodeWatched($scope.ngDialogData.item, watched, function(success) {
               $scope.ngDialogData.callback(success);
             });
             return true;
@@ -45,7 +45,7 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
         function($scope, rkRemoteControlService) {
           $scope.play = function(shuffle) {
             rkRemoteControlService.play({
-              item: { artistid: $scope.ngDialogData.artist.artistid[0] },
+              item: { artistid: $scope.ngDialogData.item.artistid[0] },
               options: { shuffled: (shuffle) }
             });
             return true;
@@ -56,7 +56,7 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
         function($scope, rkRemoteControlService) {
           $scope.play = function(shuffle) {
             rkRemoteControlService.play({
-              item: { albumid: $scope.ngDialogData.album.albumid },
+              item: { albumid: $scope.ngDialogData.item.albumid },
               options: { shuffled: (shuffle) }
             });
             return true;
@@ -67,7 +67,7 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
         function($scope, rkRemoteControlService) {
           $scope.play = function() {
             rkRemoteControlService.play({
-              item: { file: $scope.ngDialogData.song.file }
+              item: { file: $scope.ngDialogData.item.file }
             });
             return true;
           };
@@ -178,6 +178,11 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
     function init() {
       $rootScope.$root.$on('rkPlayerPropertiesChange', function(event, data) {
         playerProperties = data;
+      });
+      
+      $rootScope.$root.$on('ngDialog.closed', function(event, data) {
+        currentDialogName = null;
+        currentDialog = null;
       });
     }
     

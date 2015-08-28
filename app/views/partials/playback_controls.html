@@ -5,7 +5,7 @@
   <i class="mdi mdi-volume-off" ng-show="status.isMuted" ng-class="{active: status.isMuted}" ng-click="toggleMute()" title="Unmute"></i>
   <input type="range" name="volume" ng-model="status.currentVolume" ng-change="setVolume(status.currentVolume)" min="0" max="100" step="1" />
 </div>
-<div class="controls-wrapper" ng-show="status.isConnected">
+<div class="controls-wrapper">
   <ul class="horizontal">
     <li ng-click="skipPrevious()" ng-show="showPreviousButton">
       <i class="mdi mdi-skip-previous"></i>

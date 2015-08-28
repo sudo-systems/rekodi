@@ -31,7 +31,6 @@ rekodiApp.factory('rkPlaybackStatusService', ['$rootScope', 'kodiApiService', 'r
     }
     
     function initConnectionChange() {
-      kodiApi = kodiApiService.getConnection();
       status.isConnected = (kodiApi);
       status.currentSpeed = 0;
       updateCurrentStatus();
@@ -41,8 +40,8 @@ rekodiApp.factory('rkPlaybackStatusService', ['$rootScope', 'kodiApiService', 'r
           status.isPaused = false;
           status.isPlaying = true;
           status.currentSpeed = data.data.player.speed;
-          status.isRewinding = (data.data.player.speed < 0);
-          status.isFastForwarding = (data.data.player.speed > 1);
+          status.isRewinding = (status.currentSpeed < 0);
+          status.isFastForwarding = (status.currentSpeed > 1);
           updateCurrentStatus();
         });
 
@@ -66,8 +65,8 @@ rekodiApp.factory('rkPlaybackStatusService', ['$rootScope', 'kodiApiService', 'r
 
         kodiApi.Player.OnSpeedChanged(function (data) {
           status.currentSpeed = data.data.player.speed;
-          status.isRewinding = (data.data.player.speed < 0);
-          status.isFastForwarding = (data.data.player.speed > 1);
+          status.isRewinding = (status.currentSpeed < 0);
+          status.isFastForwarding = (status.currentSpeed > 1);
           updateCurrentStatus();
         });
       }
@@ -81,14 +80,15 @@ rekodiApp.factory('rkPlaybackStatusService', ['$rootScope', 'kodiApiService', 'r
     };
     
     function init() {
+      kodiApi = kodiApiService.getConnection();
       initConnectionChange();
 
       $rootScope.$on('rkPlayerPropertiesChange', function(event, data) {
         status.isPaused = (data.speed === 0 && data.type !== null);
         status.isPlaying = (data.type !== null);
         status.currentSpeed = data.speed;
-        status.isRewinding = (data.speed < 0 && data.type !== null);
-        status.isFastForwarding = (data.speed > 1 && data.type !== null);
+        status.isRewinding = (status.currentSpeed < 0 && data.type !== null);
+        status.isFastForwarding = (status.currentSpeed > 1 && data.type !== null);
         updateCurrentStatus();
       });
 
@@ -120,6 +120,7 @@ rekodiApp.factory('rkPlaybackStatusService', ['$rootScope', 'kodiApiService', 'r
       });
 
       $rootScope.$on('rkWsConnectionStatusChange', function (event, connection) {
+        kodiApi = connection;
         initConnectionChange();
       });
     }

@@ -50,7 +50,8 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkLogService', 'r
           getProperties();
           
           kodiApi.Player.OnPropertyChanged(function(response) {
-            getProperties();
+            currentProperties = angular.extend({}, currentProperties, response.property);
+            $rootScope.$emit('rkPlayerPropertiesChange', currentProperties);
           });
           
           kodiApi.Player.OnStop(function(data) {
