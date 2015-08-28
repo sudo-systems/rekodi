@@ -32,10 +32,18 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
     $scope.stop = function () {
       rkRemoteControlService.stop();
     };
+    
+    function updateVolumeTooltip(percentage) {
+      var sliderWrapperHoverSelector = '.volume-slider-wrapper input[type=range]:hover::-webkit-slider-thumb:after';
+      var sliderWrapperFocusSelector = '.volume-slider-wrapper input[type=range]:focus::-webkit-slider-thumb:after';
+
+      styl.inject(sliderWrapperHoverSelector+', '+sliderWrapperFocusSelector, {content: '\''+percentage+'%\''}).apply();
+    }
 
     $scope.setVolume = function(percentage) {
       percentage = parseInt(Math.floor(percentage));
-      styl.inject('.volume-slider-wrapper input[type=range]:hover::-webkit-slider-thumb:after, .volume-slider-wrapper input[type=range]:focus::-webkit-slider-thumb:after', {content: '\''+percentage+'%\''}).apply();
+      
+      updateVolumeTooltip(percentage);
       rkRemoteControlService.setVolume(percentage);
     };
     
@@ -85,6 +93,12 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
       
       $scope.$root.$on('rkKodiPropertiesChange', function(event, data) {
         $scope.kodiProperties = data;
+        
+        if($scope.kodiProperties.volume !== undefined) {
+          var percentage = parseInt(Math.floor($scope.kodiProperties.volume));
+          updateVolumeTooltip(percentage);
+        }
+        
         $scope.$apply();
       });
       

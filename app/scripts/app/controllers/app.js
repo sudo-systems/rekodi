@@ -1,5 +1,5 @@
-rekodiApp.controller('rkAppCtrl', ['$scope', '$timeout', 'kodiApiService',
-  function($scope, $timeout, kodiApiService) {
+rekodiApp.controller('rkAppCtrl', ['$scope', '$timeout', 'kodiApiService', 'rkKodiPropertiesService',
+  function($scope, $timeout, kodiApiService, rkKodiPropertiesService) {
     $scope.controllersLoaded = false;
     $scope.$root.rkRequiredControllers = {};
     var rkRequiredControllers = ['footer', 'now_playing', 'playback_controls', 'tabs', 'window'];

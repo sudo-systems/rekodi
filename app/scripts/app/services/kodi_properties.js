@@ -5,8 +5,6 @@ rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'kodiApiService', 'r
     var requestProperties = rkConfigService.get('apiRequestProperties', 'kodi');
 
     var get = function() {
-      kodiApi = kodiApiService.getConnection();
-
       if(kodiApi) {
         kodiApi.Application.GetProperties({
           properties: Object.keys(requestProperties)
@@ -30,6 +28,9 @@ rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'kodiApiService', 'r
     };
     
     function init() {
+      kodiApi = kodiApiService.getConnection();
+      get();
+      
       $rootScope.$on('rkWsConnectionStatusChange', function(event, connection) {
         kodiApi = connection;
         

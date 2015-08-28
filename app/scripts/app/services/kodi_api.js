@@ -1,6 +1,6 @@
 rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsService', 'rkDialogService', 'rkNotificationService',
   function($rootScope, rkLogService, rkSettingsService, rkDialogService, rkNotificationService) {
-    var kodiWs = require('xbmc-ws');
+    var kodiWs = require('node-kodi-ws');
     var isConnecting = false;
     var connection = null;
     
