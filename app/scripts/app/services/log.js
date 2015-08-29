@@ -24,7 +24,8 @@ rekodiApp.factory('rkLogService', ['rkConfigService',
     
     var error = function(message) {
       if(message.constructor === Object || message.constructor === Array) {
-        logger.error(JSON.stringify(message));
+        //logger.error(JSON.stringify(message));
+        console.error(message);
         return;
       }
 
@@ -33,7 +34,8 @@ rekodiApp.factory('rkLogService', ['rkConfigService',
     
     var debug = function(message) {
       if(message.constructor === Object || message.constructor === Array) {
-        logger.info(JSON.stringify(message));
+        //logger.info(JSON.stringify(message));
+        console.dir(message);
         return;
       }
 

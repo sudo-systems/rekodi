@@ -1,15 +1,21 @@
-rekodiApp.controller('rkWindowCtrl', ['$scope', '$element', 'rkTooltipsService', 'rkNowPlayingService', '$timeout', '$localStorage',
-  function($scope, $element, rkTooltipsService, rkNowPlayingService, $timeout, $localStorage) {
+rekodiApp.controller('rkWindowCtrl', ['$scope', '$element', 'rkTooltipsService', 'rkNowPlayingService', '$timeout', '$localStorage', 'rkDialogService', 'rkSettingsService',
+  function($scope, $element, rkTooltipsService, rkNowPlayingService, $timeout, $localStorage, rkDialogService, rkSettingsService) {
     var remote = require('remote');
     var rimraf = require('rimraf');
     var mainWindow = remote.getCurrentWindow();
     var defaultWallpaperApplied = false;
     var isClosing = false;
+    var settings = {};
     var minWindowHeight = 227;
     var maxWindowHeight = 700;
     var windowWidth = 500;
     
     $scope.close = function() {
+      if(!settings.hideShutdownDialog) {
+        rkDialogService.showCloseWindow();
+        return;
+      }
+      
       mainWindow.close();
     };
     
@@ -70,6 +76,8 @@ rekodiApp.controller('rkWindowCtrl', ['$scope', '$element', 'rkTooltipsService',
     }
 
     function init() {
+      settings = rkSettingsService.get({category: 'window'});
+
       window.onbeforeunload = function (event) {
         if($localStorage.settings && $localStorage.settings.fanartWallpaper) {
           if(isClosing) {

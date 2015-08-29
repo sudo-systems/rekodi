@@ -1,5 +1,30 @@
 rekodiApp.factory('rkSettingsService', ['$localStorage',
   function($localStorage) {
+    var defaultSettings = {
+      connection: {
+        serverAddress: '',
+        jsonRpcPort: 9090,
+        httpPort: 8080,
+        username: '',
+        password: ''
+      },
+      nowPlaying: {
+        fanartWallpaper: true
+      },
+      tvShowsLibrary: {
+        hideWatched: false,
+        showEpisodePlot: false,
+        showTvShowDescription: false
+      },
+      moviesLibrary: {
+        hideWatched: false,
+        showPlot: false
+      },
+      window: {
+        hideShutdownDialog: false
+      }
+    };
+    
     var set = function(options) {
       var config = angular.extend({}, {
         category: null, //optional
@@ -36,42 +61,38 @@ rekodiApp.factory('rkSettingsService', ['$localStorage',
       else if(config.key) {
         return ($localStorage.settings[config.key])? $localStorage.settings[config.key] : null;
       }
+      else {
+        return $localStorage.settings;
+      }
       
       return null;
     };
     
     var isConnectionConfigured = function() {
-      return (!$localStorage.settings.connection.serverAddress === '' || 
-        $localStorage.settings.connection.serverAddress.lenght < 4 ||
-        !$localStorage.settings.connection.jsonRpcPort === '' || 
+      return ($localStorage.settings.connection.serverAddress === '' || 
+        $localStorage.settings.connection.serverAddress.length < 4 ||
+        $localStorage.settings.connection.jsonRpcPort === '' || 
         $localStorage.settings.connection.jsonRpcPort.length < 2 ||
-        !$localStorage.settings.connection.httpPort === '' || 
+        $localStorage.settings.connection.httpPort === '' || 
         $localStorage.settings.connection.httpPort.length < 2)? false : true;
     };
     
     function init() {
-      if(!$localStorage.settings) {
-        $localStorage.settings = {
-          connection: {
-            serverAddress: '',
-            jsonRpcPort: 9090,
-            httpPort: 8080,
-            username: '',
-            password: ''
-          },
-          nowPlaying: {
-            fanartWallpaper: true
-          },
-          tvShowsLibrary: {
-            hideWatched: false,
-            showEpisodePlot: false,
-            showTvShowDescription: false
-          },
-          moviesLibrary: {
-            hideWatched: false,
-            showPlot: false
+      if(!$localStorage.settings || $localStorage.settings.constructor !== Object) {
+        $localStorage.settings = {};
+      }
+
+      for(var key in defaultSettings) {
+        if($localStorage.settings[key] === undefined) {
+          $localStorage.settings[key] = defaultSettings[key];
+        }
+        else {
+          for(var index in defaultSettings[key]) {
+            if($localStorage.settings[key][index] === undefined) {
+              $localStorage.settings[key][index] = defaultSettings[key][index];
+            }
           }
-        };
+        }
       }
     }
     

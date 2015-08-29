@@ -1,7 +1,8 @@
-rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsService', 'rkDialogService', 'rkNotificationService',
-  function($rootScope, rkLogService, rkSettingsService, rkDialogService, rkNotificationService) {
+rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsService', 'rkDialogService', 'rkNotificationService', 'rkTabsService',
+  function($rootScope, rkLogService, rkSettingsService, rkDialogService, rkNotificationService, rkTabsService) {
     var kodiWs = require('node-kodi-ws');
     var isConnecting = false;
+    var retryConnectingTimeout;
     var connection = null;
     
     function bindEvents(link) {
@@ -23,10 +24,11 @@ rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsSe
     }
 
     var connect = function() {
+      clearTimeout(retryConnectingTimeout);
       var isConfigured = rkSettingsService.isConnectionConfigured();
-      
+
       if(!isConfigured || isConnecting) {
-        if(!isConfigured && !isConnecting) {
+        if(!isConfigured && rkTabsService.getActiveTab() !== 'settings') {
           rkDialogService.showNotConfigured();
         }
 
@@ -65,10 +67,17 @@ rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsSe
     function setIsDisconnected(error) {
       connection = null;
       isConnecting = false;
-      connect();
       $rootScope.$emit('rkWsConnectionStatusChange', connection);
-      rkDialogService.showNotConnected();
-      connect();
+      
+      if(rkSettingsService.isConnectionConfigured()) {
+        if(rkTabsService.getActiveTab() !== 'settings') {
+          rkDialogService.showNotConnected();
+        }
+        
+        retryConnectingTimeout = setTimeout(function() {
+          connect();
+        }, 2000);
+      }
 
       if(error) {
         rkLogService.error(error);

@@ -1,6 +1,6 @@
-rekodiApp.controller('rkSettingsCtrl', ['$scope', 'kodiApiService', 'rkNowPlayingService', 'rkSettingsService', '$timeout', 'rkDialogService',
-  function($scope, kodiApiService, rkNowPlayingService, rkSettingsService, $timeout, rkDialogService) {
-    var sections = ['connection', 'nowPlaying'];
+rekodiApp.controller('rkSettingsCtrl', ['$scope', 'kodiApiService', 'rkNowPlayingService', '$timeout', '$localStorage', 'rkDialogService',
+  function($scope, kodiApiService, rkNowPlayingService, $timeout, $localStorage, rkDialogService) {
+    var isConnected = false;
     $scope.settings = {};
     $scope.connectButton = {
       text: 'connect',
@@ -8,7 +8,7 @@ rekodiApp.controller('rkSettingsCtrl', ['$scope', 'kodiApiService', 'rkNowPlayin
     };
     
     $scope.connect = function() {
-      kodiApiService.connect(true);
+      kodiApiService.connect();
     };
 
     $scope.setConnectionStatus = function(connection) {
@@ -20,47 +20,34 @@ rekodiApp.controller('rkSettingsCtrl', ['$scope', 'kodiApiService', 'rkNowPlayin
         $scope.connectButton.text = 'connect';
         $scope.connectButton.disabled = false;
       }
+      
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
     };
 
-    $scope.init = function() {
-      for(var key in sections) {
-        $scope.settings[sections[key]] = rkSettingsService.get({category: sections[key]});
-
-        $scope.$watchCollection('settings.'+sections[key], function(newData, oldData) {
-          if(newData) {
-            for(var key in newData) {
-              rkSettingsService.set({
-                category: sections[key],
-                key: key,
-                value: newData[key]
-              });
-            }
-            
-            if(newData.fanartWallpaper) {
-              rkNowPlayingService.applyCurrentFanartWallpaper();
-            }
-            else {
-              rkNowPlayingService.applyDefaultWallpaper();
-            }
-          }
-        }, true);
-      }
-
-      $scope.$on('rkWsConnectionStatusChange', function(event, connection) {
-        $scope.setConnectionStatus(connection);
-      });
+    function init() {
+      $scope.settings = $localStorage.settings;
       
-      $scope.$root.$watchCollection(function() {
-        return $scope.settings.connection;
-      }, function(newData, oldData) {
-        if(!rkSettingsService.isConnectionConfigured()) {
-          rkDialogService.showNotConfigured();
+      $scope.$watch('settings.nowPlaying.fanartWallpaper', function(newValue, oldValue) {
+        if(newValue !== oldValue && isConnected) {
+          if(newValue) {
+            rkNowPlayingService.applyCurrentFanartWallpaper();
+          }
+          else {
+            rkNowPlayingService.applyDefaultWallpaper();
+          }
         }
+      }, true);
+      
+      $scope.$on('rkWsConnectionStatusChange', function(event, connection) {
+        isConnected = (connection);
+        $scope.setConnectionStatus(connection);
       });
     };
     
     $timeout(function() {
-      $scope.init();
+      init();
     });
   }
 ]);

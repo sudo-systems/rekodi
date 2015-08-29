@@ -1,4 +1,4 @@
-section#recentlyAdded {
+section#recentlyAdded {  
   & > .wrapper {
     position: absolute;
     top: 0;
@@ -19,7 +19,7 @@ section#recentlyAdded {
           background: map-get($global, highlight-color);
         }
       }
-
+      
       .section-title {
         margin: map-get($global, window-padding) 0 0 0;
         color: #999;

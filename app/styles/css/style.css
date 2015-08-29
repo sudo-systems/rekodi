@@ -966,7 +966,7 @@ section#nowPlaying {
           display: inline-block;
           float: left;
           clear: left;
-          line-height: 22px;
+          line-height: 20px;
           -moz-transition: all 0.2s ease-in-out;
           -o-transition: all 0.2s ease-in-out;
           -webkit-transition: all 0.2s ease-in-out;

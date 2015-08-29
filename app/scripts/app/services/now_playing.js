@@ -35,7 +35,7 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkHelperService', 'rkRe
           else if(playerId === rkEnumsService.PlayerId.VIDEO) {
             properties = requestProperties.video;
           }
-          
+
           kodiApi.Player.GetItem({
             playerid: playerId,
             properties: properties

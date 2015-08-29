@@ -7,7 +7,7 @@ section#nowPlaying {
   right: 0;
   border-bottom: 1px solid map-get($global, highlight-color);
   overflow: hidden;
-  
+
   .inactive {
     line-height: map-get($now-playing, height);
     margin-top: -(map-get($window-controls, height));
@@ -179,7 +179,7 @@ section#nowPlaying {
           display: inline-block;
           float: left;
           clear: left;
-          line-height: 22px;
+          line-height: 20px;
           @include transitionAll(map-get($global, transition-speed));
           
           &:hover {

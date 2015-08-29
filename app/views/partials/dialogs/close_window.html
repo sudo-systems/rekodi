@@ -1,0 +1,13 @@
+<div class="title">
+  Closing ReKodi
+</div>
+<div class="description">
+  Do you want to shutdown the Kodi host to?
+</div>
+<div class="ngdialog-buttons" rk-tooltips="true">
+  <span class="float-left">
+    <input type="checkbox" name="hide_shutdown_dialog" id="hideShutdownDialog" ng-model="settings.hideShutdownDialog" /> <label for="hideShutdownDialog">Don't ask again</label>
+  </span>
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="close() && closeThisDialog()" title="Just close ReKodi"><i class="mdi mdi-close-box-outline"></i></button>
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="shutdown() && closeThisDialog()" title="Close Rekodi and shutdown host"><i class="mdi mdi-power"></i></button>
+</div>

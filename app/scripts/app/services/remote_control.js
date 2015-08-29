@@ -223,6 +223,13 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEn
       });
     };
     
+    var shutdown = function() {
+      kodiApi.System.Shutdown().then(function(data) {
+      }, function(error) {
+        rkLogService.error(error);
+      });
+    };
+    
     function init() {
       $rootScope.$on('rkWsConnectionStatusChange', function(event, connection) {
         kodiApi = connection;
@@ -252,7 +259,8 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEn
       togglePartymode: togglePartymode,
       setRepeat: setRepeat,
       cycleRepeat: cycleRepeat,
-      toggleShuffle: toggleShuffle
+      toggleShuffle: toggleShuffle,
+      shutdown: shutdown
     };
   }
 ]);

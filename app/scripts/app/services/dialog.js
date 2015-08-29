@@ -1,5 +1,5 @@
-rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService', 'rkHelperService',
-  function($rootScope, ngDialog, rkConfigService, rkHelperService) {
+rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService',
+  function($rootScope, ngDialog, rkConfigService) {
     var templates = rkConfigService.get('templates', 'dialog');
     var playerProperties;
     var currentDialogName = null;
@@ -69,6 +69,30 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
             rkRemoteControlService.play({
               item: { file: $scope.ngDialogData.item.file }
             });
+            return true;
+          };
+        }
+      ],
+      closeWindow: ['$scope', 'rkRemoteControlService', 'rkSettingsService',
+        function($scope, rkRemoteControlService, rkSettingsService) {
+          $scope.settings = rkSettingsService.get('window');
+          
+          $scope.toggleShowDialog = function() {
+            $scope.settings.showShutdownDialog = (!$scope.settings.showShutdownDialog);
+            $scope.$apply();
+            rkSettingsService.set('window', 'showShutdownDialog', $scope.settings.showShutdownDialog);
+          };
+          
+          $scope.shutdown = function() {
+            rkRemoteControlService.shutdown();
+            $scope.close();
+            return true;
+          };
+          
+          $scope.close = function() {
+            var remote = require('remote');
+            var mainWindow = remote.getCurrentWindow();
+            mainWindow.close();
             return true;
           };
         }
@@ -143,6 +167,10 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
     var showSongOptions = function(item) {
       showDialog('songOptions', {item: item});
     };
+    
+    var showCloseWindow = function() {
+      showDialog('closeWindow');
+    };
 
     var showNotConfigured = function() {
       showDialog('notConfigured', null, {
@@ -194,6 +222,7 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
       showAlbumOptions: showAlbumOptions,
       showArtistOptions: showArtistOptions,
       showSongOptions: showSongOptions,
+      showCloseWindow: showCloseWindow,
       showNotConfigured: showNotConfigured,
       showNotConnected: showNotConnected,
       showConnecting: showConnecting,
