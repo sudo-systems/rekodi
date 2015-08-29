@@ -13,7 +13,11 @@ rekodiApp.factory('rkNotificationService', ['rkHelperService', 'rkLogService',
       play: iconsPath+'play.png',
       pause: iconsPath+'pause.png',
       connected: iconsPath+'connected.png',
-      disconnected: iconsPath+'disconnnected.png'
+      disconnected: iconsPath+'disconnnected.png',
+      databaseAdd: iconsPath+'database_add.png',
+      databaseRemove: iconsPath+'database_remove.png',
+      clean: iconsPath+'clean.png',
+      server: iconsPath+'server.png'
     };
 
     var notify = function(options) {
@@ -125,6 +129,34 @@ rekodiApp.factory('rkNotificationService', ['rkHelperService', 'rkLogService',
       });
     };
     
+    var notifyDatabaseAdd = function(message) {
+      notify({
+        message: message,
+        icon: icons.databaseAdd
+      });
+    };
+    
+    var notifyDatabaseRemove = function(message) {
+      notify({
+        message: message,
+        icon: icons.databaseRemove
+      });
+    };
+    
+    var notifyCleanDatabase = function(message) {
+      notify({
+        message: message,
+        icon: icons.clean
+      });
+    };
+    
+    var notifyRemoteSystem = function(message) {
+      notify({
+        message: message,
+        icon: icons.server
+      });
+    };
+    
     function init() {
       notifier.on('click', function (notifierObject, options) {
         mainWindow.focus();
@@ -134,11 +166,16 @@ rekodiApp.factory('rkNotificationService', ['rkHelperService', 'rkLogService',
     init();
     
     return {
+      notify: notify,
       notifyVolume: notifyVolume,
       notifyPlay: notifyPlay,
       notifyPause: notifyPause,
       notifyResume: notifyResume,
-      notifyConnection: notifyConnection
+      notifyConnection: notifyConnection,
+      notifyDatabaseAdd: notifyDatabaseAdd,
+      notifyDatabaseRemove: notifyDatabaseRemove,
+      notifyCleanDatabase: notifyCleanDatabase,
+      notifyRemoteSystem: notifyRemoteSystem
     };
   }
 ]);

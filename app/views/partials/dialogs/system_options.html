@@ -5,9 +5,10 @@
   What action would you like to perform on the host?
 </div>
 <div class="ngdialog-buttons" rk-tooltips="true">
-  <button class="ngdialog-button ngdialog-button-danger" title="Shutdown host" ng-click="shutdown() && closeThisDialog()"><i class="mdi mdi-power"></i></button>
+  <button class="ngdialog-button ngdialog-button-danger" title="Shutdown host (ReKodi will exit)" ng-click="shutdown() && closeThisDialog()"><i class="mdi mdi-power"></i></button>
   <button class="ngdialog-button ngdialog-button-warning" title="Reboot host" ng-click="reboot() && closeThisDialog()"><i class="mdi mdi-refresh"></i></button>
-  <button class="ngdialog-button ngdialog-button-cancel" title="Exit Kodi on host" ng-click="exit() && closeThisDialog()"><i class="mdi mdi-exit-to-app"></i></button>
-  <button class="ngdialog-button ngdialog-button-primary" title="Update the video library" ng-click="updateVideoLibrary() && closeThisDialog()"><i class="mdi mdi-movie"></i></button>
-  <button class="ngdialog-button ngdialog-button-secondary" title="Update the audio library" ng-click="updateAudioLibrary() && closeThisDialog()"><i class="mdi mdi-music-note"></i></button>
+  <button class="ngdialog-button ngdialog-button-primary" title="Update the video library" ng-click="updateVideoLibrary()"><i class="mdi mdi-movie"></i></button>
+  <button class="ngdialog-button ngdialog-button-primary" title="Clean the video library" ng-click="cleanVideoLibrary()"><i class="mdi mdi-broom"></i></button>
+  <button class="ngdialog-button ngdialog-button-secondary" title="Update the audio library" ng-click="updateAudioLibrary()"><i class="mdi mdi-music-note"></i></button>
+  <button class="ngdialog-button ngdialog-button-secondary" title="Clean the audio library" ng-click="cleanAudioLibrary()"><i class="mdi mdi-broom"></i></button>
 </div>

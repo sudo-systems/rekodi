@@ -113,10 +113,76 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
           };
         }
       ],
-      systemOptions: ['$scope', 'rkTabsService', 'rkRemoteControlService',
-        function($scope, rkTabsService) {
-          $scope.showSettingsTab = function() {
-            rkTabsService.navigateTo('settings');
+      systemOptions: ['$scope', 'rkRemoteControlService', 'rkVideoLibraryService', 'rkAudioLibraryService', 'rkNotificationService',
+        function($scope, rkRemoteControlService, rkVideoLibraryService, rkAudioLibraryService, rkNotificationService) {
+          $scope.updateVideoLibrary = function() {
+            rkVideoLibraryService.scan(null, function(success) {
+              if(success) {
+                rkNotificationService.notifyDatabaseAdd('Scanning for new videos...');
+              }
+              else {
+                rkNotificationService.notifyDatabaseAdd('The video library update could not be started');
+              }
+              
+              $scope.closeThisDialog();
+            });
+          };
+          
+          $scope.updateAudioLibrary = function() {
+            rkAudioLibraryService.scan(null, function(success) {
+              if(success) {
+                rkNotificationService.notifyDatabaseAdd('Scanning for new music...');
+              }
+              else {
+                rkNotificationService.notifyDatabaseAdd('The audio library update could not be started');
+              }
+              
+              $scope.closeThisDialog();
+            });
+          };
+          
+          $scope.cleanVideoLibrary = function() {
+            rkVideoLibraryService.clean(function(success) {
+              if(success) {
+                rkNotificationService.notifyCleanDatabase('Cleaning the video library...');
+              }
+              else {
+                rkNotificationService.notifyCleanDatabase('The video library cleanup could not be started');
+              }
+              
+              $scope.closeThisDialog();
+            });
+          };
+          
+          $scope.cleanAudioLibrary = function() {
+            rkAudioLibraryService.clean(function(success) {
+              if(success) {
+                rkNotificationService.notifyCleanDatabase('Cleaning the audio library...');
+              }
+              else {
+                rkNotificationService.notifyCleanDatabase('The audio library cleanup could not be started');
+              }
+              
+              $scope.closeThisDialog();
+            });
+          };
+          
+          $scope.close = function() {
+            var remote = require('remote');
+            var mainWindow = remote.getCurrentWindow();
+            mainWindow.close();
+          };
+          
+          $scope.shutdown = function() {
+            rkRemoteControlService.shutdown();
+            rkNotificationService.notifyRemoteSystem('The Kodi host is shutting down...');
+            $scope.close();
+            return true;
+          };
+          
+          $scope.reboot = function() {
+            rkRemoteControlService.reboot();
+            rkNotificationService.notifyRemoteSystem('The Kodi host is rebooting...');
             return true;
           };
         }
@@ -211,7 +277,6 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
     };
     
     var closeAll = function() {
-      currentDialogName = null;
       ngDialog.closeAll();
     };
     
@@ -221,7 +286,7 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
         playerProperties = data;
       });
       
-      $rootScope.$root.$on('ngDialog.closed', function(event, data) {
+      $rootScope.$root.$on('ngDialog.closing', function(event, data) {
         currentDialogName = null;
         currentDialog = null;
       });

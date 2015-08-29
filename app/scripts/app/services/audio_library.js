@@ -169,6 +169,35 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
       
       callback([]);
     };
+    
+    var scan = function(directory, callback) {
+      var _options = {};
+      
+      if(directory) {
+        _options.directory = directory;
+      }
+      
+      kodiApi.AudioLibrary.Scan(_options).then(function(result) {
+        callback((result === 'OK'));
+      }, function(error) {
+        callback(false);
+        rkLogService.error(error);
+      });
+    };
+    
+    var clean = function(callback) {
+      if(kodiApi) {
+        kodiApi.AudioLibrary.Clean().then(function(result) {
+          callback((result === 'OK'));
+        }, function(error) {
+          callback(false);
+          rkLogService.error(error);
+        });
+      }
+      else {
+        callback(false);
+      }
+    };
 
     function init() {
       kodiApi = kodiApiService.getConnection();
@@ -189,7 +218,9 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
       getRecentlyAddedAlbumsFromCache: getRecentlyAddedAlbumsFromCache,
       getRecentlyAddedAlbums: getRecentlyAddedAlbums,
       getSongsFromCache: getSongsFromCache,
-      getSongs: getSongs
+      getSongs: getSongs,
+      scan: scan,
+      clean: clean
     };
   }
 ]);

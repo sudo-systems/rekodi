@@ -3,8 +3,10 @@ rekodiApp.directive('rkTooltips', ['$timeout',
   	return {
       restrict: 'A',
       link: function(scope, element, attrs) {
+        var tooltip;
+        
         function applyTooltips() {
-          $(element).find('[title]').jBox('Tooltip',  {
+          tooltip = $(element).find('[title]').jBox('Tooltip',  {
             animation: 'move',
             position: {
               x: 'center',
@@ -31,6 +33,10 @@ rekodiApp.directive('rkTooltips', ['$timeout',
             });
           }
         }
+        
+        scope.$on('$destroy', function() {
+          tooltip.destroy();
+        });
       }
   	};
   }

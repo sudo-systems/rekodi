@@ -1,5 +1,5 @@
-rekodiApp.factory('rkTooltipsService', ['$rootScope', '$timeout', 
-  function($rootScope, $timeout) {
+rekodiApp.factory('rkTooltipsService', ['$timeout', 
+  function($timeout) {
     function apply(element, position) {
       var options = {
         animation: 'move'
