@@ -1,5 +1,5 @@
-rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 'rkAudioLibraryService', '$timeout', 'kodiApiService', 'ngDialog', 'rkRemoteControlService', 'rkVideoLibraryService', 'rkDialogService',
-  function($scope, rkVideoLibraryService, rkAudioLibraryService, $timeout, kodiApiService, ngDialog, rkRemoteControlService, rkVideoLibraryService, rkDialogService) {
+rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 'rkAudioLibraryService', '$timeout', 'kodiApiService', 'rkVideoLibraryService', 'rkDialogService',
+  function($scope, rkVideoLibraryService, rkAudioLibraryService, $timeout, kodiApiService, rkVideoLibraryService, rkDialogService) {
     var itemsLimit = 10;
     var kodiApi = null;
     $scope.selected = {};
@@ -79,14 +79,14 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
     
     function initConnectionChange() {
       if(kodiApi) {
+        $scope.getRecentlyAddedAlbums();
         $scope.getRecentlyAddedMovies();
         $scope.getRecentlyAddedEpisodes();
-        $scope.getRecentlyAddedAlbums();
       }
       else {
+        $scope.recentlyAddedAlbums = [];
         $scope.recentlyAddedMovies = [];
         $scope.recentlyAddedEpisodes = [];
-        $scope.recentlyAddedAlbums = [];
       }
     }
     
@@ -95,7 +95,7 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
       initConnectionChange();
       
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
-         kodiApi = connection;
+        kodiApi = connection;
         initConnectionChange();
       });
     }

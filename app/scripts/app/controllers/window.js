@@ -5,13 +5,12 @@ rekodiApp.controller('rkWindowCtrl', ['$scope', '$element', 'rkTooltipsService',
     var mainWindow = remote.getCurrentWindow();
     var defaultWallpaperApplied = false;
     var isClosing = false;
-    var settings = {};
     var minWindowHeight = 227;
     var maxWindowHeight = 700;
     var windowWidth = 500;
     
     $scope.close = function() {
-      if(!settings.hideShutdownDialog) {
+      if(!rkSettingsService.get({category: 'window', key: 'hideShutdownDialog'})) {
         rkDialogService.showCloseWindow();
         return;
       }
@@ -76,8 +75,6 @@ rekodiApp.controller('rkWindowCtrl', ['$scope', '$element', 'rkTooltipsService',
     }
 
     function init() {
-      settings = rkSettingsService.get({category: 'window'});
-
       window.onbeforeunload = function (event) {
         if($localStorage.settings && $localStorage.settings.fanartWallpaper) {
           if(isClosing) {

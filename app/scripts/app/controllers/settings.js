@@ -1,30 +1,7 @@
-rekodiApp.controller('rkSettingsCtrl', ['$scope', 'kodiApiService', 'rkNowPlayingService', '$timeout', '$localStorage', 'rkDialogService',
-  function($scope, kodiApiService, rkNowPlayingService, $timeout, $localStorage, rkDialogService) {
+rekodiApp.controller('rkSettingsCtrl', ['$scope', 'rkNowPlayingService', '$timeout', '$localStorage',
+  function($scope, rkNowPlayingService, $timeout, $localStorage) {
     var isConnected = false;
     $scope.settings = {};
-    $scope.connectButton = {
-      text: 'connect',
-      disabled: false
-    };
-    
-    $scope.connect = function() {
-      kodiApiService.connect();
-    };
-
-    $scope.setConnectionStatus = function(connection) {
-      if(connection) {
-        $scope.connectButton.text = 'connected';
-        $scope.connectButton.disabled = true;
-      }
-      else {
-        $scope.connectButton.text = 'connect';
-        $scope.connectButton.disabled = false;
-      }
-      
-      if(!$scope.$$phase){
-        $scope.$apply();
-      }
-    };
 
     function init() {
       $scope.settings = $localStorage.settings;
@@ -42,7 +19,6 @@ rekodiApp.controller('rkSettingsCtrl', ['$scope', 'kodiApiService', 'rkNowPlayin
       
       $scope.$on('rkWsConnectionStatusChange', function(event, connection) {
         isConnected = (connection);
-        $scope.setConnectionStatus(connection);
       });
     };
     

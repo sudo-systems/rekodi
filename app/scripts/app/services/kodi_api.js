@@ -78,7 +78,7 @@ rekodiApp.factory('kodiApiService', ['$rootScope', 'rkLogService', 'rkSettingsSe
         
         retryConnectingTimeout = setTimeout(function() {
           connect();
-        }, 2000);
+        }, 1000);
       }
 
       if(error) {

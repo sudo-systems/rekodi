@@ -52,7 +52,7 @@ rekodiApp.factory('rkSettingsService', ['$localStorage',
       }, options);
 
       if(config.category && config.key) {
-        if($localStorage.settings[config.category] && $localStorage.settings[config.category].constructor === Object && $localStorage.settings[config.category][config.key]) {
+        if($localStorage.settings[config.category] && $localStorage.settings[config.category][config.key]) {
           return $localStorage.settings[config.category][config.key];
         }
       }
@@ -80,20 +80,7 @@ rekodiApp.factory('rkSettingsService', ['$localStorage',
     
     function init() {
       if(!$localStorage.settings || $localStorage.settings.constructor !== Object) {
-        $localStorage.settings = {};
-      }
-
-      for(var key in defaultSettings) {
-        if($localStorage.settings[key] === undefined) {
-          $localStorage.settings[key] = defaultSettings[key];
-        }
-        else {
-          for(var index in defaultSettings[key]) {
-            if($localStorage.settings[key][index] === undefined) {
-              $localStorage.settings[key][index] = defaultSettings[key][index];
-            }
-          }
-        }
+        $localStorage.settings = defaultSettings;
       }
     }
     

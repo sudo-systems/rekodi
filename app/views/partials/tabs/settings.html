@@ -22,9 +22,6 @@
       <li title="The password configured in Kodi">
         <label for="kodiPassword">password</label><input type="password" name="kodi_password" id="kodiPassword" ng-model="settings.connection.password" />
       </li>
-      <li class="float-right">
-        <button ng-click="connect()" ng-disabled="connectButton.disabled" ng-show="!connectionSettings.$invalid">{{connectButton.text}}</button>
-      </li>
     </ul>
   </form>
 </div>
