@@ -210,7 +210,7 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         });
         
         kodiApi.AudioLibrary.OnScanStarted(function(data) {
-          rkNotificationService.notifyDatabaseAdd('Music library has update has started...');
+          rkNotificationService.notifyDatabaseAdd('Music library update has started...');
         });
         
         kodiApi.AudioLibrary.OnScanFinished(function(data) {
