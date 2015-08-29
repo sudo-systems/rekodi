@@ -771,7 +771,7 @@ section#windowControls {
   top: 0;
   left: 0;
   right: 0;
-  height: 18px;
+  height: 20px;
   overflow: hidden;
   background: #595959; }
   section#windowControls .controls {
@@ -781,8 +781,8 @@ section#windowControls {
     white-space: nowrap; }
     section#windowControls .controls .button {
       display: inline-block;
-      line-height: 18px;
-      width: 18px;
+      line-height: 20px;
+      width: 22px;
       text-align: center;
       color: #999;
       font-weight: normal;
@@ -822,14 +822,14 @@ section#nowPlaying {
   background: linear-gradient(to bottom, #595959 0, #333 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0);
   position: fixed;
-  top: 18px;
+  top: 20px;
   left: 0;
   right: 0;
   border-bottom: 1px solid #E6802E;
   overflow: hidden; }
   section#nowPlaying .inactive {
     line-height: 130px;
-    margin-top: -18px;
+    margin-top: -20px;
     text-align: center;
     color: #221E1F;
     letter-spacing: 8px;
@@ -1006,7 +1006,7 @@ section#playbackControls {
   box-shadow: 0 4px 4px -4px #222;
   height: 47px;
   position: absolute;
-  top: 148px;
+  top: 150px;
   left: 0;
   right: 0;
   overflow: hidden; }
@@ -1502,7 +1502,7 @@ section.tabsContainer.sub .tabs {
 
 section#tabs {
   position: fixed;
-  top: 195px;
+  top: 197px;
   left: 0;
   right: 0;
   bottom: 32px;
