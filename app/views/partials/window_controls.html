@@ -1,7 +1,10 @@
 <div class="drag"></div>
 <div class="controls">
+  <div class="button" title="System options" ng-show="isConnected" ng-click="showSystemOptionsDialog()">
+    <i class="mdi mdi-settings-box"></i>
+  </div>
   <div class="button" title="Toggle compact view" ng-click="toggleCompact()">
-    <i class="mdi mdi-resize-bottom-right"></i>
+    <i class="mdi mdi-minus-box"></i>
   </div>
   <div class="button" title="Minimize" ng-click="minimize()">
     <i class="mdi mdi-window-minimize"></i>

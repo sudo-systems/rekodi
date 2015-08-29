@@ -82,13 +82,19 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
       
       $scope.$root.$on('rkPlaybackStatusChange', function(event, data) {
         $scope.status = data;
-        $scope.$apply();
+        
+        if(!$scope.$$phase){
+          $scope.$apply();
+        }
+        
         setButtonStates();
       });
       
       $scope.$root.$on('rkPlayerPropertiesChange', function(event, data) {
         $scope.playerProperties = data;
-        $scope.$apply();
+        if(!$scope.$$phase){
+          $scope.$apply();
+        }
       });
       
       $scope.$root.$on('rkKodiPropertiesChange', function(event, data) {
@@ -99,7 +105,9 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
           updateVolumeTooltip(percentage);
         }
         
-        $scope.$apply();
+        if(!$scope.$$phase){
+          $scope.$apply();
+        }
       });
       
       $('.volume-slider-wrapper input[type="range"]').on('mouseup', function() {

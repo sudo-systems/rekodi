@@ -112,6 +112,14 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
             return true;
           };
         }
+      ],
+      systemOptions: ['$scope', 'rkTabsService', 'rkRemoteControlService',
+        function($scope, rkTabsService) {
+          $scope.showSettingsTab = function() {
+            rkTabsService.navigateTo('settings');
+            return true;
+          };
+        }
       ]
     };
     
@@ -188,6 +196,11 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
       });
     };
     
+    
+    var showSystemOptions = function() {
+      showDialog('systemOptions', null);
+    };
+    
 
     var showConnecting = function() {
       showDialog('connecting', null, {
@@ -226,7 +239,8 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
       showNotConfigured: showNotConfigured,
       showNotConnected: showNotConnected,
       showConnecting: showConnecting,
-      closeAll: closeAll
+      closeAll: closeAll,
+      showSystemOptions: showSystemOptions
     };
   }
 ]);

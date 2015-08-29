@@ -1,5 +1,5 @@
-rekodiApp.controller('rkWindowCtrl', ['$scope', '$element', 'rkTooltipsService', 'rkNowPlayingService', '$timeout', '$localStorage', 'rkDialogService', 'rkSettingsService',
-  function($scope, $element, rkTooltipsService, rkNowPlayingService, $timeout, $localStorage, rkDialogService, rkSettingsService) {
+rekodiApp.controller('rkWindowCtrl', ['$scope', 'rkNowPlayingService', '$timeout', '$localStorage', 'rkDialogService', 'rkSettingsService',
+  function($scope, rkNowPlayingService, $timeout, $localStorage, rkDialogService, rkSettingsService) {
     var remote = require('remote');
     var rimraf = require('rimraf');
     var mainWindow = remote.getCurrentWindow();
@@ -8,6 +8,7 @@ rekodiApp.controller('rkWindowCtrl', ['$scope', '$element', 'rkTooltipsService',
     var minWindowHeight = 227;
     var maxWindowHeight = 700;
     var windowWidth = 500;
+    $scope.isConnected = false;
     
     $scope.close = function() {
       if(!rkSettingsService.get({category: 'window', key: 'hideShutdownDialog'})) {
@@ -20,6 +21,10 @@ rekodiApp.controller('rkWindowCtrl', ['$scope', '$element', 'rkTooltipsService',
     
     $scope.minimize = function() {
       mainWindow.minimize();
+    };
+    
+    $scope.showSystemOptionsDialog = function() {
+      rkDialogService.showSystemOptions();
     };
     
     $scope.toggleCompact = function() {
@@ -102,9 +107,9 @@ rekodiApp.controller('rkWindowCtrl', ['$scope', '$element', 'rkTooltipsService',
       mainWindow.on('close', function() {
         isClosing = true;
       });
-      
-      $scope.$evalAsync(function() {
-        rkTooltipsService.apply($($element));
+
+      $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
+        $scope.isConnected = (connection);
       });
       
       $scope.$root.rkRequiredControllers.window.loaded = true;

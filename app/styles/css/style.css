@@ -806,7 +806,7 @@ section#windowControls {
       transform: scale(1); }
   section#windowControls .drag {
     float: left;
-    width: 420px;
+    width: 400px;
     height: 100%;
     -webkit-app-region: drag;
     cursor: move; }
@@ -1716,15 +1716,28 @@ section#recentlyAdded > .wrapper {
       background: #FFF;
       color: #E34F16;
       border: 1px solid #E34F16; }
+  .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-warning {
+    background: #DD6C1D;
+    color: #FFF;
+    border: 1px solid #FFF;
+    float: left;
+    margin-left: 0;
+    margin-right: 6px; }
+    .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-warning:hover {
+      background: #FFF;
+      color: #DD6C1D;
+      border: 1px solid #DD6C1D; }
   .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-cancel {
-    background: #CCC;
-    color: #333;
-    border: 1px solid #333;
-    float: left; }
+    background: #999;
+    color: #FFF;
+    border: 1px solid #999;
+    float: left;
+    margin-left: 0;
+    margin-right: 6px; }
     .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-cancel:hover {
-      background: #AAA;
-      color: #FFF;
-      border: 1px solid #FFF; }
+      background: #FFF;
+      color: #999;
+      border: 1px solid #999; }
 
 .select2-container {
   margin: -5px 0 0 0;

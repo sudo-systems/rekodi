@@ -100,7 +100,8 @@ rekodiApp.factory('rkConfigService', [
         notConfigured: config.directories.dialogTemplates+'not_configured.html',
         notConnected: config.directories.dialogTemplates+'not_connected.html',
         connecting: config.directories.dialogTemplates+'connecting.html',
-        closeWindow: config.directories.dialogTemplates+'close_window.html'
+        closeWindow: config.directories.dialogTemplates+'close_window.html',
+        systemOptions: config.directories.dialogTemplates+'system_options.html'
       }
     };
 
