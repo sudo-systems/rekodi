@@ -13,7 +13,7 @@
       <li title="[REQUIRED] This port can be changed in the Kodi settings)">
         <label for="kodiHttpPort">http port *</label><input type="number" placeholder="8080" name="kodi_http_port" id="kodiHttpPort" ng-model="settings.connection.httpPort" ng-required="true" min="10" />
       </li>
-      <li title="I.e. 20:DE:20:DE:20:DE. Required if you want to be able to wake op the kodi host">
+      <li title="If provided ReKodi will attempt to automatically wake up the Kodi host">
         <label for="macAddress">mac address</label><input type="text" placeholder="20:DE:20:DE:20:DE" ng-model="settings.connection.macAddress" name="mac_address" id="macAddress" value="" />
       </li>
       <li title="The username configured in Kodi. Defaults to 'kodi'">
