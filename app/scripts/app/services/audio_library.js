@@ -1,5 +1,5 @@
-rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService', 'rkLogService', 'rkConfigService',
-  function($rootScope, rkCacheService, rkHelperService, kodiApiService, rkLogService, rkConfigService) {
+rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService', 'rkLogService', 'rkConfigService', 'rkNotificationService',
+  function($rootScope, rkCacheService, rkHelperService, kodiApiService, rkLogService, rkConfigService, rkNotificationService) {
     var kodiApi = null;
     var cache = new rkCacheService.create('audioLibrary');
     var requestProperties = rkConfigService.get('apiRequestProperties', 'audioLibrary');
@@ -198,12 +198,34 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         callback(false);
       }
     };
+    
+    function initConnectionChange() {
+      if(kodiApi) {
+        kodiApi.AudioLibrary.OnCleanStarted(function(data) {
+          rkNotificationService.notifyCleanDatabase('Music library cleanup has started...');
+        });
+        
+        kodiApi.AudioLibrary.OnCleanFinished(function(data) {
+          rkNotificationService.notifyCleanDatabase('Music library cleanup has finished');
+        });
+        
+        kodiApi.AudioLibrary.OnScanStarted(function(data) {
+          rkNotificationService.notifyDatabaseAdd('Music library has update has started...');
+        });
+        
+        kodiApi.AudioLibrary.OnScanFinished(function(data) {
+          rkNotificationService.notifyDatabaseAdd('The music library has been updated');
+        });
+      }
+    }
 
     function init() {
       kodiApi = kodiApiService.getConnection();
+      initConnectionChange();
       
       $rootScope.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
+        initConnectionChange();
       });
     };
 

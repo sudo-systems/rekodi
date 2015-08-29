@@ -183,6 +183,14 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
     function initConnectionChange() {
       if(kodiApi) {
         $scope.getMoviesCategorised();
+        
+        kodiApi.VideoLibrary.OnCleanFinished(function(data) {
+          $scope.getMoviesCategorised();
+        });
+
+        kodiApi.VideoLibrary.OnScanFinished(function(data) {
+          $scope.getMoviesCategorised();
+        });
       }
       else {
         $scope.scrollItems = [];

@@ -117,10 +117,7 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
         function($scope, rkRemoteControlService, rkVideoLibraryService, rkAudioLibraryService, rkNotificationService) {
           $scope.updateVideoLibrary = function() {
             rkVideoLibraryService.scan(null, function(success) {
-              if(success) {
-                rkNotificationService.notifyDatabaseAdd('Scanning for new videos...');
-              }
-              else {
+              if(!success) {
                 rkNotificationService.notifyDatabaseAdd('The video library update could not be started');
               }
               
@@ -130,11 +127,8 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
           
           $scope.updateAudioLibrary = function() {
             rkAudioLibraryService.scan(null, function(success) {
-              if(success) {
-                rkNotificationService.notifyDatabaseAdd('Scanning for new music...');
-              }
-              else {
-                rkNotificationService.notifyDatabaseAdd('The audio library update could not be started');
+              if(!success) {
+                rkNotificationService.notifyDatabaseAdd('The music library update could not be started');
               }
               
               $scope.closeThisDialog();
@@ -143,10 +137,7 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
           
           $scope.cleanVideoLibrary = function() {
             rkVideoLibraryService.clean(function(success) {
-              if(success) {
-                rkNotificationService.notifyCleanDatabase('Cleaning the video library...');
-              }
-              else {
+              if(!success) {
                 rkNotificationService.notifyCleanDatabase('The video library cleanup could not be started');
               }
               
@@ -156,11 +147,8 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
           
           $scope.cleanAudioLibrary = function() {
             rkAudioLibraryService.clean(function(success) {
-              if(success) {
-                rkNotificationService.notifyCleanDatabase('Cleaning the audio library...');
-              }
-              else {
-                rkNotificationService.notifyCleanDatabase('The audio library cleanup could not be started');
+              if(!success) {
+                rkNotificationService.notifyCleanDatabase('The music library cleanup could not be started');
               }
               
               $scope.closeThisDialog();

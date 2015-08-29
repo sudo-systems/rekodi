@@ -68,6 +68,21 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
         $scope.$apply();
       }
     };
+    
+    function refreshData() {
+      if($scope.currentLevel === 'artists') {
+        $scope.artistsCategorised = {};
+        $scope.getArtistsCategorised();
+      }
+      else if ($scope.currentLevel === 'albums'){
+        $scope.albums = {};
+        $scope.getAlbums($scope.currentArtistId);
+      }
+      else if($scope.currentLevel === 'songs') {
+        $scope.songs = {};
+        $scope.getSongs($scope.currentAlbumId);
+      }
+    }
 
     function createCategorisedIndex(artistsCategorised) {
       $scope.artistsIndex = [];
@@ -266,6 +281,14 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
     function initConnectionChange() {
       if(kodiApi) {
         $scope.getArtistsCategorised();
+        
+        kodiApi.AudioLibrary.OnCleanFinished(function(data) {
+          refreshData();
+        });
+
+        kodiApi.AudioLibrary.OnScanFinished(function(data) {
+          refreshData();
+        });
       }
       else {
         $scope.scrollItems = [];

@@ -5,7 +5,7 @@ rekodiApp.factory('rkNotificationService', ['rkHelperService', 'rkLogService',
     var mainWindow = remote.getCurrentWindow();
     var iconsPath = __dirname+'/images/icons/';
     var isNotifying = false;
-    var minNotificationInterval = 1000;
+    var minNotificationInterval = 100;
     var notificationLimitTimeout = null;
     var icons = {
       default: iconsPath+'rekodi.png',

@@ -352,6 +352,14 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVid
     function initConnectionChange() {
       if(kodiApi) {
         $scope.getTvShowsCategorised();
+        
+        kodiApi.VideoLibrary.OnCleanFinished(function(data) {
+          refreshData();
+        });
+
+        kodiApi.VideoLibrary.OnScanFinished(function(data) {
+          refreshData();
+        });
       }
       else {
         $scope.scrollItems = [];

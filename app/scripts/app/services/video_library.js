@@ -1,5 +1,5 @@
-rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService', 'rkLogService', 'rkConfigService',
-  function($rootScope, rkCacheService, rkHelperService, kodiApiService, rkLogService, rkConfigService) {
+rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService', 'rkLogService', 'rkConfigService', 'rkNotificationService',
+  function($rootScope, rkCacheService, rkHelperService, kodiApiService, rkLogService, rkConfigService, rkNotificationService) {
     var kodiApi = null;
     var cache = new rkCacheService.create('videoLibrary');
     var requestProperties = rkConfigService.get('apiRequestProperties', 'videoLibrary');
@@ -328,12 +328,34 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         callback(false);
       }
     };
+    
+    function initConnectionChange() {
+      if(kodiApi) {
+        kodiApi.VideoLibrary.OnCleanStarted(function(data) {
+          rkNotificationService.notifyCleanDatabase('Video library cleanup has started...');
+        });
+        
+        kodiApi.VideoLibrary.OnCleanFinished(function(data) {
+          rkNotificationService.notifyCleanDatabase('Video library cleanup has finished');
+        });
+        
+        kodiApi.VideoLibrary.OnScanStarted(function(data) {
+          rkNotificationService.notifyDatabaseAdd('Video library has update has started...');
+        });
+        
+        kodiApi.VideoLibrary.OnScanFinished(function(data) {
+          rkNotificationService.notifyDatabaseAdd('The video library has been updated');
+        });
+      }
+    }
  
     function init() {
       kodiApi = kodiApiService.getConnection();
+      initConnectionChange();
       
       $rootScope.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
+        initConnectionChange();
       });
     };
 
