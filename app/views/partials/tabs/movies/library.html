@@ -16,6 +16,12 @@
       <i class="mdi mdi-message-text" title="show plot" ng-show="!settings.showPlot" ng-click="settings.showPlot = true"></i>
       <i class="mdi mdi-message-text active" title="hide plot" ng-show="settings.showPlot" ng-click="settings.showPlot = false"></i>
     </span>
+    <span>
+      <i class="mdi mdi-database-plus" title="Update library" ng-click="updateLibrary()"></i>
+    </span>
+    <span>
+      <i class="mdi mdi-broom" title="Clean library" ng-click="cleanLibrary()"></i>
+    </span>
   </div>
   <div class="filter-container">
     <input type="text" class="filter" ng-model="guiModels.filterValue" ng-change="applyFilter(guiModels.filterValue)" placeholder="search" title="Find movies (2 characters minimal)" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="guiModels.filterValue !== ''"></i>

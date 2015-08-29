@@ -171,6 +171,14 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
         data: $scope.moviesCategorised[$scope.guiModels.selectedIndex]
       });
     };
+    
+    $scope.updateLibrary = function() {
+      rkVideoLibraryService.scan();
+    };
+    
+    $scope.cleanLibrary = function() {
+      rkVideoLibraryService.clean();
+    };
 
     $scope.showMovieOptionsDialog = function(movie) {
       rkDialogService.showMovieOptions(movie, function(markWatchedSuccess) {

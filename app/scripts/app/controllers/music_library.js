@@ -209,6 +209,14 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
       });
     };
     
+    $scope.updateLibrary = function() {
+      rkAudioLibraryService.scan();
+    };
+    
+    $scope.cleanLibrary = function() {
+      rkAudioLibraryService.clean();
+    };
+    
     $scope.showSongOptionsDialog = function(song) {
       rkDialogService.showSongOptions(song);
     };

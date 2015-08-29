@@ -276,6 +276,14 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVid
       });
     };
     
+    $scope.updateLibrary = function() {
+      rkVideoLibraryService.scan();
+    };
+    
+    $scope.cleanLibrary = function() {
+      rkVideoLibraryService.clean();
+    };
+    
     $scope.showEpisodeOptionsDialog = function(episode) {
       rkDialogService.showEpisodeOptions(episode, function(markWatchedSuccess) {
         if(markWatchedSuccess) {

@@ -5,11 +5,10 @@ section.tabsContainer {
 
   nav {
     overflow: hidden;
-    background: #262626;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid #1F1F1F;
     position: relative;
     @include boxShadow(0 4px 4px -4px, #222);
-    @include backgroundGradientVertical(#2A2A2A, #262626);
+    @include backgroundGradientVertical(#2A2A2A, #242424);
 
     ul {
       font-size: 0;
@@ -92,7 +91,7 @@ section.tabsContainer {
   .options {
     padding: 0 map-get($global, window-padding);
     border-bottom: 1px solid #333;
-    background: #242424;
+    @include backgroundGradientVertical(#222, #242424);
     line-height: map-get($tabs, options-height);
     height: map-get($tabs, options-height);
     font-size: 14px;
@@ -116,7 +115,19 @@ section.tabsContainer {
       white-space: nowrap;
       
       &> span {
-        margin-right: 6px;
+        &:hover {
+          i.mdi {
+            color: map-get($global, highlight-color);
+          }
+        }
+        
+        i.mdi {
+          color: #444;
+          line-height: map-get($tabs, options-height);
+          font-size: 16px;
+          padding: 0 3px;
+          @include transitionAll(map-get($global, transition-speed));
+        }
         
         i.mdi.active {
           color: map-get($global, highlight-color);
@@ -364,8 +375,8 @@ section.tabsContainer {
 
 section.tabsContainer.sub {
   nav {
-    @include backgroundGradientVertical(#262626, #2B2B2B);
-    border-bottom: 1px solid #343434;
+    @include backgroundGradientVertical(#242424, #333);
+    border-bottom: 1px solid #484848;
     @include boxShadow(0 4px 4px -4px, #222);
     
     li {

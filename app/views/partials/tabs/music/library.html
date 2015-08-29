@@ -9,6 +9,12 @@
         </ui-select-choices>
       </ui-select>
     </span>
+    <span>
+      <i class="mdi mdi-database-plus" title="Update library" ng-click="updateLibrary()"></i>
+    </span>
+    <span>
+      <i class="mdi mdi-broom" title="Clean library" ng-click="cleanLibrary()"></i>
+    </span>
   </div>
   <div class="filter-container">
     <input type="text" class="filter" ng-model="guiModels.filterValue" ng-change="applyFilter(guiModels.filterValue)" placeholder="search" title="Find artists (2 characters minimal)" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="guiModels.filterValue !== ''"></i>
