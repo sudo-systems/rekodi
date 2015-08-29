@@ -5,6 +5,7 @@ rekodiApp.factory('rkSettingsService', ['$localStorage',
         serverAddress: '',
         jsonRpcPort: 9090,
         httpPort: 8080,
+        macAddress: '',
         username: '',
         password: ''
       },

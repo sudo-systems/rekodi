@@ -1,5 +1,5 @@
-rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEnumsService',
-  function($rootScope, rkLogService, rkEnumsService) {
+rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEnumsService', 'rkSettingsService', 'rkLogService',
+  function($rootScope, rkLogService, rkEnumsService, rkSettingsService, rkLogService) {
     var kodiApi = null;
     var playerProperties = {};
     var currentSpeed = 0;
@@ -222,7 +222,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEn
         }
       });
     };
-    
+
     var shutdown = function() {
       kodiApi.System.Shutdown().then(function(data) {
       }, function(error) {

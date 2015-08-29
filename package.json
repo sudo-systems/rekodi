@@ -40,6 +40,7 @@
     "node-kodi-ws": "^2.2.0",
     "node-notifier": "^4.2.3",
     "rimraf": "^2.4.2",
+    "wake_on_lan": "0.0.4",
     "wallpaper": "^1.1.0",
     "winston": "^1.0.1",
     "wiredep": "^2.2.2",
