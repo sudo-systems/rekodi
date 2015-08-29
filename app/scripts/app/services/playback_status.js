@@ -35,42 +35,7 @@ rekodiApp.factory('rkPlaybackStatusService', ['$rootScope', 'kodiApiService', 'r
       status.currentSpeed = 0;
       updateCurrentStatus();
 
-      if(kodiApi) {
-        kodiApi.Player.OnPlay(function(data) {
-          status.isPaused = false;
-          status.isPlaying = true;
-          status.currentSpeed = data.data.player.speed;
-          status.isRewinding = (status.currentSpeed < 0);
-          status.isFastForwarding = (status.currentSpeed > 1);
-          updateCurrentStatus();
-        });
-
-        kodiApi.Player.OnPause(function(data) {
-          status.isPaused = true;
-          status.isPlaying = true;
-          status.currentSpeed = 0;
-          status.isRewinding = false;
-          status.isFastForwarding = false;
-          updateCurrentStatus();
-        });
-
-        kodiApi.Player.OnStop(function(data) {
-          status.isPaused = false;
-          status.isPlaying = false;
-          status.currentSpeed = 0;
-          status.isRewinding = false;
-          status.isFastForwarding = false;
-          updateCurrentStatus();
-        });
-
-        kodiApi.Player.OnSpeedChanged(function (data) {
-          status.currentSpeed = data.data.player.speed;
-          status.isRewinding = (status.currentSpeed < 0);
-          status.isFastForwarding = (status.currentSpeed > 1);
-          updateCurrentStatus();
-        });
-      }
-      else {
+      if(!kodiApi) {
         setDefaultStatus();
       }
     }

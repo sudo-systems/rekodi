@@ -6,7 +6,7 @@
   <div class="overlay" ng-show="playbackStatus.isPaused">
     <i class="mdi mdi-pause"></i>
   </div>
-  <div class="overlay" ng-show="playbackStatus.isMuted && !playbackStatus.isPaused">
+  <div class="overlay" ng-show="playbackStatus.isMuted && !playbackStatus.isPaused && !playbackStatus.isRewinding && !playbackStatus.isFastForwarding">
     <i class="mdi mdi-volume-off"></i>
   </div>
   <div class="overlay" ng-show="playbackStatus.isRewinding || playbackStatus.isFastForwarding">
