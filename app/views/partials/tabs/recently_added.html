@@ -11,8 +11,9 @@
               <i class="mdi mdi-eye" ng-if="episode.is_watched" title="watched"></i>
               <i class="mdi mdi-redo" ng-if="episode.is_resumable" title="partially watched"></i>
             </div>
-            <img ng-src="{{episode.thumbnail_src}}" alt="" ng-if="episode.thumbnail_src" />
-            <i class="mdi mdi-theater" ng-if="!episode.thumbnail_src"></i>
+            <img ng-src="{{episode.thumbnail_src}}" alt="" ng-if="!episode.thumbnail_path && episode.thumbnail_src" />
+            <img ng-src="{{episode.thumbnail_path}}" alt="" ng-if="episode.thumbnail_path" />
+            <i class="mdi mdi-theater" ng-if="!episode.thumbnail_path && !episode.thumbnail_src"></i>
           </div>
           <div class="parent-title">
             {{episode.showtitle}}
@@ -36,8 +37,9 @@
               <i class="mdi mdi-eye" ng-if="movie.is_watched" title="watched"></i>
               <i class="mdi mdi-redo" ng-if="movie.is_resumable" title="partially watched"></i>
             </div>
-            <img ng-src="{{movie.thumbnail_src}}" alt="" ng-if="movie.thumbnail_src" />
-            <i class="mdi mdi-movie" ng-if="!movie.thumbnail_src"></i>
+            <img ng-src="{{movie.thumbnail_src}}" alt="" ng-if="!movie.thumbnail_path && movie.thumbnail_src" />
+            <img ng-src="{{movie.thumbnail_path}}" alt="" ng-if="movie.thumbnail_path" />
+            <i class="mdi mdi-movie" ng-if="!movie.thumbnail_path && !movie.thumbnail_src"></i>
           </div>
           <div class="parent-title">
             {{movie.year}}
@@ -57,8 +59,9 @@
       <ul class="horizontal">
         <li ng-repeat="album in recentlyAddedAlbums track by album.albumid" ng-click="showAlbumOptionsDialog(album)">
           <div class="thumbnail">
-            <img ng-src="{{album.thumbnail_src}}" alt="" ng-if="album.thumbnail_src" />
-            <i class="mdi mdi-music-note" ng-if="!album.thumbnail_src"></i>
+            <img ng-src="{{album.thumbnail_src}}" alt="" ng-if="!album.thumbnail_path && album.thumbnail_src" />
+            <img ng-src="{{album.thumbnail_path}}" alt="" ng-if="album.thumbnail_path" />
+            <i class="mdi mdi-music-note" ng-if="!album.thumbnail_path && !album.thumbnail_src"></i>
           </div>
           <div class="parent-title">
             {{album.displayartist}}

@@ -1,9 +1,11 @@
-rekodiApp.factory('rkHelperService', ['rkSettingsService', 'rkLogService', 'rkConfigService',
-  function(rkSettingsService, rkLogService, rkConfigService) {
+rekodiApp.factory('rkHelperService', ['rkSettingsService', 'rkLogService', 'rkConfigService', 'rkCacheService',
+  function(rkSettingsService, rkLogService, rkConfigService, rkCacheService) {
     var wallpaper = require('wallpaper');
     var mkpath = require('mkpath');
     var fs = require('fs');
     var http = require('http');
+    var sanitize = require("sanitize-filename");
+    var cache = new rkCacheService.create();
     var config = rkConfigService.get();
     var connectionSettings = rkSettingsService.get({category: 'connection'});
 
@@ -43,8 +45,34 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService', 'rkLogService', 'rkCo
         item.thumbnail_src = getImageUrl(item.thumbnail);
       }
       
+      if(item.thumbnail_src) {
+        var thumbnailPath = cache.file({
+          type: 'images',
+          category: 'thumbnails',
+          filename: sanitize(item.label)+'.jpg',
+          url: item.thumbnail_src
+        });
+        
+        if(thumbnailPath) {
+          item.thumbnail_path = thumbnailPath;
+        }
+      }
+      
       if(item.fanart) {
         item.fanart_src = getImageUrl(item.fanart);
+      }
+      
+      if(item.fanart_src) {
+        var fanartPath = cache.file({
+          type: 'images',
+          category: 'fanart',
+          filename: sanitize(item.label)+'.jpg',
+          url: item.fanart_src
+        });
+        
+        if(fanartPath) {
+          item.fanart_path = fanartPath;
+        }
       }
 
       if(item.genre) {
@@ -78,7 +106,7 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService', 'rkLogService', 'rkCo
       if(!item.is_resumable && item.lastplayed && item.lastplayed !== '') {
         item.is_watched = true;
       }
-      
+
       return item;
     };
     

@@ -81,7 +81,7 @@ rekodiApp.controller('rkWindowCtrl', ['$scope', 'rkNowPlayingService', '$timeout
 
     function init() {
       window.onbeforeunload = function (event) {
-        if($localStorage.settings && $localStorage.settings.fanartWallpaper) {
+        if($localStorage.settings.nowPlaying.fanartWallpaper) {
           if(isClosing) {
             if(defaultWallpaperApplied) {
               deleteTempDirectory();

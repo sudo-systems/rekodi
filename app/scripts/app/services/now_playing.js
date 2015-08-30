@@ -1,5 +1,6 @@
 rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkHelperService', 'rkRemoteControlService', '$localStorage', 'rkLogService', 'rkConfigService', 'rkEnumsService',
-  function($rootScope, rkHelperService, rkRemoteControlService, $localStorage, rkLogService, rkConfigService, rkEnumsService) { 
+  function($rootScope, rkHelperService, rkRemoteControlService, $localStorage, rkLogService, rkConfigService, rkEnumsService) {
+    var wallpaper = require('wallpaper');
     var kodiApi = null;
     var playingItem = null;
     var defaultWallpaper = null;
@@ -11,9 +12,18 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkHelperService', 'rkRe
       $rootScope.$emit('rkNowPlayingDataUpdate', playingItem);
     };
     
-    var applyCurrentFanartWallpaper = function() {
-      if($localStorage.settings.fanartWallpaper && playingItem && playingItem.fanart_src) {
-        rkHelperService.setDesktopWallpaper(playingItem.fanart_src);
+    var applyCurrentFanartWallpaper = function(item) {
+      if($localStorage.settings.nowPlaying.fanartWallpaper && item && item.fanart_src) {
+        if(item.fanart_path) {
+          wallpaper.set(item.fanart_path, function(error) {
+            if(error) {
+              rkLogService.error(error);
+            }
+          });
+        }
+        else {
+          rkHelperService.setDesktopWallpaper(item.fanart_src);
+        }
       }
       else {
         applyDefaultWallpaper();
@@ -46,7 +56,7 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkHelperService', 'rkRe
               if(!angular.equals(playingItem, data.item)) {
                 playingItem = data.item;
                 $rootScope.$emit('rkNowPlayingDataUpdate', playingItem);
-                applyCurrentFanartWallpaper();
+                applyCurrentFanartWallpaper(playingItem);
               }
             }
             else {
