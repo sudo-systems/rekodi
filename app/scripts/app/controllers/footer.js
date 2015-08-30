@@ -6,7 +6,10 @@ rekodiApp.controller('rkFooterCtrl', ['$scope', '$timeout',
     $scope.$root.$on('rkWsConnectionStatusChange', function(event, connection) {
       $timeout(function() {
         $scope.isConnected = (connection);
-        $scope.$apply();
+        
+        if(!$scope.$$phase){
+          $scope.$apply();
+        }
       });
     });
     

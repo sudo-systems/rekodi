@@ -103,7 +103,9 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
           $scope.updateTootltip($scope.seek.position);
         }
         
-        $scope.$apply();
+        if(!$scope.$$phase){
+          $scope.$apply();
+        }
       });
       
       $scope.$root.$on('rkPlaybackStatusChange', function(event, data) {
@@ -117,7 +119,10 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
         }
 
         $scope.playbackStatus = data;
-        $scope.$apply();
+        
+        if(!$scope.$$phase){
+          $scope.$apply();
+        }
       });
       
       $scope.updateTootltip($scope.seek.position);

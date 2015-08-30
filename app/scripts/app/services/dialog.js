@@ -79,7 +79,11 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
           
           $scope.toggleShowDialog = function() {
             $scope.settings.showShutdownDialog = (!$scope.settings.showShutdownDialog);
-            $scope.$apply();
+            
+            if(!$scope.$$phase){
+              $scope.$apply();
+            }
+            
             rkSettingsService.set('window', 'showShutdownDialog', $scope.settings.showShutdownDialog);
           };
           

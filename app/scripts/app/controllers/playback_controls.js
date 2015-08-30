@@ -92,6 +92,7 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
       
       $scope.$root.$on('rkPlayerPropertiesChange', function(event, data) {
         $scope.playerProperties = data;
+        
         if(!$scope.$$phase){
           $scope.$apply();
         }
