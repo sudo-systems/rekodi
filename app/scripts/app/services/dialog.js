@@ -109,8 +109,15 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
           };
         }
       ],
-      notConnected: ['$scope', 'rkTabsService',
-        function($scope, rkTabsService) {
+      notConnected: ['$scope', 'rkTabsService', 'kodiApiService', '$localStorage', 'rkNotificationService',
+        function($scope, rkTabsService, kodiApiService, $localStorage, rkNotificationService) {
+          $scope.connectionSettings = ($localStorage.settings && $localStorage.settings.connection)? $localStorage.settings.connection : {};
+          
+          $scope.wakeHost = function() {
+            kodiApiService.wakeHost();
+            rkNotificationService.notifyRemoteSystem('The wake up command sent to Kodi host...');
+          };
+          
           $scope.showSettingsTab = function() {
             rkTabsService.navigateTo('settings');
             return true;

@@ -1,5 +1,5 @@
-rekodiApp.controller('rkAppCtrl', ['$scope', '$timeout', 'kodiApiService', 'rkKodiPropertiesService',
-  function($scope, $timeout, kodiApiService, rkKodiPropertiesService) {
+rekodiApp.controller('rkAppCtrl', ['$scope', '$timeout', 'kodiApiService', 'rkSettingsService', 'rkDialogService', 'rkKodiPropertiesService',
+  function($scope, $timeout, kodiApiService, rkSettingsService, rkDialogService, rkKodiPropertiesService) {
     $scope.controllersLoaded = false;
     $scope.$root.rkRequiredControllers = {};
     var rkRequiredControllers = ['footer', 'now_playing', 'playback_controls', 'tabs', 'window'];
@@ -21,7 +21,14 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$timeout', 'kodiApiService', 'rkKo
         
         if(allInitialControllersLoaded) {
           $scope.controllersLoaded = true;
-          kodiApiService.connect();
+
+          if(rkSettingsService.isConnectionConfigured()) {
+            kodiApiService.connect();
+          }
+          else {
+            rkDialogService.showNotConfigured();
+          }
+          
           loadRequiredControllersWatch(); //destroy watcher
         }
       }, true);

@@ -100,8 +100,8 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
       
       $scope.$root.$on('rkKodiPropertiesChange', function(event, data) {
         $scope.kodiProperties = data;
-        
-        if($scope.kodiProperties.volume !== undefined) {
+
+        if($scope.kodiProperties && $scope.kodiProperties.volume !== undefined) {
           var percentage = parseInt(Math.floor($scope.kodiProperties.volume));
           updateVolumeTooltip(percentage);
         }
@@ -136,14 +136,14 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
             $scope.fastForward();
           }
           else if(event.keyCode === 45) { //-
-            if($scope.kodiProperties.volume !== undefined) {
+            if($scope.kodiProperties && $scope.kodiProperties.volume !== undefined) {
               var newVolume = ($scope.kodiProperties.volume >= 5)? Math.floor($scope.kodiProperties.volume - 5) : 0;
               $scope.setVolume(newVolume);
               rkNotificationService.notifyVolume(newVolume);
             }
           }
           else if(event.keyCode === 61) { //=
-            if($scope.kodiProperties.volume !== undefined) {
+            if($scope.kodiProperties && $scope.kodiProperties.volume !== undefined) {
               var newVolume = ($scope.kodiProperties.volume <= 95)? Math.floor($scope.kodiProperties.volume + 5) : 100;
               $scope.setVolume(newVolume);
               rkNotificationService.notifyVolume(newVolume);

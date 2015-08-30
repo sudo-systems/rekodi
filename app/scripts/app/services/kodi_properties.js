@@ -2,12 +2,12 @@ rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'kodiApiService', 'r
   function($rootScope, kodiApiService, rkLogService, rkConfigService) {
     var kodiApi = null;
     var currentProperties = {};
-    var requestProperties = rkConfigService.get('apiRequestProperties', 'kodi');
+    var defaultProperties = rkConfigService.get('apiRequestProperties', 'kodi');
 
     var get = function() {
       if(kodiApi) {
         kodiApi.Application.GetProperties({
-          properties: Object.keys(requestProperties)
+          properties: Object.keys(defaultProperties)
         }).then(function(data) {
           if(!angular.equals(currentProperties, data)) {
             currentProperties = data;
@@ -24,32 +24,38 @@ rekodiApp.factory('rkKodiPropertiesService', ['$rootScope', 'kodiApiService', 'r
     };
     
     var setDefaults = function() {
-      $rootScope.$emit('rkKodiPropertiesChange', requestProperties);
+      currentProperties = defaultProperties;
+      $rootScope.$emit('rkKodiPropertiesChange', defaultProperties);
     };
+    
+    function initConnectionChange() {
+      if(kodiApi) {
+        kodiApi.Application.OnVolumeChanged(function(response) {
+          if(response.data) {
+            if(!angular.equals(response.data, currentProperties)) {
+              currentProperties = response.data;
+              $rootScope.$emit('rkKodiPropertiesChange', currentProperties);
+            }
+          }
+          else {
+            setDefaults();
+          }
+        });
+
+        get();
+      }
+      else {
+        setDefaults();
+      }
+    }
     
     function init() {
       kodiApi = kodiApiService.getConnection();
-      get();
-      
+      initConnectionChange();
+
       $rootScope.$on('rkWsConnectionStatusChange', function(event, connection) {
         kodiApi = connection;
-        
-        if(kodiApi) {
-          kodiApi.Application.OnVolumeChanged(function(response) {
-            if(response.data) {
-              for(var key in response.data) {
-                currentProperties[key] = response.data[key];
-              }
-            }
-
-            $rootScope.$emit('rkKodiPropertiesChange', currentProperties);
-          });
-          
-          get();
-        }
-        else {
-          setDefaults();
-        }
+        initConnectionChange();
       });
     }
 

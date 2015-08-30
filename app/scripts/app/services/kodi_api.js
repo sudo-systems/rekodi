@@ -28,10 +28,6 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkLogServic
       var isConfigured = rkSettingsService.isConnectionConfigured();
 
       if(!isConfigured) {
-        if(rkTabsService.getActiveTab() !== 'settings') {
-          rkDialogService.showNotConfigured();
-        }
-
         connection = null;
         return;
       }
@@ -80,8 +76,9 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkLogServic
       if($localStorage.settings.connection.macAddress && $localStorage.settings.connection.macAddress.length >= 12) {
         wol.wake($localStorage.settings.connection.macAddress, {
           address: $localStorage.settings.connection.serverAddress,
+          num_packets: 6,
           port: 9
-        }, function(error) { 
+        }, function(error) {
           if(error) {
             if(rkTabsService.getActiveTab() !== 'settings') {
               rkDialogService.showNotConnected();
@@ -110,7 +107,7 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkLogServic
         if(!angular.equals(newData, oldData)) {
           retryConnectingTimeout = setTimeout(function() {
             connect();
-          }, 2000);
+          }, 500);
         }
       }, true);
     }
