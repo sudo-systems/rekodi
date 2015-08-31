@@ -77,9 +77,6 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
         if(!data) {
           setDefaults();
         }
-        else if(!$scope.playbackStatus || $scope.playbackStatus.isPlaying){
-          rkNotificationService.notifyPlay(data);
-        }
       });
       
       $scope.$root.$on('rkPlayerPropertiesChange', function(event, data) {

@@ -1,11 +1,11 @@
-rekodiApp.factory('rkCacheService', ['rkConfigService', 'rkLogService',
-  function(rkConfigService, rkLogService) {
+rekodiApp.factory('rkCacheService', ['$rootScope', 'rkConfigService', 'rkLogService',
+  function($rootScope, rkConfigService, rkLogService) {
     var create = function(identifier) {
       var fs = require('fs');
       var mkpath = require('mkpath');
       var http = require('http');
       var config = rkConfigService.get();
-      var cacheFile = (identifier) ? config.storageDirectories.cache+identifier+'.json' : null;
+      var cacheFile = (identifier)? config.storageDirectories.cacheData+identifier+'.json' : null;
       var cacheData = {};
 
       function writeData(data) {
@@ -78,14 +78,17 @@ rekodiApp.factory('rkCacheService', ['rkConfigService', 'rkLogService',
         var localFilePath = targetDirectory+filename;
         
         if(fs.existsSync(localFilePath)) {
-          return localFilePath;
+          $rootScope.$emit('rkFileCacheCompleted', localFilePath);
         }
-        
-        download({
-          targetDirectory: targetDirectory,
-          localFilePath: localFilePath,
-          url: properties.url
-        });
+        else {
+          download({
+            targetDirectory: targetDirectory,
+            localFilePath: localFilePath,
+            url: properties.url
+          });
+        }
+
+        return localFilePath;
       };
 
       var getFilenameFromUrl = function(url) {
@@ -108,17 +111,19 @@ rekodiApp.factory('rkCacheService', ['rkConfigService', 'rkLogService',
         if(!fs.existsSync(properties.targetDirectory)) {
           mkpath.sync(properties.targetDirectory);
         }
-        
+
         var fileStream = fs.createWriteStream(properties.localFilePath);
-      
+
         http.get(properties.url, function(response) {
           response.pipe(fileStream);
           fileStream.on('finish', function() {
             fileStream.close();
+            $rootScope.$emit('rkFileCacheCompleted', properties.localFilePath);
           });
         }).on('error', function(error) {
           fs.unlink(fileStream);
-
+          $rootScope.$emit('rkFileCacheCompleted', null);
+          
           if(error) {
             rkLogService.error(error);
           }

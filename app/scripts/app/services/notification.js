@@ -50,17 +50,8 @@ rekodiApp.factory('rkNotificationService', ['rkHelperService', 'rkLogService',
     };
     
     var itemNotify = function(options) {
-      if(options.item.thumbnail_src) {
-        rkHelperService.downloadFile(options.item.thumbnail_src, 'thumbnail', (new Date).getTime(), true, function(donwloadedFilePath) {
-          if(donwloadedFilePath) {
-            options.contentImage = donwloadedFilePath;
-          }
-          
-          delete options.item;
-          notify(options);
-        });
-        
-        return;
+      if(options.item.thumbnail_path) {
+        options.contentImage = options.item.thumbnail_path;
       }
       
       delete options.item;

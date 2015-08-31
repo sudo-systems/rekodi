@@ -25,7 +25,9 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService', 'rkLogService', 'rkCo
       return filename.split('/').pop(); 
     };
     
-    function applyCustomFields(item) {
+    function applyCustomFields(item, cacheImages) {
+      cacheImages = (cacheImages === undefined)? false : cacheImages;
+      
       if(item.file) {
         var filenameParts = item.file.split('/');
 
@@ -45,7 +47,7 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService', 'rkLogService', 'rkCo
         item.thumbnail_src = getImageUrl(item.thumbnail);
       }
       
-      if(item.thumbnail_src) {
+      if(item.thumbnail_src && cacheImages) {
         var thumbnailPath = cache.file({
           type: 'images',
           category: 'thumbnails',
@@ -62,7 +64,7 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService', 'rkLogService', 'rkCo
         item.fanart_src = getImageUrl(item.fanart);
       }
       
-      if(item.fanart_src) {
+      if(item.fanart_src && cacheImages) {
         var fanartPath = cache.file({
           type: 'images',
           category: 'fanart',
@@ -110,13 +112,13 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService', 'rkLogService', 'rkCo
       return item;
     };
     
-    var addCustomFields = function(data) {
+    var addCustomFields = function(data, cacheImages) {
       if(data.constructor === Object) {
-        return applyCustomFields(data);
+        return applyCustomFields(data, cacheImages);
       }
       
       for(var key in data) {
-        data[key] = applyCustomFields(data[key]);
+        data[key] = applyCustomFields(data[key], cacheImages);
       }
   
       return data;
@@ -203,64 +205,6 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService', 'rkLogService', 'rkCo
         }
       });
     };
-    
-    var setDesktopWallpaper = function(path, callback) {
-      if(!path) {
-        return;
-      }
-
-      callback = (callback && callback.constructor === Function)? callback : function() {};
-      var isDownload = (path.substr(0, 4).toLowerCase() === 'http');
-      
-      if(isDownload) {
-        var filename = (new Date).getTime();
-        
-        downloadFile(path, 'fanart', filename, false, function(donwloadedFilePath) {
-          getDesktopWallpaper(function(currentWallpaperPath) {
-            if(donwloadedFilePath && currentWallpaperPath !== donwloadedFilePath) {
-              wallpaper.set(donwloadedFilePath, function(error) {
-                if(error) {
-                  rkLogService.error(error);
-                }
-                
-                callback();
-              });
-            }
-            else {
-              callback();
-            }
-          });
-        });
-      }
-      else {
-        getDesktopWallpaper(function(currentWallpaperPath) {
-          if(currentWallpaperPath !== path) {
-            wallpaper.set(path, function(error) {
-              if(error) {
-                rkLogService.error(error);
-              }
-              
-              callback();
-            });
-          }
-          else {
-            callback();
-          }
-        });
-      }
-    };
-    
-    var getDesktopWallpaper = function(callback) {
-      wallpaper.get(function(error, currentWallpaperPath) {
-        if(error) {
-          rkLogService.error(error);
-          callback(null);
-        }
-        else {
-          callback(currentWallpaperPath);
-        }
-      });
-    };
 
     return {
       getImageUrl: getImageUrl,
@@ -268,8 +212,6 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService', 'rkLogService', 'rkCo
       secondsToDuration: secondsToDuration,
       getFilenameFromUrl: getFilenameFromUrl,
       downloadFile: downloadFile,
-      setDesktopWallpaper: setDesktopWallpaper,
-      getDesktopWallpaper: getDesktopWallpaper,
       secondsToTimeObject: secondsToTimeObject,
       timeObjectToSeconds: timeObjectToSeconds
     };

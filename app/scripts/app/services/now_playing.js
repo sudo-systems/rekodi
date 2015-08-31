@@ -1,6 +1,7 @@
-rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkHelperService', 'rkRemoteControlService', '$localStorage', 'rkLogService', 'rkConfigService', 'rkEnumsService',
-  function($rootScope, rkHelperService, rkRemoteControlService, $localStorage, rkLogService, rkConfigService, rkEnumsService) {
+rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkHelperService', 'rkRemoteControlService', '$localStorage', 'rkLogService', 'rkConfigService', 'rkEnumsService', 'rkNotificationService',
+  function($rootScope, rkHelperService, rkRemoteControlService, $localStorage, rkLogService, rkConfigService, rkEnumsService, rkNotificationService) {
     var wallpaper = require('wallpaper');
+    var fs = require('fs');
     var kodiApi = null;
     var playingItem = null;
     var defaultWallpaper = null;
@@ -12,18 +13,13 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkHelperService', 'rkRe
       $rootScope.$emit('rkNowPlayingDataUpdate', playingItem);
     };
     
-    var applyCurrentFanartWallpaper = function(item) {
-      if($localStorage.settings.nowPlaying.fanartWallpaper && item && item.fanart_src) {
-        if(item.fanart_path) {
-          wallpaper.set(item.fanart_path, function(error) {
-            if(error) {
-              rkLogService.error(error);
-            }
-          });
-        }
-        else {
-          rkHelperService.setDesktopWallpaper(item.fanart_src);
-        }
+    var applyCurrentFanartWallpaper = function() {
+      if($localStorage.settings.nowPlaying.fanartWallpaper && playingItem && playingItem.fanart_path && fs.existsSync(playingItem.fanart_path)) {
+        wallpaper.set(playingItem.fanart_path, function(error) {
+          if(error) {
+            rkLogService.error(error);
+          }
+        });
       }
       else {
         applyDefaultWallpaper();
@@ -31,7 +27,15 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkHelperService', 'rkRe
     };
     
     var applyDefaultWallpaper = function(callback) {
-      rkHelperService.setDesktopWallpaper(defaultWallpaper, callback);
+      callback = (callback)? callback : function(){};
+      
+      wallpaper.set(defaultWallpaper, function(error) {
+        if(error) {
+          rkLogService.error(error);
+        }
+        
+        callback();
+      });
     };
     
     var getItem = function() {
@@ -51,12 +55,20 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkHelperService', 'rkRe
             properties: properties
           }).then(function(data) {
             if(data.item) {
-              data.item = rkHelperService.addCustomFields(data.item);
+              data.item = rkHelperService.addCustomFields(data.item, true);
 
               if(!angular.equals(playingItem, data.item)) {
                 playingItem = data.item;
+
+                if(!playingItem.thumbnail_path) {
+                  rkNotificationService.notifyPlay(playingItem);
+                }
+                
+                if($localStorage.settings.nowPlaying.fanartWallpaper && !playingItem.fanart_path) {
+                  applyDefaultWallpaper();
+                }
+                
                 $rootScope.$emit('rkNowPlayingDataUpdate', playingItem);
-                applyCurrentFanartWallpaper(playingItem);
               }
             }
             else {
@@ -74,10 +86,15 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkHelperService', 'rkRe
     };
 
     var init = function() {
-      rkHelperService.getDesktopWallpaper(function(imagePath) {
-        defaultWallpaper = imagePath;
+      wallpaper.get(function(error, currentWallpaperPath) {
+        if(error) {
+          rkLogService.error(error);
+          return;
+        }
+        
+        defaultWallpaper = currentWallpaperPath;
       });
-      
+
       $rootScope.$on('rkWsConnectionStatusChange', function(event, connection) {
         kodiApi = connection;
         
@@ -94,6 +111,23 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkHelperService', 'rkRe
         }
         else {
           setNotPlaying();
+        }
+      });
+      
+      $rootScope.$on('rkFileCacheCompleted', function(event, filePath) {
+        if(!playingItem) {
+          return;
+        }
+        
+        if($localStorage.settings.nowPlaying.fanartWallpaper && filePath === playingItem.fanart_path) {
+          applyCurrentFanartWallpaper();
+        }
+        else if($localStorage.settings.nowPlaying.fanartWallpaper) {
+          applyDefaultWallpaper();
+        }
+        
+        if(filePath === playingItem.thumbnail_path || !filePath) {
+          rkNotificationService.notifyPlay(playingItem);
         }
       });
     };
