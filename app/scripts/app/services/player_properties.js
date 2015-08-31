@@ -3,14 +3,14 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkLogService', 'r
     var kodiApi = null;
     var updatePropertiesInterval = null;
     var currentProperties = {};
-    var requestProperties = rkConfigService.get('apiRequestProperties', 'player');
+    var defaultProperties = rkConfigService.get('apiRequestProperties', 'player');
 
     var getProperties = function() {
       rkRemoteControlService.getActivePlayerId(function(playerId) {
         if(kodiApi && playerId !== null) {
           kodiApi.Player.GetProperties({
             playerid: playerId,
-            properties: Object.keys(requestProperties)
+            properties: Object.keys(defaultProperties)
           }).then(function(data) {
             if(!angular.equals(currentProperties, data)) {
               currentProperties = data;
@@ -18,13 +18,13 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkLogService', 'r
             }
           }, function(error) {
             rkLogService.error(error);
-            currentProperties = requestProperties;
-            $rootScope.$emit('rkPlayerPropertiesChange', requestProperties);
+            currentProperties = defaultProperties;
+            $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
           });
         }
         else {
-          currentProperties = requestProperties;
-          $rootScope.$emit('rkPlayerPropertiesChange', requestProperties);
+          currentProperties = defaultProperties;
+          $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
         }
       });
     };
@@ -55,13 +55,13 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkLogService', 'r
           });
 
           kodiApi.Player.OnStop(function(data) {
-            currentProperties = requestProperties;
-            $rootScope.$emit('rkPlayerPropertiesChange', requestProperties);
+            currentProperties = defaultProperties;
+            $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
           });
         }
         else {
-          currentProperties = requestProperties;
-          $rootScope.$emit('rkPlayerPropertiesChange', requestProperties);
+          currentProperties = defaultProperties;
+          $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
         }
       });
     }

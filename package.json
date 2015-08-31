@@ -39,7 +39,7 @@
     "mkpath": "^0.1.0",
     "node-kodi-ws": "^2.2.0",
     "node-notifier": "^4.2.3",
-    "node-wol": "^0.1.0",
+    "node-wol": "^0.1.1",
     "rimraf": "^2.4.2",
     "sanitize-filename": "^1.4.2",
     "wallpaper": "^1.1.0",
