@@ -104,8 +104,10 @@ rekodiApp.controller('rkWindowCtrl', ['$scope', 'rkNowPlayingService', '$timeout
       $scope.$root.rkRequiredControllers.window.loaded = true;
     }
     
-    $timeout(function() {
-      init();
+    $scope.$evalAsync(function() {
+      $timeout(function() {
+        init();
+      });
     });
   }
 ]);

@@ -168,8 +168,10 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
       $scope.$root.rkRequiredControllers.playback_controls.loaded = true;
     }
 
-    $timeout(function () {
-      init();
+    $scope.$evalAsync(function() {
+      $timeout(function() {
+        init();
+      });
     });
   }
 ]);

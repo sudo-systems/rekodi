@@ -22,8 +22,10 @@ rekodiApp.controller('rkSettingsCtrl', ['$scope', 'rkNowPlayingService', '$timeo
       });
     };
     
-    $timeout(function() {
-      init();
+    $scope.$evalAsync(function() {
+      $timeout(function() {
+        init();
+      });
     });
   }
 ]);

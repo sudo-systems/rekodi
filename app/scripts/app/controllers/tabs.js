@@ -8,8 +8,10 @@ rekodiApp.controller('rkTabsCtrl', ['$scope', '$timeout', 'rkTabsService',
       $scope.$root.rkRequiredControllers.tabs.loaded = true;
     }
     
-    $timeout(function() {
-      init();
+    $scope.$evalAsync(function() {
+      $timeout(function() {
+        init();
+      });
     });
   }
 ]);

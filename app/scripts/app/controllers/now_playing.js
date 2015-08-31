@@ -134,8 +134,10 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
       $scope.$root.rkRequiredControllers.now_playing.loaded = true;
     }
     
-    $timeout(function() {
-      init();
+    $scope.$evalAsync(function() {
+      $timeout(function() {
+        init();
+      });
     });
   }
 ]);
