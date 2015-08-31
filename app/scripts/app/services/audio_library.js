@@ -206,7 +206,7 @@ rekodiApp.factory('rkAudioLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         });
         
         kodiApi.AudioLibrary.OnCleanFinished(function(data) {
-          rkNotificationService.notifyCleanDatabase('Music library cleanup has finished');
+          rkNotificationService.notifyCleanDatabase('Music library cleanup has been completed');
         });
         
         kodiApi.AudioLibrary.OnScanStarted(function(data) {

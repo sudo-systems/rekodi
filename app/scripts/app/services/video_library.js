@@ -332,11 +332,11 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     function initConnectionChange() {
       if(kodiApi) {
         kodiApi.VideoLibrary.OnCleanStarted(function(data) {
-          rkNotificationService.notifyCleanDatabase('Video library cleanup has started...');
+          rkNotificationService.notifyCleanDatabase('Video library cleanup has been started...');
         });
         
         kodiApi.VideoLibrary.OnCleanFinished(function(data) {
-          rkNotificationService.notifyCleanDatabase('Video library cleanup has finished');
+          rkNotificationService.notifyCleanDatabase('Video library cleanup has been completed');
         });
         
         kodiApi.VideoLibrary.OnScanStarted(function(data) {

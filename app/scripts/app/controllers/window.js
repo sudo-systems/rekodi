@@ -71,20 +71,11 @@ rekodiApp.controller('rkWindowCtrl', ['$scope', 'rkNowPlayingService', '$timeout
       }
     };
 
-    function deleteTempDirectory() {
-      rimraf(__dirname+'/.tmp/', function(error) {
-        if(error) {
-          console.error('Error: '+error);
-        } 
-      });
-    }
-
     function init() {
       window.onbeforeunload = function (event) {
         if($localStorage.settings.nowPlaying.fanartWallpaper) {
           if(isClosing) {
             if(defaultWallpaperApplied) {
-              deleteTempDirectory();
               return true;
             }
             
@@ -98,8 +89,6 @@ rekodiApp.controller('rkWindowCtrl', ['$scope', 'rkNowPlayingService', '$timeout
           
           rkNowPlayingService.applyDefaultWallpaper();
         }
-        
-        deleteTempDirectory();
         
         return true;
       };

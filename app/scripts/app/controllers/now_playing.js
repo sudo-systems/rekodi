@@ -69,7 +69,10 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
       
       $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
         $scope.nowPlaying = data;
-        $scope.$apply();
+        
+        if(!$scope.$$phase){
+          $scope.$apply();
+        }
 
         if(!data) {
           setDefaults();

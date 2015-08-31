@@ -1,7 +1,7 @@
 rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkLogService', 'rkSettingsService', 'rkDialogService', 'rkNotificationService', 'rkTabsService',
   function($rootScope, $localStorage, rkLogService, rkSettingsService, rkDialogService, rkNotificationService, rkTabsService) {
     var kodiWs = require('node-kodi-ws');
-    var wol = require('wake_on_lan');
+    var wol = require('node-wol');
     var retryConnectingTimeout;
     var connection = null;
     
@@ -31,7 +31,7 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkLogServic
         connection = null;
         return;
       }
-
+      
       wakeHost();
 
       kodiWs($localStorage.settings.connection.serverAddress, $localStorage.settings.connection.jsonRpcPort).then(function(link) {
@@ -68,23 +68,19 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkLogServic
       }
 
       if(error) {
-        rkLogService.error(error);
+        rkLogService.debug(error);
       }
     };
-    
+
     var wakeHost = function() {
       if($localStorage.settings.connection.macAddress && $localStorage.settings.connection.macAddress.length >= 12) {
         wol.wake($localStorage.settings.connection.macAddress, {
           address: $localStorage.settings.connection.serverAddress,
-          num_packets: 6,
           port: 9
         }, function(error) {
           if(error) {
-            if(rkTabsService.getActiveTab() !== 'settings') {
-              rkDialogService.showNotConnected();
-            }
- 
-            rkLogService.error(error);
+            setDisconnected(error);
+            return;
           }
         });
       }

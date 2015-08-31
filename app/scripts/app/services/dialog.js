@@ -115,11 +115,18 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
           
           $scope.wakeHost = function() {
             kodiApiService.wakeHost();
-            rkNotificationService.notifyRemoteSystem('The wake up command sent to Kodi host...');
+            rkNotificationService.notifyRemoteSystem('The wake up command has been sent...');
           };
           
           $scope.showSettingsTab = function() {
             rkTabsService.navigateTo('settings');
+            return true;
+          };
+          
+          $scope.close = function() {
+            var remote = require('remote');
+            var mainWindow = remote.getCurrentWindow();
+            mainWindow.close();
             return true;
           };
         }
@@ -185,7 +192,16 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
             return true;
           };
         }
-      ]
+      ],
+      wakingUp: ['$scope',
+        function($scope) {
+          $scope.close = function() {
+            var remote = require('remote');
+            var mainWindow = remote.getCurrentWindow();
+            mainWindow.close();
+          };
+        }
+      ],
     };
     
     function showDialog(name, data, options) {
@@ -275,6 +291,14 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
       });
     };
     
+    var showWakingUp = function() {
+      showDialog('wakingUp', null, {
+        showClose: false,
+        closeByEscape: false,
+        closeByDocument: false
+      });
+    };
+    
     var closeAll = function() {
       ngDialog.closeAll();
     };
@@ -304,7 +328,8 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
       showNotConnected: showNotConnected,
       showConnecting: showConnecting,
       closeAll: closeAll,
-      showSystemOptions: showSystemOptions
+      showSystemOptions: showSystemOptions,
+      showWakingUp: showWakingUp
     };
   }
 ]);
