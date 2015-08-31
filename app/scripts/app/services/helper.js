@@ -4,7 +4,7 @@ rekodiApp.factory('rkHelperService', ['rkSettingsService', 'rkLogService', 'rkCo
     var mkpath = require('mkpath');
     var fs = require('fs');
     var http = require('http');
-    var sanitize = require("sanitize-filename");
+    var sanitize = require('sanitize-filename');
     var cache = new rkCacheService.create();
     var config = rkConfigService.get();
     var connectionSettings = rkSettingsService.get({category: 'connection'});
