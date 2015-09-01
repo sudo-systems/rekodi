@@ -35,7 +35,9 @@ rekodiApp.directive('rkTooltips', ['$timeout',
         }
         
         scope.$on('$destroy', function() {
-          tooltip.destroy();
+          if(tooltip) {
+            tooltip.destroy();
+          }
         });
       }
   	};

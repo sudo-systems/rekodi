@@ -90,6 +90,30 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEn
       }
     };
     
+    var clearPlaylist = function(playlistId) {
+      if(kodiApi) {
+        kodiApi.Playlist.Clear({
+          playlistid: playlistId
+        }).then(function(data) {
+        }, function(error) {
+          rkLogService.error(error);
+        });
+      }
+    };
+    
+    var swapPlaylistItems = function(playlistId, position1, position2) {
+      if(kodiApi) {
+        kodiApi.Playlist.Swap({
+          playlistid: playlistId,
+          position1: position1,
+          position2: position2
+        }).then(function(data) {
+        }, function(error) {
+          rkLogService.error(error);
+        });
+      }
+    };
+    
     var setSpeed = function(speed) {
       currentSpeed = speed;
       
@@ -269,10 +293,14 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEn
     
     return {
       getActivePlayerId: getActivePlayerId,
+      
       goTo: goTo,
-      play: play,
       playPlaylistItem: playPlaylistItem,
       removePlaylistItem: removePlaylistItem,
+      clearPlaylist: clearPlaylist,
+      swapPlaylistItems: swapPlaylistItems,
+      
+      play: play,
       playPause: playPause,
       setSpeed: setSpeed,
       rewind: rewind,
@@ -280,13 +308,17 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEn
       stop: stop,
       skipPrevious: skipPrevious,
       skipNext: skipNext,
+      
       setVolume: setVolume,
       toggleMute: toggleMute,
+      
       seek: seek,
+      
       togglePartymode: togglePartymode,
       setRepeat: setRepeat,
       cycleRepeat: cycleRepeat,
       toggleShuffle: toggleShuffle,
+      
       shutdown: shutdown,
       reboot: reboot
     };

@@ -1300,6 +1300,22 @@ section.tabsContainer {
     right: 0px;
     bottom: 0px;
     overflow-y: auto; }
+    section.tabsContainer .data-list-wrapper ul[dnd-list],
+    section.tabsContainer .data-list-wrapper ul[dnd-list] > li {
+      position: relative;
+      filter: opacity(100%);
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      -webkit-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out; }
+    section.tabsContainer .data-list-wrapper ul[dnd-list] .dndPlaceholder {
+      display: block;
+      background-color: #333;
+      min-height: 32px; }
+    section.tabsContainer .data-list-wrapper ul[dnd-list] li.selected {
+      filter: opacity(70%); }
+    section.tabsContainer .data-list-wrapper ul[dnd-list] .dndDraggingSource {
+      display: none; }
     section.tabsContainer .data-list-wrapper li {
       padding: 0 12px;
       line-height: 32px;

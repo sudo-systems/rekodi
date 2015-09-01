@@ -1,17 +1,31 @@
 <div class="options clearfix">
-  <div class="filter-container">
+  <div class="page-specific">
+    <span ng-show="scrollItems.length > 0">
+      <i class="mdi mdi-table-column-remove" title="Clear playlist" ng-click="clear()"></i>
+    </span>
+  </div>
+  <div class="filter-container" ng-show="scrollItems.length > 0">
     <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
   </div>
 </div>
 <div class="data-list-wrapper" su-endless-scroll="showItems({data: items})">
-  <ul class="vertical">
-    <li class="center-content" ng-show="!isLoading && scrollItems.length === 0">
+  <ul class="vertical" dnd-list="scrollItems" dnd-drop="endItemDrag(event, index, item)">
+    <!--<li class="center-content" ng-show="!isLoading && scrollItems.length === 0">
       ... nothing to show ...
     </li>
     <li class="center-content" ng-show="isLoading && scrollItems.length === 0">
       ... loading playlist ...
-    </li>
-    <li ng-repeat="entry in scrollItems | filter:filterList track by $index" class="clearfix" ng-class="{playing: entry.is_playing}" ng-click="showItemOptions($index, entry)">
+    </li>-->
+    <li ng-repeat="entry in scrollItems | filter:filterList" 
+        class="clearfix" 
+        ng-class="{playing: entry.is_playing}" 
+        ng-click="showItemOptions($index, entry)"
+        dnd-draggable="entry"
+        dnd-moved="placeItem($index)"
+        dnd-dragstart="startItemDrag($index)"
+        dnd-effect-allowed="move"
+        dnd-selected="selected.item = entry"
+        dnd-disable-if="scrollItems.length < 2">
       <div class="label">
         <i class="mdi mdi-movie"></i> <span ng-if="entry.showtitle">{{entry.showtitle}} - </span>{{entry.label}} <span ng-if="entry.year">({{entry.year}})</span>
       </div>

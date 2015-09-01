@@ -1,8 +1,12 @@
-rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkConfigService', 'rkDialogService',
-  function($scope, kodiApiService, rkEnumsService, rkLogService, rkConfigService, rkDialogService) {
+rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkConfigService', 'rkDialogService', 'rkRemoteControlService',
+  function($scope, kodiApiService, rkEnumsService, rkLogService, rkConfigService, rkDialogService, rkRemoteControlService) {
     var kodiApi = null;
     var displayLimit = 15;
     var requestProperties = rkConfigService.get('apiRequestProperties', 'playlist');
+    var itemDrag = {
+      startPosition: null,
+      endPosition: null
+    };
     $scope.playlistId = rkEnumsService.PlaylistId.VIDEO;
     $scope.playerId = rkEnumsService.PlayerId.VIDEO;
     $scope.items = [];
@@ -97,6 +101,46 @@ rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
     
     $scope.showItemOptions = function(position, item) {
       rkDialogService.showPlaylistItemOptions($scope.playerId, position, item, $scope.playlistId);
+    };
+    
+    $scope.startItemDrag = function(position) {
+      itemDrag.startPosition = position;
+    };
+
+    $scope.placeItem = function(position) {
+      if(itemDrag.startPosition === null || itemDrag.endPosition === null || itemDrag.endPosition === itemDrag.startPosition) {
+        return;
+      }
+
+      $scope.scrollItems.splice(position, 1);
+      
+      if(itemDrag.startPosition > itemDrag.endPosition) {
+        for(var i=itemDrag.startPosition; i>itemDrag.endPosition; i--) {
+          rkRemoteControlService.swapPlaylistItems($scope.playlistId, i, (i-1));
+        }
+      }
+      else {
+        for(var i=itemDrag.startPosition; i<itemDrag.endPosition; i++) {
+          rkRemoteControlService.swapPlaylistItems($scope.playlistId, i, (i+1));
+        }
+      }
+      
+      itemDrag = {
+        startPosition: null,
+        endPosition: null
+      };
+    };
+    
+    $scope.endItemDrag = function(event, index, item, external, type, allowedType) {
+      itemDrag.endPosition = index;
+      return item;
+    };
+    
+    $scope.clear = function() {
+      rkDialogService.showConfirm('Are you sure you want to clear the current playlist?', function() {
+        rkRemoteControlService.clearPlaylist($scope.playlistId);
+        return true;
+      });
     };
     
     $scope.filterList = function(entry) {

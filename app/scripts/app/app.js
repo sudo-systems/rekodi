@@ -3,5 +3,6 @@ var rekodiApp = angular.module('rekodiApp', [
   'suEndlessScroll',
   'ngDialog',
   'ngSanitize',
-  'ui.select'
+  'ui.select',
+  'dndLists'
 ]);

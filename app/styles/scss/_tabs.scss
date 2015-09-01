@@ -178,6 +178,27 @@ section.tabsContainer {
     bottom: 0px;
     overflow-y: auto;
     
+    ul[dnd-list], 
+    ul[dnd-list] > li { 
+      position: relative;
+      filter: opacity(100%);
+      @include transitionAll(map-get($global, transition-speed));
+    }
+    
+    ul[dnd-list] .dndPlaceholder {
+      display: block;
+      background-color: #333;
+      min-height: 32px;
+    }
+    
+    ul[dnd-list] li.selected {
+      filter: opacity(70%);
+    }
+    
+    ul[dnd-list] .dndDraggingSource {
+      display: none;
+    }
+
     li {
       padding: 0 map-get($global, window-padding);
       line-height: 32px;
