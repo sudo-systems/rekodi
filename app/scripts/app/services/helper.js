@@ -1,6 +1,5 @@
-rekodiApp.factory('rkHelperService', ['rkSettingsService', 'rkLogService', 'rkConfigService', 'rkCacheService',
-  function(rkSettingsService, rkLogService, rkConfigService, rkCacheService) {
-    var wallpaper = require('wallpaper');
+rekodiApp.factory('rkHelperService', ['$rootScope', 'rkSettingsService', 'rkLogService', 'rkConfigService', 'rkCacheService',
+  function($rootScope, rkSettingsService, rkLogService, rkConfigService, rkCacheService) {
     var mkpath = require('mkpath');
     var fs = require('fs');
     var http = require('http');

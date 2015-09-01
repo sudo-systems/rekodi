@@ -1,5 +1,5 @@
-rekodiApp.controller('rkVideoFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkRemoteControlService', 'rkFilesService',
-  function($scope, kodiApiService, rkEnumsService, rkLogService, rkRemoteControlService, rkFilesService) {
+rekodiApp.controller('rkVideoFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkRemoteControlService', 'rkFilesService', 'rkNowPlayingService',
+  function($scope, kodiApiService, rkEnumsService, rkLogService, rkRemoteControlService, rkFilesService, rkNowPlayingService) {
     var displayLimit = 15;
     var kodiApi = null;
     var filesService = null;
@@ -59,10 +59,31 @@ rekodiApp.controller('rkVideoFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsSe
         }
       }
 
+      markPlayingItem($scope.scrollItems, rkNowPlayingService.getNowPlayingFilePath());
+
       if(!$scope.$$phase){
         $scope.$apply();
       }
     };
+    
+    function markPlayingItem(items, playingFilePath) {
+      if(items.length === 0 || !playingFilePath) {
+        return;
+      }
+      
+      for(var key in items) {
+        if(items[key].constructor === Array) {
+          markPlayingItem(items[key], playingFilePath);
+        }
+        else {
+          items[key].is_playing = (items[key].file === playingFilePath);
+        }
+      }
+
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
+    }
 
     $scope.getSources = function() {
       $scope.currentLevel = 'sources';
@@ -177,6 +198,25 @@ rekodiApp.controller('rkVideoFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsSe
       $scope.filter.value = '';
     };
     
+    function markPlayingItem(items, playingFilePath) {
+      if(items.length === 0 || !playingFilePath) {
+        return;
+      }
+      
+      for(var key in items) {
+        if(items[key].constructor === Array) {
+          markPlayingItem(items[key], playingFilePath);
+        }
+        else {
+          items[key].is_playing = (items[key].file === playingFilePath);
+        }
+      }
+
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
+    }
+    
     function initConnectionChange() {
       if(kodiApi) {
         $scope.getSources();
@@ -194,6 +234,12 @@ rekodiApp.controller('rkVideoFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsSe
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
         initConnectionChange();
+      });
+      
+      $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
+        if(data) {
+          markPlayingItem($scope.scrollItems, data.file);
+        }
       });
       
       $scope.status.isInitialized = true;

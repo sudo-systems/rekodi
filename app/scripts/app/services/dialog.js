@@ -23,7 +23,7 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
           };
           
           $scope.remove = function() {
-            rkDialogService.showConfirm('Are your sure wou want to remove the movie <u>'+$scope.ngDialogData.item.label+'</u> from the library?', function() {
+            rkDialogService.showConfirm('Are your sure wou want to remove the movie "'+$scope.ngDialogData.item.label+'" from the library?', function() {
               rkVideoLibraryService.removeMovie($scope.ngDialogData.item, function(success) {
                 if(!success) {
                   rkNotificationService.notifyRemoteSystem('The movie \''+$scope.ngDialogData.item.label+'\' could not be removed from your library.');
@@ -53,7 +53,7 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
           };
           
           $scope.remove = function() {
-            rkDialogService.showConfirm('Are your sure wou want to remove the episode <u>'+$scope.ngDialogData.item.label+'</u> from the library?', function() {
+            rkDialogService.showConfirm('Are your sure wou want to remove the episode "'+$scope.ngDialogData.item.label+'" from the library?', function() {
               rkVideoLibraryService.removeEpisode($scope.ngDialogData.item, function(success) {
                 if(!success) {
                   rkNotificationService.notifyRemoteSystem('The episode \''+$scope.ngDialogData.item.label+'\' could not be removed from your library.');

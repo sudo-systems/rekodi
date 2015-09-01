@@ -1,5 +1,5 @@
-rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudioLibraryService', 'rkDialogService',
-  function($scope, kodiApiService, rkAudioLibraryService, rkDialogService) {
+rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudioLibraryService', 'rkDialogService', 'rkNowPlayingService',
+  function($scope, kodiApiService, rkAudioLibraryService, rkDialogService, rkNowPlayingService) {
     var displayLimit = 15;
     var kodiApi = null;
     $scope.currentLevel = null;
@@ -64,10 +64,31 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
         }
       }
 
+      markPlayingItem($scope.scrollItems, rkNowPlayingService.getNowPlayingFilePath());
+
       if(!$scope.$$phase){
         $scope.$apply();
       }
     };
+    
+    function markPlayingItem(items, playingFilePath) {
+      if(items.length === 0 || !playingFilePath) {
+        return;
+      }
+      
+      for(var key in items) {
+        if(items[key].constructor === Array) {
+          markPlayingItem(items[key], playingFilePath);
+        }
+        else {
+          items[key].is_playing = (items[key].file === playingFilePath);
+        }
+      }
+
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
+    }
     
     function refreshData() {
       if($scope.currentLevel === 'artists') {
@@ -310,6 +331,12 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
         initConnectionChange();
+      });
+      
+      $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
+        if(data) {
+          markPlayingItem($scope.scrollItems, data.file);
+        }
       });
 
       $scope.status.isInitialized = true;

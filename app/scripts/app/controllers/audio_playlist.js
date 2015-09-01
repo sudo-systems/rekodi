@@ -1,5 +1,5 @@
-rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkConfigService',
-  function($scope, kodiApiService, rkEnumsService, rkLogService, rkConfigService) {
+rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkConfigService', 'rkNowPlayingService',
+  function($scope, kodiApiService, rkEnumsService, rkLogService, rkConfigService, rkNowPlayingService) {
     var kodiApi = null;
     var displayLimit = 15;
     var requestProperties = rkConfigService.get('apiRequestProperties', 'playlist');
@@ -21,7 +21,7 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
         reset: false, //optional
         data: null //required
       }, options);
-
+      
       if($scope.isFiltering && !_options.reset) {
         _options.data = $scope.filteredItems;
       }
@@ -58,10 +58,31 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
         }
       }
 
+      markPlayingItem($scope.scrollItems, rkNowPlayingService.getNowPlayingFilePath());
+
       if(!$scope.$$phase){
         $scope.$apply();
       }
     };
+    
+    function markPlayingItem(items, playingFilePath) {
+      if(items.length === 0 || !playingFilePath) {
+        return;
+      }
+      
+      for(var key in items) {
+        if(items[key].constructor === Array) {
+          markPlayingItem(items[key], playingFilePath);
+        }
+        else {
+          items[key].is_playing = (items[key].file === playingFilePath);
+        }
+      }
+
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
+    }
 
 
     $scope.get = function() {
@@ -73,7 +94,7 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
           properties: requestProperties.audio
         }).then(function(data) {
           $scope.items = data.items;
-          
+
           $scope.showItems({
             reset: true,
             data: $scope.items
@@ -96,7 +117,10 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
     };
     
     $scope.filterList = function(entry) {
-      return (entry.label.toLowerCase().indexOf($scope.filter.value.toLowerCase()) > -1 || entry.label === '..');
+      return (entry.label.toLowerCase().indexOf($scope.filter.value.toLowerCase()) > -1 || 
+              (entry.displayartist && entry.displayartist.toLowerCase().indexOf($scope.filter.value.toLowerCase()) > -1) || 
+              entry.label === '..'
+             );
     };
     
     $scope.clearFilter = function() {
@@ -106,7 +130,7 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
         data: $scope.items
       });
     };
-    
+
     function initConnectionChange() {
       if(kodiApi) {
         if($scope.items.length === 0) {
@@ -143,6 +167,12 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
         initConnectionChange();
+      });
+      
+      $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
+        if(data) {
+          markPlayingItem($scope.scrollItems, data.file);
+        }
       });
 
       $scope.status.isInitialized = true;

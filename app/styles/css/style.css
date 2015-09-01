@@ -1302,12 +1302,13 @@ section.tabsContainer {
     overflow-y: auto; }
     section.tabsContainer .data-list-wrapper li {
       padding: 0 12px;
-      line-height: 32px !important;
+      line-height: 32px;
       border-bottom: 1px solid #333;
       color: #999;
       white-space: nowrap;
       overflow: hidden;
       position: relative;
+      font-size: 13px;
       -moz-transition: all 0.2s ease-in-out;
       -o-transition: all 0.2s ease-in-out;
       -webkit-transition: all 0.2s ease-in-out;
@@ -1320,6 +1321,7 @@ section.tabsContainer {
         text-overflow: ellipsis;
         width: 100%; }
         section.tabsContainer .data-list-wrapper li .label i.mdi {
+          line-height: 32px;
           margin-right: 6px;
           font-size: 20px;
           -moz-transition: all 0.3s ease-in-out;
@@ -1365,50 +1367,6 @@ section.tabsContainer {
           -moz-transform: scale(1);
           -o-transform: scale(1);
           transform: scale(1); }
-    section.tabsContainer .data-list-wrapper li:hover,
-    section.tabsContainer .data-list-wrapper li.playing {
-      color: #EEE;
-      background: #242424;
-      background: -moz-linear-gradient(top, #242424 0, #2A2A2A 100%);
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #242424), color-stop(100%, #2A2A2A));
-      background: -webkit-linear-gradient(top, #242424 0, #2A2A2A 100%);
-      background: -o-linear-gradient(top, #242424 0, #2A2A2A 100%);
-      background: -ms-linear-gradient(top, #242424 0, #2A2A2A 100%);
-      background: linear-gradient(to bottom, #242424 0, #2A2A2A 100%);
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0);
-      border-bottom: 1px solid #E6802E; }
-      section.tabsContainer .data-list-wrapper li:hover .label,
-      section.tabsContainer .data-list-wrapper li.playing .label {
-        width: 396px; }
-        section.tabsContainer .data-list-wrapper li:hover .label i.mdi,
-        section.tabsContainer .data-list-wrapper li.playing .label i.mdi {
-          color: #E6802E;
-          -moz-transition: all 0.2s ease-in-out;
-          -o-transition: all 0.2s ease-in-out;
-          -webkit-transition: all 0.2s ease-in-out;
-          transition: all 0.2s ease-in-out;
-          -ms-transform: scale(1.3);
-          -webkit-transform: scale(1.3);
-          -moz-transform: scale(1.3);
-          -o-transform: scale(1.3);
-          transform: scale(1.3);
-          padding-left: 2px;
-          margin-right: 10px; }
-      section.tabsContainer .data-list-wrapper li:hover .controls,
-      section.tabsContainer .data-list-wrapper li.playing .controls {
-        display: inline-block; }
-    section.tabsContainer .data-list-wrapper li:active .label i.mdi {
-      -ms-transform: scale(1.2);
-      -webkit-transform: scale(1.2);
-      -moz-transform: scale(1.2);
-      -o-transform: scale(1.2);
-      transform: scale(1.2); }
-    section.tabsContainer .data-list-wrapper li.playing {
-      color: #E6802E;
-      border-bottom: 1px solid transparent; }
-    section.tabsContainer .data-list-wrapper li {
-      line-height: normal;
-      overflow: hidden; }
       section.tabsContainer .data-list-wrapper li .thumbnail {
         position: relative;
         margin: 10px 0 20px 0;
@@ -1475,20 +1433,63 @@ section.tabsContainer {
           white-space: nowrap; }
         section.tabsContainer .data-list-wrapper li .details td.infoContent {
           line-height: 18px; }
-    section.tabsContainer .data-list-wrapper li:hover .thumbnail img,
-    section.tabsContainer .data-list-wrapper li:hover .thumbnail i.mdi {
-      -webkit-filter: grayscale(0%);
-      -webkit-transform: rotateY(25deg);
-      -moz-transition: all 0.5s ease-in-out;
-      -o-transition: all 0.5s ease-in-out;
-      -webkit-transition: all 0.5s ease-in-out;
-      transition: all 0.5s ease-in-out; }
-    section.tabsContainer .data-list-wrapper li:hover .details td.title h2 {
+    section.tabsContainer .data-list-wrapper li:hover,
+    section.tabsContainer .data-list-wrapper li.playing {
+      color: #EEE;
+      background: #242424;
+      background: -moz-linear-gradient(top, #242424 0, #2A2A2A 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #242424), color-stop(100%, #2A2A2A));
+      background: -webkit-linear-gradient(top, #242424 0, #2A2A2A 100%);
+      background: -o-linear-gradient(top, #242424 0, #2A2A2A 100%);
+      background: -ms-linear-gradient(top, #242424 0, #2A2A2A 100%);
+      background: linear-gradient(to bottom, #242424 0, #2A2A2A 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0);
+      border-bottom: 1px solid #E6802E; }
+      section.tabsContainer .data-list-wrapper li:hover .thumbnail img,
+      section.tabsContainer .data-list-wrapper li:hover .thumbnail i.mdi,
+      section.tabsContainer .data-list-wrapper li.playing .thumbnail img,
+      section.tabsContainer .data-list-wrapper li.playing .thumbnail i.mdi {
+        -webkit-filter: grayscale(0%);
+        -webkit-transform: rotateY(25deg);
+        -moz-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        -webkit-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out; }
+      section.tabsContainer .data-list-wrapper li:hover .details td.title h2,
+      section.tabsContainer .data-list-wrapper li.playing .details td.title h2 {
+        color: #E6802E;
+        -moz-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+        -webkit-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out; }
+      section.tabsContainer .data-list-wrapper li:hover .label i.mdi,
+      section.tabsContainer .data-list-wrapper li.playing .label i.mdi {
+        color: #E6802E;
+        -moz-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+        -webkit-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+        -ms-transform: scale(1.3);
+        -webkit-transform: scale(1.3);
+        -moz-transform: scale(1.3);
+        -o-transform: scale(1.3);
+        transform: scale(1.3);
+        padding-left: 2px;
+        margin-right: 10px; }
+      section.tabsContainer .data-list-wrapper li:hover .controls,
+      section.tabsContainer .data-list-wrapper li.playing .controls {
+        display: inline-block; }
+    section.tabsContainer .data-list-wrapper li:active .label i.mdi {
+      -ms-transform: scale(1.2);
+      -webkit-transform: scale(1.2);
+      -moz-transform: scale(1.2);
+      -o-transform: scale(1.2);
+      transform: scale(1.2); }
+    section.tabsContainer .data-list-wrapper li.playing {
       color: #E6802E;
-      -moz-transition: all 0.2s ease-in-out;
-      -o-transition: all 0.2s ease-in-out;
-      -webkit-transition: all 0.2s ease-in-out;
-      transition: all 0.2s ease-in-out; }
+      border-bottom: 1px solid transparent; }
+      section.tabsContainer .data-list-wrapper li.playing:hover {
+        border-bottom: 1px solid #E6802E; }
 
 section.tabsContainer.sub nav {
   background: #242424;

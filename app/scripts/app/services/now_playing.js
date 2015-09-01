@@ -84,6 +84,10 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkHelperService', 'rkRe
         }
       });
     };
+    
+    var getNowPlayingFilePath = function() {
+      return (playingItem && playingItem.file)? playingItem.file : null;
+    };
 
     var init = function() {
       wallpaper.get(function(error, currentWallpaperPath) {
@@ -136,7 +140,8 @@ rekodiApp.factory('rkNowPlayingService', ['$rootScope', 'rkHelperService', 'rkRe
     
     return {
       applyCurrentFanartWallpaper: applyCurrentFanartWallpaper,
-      applyDefaultWallpaper: applyDefaultWallpaper
+      applyDefaultWallpaper: applyDefaultWallpaper,
+      getNowPlayingFilePath: getNowPlayingFilePath
     };
   }
 ]);

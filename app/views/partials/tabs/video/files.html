@@ -22,7 +22,7 @@
         <i class="mdi mdi-folder"></i> ..
       </div>
     </li>
-    <li ng-repeat="file in scrollItems['files'] | filter:filterList track by file.file" class="clearfix">
+    <li ng-repeat="file in scrollItems['files'] | filter:filterList track by file.file" class="clearfix" ng-class="{playing: file.is_playing}">
       <div class="label" ng-if="file.type !== 'movie'" ng-click="file.filetype === 'file'? play(file.file, file.filetype) : getDirectory(file.file)">
         <i class="mdi mdi-folder" ng-show="!file.filetype || file.filetype === 'directory'"></i>
         <i class="mdi mdi-movie" ng-show="file.filetype === 'file'"></i> {{file.label}}

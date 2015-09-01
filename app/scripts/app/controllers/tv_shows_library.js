@@ -1,5 +1,5 @@
-rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVideoLibraryService', 'rkSettingsService', 'rkDialogService',
-  function($scope, kodiApiService, rkVideoLibraryService, rkSettingsService, rkDialogService) {
+rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVideoLibraryService', 'rkSettingsService', 'rkDialogService', 'rkNowPlayingService',
+  function($scope, kodiApiService, rkVideoLibraryService, rkSettingsService, rkDialogService, rkNowPlayingService) {
     var displayLimit = 5;
     var kodiApi = null;
     $scope.tvShowsCategorised = {};
@@ -65,10 +65,31 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVid
         }
       }
 
+      markPlayingItem($scope.scrollItems, rkNowPlayingService.getNowPlayingFilePath());
+
       if(!$scope.$$phase){
         $scope.$apply();
       }
     };
+    
+    function markPlayingItem(items, playingFilePath) {
+      if(items.length === 0 || !playingFilePath) {
+        return;
+      }
+      
+      for(var key in items) {
+        if(items[key].constructor === Array || items[key].constructor === Object) {
+          markPlayingItem(items[key], playingFilePath);
+        }
+        else {
+          items[key].is_playing = (items[key].file === playingFilePath);
+        }
+      }
+
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
+    }
     
     function refreshData() {
       if($scope.currentLevel === 'tvShows') {
@@ -381,6 +402,12 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVid
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
         initConnectionChange();
+      });
+      
+      $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
+        if(data) {
+          markPlayingItem($scope.scrollItems, data.file);
+        }
       });
 
       $scope.$watchCollection('settings', function(newData, oldData) {

@@ -180,12 +180,13 @@ section.tabsContainer {
     
     li {
       padding: 0 map-get($global, window-padding);
-      line-height: 32px !important;
+      line-height: 32px;
       border-bottom: 1px solid #333;
       color: #999;
       white-space: nowrap;
       overflow: hidden;
       position: relative;
+      font-size: 13px; 
       @include transitionAll(map-get($global, transition-speed));
       
       .label {
@@ -197,6 +198,7 @@ section.tabsContainer {
         width: 100%;
         
         i.mdi {
+          line-height: 32px;
           margin-right: 6px;
           font-size: 20px;
           @include transitionAll(.3s);
@@ -231,47 +233,6 @@ section.tabsContainer {
           @include scale(1.0);
         }
       }
-    }
-    
-    li:hover,
-    li.playing {
-      color: #EEE;
-      @include backgroundGradientVertical(#242424, #2A2A2A);
-      border-bottom: 1px solid map-get($global, highlight-color);
-      
-      .label {
-        width: 396px;
-        
-        i.mdi {
-          color: map-get($global, highlight-color);
-          @include transitionAll(.2s);
-          @include scale(1.3);
-          padding-left: 2px;
-          margin-right: 10px;
-        }
-      }
-      
-      .controls {
-        display: inline-block;
-      }
-    }
-    
-    li:active {
-      .label {
-        i.mdi {
-          @include scale(1.2);
-        }
-      }
-    }
-    
-    li.playing {
-      color: map-get($global, highlight-color);
-      border-bottom: 1px solid transparent;
-    }
-    
-    li {
-      line-height: normal;
-      overflow: hidden;
       
       .thumbnail {
         position: relative;
@@ -352,8 +313,13 @@ section.tabsContainer {
         }
       }
     }
-    
-    li:hover {
+
+    li:hover,
+    li.playing {
+      color: #EEE;
+      @include backgroundGradientVertical(#242424, #2A2A2A);
+      border-bottom: 1px solid map-get($global, highlight-color);
+      
       .thumbnail {
         img,
         i.mdi {
@@ -368,6 +334,37 @@ section.tabsContainer {
           color: map-get($global, highlight-color);
           @include transitionAll(map-get($global, transition-speed));
         }
+      }
+      
+      .label {
+        i.mdi {
+          color: map-get($global, highlight-color);
+          @include transitionAll(.2s);
+          @include scale(1.3);
+          padding-left: 2px;
+          margin-right: 10px;
+        }
+      }
+      
+      .controls {
+        display: inline-block;
+      }
+    }
+    
+    li:active {
+      .label {
+        i.mdi {
+          @include scale(1.2);
+        }
+      }
+    }
+    
+    li.playing {
+      color: map-get($global, highlight-color);
+      border-bottom: 1px solid transparent;
+      
+      &:hover {
+        border-bottom: 1px solid map-get($global, highlight-color);
       }
     }
   }

@@ -49,7 +49,7 @@ rekodiApp.factory('rkConfigService', [
         audio: ['file']
       },
       playlist: {
-        audio: ['file'],
+        audio: ['file', 'displayartist', 'track', 'duration'],
         video: ['file']
       },
       kodi: {
