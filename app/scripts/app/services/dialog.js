@@ -5,8 +5,8 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
     var currentDialogName = null;
     var currentDialog = null;
     var controllers = {
-      movieOptions: ['$scope', 'rkRemoteControlService', 'rkVideoLibraryService',
-        function($scope, rkRemoteControlService, rkVideoLibraryService) {
+      movieOptions: ['$scope', 'rkRemoteControlService', 'rkVideoLibraryService', 'rkNotificationService', 'rkDialogService',
+        function($scope, rkRemoteControlService, rkVideoLibraryService, rkNotificationService, rkDialogService) {
           $scope.play = function(resume) {
             rkRemoteControlService.play({
               item: { movieid: $scope.ngDialogData.item.movieid },
@@ -21,10 +21,22 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
             });
             return true;
           };
+          
+          $scope.remove = function() {
+            rkDialogService.showConfirm('Are your sure wou want to remove the movie <u>'+$scope.ngDialogData.item.label+'</u> from the library?', function() {
+              rkVideoLibraryService.removeMovie($scope.ngDialogData.item, function(success) {
+                if(!success) {
+                  rkNotificationService.notifyRemoteSystem('The movie \''+$scope.ngDialogData.item.label+'\' could not be removed from your library.');
+                }
+              });
+              
+              return true;
+            });
+          };
         }
       ],
-      episodeOptions: ['$scope', 'rkRemoteControlService', 'rkVideoLibraryService',
-        function($scope, rkRemoteControlService, rkVideoLibraryService) {
+      episodeOptions: ['$scope', 'rkRemoteControlService', 'rkVideoLibraryService', 'rkDialogService', 'rkNotificationService',
+        function($scope, rkRemoteControlService, rkVideoLibraryService, rkDialogService, rkNotificationService) {
           $scope.play = function(resume) {
             rkRemoteControlService.play({
               item: { episodeid: $scope.ngDialogData.item.episodeid },
@@ -38,6 +50,18 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
               $scope.ngDialogData.callback(success);
             });
             return true;
+          };
+          
+          $scope.remove = function() {
+            rkDialogService.showConfirm('Are your sure wou want to remove the episode <u>'+$scope.ngDialogData.item.label+'</u> from the library?', function() {
+              rkVideoLibraryService.removeEpisode($scope.ngDialogData.item, function(success) {
+                if(!success) {
+                  rkNotificationService.notifyRemoteSystem('The episode \''+$scope.ngDialogData.item.label+'\' could not be removed from your library.');
+                }
+              });
+              
+              return true;
+            });
           };
         }
       ],
@@ -201,7 +225,7 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
             mainWindow.close();
           };
         }
-      ],
+      ]
     };
     
     function showDialog(name, data, options) {
@@ -299,6 +323,13 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
       });
     };
     
+    var showConfirm = function(message, callback) {
+      showDialog('confirm', {
+        message: message,
+        callback: callback
+      });
+    };
+    
     var closeAll = function() {
       ngDialog.closeAll();
     };
@@ -329,7 +360,8 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
       showConnecting: showConnecting,
       closeAll: closeAll,
       showSystemOptions: showSystemOptions,
-      showWakingUp: showWakingUp
+      showWakingUp: showWakingUp,
+      showConfirm: showConfirm
     };
   }
 ]);

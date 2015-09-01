@@ -36,6 +36,7 @@ function createMainWindow() {
     show: false
   });
   
+  mainWindow.setMaxListeners(0);
   mainWindow.loadUrl('file://' +__dirname+ '/app/index.html');
   
   mainWindow.webContents.on('did-finish-load', function() {

@@ -4,6 +4,9 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
     var cache = new rkCacheService.create('videoLibrary');
     var requestProperties = rkConfigService.get('apiRequestProperties', 'videoLibrary');
 
+
+
+
     var getMoviesFromCache = function() {
       var _data = cache.get({key: 'movies'});
       return (_data)? _data : [];
@@ -58,6 +61,82 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
       
       callback([]);
     };
+    
+        var getRecentlyAddedMoviesFromCache = function() {
+      var _data = cache.get({key: 'recentlyAddedMovies'});
+      return (_data)? _data : [];
+    };
+    
+    var getRecentlyAddedMovies = function(limit, callback) {
+      if(kodiApi) {
+        limit = (!limit)? 10 : limit;
+        
+        kodiApi.VideoLibrary.GetRecentlyAddedMovies({
+          properties: requestProperties.movies,
+          limits: {
+            start: 0,
+            end: limit
+          },
+          sort: {
+            order: 'descending',
+            method: 'dateadded'
+          }
+        }).then(function(data) {
+          data.movies = (!data.movies)? [] : rkHelperService.addCustomFields(data.movies);
+
+          if(cache.update({data: data.movies, key: 'recentlyAddedMovies'})) {
+            callback(data.movies);
+          }
+          else {
+            callback(null);
+          }
+        }, function(error) {
+          callback([]);
+          rkLogService.error(error);
+        });
+        
+        return;
+      }
+      
+      callback([]);
+    };
+    
+    var markMovieWatched = function(movie, watched, callback) {
+      if(!kodiApi) {
+        callback(false);
+        return;
+      }
+      
+      kodiApi.VideoLibrary.SetMovieDetails({
+        movieid: movie.movieid,
+        lastplayed: (watched)? new Date().toISOString().slice(0, 19).replace('T', ' ') : ''
+      }).then(function(result) {
+        callback((result === 'OK'));
+      }, function(error) {
+        callback(false);
+        rkLogService.error(error);
+      });
+    };
+    
+    var removeMovie = function(movie, callback) {
+      if(!kodiApi) {
+        callback(false);
+        return;
+      }
+      
+      kodiApi.VideoLibrary.RemoveMovie({
+        movieid: movie.movieid
+      }).then(function(result) {
+        callback((result === 'OK'));
+      }, function(error) {
+        callback(false);
+        rkLogService.error(error);
+      });
+    };
+    
+    
+    
+    
     
     var getTvShowsFromCache = function() {
       var _data = cache.get({key: 'tvShows'});
@@ -114,6 +193,24 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
       callback([]);
     };
     
+    var removeTvShow = function(tvShow, callback) {
+      if(!kodiApi) {
+        callback(false);
+        return;
+      }
+      
+      kodiApi.VideoLibrary.RemoveTvShow({
+        tvshowid: tvShow.tvshowid
+      }).then(function(result) {
+        callback((result === 'OK'));
+      }, function(error) {
+        callback(false);
+        rkLogService.error(error);
+      });
+    };
+    
+    
+    
     var getSeasonsFromCache = function(tvShowId) {
       var _data = cache.get({key: 'seasons', index: tvShowId});
       return (_data)? _data : [];
@@ -147,6 +244,10 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
       
       callback([]);
     };
+    
+    
+    
+    
     
     var getEpisodesFromCache = function(tvShowId, season) {
       var _data = cache.get({key: 'episodes', index: tvShowId+'_'+season});
@@ -183,61 +284,6 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
       callback([]);
     };
     
-    var getRecentlyAddedMoviesFromCache = function() {
-      var _data = cache.get({key: 'recentlyAddedMovies'});
-      return (_data)? _data : [];
-    };
-    
-    var getRecentlyAddedMovies = function(limit, callback) {
-      if(kodiApi) {
-        limit = (!limit)? 10 : limit;
-        
-        kodiApi.VideoLibrary.GetRecentlyAddedMovies({
-          properties: requestProperties.movies,
-          limits: {
-            start: 0,
-            end: limit
-          },
-          sort: {
-            order: 'descending',
-            method: 'dateadded'
-          }
-        }).then(function(data) {
-          data.movies = (!data.movies)? [] : rkHelperService.addCustomFields(data.movies);
-
-          if(cache.update({data: data.movies, key: 'recentlyAddedMovies'})) {
-            callback(data.movies);
-          }
-          else {
-            callback(null);
-          }
-        }, function(error) {
-          callback([]);
-          rkLogService.error(error);
-        });
-        
-        return;
-      }
-      
-      callback([]);
-    };
-    
-    var markMovieWatched = function(movie, watched, callback) {
-      if(!kodiApi) {
-        callback(false);
-        return;
-      }
-      
-      kodiApi.VideoLibrary.SetMovieDetails({
-        movieid: movie.movieid,
-        lastplayed: (watched)? new Date().toISOString().slice(0, 19).replace('T', ' ') : ''
-      }).then(function(result) {
-        callback((result === 'OK'));
-      }, function(error) {
-        callback(false);
-        rkLogService.error(error);
-      });
-    };
  
     var getRecentlyAddedEpisodesFromCache = function() {
       var _data = cache.get({key: 'recentlyAddedEpisodes'});
@@ -295,6 +341,26 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
       });
     };
     
+    var removeEpisode = function(episode, callback) {
+      if(!kodiApi) {
+        callback(false);
+        return;
+      }
+      
+      kodiApi.VideoLibrary.RemoveEpisode({
+        episodeid: episode.episodeid
+      }).then(function(result) {
+        callback((result === 'OK'));
+      }, function(error) {
+        callback(false);
+        rkLogService.error(error);
+      });
+    };
+    
+    
+    
+    
+    
     var scan = function(directory, callback) {
       if(kodiApi) {
         var _options = {};
@@ -346,6 +412,11 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         kodiApi.VideoLibrary.OnScanFinished(function(data) {
           rkNotificationService.notifyDatabaseAdd('The video library has been updated');
         });
+        
+        kodiApi.VideoLibrary.OnRemove(function(data) {
+          console.dir(data);
+          rkNotificationService.notifyDatabaseAdd(' has been removed from your library.');
+        });
       }
     }
  
@@ -367,17 +438,24 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
       getMoviesCategorised: getMoviesCategorised,
       getRecentlyAddedMoviesFromCache: getRecentlyAddedMoviesFromCache,
       getRecentlyAddedMovies: getRecentlyAddedMovies,
+      markMovieWatched: markMovieWatched,
+      removeMovie: removeMovie,
+      
       getTvShowsFromCache: getTvShowsFromCache,
       getTvShowsCategorisedFromCache: getTvShowsCategorisedFromCache,
       getTvShowsCategorised: getTvShowsCategorised,
+      removeTvShow: removeTvShow,
+      
       getSeasonsFromCache: getSeasonsFromCache,
       getSeasons: getSeasons,
+      
       getEpisodesFromCache: getEpisodesFromCache,
       getEpisodes: getEpisodes,
       getRecentlyAddedEpisodesFromCache: getRecentlyAddedEpisodesFromCache,
       getRecentlyAddedEpisodes: getRecentlyAddedEpisodes,
       markEpisodeWatched: markEpisodeWatched,
-      markMovieWatched: markMovieWatched,
+      removeEpisode: removeEpisode,
+      
       scan: scan,
       clean: clean
     };

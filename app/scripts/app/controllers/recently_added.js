@@ -77,11 +77,27 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
       rkDialogService.showAlbumOptions(album);
     };
     
+    function updateAllData() {
+      $scope.getRecentlyAddedAlbums();
+      $scope.getRecentlyAddedMovies();
+      $scope.getRecentlyAddedEpisodes();
+    }
+    
     function initConnectionChange() {
       if(kodiApi) {
-        $scope.getRecentlyAddedAlbums();
-        $scope.getRecentlyAddedMovies();
-        $scope.getRecentlyAddedEpisodes();
+        updateAllData();
+        
+        kodiApi.VideoLibrary.OnCleanFinished(function(data) {
+          updateAllData();
+        });
+
+        kodiApi.VideoLibrary.OnScanFinished(function(data) {
+          updateAllData();
+        });
+
+        kodiApi.VideoLibrary.OnRemove(function(data) {
+          updateAllData();
+        });
       }
       else {
         $scope.recentlyAddedAlbums = [];

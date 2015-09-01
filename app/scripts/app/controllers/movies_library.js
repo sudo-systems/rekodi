@@ -107,7 +107,7 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
         }
         
         $scope.moviesIndex = Object.keys($scope.moviesCategorised);
-        $scope.guiModels.selectedIndex = getDefaultIndex($scope.moviesIndex);
+        $scope.guiModels.selectedIndex = (!$scope.guiModels.selectedIndex)? getDefaultIndex($scope.moviesIndex) : $scope.guiModels.selectedIndex;
       }
       
       $scope.showItems({
@@ -123,7 +123,7 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
         if(moviesCategorised && !angular.equals(moviesCategorised, $scope.moviesCategorised)) {
           $scope.moviesCategorised = moviesCategorised;
           $scope.moviesIndex = Object.keys(moviesCategorised);
-          $scope.guiModels.selectedIndex = getDefaultIndex($scope.moviesIndex);
+          $scope.guiModels.selectedIndex = (!$scope.guiModels.selectedIndex)? getDefaultIndex($scope.moviesIndex) : $scope.guiModels.selectedIndex;
 
           $scope.showItems({
             reset: true,
@@ -197,6 +197,10 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
         });
 
         kodiApi.VideoLibrary.OnScanFinished(function(data) {
+          $scope.getMoviesCategorised();
+        });
+
+        kodiApi.VideoLibrary.OnRemove(function(data) {
           $scope.getMoviesCategorised();
         });
       }
