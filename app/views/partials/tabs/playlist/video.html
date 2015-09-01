@@ -11,9 +11,9 @@
     <li class="center-content" ng-show="isLoading && scrollItems.length === 0">
       ... loading playlist ...
     </li>
-    <li ng-repeat="entry in scrollItems | filter:filterList track by $index" class="clearfix" ng-class="{playing: entry.is_playing}">
+    <li ng-repeat="entry in scrollItems | filter:filterList track by $index" class="clearfix" ng-class="{playing: entry.is_playing}" ng-click="showItemOptions($index, entry)">
       <div class="label">
-        <i class="mdi mdi-movie"></i> {{entry.label}}
+        <i class="mdi mdi-movie"></i> <span ng-if="entry.showtitle">{{entry.showtitle}} - </span>{{entry.label}} <span ng-if="entry.year">({{entry.year}})</span>
       </div>
       <div class="controls">
         <i class="mdi mdi-play-box-outline" title="Play" ng-click="play(entry)"></i>

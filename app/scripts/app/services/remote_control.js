@@ -72,6 +72,24 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEn
       }
     };
     
+    var playPlaylistItem = function(options) {
+      if(kodiApi) {
+        kodiApi.Player.GoTo(options).then(function(data) {
+        }, function(error) {
+          rkLogService.error(error);
+        });
+      }
+    };
+    
+    var removePlaylistItem = function(options) {
+      if(kodiApi) {
+        kodiApi.Playlist.Remove(options).then(function(data) {
+        }, function(error) {
+          rkLogService.error(error);
+        });
+      }
+    };
+    
     var setSpeed = function(speed) {
       currentSpeed = speed;
       
@@ -253,6 +271,8 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEn
       getActivePlayerId: getActivePlayerId,
       goTo: goTo,
       play: play,
+      playPlaylistItem: playPlaylistItem,
+      removePlaylistItem: removePlaylistItem,
       playPause: playPause,
       setSpeed: setSpeed,
       rewind: rewind,

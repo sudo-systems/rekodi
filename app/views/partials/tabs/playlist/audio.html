@@ -11,7 +11,7 @@
     <li class="center-content" ng-show="isLoading && scrollItems.length === 0">
       ... loading playlist ...
     </li>
-    <li ng-repeat="entry in scrollItems | filter:filterList" class="clearfix" ng-class="{playing: entry.is_playing}">
+    <li ng-repeat="entry in scrollItems | filter:filterList" class="clearfix" ng-class="{playing: entry.is_playing}" ng-click="showItemOptions($index, entry)">
       <div class="label">
         <i class="mdi mdi-file-music"></i> {{entry.track}}. {{entry.displayartist}} - {{entry.label}}
       </div>

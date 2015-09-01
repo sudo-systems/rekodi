@@ -50,7 +50,7 @@ rekodiApp.factory('rkConfigService', [
       },
       playlist: {
         audio: ['file', 'displayartist', 'track', 'duration'],
-        video: ['file']
+        video: ['file', 'showtitle', 'year', 'runtime']
       },
       kodi: {
         volume: 0,
@@ -103,7 +103,8 @@ rekodiApp.factory('rkConfigService', [
         closeWindow: config.directories.dialogTemplates+'close_window.html',
         systemOptions: config.directories.dialogTemplates+'system_options.html',
         wakingUp: config.directories.dialogTemplates+'waking_up.html',
-        confirm: config.directories.dialogTemplates+'confirm.html'
+        confirm: config.directories.dialogTemplates+'confirm.html',
+        playlistItemOptions: config.directories.dialogTemplates+'playlist_item_options.html'
       }
     };
 

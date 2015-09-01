@@ -1,9 +1,10 @@
-rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkConfigService', 'rkNowPlayingService',
-  function($scope, kodiApiService, rkEnumsService, rkLogService, rkConfigService, rkNowPlayingService) {
+rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkConfigService', 'rkNowPlayingService', 'rkDialogService',
+  function($scope, kodiApiService, rkEnumsService, rkLogService, rkConfigService, rkNowPlayingService, rkDialogService) {
     var kodiApi = null;
     var displayLimit = 15;
     var requestProperties = rkConfigService.get('apiRequestProperties', 'playlist');
     $scope.playlistId = rkEnumsService.PlaylistId.AUDIO;
+    $scope.playerId = rkEnumsService.PlayerId.AUDIO;
     $scope.items = [];
     $scope.scrollItems = [];
     $scope.status = {
@@ -114,6 +115,10 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
         reset: true,
         data: $scope.items
       });
+    };
+    
+    $scope.showItemOptions = function(position, item) {
+      rkDialogService.showPlaylistItemOptions($scope.playerId, position, item, $scope.playlistId);
     };
     
     $scope.filterList = function(entry) {

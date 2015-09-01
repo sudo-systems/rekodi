@@ -229,6 +229,25 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
             mainWindow.close();
           };
         }
+      ],
+      playlistItemOptions: ['$scope', 'rkRemoteControlService',
+        function($scope, rkRemoteControlService) {
+          $scope.play = function() {
+            rkRemoteControlService.playPlaylistItem({
+              playerid: $scope.ngDialogData.playerId,
+              to: $scope.ngDialogData.position
+            });
+            return true;
+          };
+          
+          $scope.remove = function() {
+            rkRemoteControlService.removePlaylistItem({
+              playlistid: $scope.ngDialogData.playlistId,
+              position: $scope.ngDialogData.position
+            });
+            return true;
+          };
+        }
       ]
     };
     
@@ -334,6 +353,15 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
       });
     };
     
+    var showPlaylistItemOptions = function(playerId, position, item, playlistId) {
+      showDialog('playlistItemOptions', {
+        playerId: playerId,
+        item: item,
+        position: position,
+        playlistId: playlistId
+      });
+    };
+    
     var closeAll = function() {
       ngDialog.closeAll();
     };
@@ -365,7 +393,8 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
       closeAll: closeAll,
       showSystemOptions: showSystemOptions,
       showWakingUp: showWakingUp,
-      showConfirm: showConfirm
+      showConfirm: showConfirm,
+      showPlaylistItemOptions: showPlaylistItemOptions
     };
   }
 ]);
