@@ -235,7 +235,10 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
     };
     
     $scope.cleanLibrary = function() {
-      rkAudioLibraryService.clean();
+      rkDialogService.showConfirm('Are you sure sou want to clean your music library?', function() {
+        rkAudioLibraryService.clean();
+        return true;
+      });
     };
     
     $scope.showSongOptionsDialog = function(song) {

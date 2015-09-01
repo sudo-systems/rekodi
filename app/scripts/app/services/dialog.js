@@ -155,8 +155,8 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
           };
         }
       ],
-      systemOptions: ['$scope', 'rkRemoteControlService', 'rkVideoLibraryService', 'rkAudioLibraryService', 'rkNotificationService',
-        function($scope, rkRemoteControlService, rkVideoLibraryService, rkAudioLibraryService, rkNotificationService) {
+      systemOptions: ['$scope', 'rkRemoteControlService', 'rkVideoLibraryService', 'rkAudioLibraryService', 'rkNotificationService', 'rkDialogService',
+        function($scope, rkRemoteControlService, rkVideoLibraryService, rkAudioLibraryService, rkNotificationService, rkDialogService) {
           $scope.updateVideoLibrary = function() {
             rkVideoLibraryService.scan(null, function(success) {
               if(!success) {
@@ -178,22 +178,26 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
           };
           
           $scope.cleanVideoLibrary = function() {
-            rkVideoLibraryService.clean(function(success) {
-              if(!success) {
-                rkNotificationService.notifyCleanDatabase('The video library cleanup could not be started');
-              }
+            rkDialogService.showConfirm('Are you sure sou want to clean your video library?', function() {
+              rkVideoLibraryService.clean(function(success) {
+                if(!success) {
+                  rkNotificationService.notifyCleanDatabase('The video library cleanup could not be started');
+                }
+              });
               
-              $scope.closeThisDialog();
+              return true;
             });
           };
           
           $scope.cleanAudioLibrary = function() {
-            rkAudioLibraryService.clean(function(success) {
-              if(!success) {
-                rkNotificationService.notifyCleanDatabase('The music library cleanup could not be started');
-              }
+            rkDialogService.showConfirm('Are you sure sou want to clean your music library ()?', function() {
+              rkAudioLibraryService.clean(function(success) {
+                if(!success) {
+                  rkNotificationService.notifyCleanDatabase('The music library cleanup could not be started');
+                }
+              });
               
-              $scope.closeThisDialog();
+              return true;
             });
           };
           

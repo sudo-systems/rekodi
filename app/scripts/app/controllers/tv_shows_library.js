@@ -302,7 +302,10 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVid
     };
     
     $scope.cleanLibrary = function() {
-      rkVideoLibraryService.clean();
+      rkDialogService.showConfirm('Are you sure sou want to clean your video library?', function() {
+        rkVideoLibraryService.clean();
+        return true;
+      });
     };
     
     $scope.showEpisodeOptionsDialog = function(episode) {

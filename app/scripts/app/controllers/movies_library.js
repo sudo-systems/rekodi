@@ -197,7 +197,10 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
     };
     
     $scope.cleanLibrary = function() {
-      rkVideoLibraryService.clean();
+      rkDialogService.showConfirm('Are you sure sou want to clean your video library?', function() {
+        rkVideoLibraryService.clean();
+        return true;
+      });
     };
 
     $scope.showMovieOptionsDialog = function(movie) {
