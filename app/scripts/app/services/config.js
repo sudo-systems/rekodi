@@ -30,7 +30,8 @@ rekodiApp.factory('rkConfigService', [
     config.files = {
       errorLog: config.storageDirectories.logs+'error.log',
       debugLog: config.storageDirectories.logs+'debug.log',
-      playlists: config.storageDirectories.root+'playlists.json'
+      playlists: config.storageDirectories.root+'playlists.json',
+      favorites: config.storageDirectories.root+'favorites.json'
     };
 
     config.apiRequestProperties = {

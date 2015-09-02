@@ -1,5 +1,5 @@
-rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkConfigService', 'rkNowPlayingService', 'rkDialogService', 'rkRemoteControlService', 'rkLocalPlaylistService',
-  function($scope, kodiApiService, rkEnumsService, rkLogService, rkConfigService, rkNowPlayingService, rkDialogService, rkRemoteControlService, rkLocalPlaylistService) {
+rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkConfigService', 'rkNowPlayingService', 'rkDialogService', 'rkRemoteControlService',
+  function($scope, kodiApiService, rkEnumsService, rkLogService, rkConfigService, rkNowPlayingService, rkDialogService, rkRemoteControlService) {
     var kodiApi = null;
     var displayLimit = 15;
     var requestProperties = rkConfigService.get('apiRequestProperties', 'playlist');
@@ -70,24 +70,24 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
         }
       }
 
-      markPlayingItem($scope.scrollItems, rkNowPlayingService.getNowPlayingFilePath());
+      markPlayingItem($scope.scrollItems, {file: rkNowPlayingService.getNowPlayingFilePath()});
 
       if(!$scope.$$phase){
         $scope.$apply();
       }
     };
     
-    function markPlayingItem(items, playingFilePath) {
-      if(items.length === 0 || !playingFilePath) {
+    function markPlayingItem(items, item) {
+      if(items.length === 0 || !item.file) {
         return;
       }
       
       for(var key in items) {
         if(items[key].constructor === Array) {
-          markPlayingItem(items[key], playingFilePath);
+          markPlayingItem(items[key], item.file);
         }
         else {
-          items[key].is_playing = (items[key].file === playingFilePath);
+          items[key].is_playing = (items[key].file === item.file);
         }
       }
 
@@ -106,7 +106,7 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
           properties: requestProperties.audio
         }).then(function(data) {
           $scope.items = data.items;
-          checkIfLocalPlaylist($scope.playlistId, $scope.items);
+          //checkIfLocalPlaylist($scope.playlistId, $scope.items);
 
           $scope.showItems({
             reset: true,
@@ -161,7 +161,7 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
       };
     };
     
-    $scope.endItemDrag = function(event, index, item, external, type, allowedType) {
+    $scope.endItemDrag = function(event, index, item) {
       itemDrag.endPosition = index;
       return item;
     };
@@ -203,9 +203,11 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
       });
     };
 
+    /*
     function checkIfLocalPlaylist() {
       $scope.currentLocalPlaylist = rkLocalPlaylistService.isLocalPlaylist($scope.playlistId, $scope.items);
     }
+    */
 
     function initConnectionChange() {
       if(kodiApi) {
@@ -262,9 +264,7 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
       });
       
       $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
-        if(data) {
-          markPlayingItem($scope.scrollItems, data.file);
-        }
+        markPlayingItem($scope.scrollItems, data);
       });
 
       $scope.status.isInitialized = true;

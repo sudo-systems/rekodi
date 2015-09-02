@@ -1,5 +1,5 @@
-rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkConfigService', 'rkDialogService', 'rkRemoteControlService',
-  function($scope, kodiApiService, rkEnumsService, rkLogService, rkConfigService, rkDialogService, rkRemoteControlService) {
+rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkConfigService', 'rkDialogService', 'rkRemoteControlService', 'rkNowPlayingService',
+  function($scope, kodiApiService, rkEnumsService, rkLogService, rkConfigService, rkDialogService, rkRemoteControlService, rkNowPlayingService) {
     var kodiApi = null;
     var displayLimit = 15;
     var requestProperties = rkConfigService.get('apiRequestProperties', 'playlist');
@@ -62,11 +62,32 @@ rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
           }
         }
       }
+      
+      markPlayingItem($scope.scrollItems, {file: rkNowPlayingService.getNowPlayingFilePath()});
 
       if(!$scope.$$phase){
         $scope.$apply();
       }
     };
+    
+    function markPlayingItem(items, item) {
+      if(items.length === 0 || !item.file) {
+        return;
+      }
+      
+      for(var key in items) {
+        if(items[key].constructor === Array) {
+          markPlayingItem(items[key], item.file);
+        }
+        else {
+          items[key].is_playing = (items[key].file === item.file);
+        }
+      }
+
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
+    }
 
     $scope.get = function() {
       if(kodiApi) {
@@ -131,7 +152,7 @@ rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
       };
     };
     
-    $scope.endItemDrag = function(event, index, item, external, type, allowedType) {
+    $scope.endItemDrag = function(event, index, item) {
       itemDrag.endPosition = index;
       return item;
     };
@@ -191,6 +212,10 @@ rekodiApp.controller('rkVideoPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
         initConnectionChange();
+      });
+      
+      $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
+        markPlayingItem($scope.scrollItems, data);
       });
 
       $scope.status.isInitialized = true;

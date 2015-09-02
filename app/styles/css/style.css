@@ -1138,7 +1138,7 @@ section.tabsContainer {
       white-space: nowrap; }
     section.tabsContainer nav li {
       line-height: 40px;
-      width: 55.56px;
+      width: 71.34px;
       text-align: center;
       display: inline-block;
       font-size: 24px;
@@ -1170,7 +1170,7 @@ section.tabsContainer {
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 55.56px;
+      width: 71.34px;
       height: 1px;
       background: #E6802E; }
   section.tabsContainer .tabs.inline {
@@ -1216,10 +1216,6 @@ section.tabsContainer {
     left: -600%; }
   section.tabsContainer .tabs[data-tab='7'] {
     left: -700%; }
-  section.tabsContainer .tabs[data-tab='8'] {
-    left: -800%; }
-  section.tabsContainer .tabs[data-tab='9'] {
-    left: -900%; }
   section.tabsContainer .options {
     padding: 0 12px;
     border-bottom: 1px solid #333;
@@ -1295,11 +1291,13 @@ section.tabsContainer {
       transform: scale(1); }
   section.tabsContainer .data-list-wrapper {
     position: absolute;
-    top: 36px;
+    top: 0px;
     left: 0px;
     right: 0px;
     bottom: 0px;
     overflow-y: auto; }
+    section.tabsContainer .data-list-wrapper.with-options {
+      top: 36px; }
     section.tabsContainer .data-list-wrapper ul[dnd-list],
     section.tabsContainer .data-list-wrapper ul[dnd-list] > li {
       position: relative;

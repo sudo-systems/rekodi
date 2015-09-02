@@ -1,0 +1,23 @@
+<nav>
+  <ul class="horizontal">
+    <li class="active" title="Files">
+      <i class="mdi mdi-folder"></i>
+    </li>
+    <li class="active" title="Movies">
+      <i class="mdi mdi-movie"></i>
+    </li>
+    <li class="active" title="Music">
+      <i class="mdi mdi-music-note"></i>
+    </li>
+    <li class="active" title="TV Shows">
+      <i class="mdi mdi-television"></i>
+    </li>
+  </ul>
+  <div class="magic-line"></div>
+</nav>
+<div class="tabs inline">
+  <section ng-include="'views/partials/tabs/favorites/files.html'" rk-tooltips class="tabsContainer"></section>
+  <section ng-include="'views/partials/tabs/favorites/movies.html'" rk-tooltips class="tabsContainer"></section>
+  <section ng-include="'views/partials/tabs/favorites/music.html'" rk-tooltips class="tabsContainer"></section>
+  <section ng-include="'views/partials/tabs/favorites/tv_shows.html'" rk-tooltips class="tabsContainer"></section>
+</div>

@@ -20,7 +20,7 @@
     <input type="text" class="filter" ng-model="guiModels.filterValue" ng-change="applyFilter(guiModels.filterValue)" placeholder="search" title="Find artists (2 characters minimal)" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="guiModels.filterValue !== ''"></i>
   </div>
 </div>
-<div class="data-list-wrapper" su-endless-scroll="showItems({key: currentLevel, data: artistsCategorised[guiModels.selectedIndex]})" ng-show="currentLevel ==='artists'">
+<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: artistsCategorised[guiModels.selectedIndex]})" ng-show="currentLevel ==='artists'">
   <ul class="vertical" ng-show="currentLevel ==='artists'">
     <li ng-repeat="artist in scrollItems['artists'] track by artist.artistid" class="clearfix" ng-click="getAlbums(artist.artistid)">
       <div class="label">
@@ -29,7 +29,7 @@
     </li>
   </ul>
 </div>
-<div class="data-list-wrapper" su-endless-scroll="showItems({key: currentLevel, data: albums[currentAlbumId]})" ng-show="currentLevel ==='albums'">
+<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: albums[currentAlbumId]})" ng-show="currentLevel ==='albums'">
   <ul class="vertical" ng-show="currentLevel === 'albums'">
     <li class="clearfix" ng-click="getArtistsCategorised()">
       <div class="label">
@@ -79,7 +79,7 @@
     </li>
   </ul>
 </div>
-<div class="data-list-wrapper" su-endless-scroll="showItems({key: currentLevel, data: songs[currentArtistId]})" ng-show="currentLevel ==='songs'">
+<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: songs[currentArtistId]})" ng-show="currentLevel ==='songs'">
   <ul class="vertical">
     <li ng-click="getAlbums(currentArtistId)">
       <div class="label">

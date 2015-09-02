@@ -6,14 +6,14 @@
     <li title="Music files" ng-click="initController('rkMusicFilesCtrl');" data-rel="musicFiles">
       <i class="mdi mdi-folder-outline"></i>
     </li>
-    <li title="Music addons" data-rel="musicAddons">
+    <!--<li title="Music addons" data-rel="musicAddons">
       <i class="mdi mdi-puzzle"></i>
-    </li>
+    </li>-->
   </ul>
   <div class="magic-line"></div>
 </nav>
 <div class="tabs inline">
   <section ng-include="'views/partials/tabs/music/library.html'" id="musicLibrary" ng-controller="rkMusicLibraryCtrl" rk-tooltips class="tabsContainer sub-sub"></section>
   <section ng-include="'views/partials/tabs/music/files.html'" id="musicFiles" ng-controller="rkMusicFilesCtrl" rk-tooltips class="tabsContainer"></section>
-  <section ng-include="'views/partials/tabs/music/addons.html'" id="musicAddons" ng-controller="rkAddonsCtrl" rk-tooltips class="tabsContainer"></section>
+  <!--<section ng-include="'views/partials/tabs/music/addons.html'" id="musicAddons" ng-controller="rkAddonsCtrl" rk-tooltips class="tabsContainer"></section>-->
 </div>

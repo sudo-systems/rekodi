@@ -6,14 +6,14 @@
     <li title="Video files" ng-click="initController('rkVideoFilesCtrl');" data-rel="moviesFiles">
       <i class="mdi mdi-folder-outline"></i>
     </li>
-    <li title="Video addons" data-rel="moviesAddons">
+    <!--<li title="Video addons" data-rel="moviesAddons">
       <i class="mdi mdi-puzzle"></i>
-    </li>
+    </li>-->
   </ul>
   <div class="magic-line"></div>
 </nav>
 <div class="tabs inline">
   <section ng-include="'views/partials/tabs/movies/library.html'" id="moviesLibrary" ng-controller="rkMoviesLibraryCtrl" rk-tooltips class="tabsContainer"></section>
   <section ng-include="'views/partials/tabs/video/files.html'" id="moviesFiles" ng-controller="rkVideoFilesCtrl" rk-tooltips class="tabsContainer"></section>
-  <section ng-include="'views/partials/tabs/movies/addons.html'" id="moviesAddons" ng-controller="rkAddonsCtrl" rk-tooltips class="tabsContainer"></section>
+  <!--<section ng-include="'views/partials/tabs/movies/addons.html'" id="moviesAddons" ng-controller="rkAddonsCtrl" rk-tooltips class="tabsContainer"></section>-->
 </div>

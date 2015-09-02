@@ -27,7 +27,7 @@
     <input type="text" class="filter" ng-model="guiModels.filterValue" ng-change="applyFilter(guiModels.filterValue)" placeholder="search" title="Find movies (2 characters minimal)" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="guiModels.filterValue !== ''"></i>
   </div>
 </div>
-<div class="data-list-wrapper" su-endless-scroll="showItems({data: moviesCategorised[guiModels.selectedIndex]})">
+<div class="data-list-wrapper with-options" su-endless-scroll="showItems({data: moviesCategorised[guiModels.selectedIndex]})">
   <ul class="vertical">
     <li ng-repeat="movie in scrollItems track by movie.movieid" rk-tooltips class="clearfix" ng-click="showMovieOptionsDialog(movie)" ng-class="{playing: movie.is_playing}">
       <div class="thumbnail">

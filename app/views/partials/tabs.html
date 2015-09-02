@@ -18,12 +18,12 @@
     <li title="Photos" ng-click="initController('rkPicturesCtrl');" data-rel="pictures">
       <i class="mdi mdi-camera"></i>
     </li>
-    <li title="Programs" data-rel="programAddons">
-      <i class="mdi mdi-floppy"></i>
-    </li>
-    <li title="Remote" data-rel="remote">
+    <!--<li title="Favorites" data-rel="favorites">
+      <i class="mdi mdi-star"></i>
+    </li>-->
+    <!--<li title="Remote" data-rel="remote">
       <i class="mdi mdi-remote"></i>
-    </li>
+    </li>-->
     <li title="Settings" data-rel="settings">
       <i class="mdi mdi-settings"></i>
     </li>
@@ -37,7 +37,7 @@
   <section ng-include="'views/partials/tabs/movies.html'" rk-tooltips rk-tabs id="movies" class="tabsContainer sub"></section>
   <section ng-include="'views/partials/tabs/tv_shows.html'" rk-tooltips rk-tabs id="tvShows" class="tabsContainer sub"></section>
   <section ng-include="'views/partials/tabs/pictures.html'" ng-controller="rkPicturesCtrl" rk-tooltips id="pictures" class="tabsContainer"></section>
-  <section ng-include="'views/partials/tabs/addons.html'" ng-controller="rkAddonsCtrl" rk-tooltips id="programAddons" class="tabsContainer"></section>
-  <section ng-include="'views/partials/tabs/remote.html'" ng-controller="rkRemoteCtrl" rk-tooltips id="remote" class="tabsContainer"></section>
+  <!--<section ng-include="'views/partials/tabs/favorites.html'" ng-controller="rkFavoritesCtrl" rk-tooltips rk-tabs id="favorites" class="tabsContainer sub"></section>-->
+  <!--<section ng-include="'views/partials/tabs/remote.html'" ng-controller="rkRemoteCtrl" rk-tooltips id="remote" class="tabsContainer"></section>-->
   <section ng-include="'views/partials/tabs/settings.html'" ng-controller="rkSettingsCtrl" rk-tooltips id="settings" class="tabsContainer"></section>
 </div>

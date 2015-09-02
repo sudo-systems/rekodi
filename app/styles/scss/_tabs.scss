@@ -172,11 +172,15 @@ section.tabsContainer {
   
   .data-list-wrapper {
     position: absolute;
-    top:  map-get($tabs, options-height);
+    top:  0px;
     left: 0px;
     right: 0px;
     bottom: 0px;
     overflow-y: auto;
+    
+    &.with-options {
+      top: map-get($tabs, options-height);
+    }
     
     ul[dnd-list], 
     ul[dnd-list] > li { 

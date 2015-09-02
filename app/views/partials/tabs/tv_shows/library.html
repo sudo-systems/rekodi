@@ -34,7 +34,7 @@
     <input type="text" class="filter" ng-model="guiModels.filterValue" ng-change="applyFilter(guiModels.filterValue)" placeholder="search" title="Find tvShows (2 characters minimal)" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="guiModels.filterValue !== ''"></i>
   </div>
 </div>
-<div class="data-list-wrapper" su-endless-scroll="showItems({key: currentLevel, data: tvShowsCategorised[guiModels.selectedIndex]})" ng-show="currentLevel === 'tvShows'">
+<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: tvShowsCategorised[guiModels.selectedIndex]})" ng-show="currentLevel === 'tvShows'">
   <ul class="vertical">
     <li ng-repeat="tvShow in scrollItems['tvShows'] track by tvShow.tvshowid" rk-tooltips class="clearfix" ng-click="getSeasons(tvShow.tvshowid)">
       <div class="thumbnail">
@@ -96,7 +96,7 @@
     </li>
   </ul>
 </div>
-<div class="data-list-wrapper" su-endless-scroll="showItems({key: currentLevel, data: seasons[currentTvShowId]})" ng-show="currentLevel === 'seasons'">
+<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: seasons[currentTvShowId]})" ng-show="currentLevel === 'seasons'">
   <ul class="vertical">
     <li ng-click="getTvShowsCategorised()">
       <div class="label">
@@ -139,7 +139,7 @@
     </li>
   </ul>
 </div>
-<div class="data-list-wrapper" su-endless-scroll="showItems({key: currentLevel, data: episodes[currentSeasonId]})" ng-show="currentLevel === 'episodes'">
+<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: episodes[currentSeasonId]})" ng-show="currentLevel === 'episodes'">
   <ul class="vertical">
     <li class="clearfix" ng-click="seasons[currentTvShowId].length < 2? getTvShowsCategorised() : getSeasons(currentTvShowId)">
       <div class="label">

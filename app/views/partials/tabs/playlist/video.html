@@ -8,7 +8,7 @@
     <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
   </div>
 </div>
-<div class="data-list-wrapper" su-endless-scroll="showItems({data: items})">
+<div class="data-list-wrapper with-options" su-endless-scroll="showItems({data: items})">
   <ul class="vertical" dnd-list="scrollItems" dnd-drop="endItemDrag(event, index, item)">
     <!--<li class="center-content" ng-show="!isLoading && scrollItems.length === 0">
       ... nothing to show ...
