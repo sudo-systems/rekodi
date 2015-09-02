@@ -60,31 +60,10 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
         }
       }
       
-      markPlayingItem($scope.scrollItems, rkNowPlayingService.getNowPlayingFilePath());
-
       if(!$scope.$$phase){
         $scope.$apply();
       }
     };
-    
-    function markPlayingItem(items, playingFilePath) {
-      if(items.length === 0 || !playingFilePath) {
-        return;
-      }
-      
-      for(var key in items) {
-        if(items[key].constructor === Array) {
-          markPlayingItem(items[key], playingFilePath);
-        }
-        else {
-          items[key].is_playing = (items[key].file === playingFilePath);
-        }
-      }
-
-      if(!$scope.$$phase){
-        $scope.$apply();
-      }
-    }
 
     function getDefaultIndex(moviesIndex) {
       for(var key in moviesIndex) {
@@ -239,12 +218,6 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
         initConnectionChange();
-      });
-      
-      $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
-        if(data) {
-          markPlayingItem($scope.scrollItems, data.file);
-        }
       });
 
       $scope.$watchCollection('settings', function(newData, oldData) {

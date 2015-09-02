@@ -64,32 +64,11 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
         }
       }
 
-      markPlayingItem($scope.scrollItems, rkNowPlayingService.getNowPlayingFilePath());
-
       if(!$scope.$$phase){
         $scope.$apply();
       }
     };
-    
-    function markPlayingItem(items, playingFilePath) {
-      if(items.length === 0 || !playingFilePath) {
-        return;
-      }
-      
-      for(var key in items) {
-        if(items[key].constructor === Array) {
-          markPlayingItem(items[key], playingFilePath);
-        }
-        else {
-          items[key].is_playing = (items[key].file === playingFilePath);
-        }
-      }
 
-      if(!$scope.$$phase){
-        $scope.$apply();
-      }
-    }
-    
     function refreshData() {
       if($scope.currentLevel === 'artists') {
         $scope.artistsCategorised = {};
@@ -334,12 +313,6 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
         initConnectionChange();
-      });
-      
-      $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
-        if(data) {
-          markPlayingItem($scope.scrollItems, data.file);
-        }
       });
 
       $scope.status.isInitialized = true;

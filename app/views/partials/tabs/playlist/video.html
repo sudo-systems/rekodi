@@ -1,33 +1,28 @@
 <div class="options clearfix">
   <div class="page-specific">
-    <span ng-show="scrollItems.length > 0">
+    <span ng-show="scrollItems[playlistIds.VIDEO].length > 0">
       <i class="mdi mdi-table-column-remove" title="Clear playlist" ng-click="clear()"></i>
     </span>
   </div>
-  <div class="filter-container" ng-show="scrollItems.length > 0">
-    <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+  <div class="filter-container" ng-show="scrollItems[playlistIds.VIDEO].length > 0">
+    <input type="text" class="filter" ng-model="filter[playlistIds.VIDEO].value" placeholder="filter" title="Filter the currently displayed list" /> 
+    <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter(playlistIds.VIDEO)" ng-show="filter[playlistIds.VIDEO].value !== ''"></i>
   </div>
 </div>
-<div class="data-list-wrapper with-options" su-endless-scroll="showItems({data: items})">
-  <ul class="vertical" dnd-list="scrollItems" dnd-drop="endItemDrag(event, index, item)">
-    <!--<li class="center-content" ng-show="!isLoading && scrollItems.length === 0">
-      ... nothing to show ...
-    </li>
-    <li class="center-content" ng-show="isLoading && scrollItems.length === 0">
-      ... loading playlist ...
-    </li>-->
-    <li ng-repeat="entry in scrollItems | filter:filterList" 
+<div class="data-list-wrapper with-options" su-endless-scroll="showItems({data: items[playlistIds.VIDEO]})">
+  <ul class="vertical" dnd-list="scrollItems[playlistIds.VIDEO]" dnd-drop="endItemDrag(event, index, item)">
+    <li ng-repeat="entry in scrollItems[playlistIds.VIDEO]" 
         class="clearfix" 
         ng-class="{playing: entry.is_playing}" 
-        ng-click="showItemOptions($index, entry)"
+        ng-click="showItemOptions(playlistIds.VIDEO, playerIds.VIDEO, $index, entry)"
         dnd-draggable="entry"
-        dnd-moved="placeItem($index)"
-        dnd-dragstart="startItemDrag($index)"
+        dnd-moved="placeItem(playlistIds.VIDEO, $index)"
+        dnd-dragstart="startItemDrag(playlistIds.VIDEO, $index)"
         dnd-effect-allowed="move"
-        dnd-selected="selected.item = entry"
-        dnd-disable-if="scrollItems.length < 2">
+        dnd-selected="selected[playlistIds.VIDEO].item = entry"
+        dnd-disable-if="scrollItems[playlistIds.VIDEO].length < 2">
       <div class="label">
-        <i class="mdi mdi-play" ng-show="entry.is_playing"></i><i class="mdi mdi-file-music" ng-show="!entry.is_playing"></i> <span ng-if="entry.showtitle">{{entry.showtitle}} - </span>{{entry.label}} <span ng-if="entry.year">({{entry.year}})</span>
+        <i class="mdi mdi-play" ng-show="entry.is_playing"></i><i class="mdi mdi-movie" ng-show="!entry.is_playing"></i> <span ng-if="entry.track">{{entry.track}}. </span><span ng-if="entry.displayartist">{{entry.displayartist}} - </span>{{entry.label}}
         <div class="drag-handle"><i class="mdi mdi-drag-vertical"></i></div>
       </div>
     </li>

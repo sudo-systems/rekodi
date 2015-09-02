@@ -1,40 +1,26 @@
 <div class="options clearfix">
   <div class="page-specific">
-    <span ng-show="scrollItems.length > 0">
+    <span ng-show="scrollItems[playlistIds.AUDIO].length > 0">
       <i class="mdi mdi-table-column-remove" title="Clear playlist" ng-click="clear()"></i>
     </span>
-    <!-- <span ng-show="scrollItems.length > 0">
-      <i class="mdi mdi-content-save" title="Save current playlist" ng-click="showSaveLocalPlaylistDialog()"></i>
-    </span>
-    <span>
-      <i class="mdi mdi-folder" title="Open saved playlist" ng-click="showOpenLocalPlaylistDialog()"></i>
-    </span> -->
-    <span class="currentPlaylistName" ng-show="currentLocalPlaylist.name !== ''">
-      {{currentLocalPlaylist.name}}
-    </span>
   </div>
-  <div class="filter-container" ng-show="scrollItems.length > 0">
-    <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
+  <div class="filter-container" ng-show="scrollItems[playlistIds.AUDIO].length > 0">
+    <input type="text" class="filter" ng-model="filter[playlistIds.AUDIO].value" placeholder="filter" title="Filter the currently displayed list" /> 
+    <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter(playlistIds.AUDIO)" ng-show="filter[playlistIds.AUDIO].value !== ''"></i>
   </div>
 </div>
-<div class="data-list-wrapper with-options" su-endless-scroll="showItems({data: items})">
-  <ul class="vertical" dnd-list="scrollItems" dnd-drop="endItemDrag(event, index, item)">
-    <!--<li class="center-content" ng-show="!isLoading && scrollItems.length === 0">
-      ... nothing to show ...
-    </li>
-    <li class="center-content" ng-show="isLoading && scrollItems.length === 0">
-      ... loading playlist ...
-    </li>-->
-    <li ng-repeat="entry in scrollItems | filter:filterList" 
+<div class="data-list-wrapper with-options" su-endless-scroll="showItems({data: items[playlistIds.AUDIO]})">
+  <ul class="vertical" dnd-list="scrollItems[playlistIds.AUDIO]" dnd-drop="endItemDrag(event, index, item)">
+    <li ng-repeat="entry in scrollItems[playlistIds.AUDIO]" 
         class="clearfix" 
         ng-class="{playing: entry.is_playing}" 
-        ng-click="showItemOptions($index, entry)"
+        ng-click="showItemOptions(playlistIds.AUDIO, playerIds.AUDIO, $index, entry)"
         dnd-draggable="entry"
-        dnd-moved="placeItem($index)"
-        dnd-dragstart="startItemDrag($index)"
+        dnd-moved="placeItem(playlistIds.AUDIO, $index)"
+        dnd-dragstart="startItemDrag(playlistIds.AUDIO, $index)"
         dnd-effect-allowed="move"
-        dnd-selected="selected.item = entry"
-        dnd-disable-if="scrollItems.length < 2">
+        dnd-selected="selected[playlistIds.AUDIO].item = entry"
+        dnd-disable-if="scrollItems[playlistIds.AUDIO].length < 2">
       <div class="label">
         <i class="mdi mdi-play" ng-show="entry.is_playing"></i><i class="mdi mdi-file-music" ng-show="!entry.is_playing"></i> <span ng-if="entry.track">{{entry.track}}. </span><span ng-if="entry.displayartist">{{entry.displayartist}} - </span>{{entry.label}}
         <div class="drag-handle"><i class="mdi mdi-drag-vertical"></i></div>
