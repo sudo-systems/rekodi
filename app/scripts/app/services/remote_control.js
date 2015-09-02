@@ -90,14 +90,21 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEn
       }
     };
     
-    var clearPlaylist = function(playlistId) {
+    var clearPlaylist = function(playlistId, callback) {
+      callback = (callback)? callback : function(){};
+      
       if(kodiApi) {
         kodiApi.Playlist.Clear({
           playlistid: playlistId
         }).then(function(data) {
+          callback((data === 'OK'));
         }, function(error) {
+          callback(false);
           rkLogService.error(error);
         });
+      }
+      else {
+        callback(false);
       }
     };
     
@@ -117,6 +124,14 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEn
     var addToPlaylist = function(playlistId, item) {
       kodiApi.Playlist.Add({
         playlistid: playlistId,
+        item: item
+      });
+    };
+    
+    var insertIntoPlaylist = function(playlistId, position, item) {
+      kodiApi.Playlist.Insert({
+        playlistid: playlistId,
+        position: parseInt(position),
         item: item
       });
     };
@@ -307,6 +322,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEn
       clearPlaylist: clearPlaylist,
       swapPlaylistItems: swapPlaylistItems,
       addToPlaylist: addToPlaylist,
+      insertIntoPlaylist: insertIntoPlaylist,
       
       play: play,
       playPause: playPause,

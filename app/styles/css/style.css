@@ -1308,6 +1308,18 @@ section.tabsContainer {
       -o-transition: all 0.2s ease-in-out;
       -webkit-transition: all 0.2s ease-in-out;
       transition: all 0.2s ease-in-out; }
+      section.tabsContainer .data-list-wrapper ul[dnd-list] .drag-handle,
+      section.tabsContainer .data-list-wrapper ul[dnd-list] > li .drag-handle {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        filter: opacity(50%);
+        color: #666;
+        width: 24px;
+        text-align: center;
+        line-height: 32px;
+        cursor: ns-resize; }
     section.tabsContainer .data-list-wrapper ul[dnd-list] .dndPlaceholder {
       display: block;
       background-color: #333;
@@ -1502,10 +1514,8 @@ section.tabsContainer {
       -o-transform: scale(1.2);
       transform: scale(1.2); }
     section.tabsContainer .data-list-wrapper li.playing {
-      color: #E6802E;
-      border-bottom: 1px solid transparent; }
-      section.tabsContainer .data-list-wrapper li.playing:hover {
-        border-bottom: 1px solid #E6802E; }
+      color: #FFF;
+      border-bottom: 1px dotted #E6802E; }
 
 section.tabsContainer.sub nav {
   background: #242424;
@@ -1730,35 +1740,38 @@ section#recentlyAdded > .wrapper {
     border: 1px solid #87B952; }
     .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-primary:hover {
       background: #FFF;
-      color: #87B952;
-      border: 1px solid #87B952; }
+      color: #87B952; }
   .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-secondary {
     background: #1483C4;
     border: 1px solid #1483C4;
     color: #FFF; }
     .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-secondary:hover {
       background: #FFF;
-      color: #1483C4;
-      border: 1px solid #1483C4; }
+      color: #1483C4; }
+  .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-other {
+    background: #C16800;
+    border: 1px solid #C16800;
+    color: #FFF; }
+    .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-other:hover {
+      background: #FFF;
+      color: #C16800; }
   .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-favorite {
     background: #EEC118;
     border: 1px solid #EEC118;
     color: #FFF; }
     .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-favorite:hover {
       background: #FFF;
-      color: #EEC118;
-      border: 1px solid #EEC118; }
+      color: #EEC118; }
   .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-danger {
     background: #E34F16;
     color: #FFF;
-    border: 1px solid #FFF;
+    border: 1px solid #E34F16;
     float: left;
     margin-left: 0;
     margin-right: 6px; }
     .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-danger:hover {
       background: #FFF;
-      color: #E34F16;
-      border: 1px solid #E34F16; }
+      color: #E34F16; }
   .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-button-warning {
     background: #DD6C1D;
     color: #FFF;

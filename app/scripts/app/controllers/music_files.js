@@ -179,9 +179,7 @@ rekodiApp.controller('rkMusicFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsSe
           options.item[entry.filetype] = entry.file;
           
           kodiApi.Playlist.Insert(options).then(function(data) {
-            if(data === 'OK') {
-              
-            }
+            if(data === 'OK') {}
           }, function(error) {
             rkLogService.error(error);
           });

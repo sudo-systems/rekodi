@@ -209,7 +209,7 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
 
     function initConnectionChange() {
       if(kodiApi) {
-        if($scope.items.length === 0) {
+        if($scope.items && $scope.items.length === 0) {
           $scope.get();
         }
 
@@ -232,6 +232,10 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
               name: '',
               localPlaylistId: null
             };
+            
+            if(!$scope.$$phase){
+              $scope.$apply();
+            }
           }
         });
       }
@@ -241,6 +245,10 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
           name: '',
           localPlaylistId: null
         };
+        
+        if(!$scope.$$phase){
+          $scope.$apply();
+        }
       }
     }
 
@@ -264,6 +272,10 @@ rekodiApp.controller('rkAudioPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnum
     
     $scope.$root.$on('rkAudioPlaylistCtrlInit', function (event) {
       if($scope.status.isInitialized) {
+        if($scope.scrollItems.length === 0) {
+          $scope.get();
+        }
+        
         return;
       }
 

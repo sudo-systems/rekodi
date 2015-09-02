@@ -15,12 +15,14 @@ rekodiApp.factory('rkLocalPlaylistService', ['rkConfigService', 'rkLogService', 
     };
     
     var open = function(playlistId, localPlaylistId) {
-      rkRemoteControlService.clearPlaylist(playlistId);
-      
-      angular.forEach(playlists[playlistId][localPlaylistId].items, function(value, key) {
-        rkRemoteControlService.addToPlaylist({
-          file: value
-        });
+      rkRemoteControlService.clearPlaylist(playlistId, function(success) {
+        if(success && playlists[playlistId][localPlaylistId]) {
+          for(var key in playlists[playlistId][localPlaylistId].items) {
+            rkRemoteControlService.addToPlaylist(playlistId, {
+              file: playlists[playlistId][localPlaylistId].items[key]
+            });
+          }
+        }
       });
     };
     

@@ -3,7 +3,7 @@
 </div>
 <div class="description">
   <ul class="vertical">
-    <li ng-repeat="item in items track by $index" ng-click="open($index)" title="Click to open this playlist">
+    <li ng-repeat="item in items track by $index" ng-click="open($index) && closeThisDialog()" title="Click to open this playlist">
       {{($index+1)}}. {{item.name}} ({{item.items.length}})
     </li>
   </ul>

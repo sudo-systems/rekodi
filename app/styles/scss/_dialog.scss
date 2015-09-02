@@ -85,7 +85,6 @@
       &:hover {
         background: #FFF;
         color: #87B952;
-        border: 1px solid #87B952;
       }
     }
     
@@ -97,7 +96,17 @@
       &:hover {
         background: #FFF;
         color: #1483C4;
-        border: 1px solid #1483C4;
+      }
+    }
+    
+    .ngdialog-button-other {
+      background: #C16800;
+      border: 1px solid #C16800;
+      color: #FFF;
+      
+      &:hover {
+        background: #FFF;
+        color: #C16800;
       }
     }
     
@@ -109,14 +118,13 @@
       &:hover {
         background: #FFF;
         color: #EEC118;
-        border: 1px solid #EEC118;
       }
     }
     
     .ngdialog-button-danger {
       background: #E34F16;
       color: #FFF;
-      border: 1px solid #FFF;
+      border: 1px solid #E34F16;
       float: left;
       margin-left: 0;
       margin-right: 6px;
@@ -124,7 +132,6 @@
       &:hover {
         background: #FFF;
         color: #E34F16;
-        border: 1px solid #E34F16;
       }
     }
     

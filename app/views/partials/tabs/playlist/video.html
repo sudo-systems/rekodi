@@ -27,10 +27,8 @@
         dnd-selected="selected.item = entry"
         dnd-disable-if="scrollItems.length < 2">
       <div class="label">
-        <i class="mdi mdi-movie"></i> <span ng-if="entry.showtitle">{{entry.showtitle}} - </span>{{entry.label}} <span ng-if="entry.year">({{entry.year}})</span>
-      </div>
-      <div class="controls">
-        <i class="mdi mdi-play-box-outline" title="Play" ng-click="play(entry)"></i>
+        <i class="mdi mdi-play" ng-show="entry.is_playing"></i><i class="mdi mdi-file-music" ng-show="!entry.is_playing"></i> <span ng-if="entry.showtitle">{{entry.showtitle}} - </span>{{entry.label}} <span ng-if="entry.year">({{entry.year}})</span>
+        <div class="drag-handle"><i class="mdi mdi-drag-vertical"></i></div>
       </div>
     </li>
   </ul>

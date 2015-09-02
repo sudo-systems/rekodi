@@ -183,6 +183,19 @@ section.tabsContainer {
       position: relative;
       filter: opacity(100%);
       @include transitionAll(map-get($global, transition-speed));
+      
+      .drag-handle {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        filter: opacity(50%);
+        color: #666;
+        width: 24px;
+        text-align: center;
+        line-height: 32px;
+        cursor: ns-resize;
+      }
     }
     
     ul[dnd-list] .dndPlaceholder {
@@ -381,12 +394,8 @@ section.tabsContainer {
     }
     
     li.playing {
-      color: map-get($global, highlight-color);
-      border-bottom: 1px solid transparent;
-      
-      &:hover {
-        border-bottom: 1px solid map-get($global, highlight-color);
-      }
+      color: #FFF;
+      border-bottom: 1px dotted map-get($global, highlight-color);
     }
   }
 }

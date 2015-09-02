@@ -3,12 +3,12 @@
     <span ng-show="scrollItems.length > 0">
       <i class="mdi mdi-table-column-remove" title="Clear playlist" ng-click="clear()"></i>
     </span>
-    <span ng-show="scrollItems.length > 0">
+    <!-- <span ng-show="scrollItems.length > 0">
       <i class="mdi mdi-content-save" title="Save current playlist" ng-click="showSaveLocalPlaylistDialog()"></i>
     </span>
     <span>
       <i class="mdi mdi-folder" title="Open saved playlist" ng-click="showOpenLocalPlaylistDialog()"></i>
-    </span>
+    </span> -->
     <span class="currentPlaylistName" ng-show="currentLocalPlaylist.name !== ''">
       {{currentLocalPlaylist.name}}
     </span>
@@ -36,7 +36,8 @@
         dnd-selected="selected.item = entry"
         dnd-disable-if="scrollItems.length < 2">
       <div class="label">
-        <i class="mdi mdi-file-music"></i> <span ng-if="entry.track">{{entry.track}}. </span><span ng-if="entry.displayartist">{{entry.displayartist}} - </span>{{entry.label}}
+        <i class="mdi mdi-play" ng-show="entry.is_playing"></i><i class="mdi mdi-file-music" ng-show="!entry.is_playing"></i> <span ng-if="entry.track">{{entry.track}}. </span><span ng-if="entry.displayartist">{{entry.displayartist}} - </span>{{entry.label}}
+        <div class="drag-handle"><i class="mdi mdi-drag-vertical"></i></div>
       </div>
     </li>
   </ul>

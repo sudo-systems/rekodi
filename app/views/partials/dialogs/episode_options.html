@@ -7,6 +7,8 @@
 <div class="ngdialog-buttons" rk-tooltips="true">
   <button class="ngdialog-button ngdialog-button-primary" ng-click="play() && closeThisDialog()" title="Play"><i class="mdi mdi-play"></i></button>
   <button class="ngdialog-button ngdialog-button-secondary" ng-click="play(true) && closeThisDialog()" ng-if="ngDialogData.item.is_resumable" title="Resume"><i class="mdi mdi-redo"></i></button>
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="playNext() && closeThisDialog()" title="Play next"><i class="mdi mdi-play-circle-outline"></i></button>
+  <button class="ngdialog-button ngdialog-button-other" ng-click="append() && closeThisDialog()" title="Append to playlist"><i class="mdi mdi-playlist-plus"></i></button>
   <button class="ngdialog-button ngdialog-button-secondary" ng-click="markWatched(false) && closeThisDialog()" ng-if="ngDialogData.item.is_watched && !ngDialogData.item.is_resumable" title="Mark unwatched"><i class="mdi mdi-eye-off"></i></button>
   <button class="ngdialog-button ngdialog-button-secondary" ng-click="markWatched(true) && closeThisDialog()" ng-if="!ngDialogData.item.is_watched && !ngDialogData.item.is_resumable" title="Mark watched"><i class="mdi mdi-eye"></i></button>
   <button class="ngdialog-button ngdialog-button-favorite" ng-click="favorite() && closeThisDialog()" title="Add to favorites"><i class="mdi mdi-star"></i></button>
