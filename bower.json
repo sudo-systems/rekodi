@@ -31,7 +31,6 @@
     "angular-sanitize": "~1.4.4",
     "angular-su-endless-scroll": "~1.0.0",
     "bower": "*",
-    "font-awesome": "~4.3.0",
     "install": "~1.0.4",
     "jbox": "~0.3.2",
     "mdi": "~1.1.70",

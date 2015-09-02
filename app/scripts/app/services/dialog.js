@@ -248,6 +248,53 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
             return true;
           };
         }
+      ],
+      savePlaylist: ['$scope', 'rkLocalPlaylistService',
+        function($scope, rkLocalPlaylistService) {
+          $scope.name = (!$scope.ngDialogData.name)? '' : $scope.ngDialogData.name;
+          $scope.errorMessage = '';
+          $scope.existsId = null;
+          $scope.overwrite = false;
+          var _localplaylistId = ($scope.ngDialogData.localplaylistId === undefined)? null : $scope.ngDialogData.localplaylistId;
+          
+          console.log(_localplaylistId);
+          
+          $scope.save = function() {
+            if(_localplaylistId === null) {
+              $scope.existsId = rkLocalPlaylistService.exists($scope.ngDialogData.playlistId, $scope.name);
+            }
+            
+            if($.trim($scope.name) === '') {
+              $scope.errorMessage = 'Please provide a name for this playlist';
+              return false;
+            }
+            else if($scope.existsId !== null && $scope.overwrite === false) {
+              $scope.errorMessage = 'A playlist with this name allready exists. Do you want to overwrite it?';
+              return false;
+            }
+
+            var playlistInfo = rkLocalPlaylistService.save({
+              playlistId: $scope.ngDialogData.playlistId,
+              name: $scope.name,
+              items: $scope.ngDialogData.items,
+              localPlaylistId: _localplaylistId
+            });
+            
+            $scope.ngDialogData.callback(playlistInfo);
+            
+            return true;
+          };
+        }
+      ],
+      openPlaylist: ['$scope', 'rkLocalPlaylistService',
+        function($scope, rkLocalPlaylistService) {
+          $scope.items = rkLocalPlaylistService.get($scope.ngDialogData.playlistId);
+          
+          $scope.open = function(localPlaylistId) {
+            rkLocalPlaylistService.open($scope.ngDialogData.playlistId, localPlaylistId);
+            return true;
+          };
+        }
       ]
     };
     
@@ -362,6 +409,20 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
       });
     };
     
+    var showSavePlaylist = function(options) {
+      showDialog('savePlaylist', {
+        playlistId: options.playlistId,
+        items: options.items,
+        name: options.name,
+        localplaylistId: options.localplaylistId,
+        callback: options.callback
+      });
+    };
+    
+    var showOpenPlaylist = function(playlistId) {
+      showDialog('openPlaylist', {playlistId: playlistId});
+    };
+    
     var closeAll = function() {
       ngDialog.closeAll();
     };
@@ -394,7 +455,9 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
       showSystemOptions: showSystemOptions,
       showWakingUp: showWakingUp,
       showConfirm: showConfirm,
-      showPlaylistItemOptions: showPlaylistItemOptions
+      showPlaylistItemOptions: showPlaylistItemOptions,
+      showSavePlaylist: showSavePlaylist,
+      showOpenPlaylist: showOpenPlaylist
     };
   }
 ]);

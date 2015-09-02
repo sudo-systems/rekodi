@@ -3,6 +3,15 @@
     <span ng-show="scrollItems.length > 0">
       <i class="mdi mdi-table-column-remove" title="Clear playlist" ng-click="clear()"></i>
     </span>
+    <span ng-show="scrollItems.length > 0">
+      <i class="mdi mdi-content-save" title="Save current playlist" ng-click="showSaveLocalPlaylistDialog()"></i>
+    </span>
+    <span>
+      <i class="mdi mdi-folder" title="Open saved playlist" ng-click="showOpenLocalPlaylistDialog()"></i>
+    </span>
+    <span class="currentPlaylistName" ng-show="currentLocalPlaylist.name !== ''">
+      {{currentLocalPlaylist.name}}
+    </span>
   </div>
   <div class="filter-container" ng-show="scrollItems.length > 0">
     <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>

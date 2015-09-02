@@ -1,0 +1,13 @@
+<div class="title">
+  Save playlist
+</div>
+<div class="description">
+  <input type="text" ng-model="name" placeholder="Enter a name for your playlist..." />
+  <div class="error" ng-show="errorMessage !== ''">
+    <i class="mdi mdi-alert"></i> {{errorMessage}} <span ng-show="existsId !== null"><input type="checkbox" ng-model="overwrite" /></span>
+  </div>
+</div>
+<div class="ngdialog-buttons" rk-tooltips="true">
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="save() && closeThisDialog()" title="Save"><i class="mdi mdi-check"></i></button>
+  <button class="ngdialog-button ngdialog-button-cancel" ng-click="closeThisDialog()" title="Cancel"><i class="mdi mdi-close"></i></button>
+</div>

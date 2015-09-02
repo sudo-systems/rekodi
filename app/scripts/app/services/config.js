@@ -29,7 +29,8 @@ rekodiApp.factory('rkConfigService', [
 
     config.files = {
       errorLog: config.storageDirectories.logs+'error.log',
-      debugLog: config.storageDirectories.logs+'debug.log'
+      debugLog: config.storageDirectories.logs+'debug.log',
+      playlists: config.storageDirectories.root+'playlists.json'
     };
 
     config.apiRequestProperties = {
@@ -104,7 +105,9 @@ rekodiApp.factory('rkConfigService', [
         systemOptions: config.directories.dialogTemplates+'system_options.html',
         wakingUp: config.directories.dialogTemplates+'waking_up.html',
         confirm: config.directories.dialogTemplates+'confirm.html',
-        playlistItemOptions: config.directories.dialogTemplates+'playlist_item_options.html'
+        playlistItemOptions: config.directories.dialogTemplates+'playlist_item_options.html',
+        savePlaylist: config.directories.dialogTemplates+'save_playlist.html',
+        openPlaylist: config.directories.dialogTemplates+'open_playlist.html'
       }
     };
 

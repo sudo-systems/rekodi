@@ -1684,6 +1684,17 @@ section#recentlyAdded > .wrapper {
     font-size: 15px;
     margin: 6px 0 32px 0;
     line-height: 18px; }
+    .ngdialog.ngdialog-theme-default .ngdialog-content .description input {
+      background: #E6E6E6;
+      border-bottom: 1px solid #999;
+      color: #242424;
+      width: 100%;
+      margin-bottom: 6px; }
+    .ngdialog.ngdialog-theme-default .ngdialog-content .description .error {
+      color: #E34F16;
+      line-height: 32px;
+      display: block;
+      text-align: center; }
   .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-close {
     border-radius: 0; }
     .ngdialog.ngdialog-theme-default .ngdialog-content .ngdialog-close:before {

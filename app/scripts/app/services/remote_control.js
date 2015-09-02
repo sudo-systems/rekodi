@@ -1,5 +1,5 @@
-rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEnumsService', 'rkSettingsService', 'rkLogService',
-  function($rootScope, rkLogService, rkEnumsService, rkSettingsService, rkLogService) {
+rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEnumsService', 'rkLogService',
+  function($rootScope, rkLogService, rkEnumsService, rkLogService) {
     var kodiApi = null;
     var playerProperties = {};
     var currentSpeed = 0;
@@ -112,6 +112,13 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEn
           rkLogService.error(error);
         });
       }
+    };
+    
+    var addToPlaylist = function(playlistId, item) {
+      kodiApi.Playlist.Add({
+        playlistid: playlistId,
+        item: item
+      });
     };
     
     var setSpeed = function(speed) {
@@ -299,6 +306,7 @@ rekodiApp.factory('rkRemoteControlService', ['$rootScope', 'rkLogService', 'rkEn
       removePlaylistItem: removePlaylistItem,
       clearPlaylist: clearPlaylist,
       swapPlaylistItems: swapPlaylistItems,
+      addToPlaylist: addToPlaylist,
       
       play: play,
       playPause: playPause,

@@ -1,0 +1,13 @@
+<div class="title">
+  Open playlist
+</div>
+<div class="description">
+  <ul class="vertical">
+    <li ng-repeat="item in items track by $index" ng-click="open($index)" title="Click to open this playlist">
+      {{($index+1)}}. {{item.name}} ({{item.items.length}})
+    </li>
+  </ul>
+</div>
+<div class="ngdialog-buttons" rk-tooltips="true">
+  <button class="ngdialog-button ngdialog-button-cancel" ng-click="closeThisDialog()" title="Cancel"><i class="mdi mdi-close"></i></button>
+</div>
