@@ -1513,7 +1513,9 @@ section.tabsContainer {
       transform: scale(1.2); }
     section.tabsContainer .data-list-wrapper li.playing {
       color: #FFF;
-      border-bottom: 1px dotted #E6802E; }
+      border-bottom: 1px solid #333; }
+      section.tabsContainer .data-list-wrapper li.playing:hover {
+        border-bottom: 1px solid #E6802E; }
 
 section.tabsContainer.sub nav {
   background: #242424;

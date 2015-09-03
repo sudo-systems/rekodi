@@ -399,7 +399,11 @@ section.tabsContainer {
     
     li.playing {
       color: #FFF;
-      border-bottom: 1px dotted map-get($global, highlight-color);
+      border-bottom: 1px solid #333;
+      
+      &:hover {
+        border-bottom: 1px solid map-get($global, highlight-color);
+      }
     }
   }
 }
