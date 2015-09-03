@@ -2,5 +2,15 @@
   Connecting
 </div>
 <div class="description">
-  Connecting with Kodi...
+  Trying to connect with Kodi. One moment please...
+  <small ng-if="connectionSettings.macAddress !== ''">
+    <br /><br />
+    You've entered the hosts MAC address in the application settings. ReKodi will attempt to automatically power on you host. 
+    This functionality needs to be available and enabled on your host for this to work!
+  </small> 
+</div>
+<div class="ngdialog-buttons" rk-tooltips="true">
+  <button class="ngdialog-button ngdialog-button-primary" ng-click="showSettingsTab() && closeThisDialog()" title="Show settings"><i class="mdi mdi-settings"></i></button>
+  <button class="ngdialog-button ngdialog-button-secondary" ng-click="wakeHost()" title="Wake up host" ng-if="connectionSettings.macAddress !== ''"><i class="mdi mdi-power"></i></button>
+  <button class="ngdialog-button ngdialog-button-warning" ng-click="close() && closeThisDialog()" title="Close ReKodi"><i class="mdi mdi-close-box-outline"></i></button>
 </div>

@@ -9,6 +9,13 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$timeout', 'kodiApiService', 'rkSe
     }
 
     function init() {
+      if(rkSettingsService.isConnectionConfigured()) {
+        rkDialogService.showConnecting();
+      }
+      else {
+        rkDialogService.showNotConfigured();
+      }
+      
       var loadRequiredControllersWatch = $scope.$root.$watch('rkRequiredControllers', function(newValue, oldValue) {
         var allInitialControllersLoaded = true;
 
@@ -24,9 +31,6 @@ rekodiApp.controller('rkAppCtrl', ['$scope', '$timeout', 'kodiApiService', 'rkSe
 
           if(rkSettingsService.isConnectionConfigured()) {
             kodiApiService.connect();
-          }
-          else {
-            rkDialogService.showNotConfigured();
           }
           
           loadRequiredControllersWatch(); //destroy watcher

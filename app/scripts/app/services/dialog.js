@@ -133,6 +133,28 @@ rekodiApp.factory('rkDialogService', ['$rootScope', 'ngDialog', 'rkConfigService
           };
         }
       ],
+      connecting: ['$scope', 'rkTabsService', 'kodiApiService', '$localStorage', 'rkNotificationService',
+        function($scope, rkTabsService, kodiApiService, $localStorage, rkNotificationService) {
+          $scope.connectionSettings = ($localStorage.settings && $localStorage.settings.connection)? $localStorage.settings.connection : {};
+          
+          $scope.wakeHost = function() {
+            kodiApiService.wakeHost();
+            rkNotificationService.notifyRemoteSystem('The wake up command has been sent...');
+          };
+          
+          $scope.showSettingsTab = function() {
+            rkTabsService.navigateTo('settings');
+            return true;
+          };
+          
+          $scope.close = function() {
+            var remote = require('remote');
+            var mainWindow = remote.getCurrentWindow();
+            mainWindow.close();
+            return true;
+          };
+        }
+      ],
       notConnected: ['$scope', 'rkTabsService', 'kodiApiService', '$localStorage', 'rkNotificationService',
         function($scope, rkTabsService, kodiApiService, $localStorage, rkNotificationService) {
           $scope.connectionSettings = ($localStorage.settings && $localStorage.settings.connection)? $localStorage.settings.connection : {};
