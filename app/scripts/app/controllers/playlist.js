@@ -154,11 +154,15 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsServ
       });
       
       $scope.$root.$on('rkNowPlayingDataUpdate', function(event, data) {
+        if(data === null) {
+          return;
+        }
+        
         for(var key in $scope.playlistIds) {
           var id = $scope.playlistIds[key];
           
           for(var index in $scope.scrollItems[id]) {
-            $scope.scrollItems[id][index].is_playing = ($scope.scrollItems[id][index] && $scope.scrollItems[id][index].file === data.file);
+            $scope.scrollItems[id][index].is_playing = ($scope.scrollItems[id][index].file === data.file);
           }
         }
       });
