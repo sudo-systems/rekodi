@@ -240,7 +240,7 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsServ
           var id = $scope.playlistIds[key];
           
           for(var index in $scope.scrollItems[id]) {
-            $scope.scrollItems[id][index].is_playing = ($scope.scrollItems[id][index].file === data.file);
+            $scope.scrollItems[id][index].is_playing = ($scope.scrollItems[id][index] && $scope.scrollItems[id][index].file === data.file);
           }
         }
       });
