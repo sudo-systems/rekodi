@@ -99,11 +99,6 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
           updateAllData();
         });
       }
-      else {
-        $scope.recentlyAddedAlbums = [];
-        $scope.recentlyAddedMovies = [];
-        $scope.recentlyAddedEpisodes = [];
-      }
     }
     
     function init() {

@@ -20,23 +20,33 @@
     <input type="text" class="filter" ng-model="guiModels.filterValue" ng-change="applyFilter(guiModels.filterValue)" placeholder="search" title="Find artists (2 characters minimal)" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="guiModels.filterValue !== ''"></i>
   </div>
 </div>
-<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: artistsCategorised[guiModels.selectedIndex]})" ng-show="currentLevel ==='artists'">
-  <ul class="vertical" ng-show="currentLevel ==='artists'">
-    <li ng-repeat="artist in scrollItems['artists'] track by artist.artistid" class="clearfix" ng-click="getAlbums(artist.artistid)">
+<div class="data-list-wrapper with-options" 
+     ng-show="currentLevel ==='artists'" 
+     su-endless-scroll="artistsCategorised[guiModels.selectedIndex]" 
+     su-endless-scroll-limit="displayLimit" 
+     su-endless-scroll-offset="50" 
+     su-endless-scroll-output="scrollItems[currentLevel]">
+  <ul class="vertical">
+    <li ng-repeat="artist in scrollItems[currentLevel] track by artist.artistid" class="clearfix" ng-click="getAlbums(artist.artistid)">
       <div class="label">
         <i class="mdi mdi-worker"></i> {{artist.label}}
       </div>
     </li>
   </ul>
 </div>
-<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: albums[currentAlbumId]})" ng-show="currentLevel ==='albums'">
-  <ul class="vertical" ng-show="currentLevel === 'albums'">
+<div class="data-list-wrapper with-options" 
+     ng-show="currentLevel ==='albums'"
+     su-endless-scroll="albums" 
+     su-endless-scroll-limit="displayLimit" 
+     su-endless-scroll-offset="50" 
+     su-endless-scroll-output="scrollItems[currentLevel]">
+  <ul class="vertical">
     <li class="clearfix" ng-click="getArtistsCategorised()">
       <div class="label">
         <i class="mdi mdi-worker"></i> [back to artists] ..
       </div>
     </li>
-    <li ng-repeat="album in scrollItems['albums'] track by album.albumid" class="clearfix" ng-click="getSongs(album.albumid)">
+    <li ng-repeat="album in scrollItems[currentLevel] track by album.albumid" class="clearfix" ng-click="getSongs(album.albumid)">
       <div class="thumbnail">
         <div ng-if="album.thumbnail_src">
           <img ng-src="{{album.thumbnail_src}}" alt="" />
@@ -79,14 +89,19 @@
     </li>
   </ul>
 </div>
-<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: songs[currentArtistId]})" ng-show="currentLevel ==='songs'">
+<div class="data-list-wrapper with-options" 
+     ng-show="currentLevel ==='songs'"
+     su-endless-scroll="songs" 
+     su-endless-scroll-limit="displayLimit" 
+     su-endless-scroll-offset="50" 
+     su-endless-scroll-output="scrollItems[currentLevel]">
   <ul class="vertical">
     <li ng-click="getAlbums(currentArtistId)">
       <div class="label">
         <i class="mdi mdi-album"></i> [back to albums] ..
       </div>
     </li>
-    <li ng-repeat="song in scrollItems['songs'] track by song.songid" class="clearfix" ng-click="showSongOptionsDialog(song)" ng-class="{playing: song.is_playing}">
+    <li ng-repeat="song in scrollItems[currentLevel] track by song.songid" class="clearfix" ng-click="showSongOptionsDialog(song)" ng-class="{playing: song.is_playing}">
       <div class="thumbnail">
         <div ng-if="song.thumbnail_src">
           <img ng-src="{{song.thumbnail_src}}" alt="" />

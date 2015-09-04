@@ -214,13 +214,6 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsServ
           }
         });
       }
-      else {
-        $scope.scrollItems[playlistId] = [];
-
-        if(!$scope.$$phase){
-          $scope.$apply();
-        }
-      }
     }
 
     $scope.init = function(playlistId) {

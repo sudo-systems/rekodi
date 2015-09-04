@@ -155,9 +155,6 @@ rekodiApp.controller('rkPicturesCtrl', ['$scope', 'kodiApiService', 'rkRemoteCon
       if(kodiApi) {
         $scope.getSources();
       }
-      else {
-        $scope.scrollItems = [];
-      }
     }
 
     $scope.init = function() {

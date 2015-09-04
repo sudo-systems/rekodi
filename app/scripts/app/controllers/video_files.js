@@ -181,9 +181,6 @@ rekodiApp.controller('rkVideoFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsSe
       if(kodiApi) {
         $scope.getSources();
       }
-      else {
-        $scope.scrollItems = [];
-      }
     }
 
     $scope.init = function() {

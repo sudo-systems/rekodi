@@ -44,8 +44,11 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }).then(function(data) {
           data.movies = (!data.movies)? [] : rkHelperService.addCustomFields(data.movies);
-
-          if(cache.update({data: data.movies, key: 'movies'})) {
+          
+          if(data.movies.length === 0) {
+            callback([]);
+          }
+          else if(cache.update({data: data.movies, key: 'movies'})) {
             updateMoviesCategorised(data.movies, callback);
           }
           else {
@@ -62,7 +65,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
       callback([]);
     };
     
-        var getRecentlyAddedMoviesFromCache = function() {
+    var getRecentlyAddedMoviesFromCache = function() {
       var _data = cache.get({key: 'recentlyAddedMovies'});
       return (_data)? _data : [];
     };
@@ -83,8 +86,11 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
           }
         }).then(function(data) {
           data.movies = (!data.movies)? [] : rkHelperService.addCustomFields(data.movies);
-
-          if(cache.update({data: data.movies, key: 'recentlyAddedMovies'})) {
+          
+          if(data.movies.length === 0) {
+            callback([]);
+          }
+          else if(cache.update({data: data.movies, key: 'recentlyAddedMovies'})) {
             callback(data.movies);
           }
           else {
@@ -176,7 +182,10 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         }).then(function(data) {
           data.tvshows = (!data.tvshows)? [] : rkHelperService.addCustomFields(data.tvshows);
 
-          if(cache.update({data: data.tvshows, key: 'tvShows'})) {
+          if(data.tvshows.length === 0) {
+            callback([]);
+          }
+          else if(cache.update({data: data.tvshows, key: 'tvShows'})) {
             updateTvShowsCategorised(data.tvshows, callback);
           }
           else {
@@ -228,7 +237,10 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         }).then(function(data) {
           data.seasons = (!data.seasons)? [] : rkHelperService.addCustomFields(data.seasons);
 
-          if(cache.update({data: data.seasons, key: 'seasons', index: tvShowId})) {
+          if(data.seasons.length === 0) {
+            callback([]);
+          }
+          else if(cache.update({data: data.seasons, key: 'seasons', index: tvShowId})) {
             callback(data.seasons);
           }
           else {
@@ -267,7 +279,10 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         }).then(function(data) {
           data.episodes = (!data.episodes)? [] : rkHelperService.addCustomFields(data.episodes);
 
-          if(cache.update({data: data.episodes, key: 'episodes', index: tvShowId+'_'+season})) {
+          if(data.episodes.length === 0) {
+            callback([]);
+          }
+          else if(cache.update({data: data.episodes, key: 'episodes', index: tvShowId+'_'+season})) {
             callback(data.episodes);
           }
           else {
@@ -307,7 +322,10 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         }).then(function(data) {
           data.episodes = (!data.episodes)? [] : rkHelperService.addCustomFields(data.episodes);
 
-          if(cache.update({data: data.episodes, key: 'recentlyAddedEpisodes'})) {
+          if(data.episodes.length === 0) {
+            callback([]);
+          }
+          else if(cache.update({data: data.episodes, key: 'recentlyAddedEpisodes'})) {
             callback(data.episodes);
           }
           else {

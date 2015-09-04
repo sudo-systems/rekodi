@@ -34,9 +34,14 @@
     <input type="text" class="filter" ng-model="guiModels.filterValue" ng-change="applyFilter(guiModels.filterValue)" placeholder="search" title="Find tvShows (2 characters minimal)" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="guiModels.filterValue !== ''"></i>
   </div>
 </div>
-<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: tvShowsCategorised[guiModels.selectedIndex]})" ng-show="currentLevel === 'tvShows'">
+<div class="data-list-wrapper with-options" 
+     ng-show="currentLevel === 'tvShows'"
+     su-endless-scroll="tvShowsCategorised[guiModels.selectedIndex]" 
+     su-endless-scroll-limit="displayLimit" 
+     su-endless-scroll-offset="50"
+     su-endless-scroll-output="scrollItems[currentLevel]">
   <ul class="vertical">
-    <li ng-repeat="tvShow in scrollItems['tvShows'] track by tvShow.tvshowid" rk-tooltips class="clearfix" ng-click="getSeasons(tvShow.tvshowid)">
+    <li ng-repeat="tvShow in scrollItems[currentLevel] track by $index" rk-tooltips class="clearfix" ng-click="getSeasons(tvShow.tvshowid)">
       <div class="thumbnail">
         <img ng-src="{{tvShow.thumbnail_src}}" alt="" ng-if="tvShow.thumbnail_src" />
         <i class="mdi mdi-tvShow" ng-if="!tvShow.thumbnail_src"></i>
@@ -96,14 +101,19 @@
     </li>
   </ul>
 </div>
-<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: seasons[currentTvShowId]})" ng-show="currentLevel === 'seasons'">
+<div class="data-list-wrapper with-options" 
+     ng-show="currentLevel === 'seasons'"
+     su-endless-scroll="seasons"
+     su-endless-scroll-limit="displayLimit" 
+     su-endless-scroll-offset="50"
+     su-endless-scroll-output="scrollItems[currentLevel]">
   <ul class="vertical">
     <li ng-click="getTvShowsCategorised()">
       <div class="label">
         <i class="mdi mdi-album"></i> [back to tv shows] ..
       </div>
     </li>
-    <li ng-repeat="season in scrollItems['seasons'] track by season.seasonid" rk-tooltips class="clearfix" ng-click="getEpisodes(currentTvShowId, season.season)">
+    <li ng-repeat="season in scrollItems[currentLevel] track by $index" rk-tooltips class="clearfix" ng-click="getEpisodes(currentTvShowId, season.season)">
       <div class="thumbnail">
         <img ng-src="{{season.thumbnail_src}}" alt="" ng-if="season.thumbnail_src" />
         <i class="mdi mdi-movie" ng-if="!season.thumbnail_src"></i>
@@ -139,14 +149,19 @@
     </li>
   </ul>
 </div>
-<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: episodes[currentSeasonId]})" ng-show="currentLevel === 'episodes'">
+<div class="data-list-wrapper with-options" 
+     ng-show="currentLevel === 'episodes'"
+     su-endless-scroll="episodes"
+     su-endless-scroll-limit="displayLimit" 
+     su-endless-scroll-offset="50"
+     su-endless-scroll-output="scrollItems[currentLevel]">
   <ul class="vertical">
-    <li class="clearfix" ng-click="seasons[currentTvShowId].length < 2? getTvShowsCategorised() : getSeasons(currentTvShowId)">
+    <li class="clearfix" ng-click="seasons.length < 2? getTvShowsCategorised() : getSeasons(currentTvShowId)">
       <div class="label">
-        <i class="mdi mdi-worker"></i> [back to {{seasons[currentTvShowId].length < 2? 'tv shows' : 'seasons'}}] ..
+        <i class="mdi mdi-worker"></i> [back to {{seasons.length < 2? 'tv shows' : 'seasons'}}] ..
       </div>
     </li>
-    <li ng-repeat="episode in scrollItems['episodes'] track by episode.episodeid" rk-tooltips class="clearfix" ng-click="showEpisodeOptionsDialog(episode)" ng-class="{playing: episode.is_playing}">
+    <li ng-repeat="episode in scrollItems[currentLevel] track by $index" rk-tooltips class="clearfix" ng-click="showEpisodeOptionsDialog(episode)" ng-class="{playing: episode.is_playing}">
       <div class="thumbnail">
         <img ng-src="{{episode.thumbnail_src}}" alt="" ng-if="episode.thumbnail_src" />
         <i class="mdi mdi-tvShow" ng-if="!episode.thumbnail_src"></i>
