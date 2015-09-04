@@ -1,7 +1,7 @@
-rekodiApp.controller('rkPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkConfigService', 'rkNowPlayingService', 'rkDialogService', 'rkRemoteControlService', 'rkHelperService',
-  function($scope, kodiApiService, rkEnumsService, rkLogService, rkConfigService, rkNowPlayingService, rkDialogService, rkRemoteControlService, rkHelperService) {
+rekodiApp.controller('rkPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkConfigService', 'rkDialogService', 'rkRemoteControlService', 'rkHelperService',
+  function($scope, kodiApiService, rkEnumsService, rkLogService, rkConfigService, rkDialogService, rkRemoteControlService, rkHelperService) {
     var kodiApi = null;
-    var displayLimit = 15;
+    $scope.displayLimit = 15;
     var requestPropertiesConfig = rkConfigService.get('apiRequestProperties', 'playlist');
     var requestProperties = [];
     var itemDrag = [];
@@ -9,8 +9,12 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsServ
     $scope.playlistIds = rkEnumsService.PlaylistId;
     $scope.playerIds = rkEnumsService.PlayerId;
     $scope.isFiltering = false;
-    $scope.scrollItems = [];
-    $scope.items = [];
+    $scope.scrollItems = {};
+    $scope.scrollItems[$scope.playlistIds.AUDIO] = [];
+    $scope.scrollItems[$scope.playlistIds.VIDEO] = [];
+    $scope.items = {};
+    $scope.items[$scope.playlistIds.AUDIO] = [];
+    $scope.items[$scope.playlistIds.VIDEO] = [];
     $scope.selected = [];
     $scope.status = [];
     $scope.filter = [];
@@ -44,89 +48,15 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsServ
         endPosition: null
       };
     }
-    
-    $scope.showItems = function(options) {
-      var _scrollItemsCount = 0;
-      var nowPlayingFilePath = rkNowPlayingService.getNowPlayingFilePath();
-      var _options = angular.extend({}, {
-        key: null,
-        reset: false,
-        data: null
-      }, options);
-      
-      if($scope.isFiltering && !_options.reset) {
-        _options.data = $scope.filteredItems;
-      }
-
-      if(_options.key !== null) {
-        if(!$scope.scrollItems[_options.key] || _options.reset) {
-          $scope.scrollItems[_options.key] = [];
-        }
-        
-        _scrollItemsCount = $scope.scrollItems[_options.key].length;
-      }
-      else {
-        if(_options.reset) {
-          $scope.scrollItems = [];
-        }
-        
-        _scrollItemsCount = $scope.scrollItems.length;
-      }
-
-      if(!_options.data || !_options.data[_scrollItemsCount]) {
-        return;
-      }
-      
-      for(var x = 0; x < displayLimit; x++) {
-        var nextIndex = ((_scrollItemsCount)+x);
-
-        if(_options.data[nextIndex]) {
-          _options.data[nextIndex].is_playing = (_options.data[nextIndex].file === nowPlayingFilePath);
-
-          if(_options.key !== null) {
-            $scope.scrollItems[_options.key].push(_options.data[nextIndex]);
-          }
-          else {
-            $scope.scrollItems.push(_options.data[nextIndex]);
-          }
-        }
-      }
-
-      if(!$scope.$$phase){
-        $scope.$apply();
-      }
-    };
 
     $scope.get = function(playlistId) {
-      if(kodiApi) {
-        $scope.status[playlistId].isLoading = true;
-
-        kodiApi.Playlist.GetItems({
-          playlistid: playlistId,
-          properties: requestProperties[playlistId]
-        }).then(function(data) {
-          $scope.items[playlistId] = (!data.items)? [] : rkHelperService.addCustomFields(data.items);
-
-          $scope.showItems({
-            key: playlistId,
-            reset: true,
-            data: $scope.items[playlistId]
-          });
-          
-          $scope.status[playlistId].isLoading = false;
-        }, function(error) {
-          $scope.status[playlistId].isLoading = false;
-          rkLogService.error(error);
-        });
-        
-        return;
-      }
-      
-      $scope.items[playlistId] = [];
-      $scope.showItems({
-        key: playlistId,
-        reset: true,
-        data: $scope.items[playlistId]
+      kodiApi.Playlist.GetItems({
+        playlistid: playlistId,
+        properties: requestProperties[playlistId]
+      }).then(function(data) {
+        $scope.items[playlistId] = (!data || !data.items)? [] : rkHelperService.addCustomFields(data.items);
+      }, function(error) {
+        rkLogService.error(error);
       });
     };
     
@@ -179,11 +109,6 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsServ
 
     $scope.clearFilter = function(playlistId) {
       $scope.filter[playlistId].value = '';
-      $scope.showItems({
-        key: playlistId,
-        reset: true,
-        data: $scope.items[playlistId]
-      });
     };
 
     function initConnectionChange(playlistId) {

@@ -6,7 +6,12 @@
     <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
   </div>
 </div>
-<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: souces})" ng-show="currentLevel === 'sources'">
+<div class="data-list-wrapper with-options"
+  ng-show="currentLevel === 'sources'"
+  su-endless-scroll="sources"
+  su-endless-scroll-limit="displayLimit" 
+  su-endless-scroll-offset="50"
+  su-endless-scroll-output="scrollItems[currentLevel]">
   <ul class="vertical">
     <li ng-repeat="source in scrollItems['sources'] | filter:filterList track by source.file" class="clearfix">
       <div class="label" ng-click="getDirectory(source.file)">
@@ -15,7 +20,12 @@
     </li>
   </ul>
 </div>
-<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: files[filesKey]})" ng-show="currentLevel === 'files'">
+<div class="data-list-wrapper with-options"
+  ng-show="currentLevel === 'files'"
+  su-endless-scroll="files"
+  su-endless-scroll-limit="displayLimit" 
+  su-endless-scroll-offset="50"
+  su-endless-scroll-output="scrollItems[currentLevel]">
   <ul class="vertical">
     <li class="clearfix" ng-show="currentLevel === 'files'">
       <div class="label" ng-click="directoryUp()">

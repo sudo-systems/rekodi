@@ -35,11 +35,11 @@
   </div>
 </div>
 <div class="data-list-wrapper with-options" 
-     ng-show="currentLevel === 'tvShows'"
-     su-endless-scroll="tvShowsCategorised[guiModels.selectedIndex]" 
-     su-endless-scroll-limit="displayLimit" 
-     su-endless-scroll-offset="50"
-     su-endless-scroll-output="scrollItems[currentLevel]">
+  ng-show="currentLevel === 'tvShows'"
+  su-endless-scroll="tvShowsCategorised[guiModels.selectedIndex]" 
+  su-endless-scroll-limit="displayLimit" 
+  su-endless-scroll-offset="50"
+  su-endless-scroll-output="scrollItems[currentLevel]">
   <ul class="vertical">
     <li ng-repeat="tvShow in scrollItems[currentLevel] track by $index" rk-tooltips class="clearfix" ng-click="getSeasons(tvShow)">
       <div class="thumbnail">
@@ -102,11 +102,11 @@
   </ul>
 </div>
 <div class="data-list-wrapper with-options" 
-     ng-show="currentLevel === 'seasons'"
-     su-endless-scroll="seasons"
-     su-endless-scroll-limit="displayLimit" 
-     su-endless-scroll-offset="50"
-     su-endless-scroll-output="scrollItems[currentLevel]">
+  ng-show="currentLevel === 'seasons'"
+  su-endless-scroll="seasons"
+  su-endless-scroll-limit="displayLimit" 
+  su-endless-scroll-offset="50"
+  su-endless-scroll-output="scrollItems[currentLevel]">
   <ul class="vertical">
     <li ng-click="getTvShowsCategorised()">
       <div class="label">
@@ -150,11 +150,11 @@
   </ul>
 </div>
 <div class="data-list-wrapper with-options" 
-     ng-show="currentLevel === 'episodes'"
-     su-endless-scroll="episodes"
-     su-endless-scroll-limit="displayLimit" 
-     su-endless-scroll-offset="50"
-     su-endless-scroll-output="scrollItems[currentLevel]">
+  ng-show="currentLevel === 'episodes'"
+  su-endless-scroll="episodes"
+  su-endless-scroll-limit="displayLimit" 
+  su-endless-scroll-offset="50"
+  su-endless-scroll-output="scrollItems[currentLevel]">
   <ul class="vertical">
     <li class="clearfix" ng-click="seasons.length < 2? getTvShowsCategorised() : getSeasons(currentTvShow)">
       <div class="label">

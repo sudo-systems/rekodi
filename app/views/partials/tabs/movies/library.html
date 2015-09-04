@@ -28,10 +28,10 @@
   </div>
 </div>
 <div class="data-list-wrapper with-options" 
-     su-endless-scroll="moviesCategorised[guiModels.selectedIndex]" 
-     su-endless-scroll-limit="displayLimit" 
-     su-endless-scroll-offset="50"
-     su-endless-scroll-output="scrollItems">
+  su-endless-scroll="moviesCategorised[guiModels.selectedIndex]" 
+  su-endless-scroll-limit="displayLimit" 
+  su-endless-scroll-offset="50"
+  su-endless-scroll-output="scrollItems">
   <ul class="vertical">
     <li ng-repeat="movie in scrollItems track by movie.movieid" rk-tooltips class="clearfix" ng-click="showMovieOptionsDialog(movie)" ng-class="{playing: movie.is_playing}">
       <div class="thumbnail">

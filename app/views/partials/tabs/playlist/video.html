@@ -9,7 +9,11 @@
     <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter(playlistIds.VIDEO)" ng-show="filter[playlistIds.VIDEO].value !== ''"></i>
   </div>
 </div>
-<div class="data-list-wrapper with-options" su-endless-scroll="showItems({data: items[playlistIds.VIDEO]})">
+<div class="data-list-wrapper with-options"
+  su-endless-scroll="items[playlistIds.VIDEO]"
+  su-endless-scroll-limit="displayLimit" 
+  su-endless-scroll-offset="50"
+  su-endless-scroll-output="scrollItems[playlistIds.VIDEO]">
   <ul class="vertical" dnd-list="scrollItems[playlistIds.VIDEO]" dnd-drop="endItemDrag(event, index, item)">
     <li ng-repeat="entry in scrollItems[playlistIds.VIDEO]" 
         class="clearfix" 

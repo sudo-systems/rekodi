@@ -6,23 +6,33 @@
     <input type="text" class="filter" ng-model="filter.value" placeholder="filter" title="Filter the currently displayed list" /> <i class="mdi mdi-close-box clear-filter" title="Clear filter" ng-click="clearFilter()" ng-show="filter.value !== ''"></i>
   </div>
 </div>
-<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: souces})" ng-show="currentLevel === 'sources'">
+<div class="data-list-wrapper with-options"
+  ng-show="currentLevel === 'sources'"
+  su-endless-scroll="sources"
+  su-endless-scroll-limit="displayLimit" 
+  su-endless-scroll-offset="50"
+  su-endless-scroll-output="scrollItems[currentLevel]">
   <ul class="vertical">
-    <li ng-repeat="source in scrollItems['sources'] | filter:filterList track by source.file" class="clearfix">
+    <li ng-repeat="source in scrollItems['sources'] | filter:filterList track by $index" class="clearfix">
       <div class="label" ng-click="getDirectory(source.file)">
         <i class="mdi mdi-folder"></i> {{source.label}}
       </div>
     </li>
   </ul>
 </div>
-<div class="data-list-wrapper with-options" su-endless-scroll="showItems({key: currentLevel, data: files[filesKey]})" ng-show="currentLevel === 'files'">
+<div class="data-list-wrapper with-options"
+  ng-show="currentLevel === 'files'"
+  su-endless-scroll="files"
+  su-endless-scroll-limit="displayLimit" 
+  su-endless-scroll-offset="50"
+  su-endless-scroll-output="scrollItems[currentLevel]">
   <ul class="vertical">
     <li class="clearfix" ng-show="currentLevel === 'files'">
       <div class="label" ng-click="directoryUp()">
         <i class="mdi mdi-folder"></i> ..
       </div>
     </li>
-    <li ng-repeat="file in scrollItems['files'] | filter:filterList track by file.file" class="clearfix" ng-class="{playing: file.is_playing}">
+    <li ng-repeat="file in scrollItems['files'] | filter:filterList track by $index" class="clearfix" ng-class="{playing: file.is_playing}">
       <div class="label" ng-if="file.type !== 'movie'" ng-click="file.filetype === 'file'? play(file.file, file.filetype) : getDirectory(file.file)">
         <i class="mdi mdi-folder" ng-show="!file.filetype || file.filetype === 'directory'"></i>
         <i class="mdi mdi-movie" ng-show="file.filetype === 'file'"></i> {{file.label}}
