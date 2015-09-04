@@ -4,5 +4,6 @@ var rekodiApp = angular.module('rekodiApp', [
   'ngDialog',
   'ngSanitize',
   'ui.select',
-  'dndLists'
+  'dndLists',
+  'pascalprecht.translate'
 ]);

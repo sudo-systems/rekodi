@@ -1,7 +1,11 @@
-rekodiApp.controller('rkSettingsCtrl', ['$scope', 'rkNowPlayingService', '$timeout', '$localStorage',
-  function($scope, rkNowPlayingService, $timeout, $localStorage) {
+rekodiApp.controller('rkSettingsCtrl', ['$scope', 'rkNowPlayingService', '$timeout', '$localStorage', '$translate',
+  function($scope, rkNowPlayingService, $timeout, $localStorage, $translate) {
     var isConnected = false;
     $scope.settings = {};
+    
+    $scope.changeLanguage = function(key) {
+      $translate.use(key);
+    };
 
     function init() {
       $scope.settings = $localStorage.settings;
