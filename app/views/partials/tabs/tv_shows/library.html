@@ -4,7 +4,7 @@
       <a ng-click="getTvShowsCategorised()" title="Back to TV Shows"><i class="mdi mdi-home"></i></a>
     </span>
     <span ng-show="currentLevel ==='tvShows' && tvShowsIndex.length > 0 && !isFiltering">
-      <ui-select ng-model="guiModels.selectedIndex" search-enabled="false" on-select="showItems({key: 'tvShows', reset: true, data: tvShowsCategorised[guiModels.selectedIndex]})">
+      <ui-select ng-model="guiModels.selectedIndex" search-enabled="false">
         <ui-select-match>{{$select.selected}}</ui-select-match>
         <ui-select-choices repeat="indexLetter in tvShowsIndex track by indexLetter">
           <div ng-bind-html="indexLetter | highlight: $select.search"></div>
@@ -41,7 +41,7 @@
      su-endless-scroll-offset="50"
      su-endless-scroll-output="scrollItems[currentLevel]">
   <ul class="vertical">
-    <li ng-repeat="tvShow in scrollItems[currentLevel] track by $index" rk-tooltips class="clearfix" ng-click="getSeasons(tvShow.tvshowid)">
+    <li ng-repeat="tvShow in scrollItems[currentLevel] track by $index" rk-tooltips class="clearfix" ng-click="getSeasons(tvShow)">
       <div class="thumbnail">
         <img ng-src="{{tvShow.thumbnail_src}}" alt="" ng-if="tvShow.thumbnail_src" />
         <i class="mdi mdi-tvShow" ng-if="!tvShow.thumbnail_src"></i>
@@ -113,7 +113,7 @@
         <i class="mdi mdi-album"></i> [back to tv shows] ..
       </div>
     </li>
-    <li ng-repeat="season in scrollItems[currentLevel] track by $index" rk-tooltips class="clearfix" ng-click="getEpisodes(currentTvShowId, season.season)">
+    <li ng-repeat="season in scrollItems[currentLevel] track by $index" rk-tooltips class="clearfix" ng-click="getEpisodes(season.season)">
       <div class="thumbnail">
         <img ng-src="{{season.thumbnail_src}}" alt="" ng-if="season.thumbnail_src" />
         <i class="mdi mdi-movie" ng-if="!season.thumbnail_src"></i>
@@ -156,7 +156,7 @@
      su-endless-scroll-offset="50"
      su-endless-scroll-output="scrollItems[currentLevel]">
   <ul class="vertical">
-    <li class="clearfix" ng-click="seasons.length < 2? getTvShowsCategorised() : getSeasons(currentTvShowId)">
+    <li class="clearfix" ng-click="seasons.length < 2? getTvShowsCategorised() : getSeasons(currentTvShow)">
       <div class="label">
         <i class="mdi mdi-worker"></i> [back to {{seasons.length < 2? 'tv shows' : 'seasons'}}] ..
       </div>

@@ -1,7 +1,7 @@
 <div class="options">
   <div class="page-specific">
     <span ng-show="moviesIndex.length > 0 && !isFiltering">
-      <ui-select ng-model="guiModels.selectedIndex" search-enabled="false" on-select="showItems({reset: true, data: moviesCategorised[guiModels.selectedIndex]})">
+      <ui-select ng-model="guiModels.selectedIndex" search-enabled="false">
         <ui-select-match>{{$select.selected}}</ui-select-match>
         <ui-select-choices repeat="indexLetter in moviesIndex track by indexLetter">
           <div ng-bind-html="indexLetter | highlight: $select.search"></div>

@@ -1,5 +1,5 @@
-rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudioLibraryService', 'rkDialogService', 'rkNowPlayingService',
-  function($scope, kodiApiService, rkAudioLibraryService, rkDialogService, rkNowPlayingService) {
+rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudioLibraryService', 'rkDialogService',
+  function($scope, kodiApiService, rkAudioLibraryService, rkDialogService) {
     $scope.displayLimit = 15;
     var kodiApi = null;
     $scope.currentLevel = null;
