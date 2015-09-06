@@ -55,6 +55,10 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsServ
         properties: requestProperties[playlistId]
       }).then(function(data) {
         $scope.items[playlistId] = (!data || !data.items)? [] : rkHelperService.addCustomFields(data.items);
+        
+        if(!$scope.$$phase){
+          $scope.$apply();
+        }
       }, function(error) {
         rkLogService.error(error);
       });

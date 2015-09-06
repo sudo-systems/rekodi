@@ -17,6 +17,10 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
       $scope.playbackStatus = null;
       $scope.isManuallySeeking = false;
       $scope.updateTootltip($scope.seek.position);
+      
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
     }
     
     $scope.setPlaybackPosition = function(seekPosition) {
@@ -29,6 +33,10 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
           var totalSeconds = rkHelperService.timeObjectToSeconds(data.totaltime);
           $scope.seek.position = Math.floor((seconds / totalSeconds) * $scope.seekbarResolution);
           $scope.setManuallySeeking(false);
+          
+          if(!$scope.$$phase){
+            $scope.$apply();
+          }
         });
       }
     };
@@ -74,7 +82,7 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
           $scope.$apply();
         }
 
-        if(!data) {
+        if(!$scope.nowPlaying) {
           setDefaults();
         }
       });

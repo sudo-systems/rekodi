@@ -84,7 +84,7 @@ rekodiApp.factory('kodiApiService', ['$rootScope', '$localStorage', 'rkLogServic
       if($localStorage.settings.connection.macAddress && $localStorage.settings.connection.macAddress.length >= 12) {
         wol.wake($localStorage.settings.connection.macAddress, {
           address: $localStorage.settings.connection.serverAddress,
-          port: 9
+          port: 7
         }, function(error) {
           if(error) {
             setDisconnected(error);

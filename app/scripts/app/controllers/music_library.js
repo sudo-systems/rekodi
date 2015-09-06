@@ -73,6 +73,10 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
       }
 
       rkAudioLibraryService.getArtistsCategorised(function(artistsCategorised) {
+        if($scope.artistsCategorised === null) {
+          return;
+        }
+        
         if(artistsCategorised && !angular.equals(artistsCategorised, $scope.artistsCategorised)) {
           $scope.artistsCategorised = artistsCategorised;
           applyArtistsData($scope.artistsCategorised);
@@ -83,6 +87,10 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
     function applyArtistsData(artistsCategorised) {
       $scope.artistsIndex = createCategorisedIndex(artistsCategorised);
       $scope.guiModels.selectedIndex = getDefaultIndex($scope.artistsIndex);
+      
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
     }
     
     $scope.showArtistOptionsDialog = function(artist) {
@@ -95,10 +103,22 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
       $scope.currentArtistId = artistId;
       $scope.currentAlbumId = null;
       $scope.albums = rkAudioLibraryService.getAlbumsFromCache(artistId);
+      
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
 
       rkAudioLibraryService.getAlbums(artistId, function(albums) {
+        if(albums === null) {
+          return;
+        }
+        
         if(albums && !angular.equals(albums, $scope.albums)) {
           $scope.albums = albums;
+          
+          if(!$scope.$$phase){
+            $scope.$apply();
+          }
         }
       });
     };
@@ -112,10 +132,22 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
       $scope.displayLimit = 5;
       $scope.currentAlbumId = albumId;
       $scope.songs = rkAudioLibraryService.getSongsFromCache(albumId);
+      
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
 
       rkAudioLibraryService.getSongs(albumId, function(songs) {
+        if(songs === null) {
+          return;
+        }
+        
         if(songs && !angular.equals(songs, $scope.songs)) {
           $scope.songs = songs;
+          
+          if(!$scope.$$phase){
+            $scope.$apply();
+          }
         }
       });
     };

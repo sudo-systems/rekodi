@@ -49,26 +49,36 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
     $scope.getMoviesCategorised = function() {
       $scope.clearFilter();
       
-      if(Object.keys($scope.moviesCategorised).length === 0) {
-        $scope.moviesCategorised = rkVideoLibraryService.getMoviesCategorisedFromCache();
-        
-        if($scope.settings.hideWatched) {
-          $scope.moviesCategorised = getUnwatchedMovies($scope.moviesCategorised);
+      $scope.moviesCategorised = rkVideoLibraryService.getMoviesCategorisedFromCache();
+      
+      if($scope.settings.hideWatched) {
+        $scope.moviesCategorised = getUnwatchedMovies($scope.moviesCategorised);
+      }
+      
+      $scope.moviesIndex = Object.keys($scope.moviesCategorised);
+      $scope.guiModels.selectedIndex = (!$scope.guiModels.selectedIndex)? getDefaultIndex($scope.moviesIndex) : $scope.guiModels.selectedIndex;
+      
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
+      
+      rkVideoLibraryService.getMoviesCategorised(function(moviesCategorised) {
+        if(moviesCategorised === null) {
+          return;
         }
         
-        $scope.moviesIndex = Object.keys($scope.moviesCategorised);
-        $scope.guiModels.selectedIndex = (!$scope.guiModels.selectedIndex)? getDefaultIndex($scope.moviesIndex) : $scope.guiModels.selectedIndex;
-      }
-
-      rkVideoLibraryService.getMoviesCategorised(function(moviesCategorised) {
-        if(moviesCategorised && $scope.settings.hideWatched) {
+        if($scope.settings.hideWatched) {
           moviesCategorised = getUnwatchedMovies(moviesCategorised);
         }
         
-        if(moviesCategorised && !angular.equals(moviesCategorised, $scope.moviesCategorised)) {
+        if(!angular.equals(moviesCategorised, $scope.moviesCategorised)) {
           $scope.moviesCategorised = moviesCategorised;
           $scope.moviesIndex = Object.keys(moviesCategorised);
           $scope.guiModels.selectedIndex = (!$scope.guiModels.selectedIndex)? getDefaultIndex($scope.moviesIndex) : $scope.guiModels.selectedIndex;
+          
+          if(!$scope.$$phase){
+            $scope.$apply();
+          }
         }
       });
     };

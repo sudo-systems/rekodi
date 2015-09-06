@@ -75,6 +75,10 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVid
       $scope.tvShowsCategorised = {};
       $scope.tvShowsCategorised = rkVideoLibraryService.getTvShowsCategorisedFromCache();
       $scope.clearFilter();
+      
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
 
       if(Object.keys($scope.tvShowsCategorised).length > 0) {
         if($scope.settings.hideWatched) {
@@ -143,6 +147,10 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVid
       if($scope.seasons.length > 0 && $scope.settings.hideWatched) {
         $scope.seasons = getUnwatchedSeasons($scope.seasons);
       }
+      
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
 
       rkVideoLibraryService.getSeasons(tvShow.tvshowid, function(seasons) {
         if(seasons === null) {
@@ -207,6 +215,10 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVid
         
       if($scope.episodes.length > 0 && $scope.settings.hideWatched) {
         $scope.episodes = getUnwatchedEpisodes($scope.episodes);
+      }
+      
+      if(!$scope.$$phase){
+        $scope.$apply();
       }
 
       rkVideoLibraryService.getEpisodes($scope.currentTvShow.tvshowid, season, function(episodes) {
