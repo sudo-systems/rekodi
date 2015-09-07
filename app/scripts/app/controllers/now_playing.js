@@ -1,7 +1,7 @@
 rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService', 'rkPlaybackStatusService', 'rkRemoteControlService', 'rkNotificationService', 'rkDialogService',
   function($scope, $timeout, rkHelperService, rkPlaybackStatusService, rkRemoteControlService, rkNotificationService, rkDialogService) {
     $scope.nowPlaying = null;
-    $scope.timePlaying = '00:00:00';
+    $scope.timePlaying = null;
     $scope.isManuallySeeking = false;
     $scope.playbackStatus = null;
     $scope.seekbarResolution = 100000;
@@ -12,7 +12,7 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
     
     function setDefaults() {
       $scope.nowPlaying = null;
-      $scope.timePlaying = '00:00:00';
+      $scope.timePlaying = '00:00';
       $scope.seek.position = 0;
       $scope.playbackStatus = null;
       $scope.isManuallySeeking = false;

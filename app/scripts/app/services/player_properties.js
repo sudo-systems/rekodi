@@ -30,16 +30,11 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkLogService', 'r
     };
 
     var startUpdateInterval = function() {
-      getProperties();
       clearInterval(updatePropertiesInterval);
       
       updatePropertiesInterval = setInterval(function() {
         getProperties();
       }, 1000);
-    };
-    
-    var stopUpdateInterval = function() {
-      clearInterval(updatePropertiesInterval);
     };
 
     function init() {
@@ -57,6 +52,13 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkLogService', 'r
           kodiApi.Player.OnStop(function(data) {
             currentProperties = defaultProperties;
             $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
+            clearInterval(updatePropertiesInterval);
+          });
+          
+          kodiApi.Player.OnPlay(function(data) {
+            if(!updatePropertiesInterval) {
+              startUpdateInterval();
+            }
           });
         }
         else {
@@ -64,14 +66,21 @@ rekodiApp.factory('rkPlayerPropertiesService', ['$rootScope', 'rkLogService', 'r
           $rootScope.$emit('rkPlayerPropertiesChange', defaultProperties);
         }
       });
+      
+      $rootScope.$on('rkNowPlayingDataUpdate', function(event, data) {
+        if(data) {
+          startUpdateInterval();
+          return;
+        }
+        
+        clearInterval(updatePropertiesInterval);
+      });
     }
 
     init();
     
     return {
-      getProperties: getProperties,
-      startUpdateInterval: startUpdateInterval,
-      stopUpdateInterval: stopUpdateInterval
+      getProperties: getProperties
     };
   }
 ]);

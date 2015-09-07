@@ -10,7 +10,7 @@
     <li ng-click="skipPrevious()" ng-show="showPreviousButton">
       <i class="mdi mdi-skip-previous"></i>
     </li>
-    <li ng-click="rewind()" ng-class="{active: status.isRewinding}" ng-show="playerProperties.canchangespeed">
+    <li ng-click="rewind()" ng-class="{active: status.isRewinding}">
       <i class="mdi mdi-rewind"></i>
     </li>
     <li ng-show="showPlayButton" ng-click="playPause()" class="play-button">
@@ -22,7 +22,7 @@
     <li ng-show="showStopButton" ng-click="stop()">
       <i class="mdi mdi-stop"></i>
     </li>
-    <li ng-click="fastForward()" ng-class="{active: status.isFastForwarding}" ng-show="playerProperties.canchangespeed">
+    <li ng-click="fastForward()" ng-class="{active: status.isFastForwarding}">
       <i class="mdi mdi-fast-forward"></i>
     </li>
     <li ng-click="skipNext()" ng-show="showNextButton">

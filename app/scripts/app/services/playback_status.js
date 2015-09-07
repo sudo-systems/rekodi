@@ -94,7 +94,6 @@ rekodiApp.factory('rkPlaybackStatusService', ['$rootScope', 'kodiApiService', 'r
 
       $rootScope.$on('rkNowPlayingDataUpdate', function(event, data) {
         if(data === null) {
-          rkPlayerPropertiesService.stopUpdateInterval();
           status.isPaused = false;
           status.isPlaying = false;
           status.currentSpeed = 0;
@@ -103,7 +102,6 @@ rekodiApp.factory('rkPlaybackStatusService', ['$rootScope', 'kodiApiService', 'r
           updateCurrentStatus();
         }
         else {
-          rkPlayerPropertiesService.startUpdateInterval();
           status.isPaused = false;
           status.isPlaying = true;
           status.currentSpeed = 0;
