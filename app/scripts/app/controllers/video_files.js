@@ -1,5 +1,5 @@
-rekodiApp.controller('rkVideoFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkRemoteControlService', 'rkFilesService', 'rkNowPlayingService',
-  function($scope, kodiApiService, rkEnumsService, rkLogService, rkRemoteControlService, rkFilesService, rkNowPlayingService) {
+rekodiApp.controller('rkVideoFilesCtrl', ['$scope', 'rkEnumsService', 'rkLogService', 'rkRemoteControlService', 'rkFilesService', '$timeout',
+  function($scope, rkEnumsService, rkLogService, rkRemoteControlService, rkFilesService, $timeout) {
     $scope.displayLimit = 15;
     var kodiApi = null;
     var filesService = null;
@@ -10,9 +10,6 @@ rekodiApp.controller('rkVideoFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsSe
     $scope.isFiltering = false;
     $scope.filteredItems = [];
     $scope.filter = {value: ''};
-    $scope.status = {
-      isInitalized: false
-    };
 
     $scope.getSources = function() {
       $scope.currentLevel = 'sources';
@@ -20,10 +17,18 @@ rekodiApp.controller('rkVideoFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsSe
       
       $scope.sources = [];
       $scope.sources = filesService.getSourcesFromCache();
+      
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
 
       filesService.getSources(function(sources) {
         if(sources && !angular.equals(sources, $scope.sources)) {
           $scope.sources = sources;
+          
+          if(!$scope.$$phase){
+            $scope.$apply();
+          }
         }
       });
     };
@@ -34,10 +39,18 @@ rekodiApp.controller('rkVideoFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsSe
       
       $scope.files = [];
       $scope.files = filesService.getDirectoryFromCache(directory);
+      
+      if(!$scope.$$phase){
+        $scope.$apply();
+      }
 
       filesService.getDirectory(directory, function(files) {
         if(files !== null && !angular.equals(files, $scope.files)) {
           $scope.files = files;
+          
+          if(!$scope.$$phase){
+            $scope.$apply();
+          }
         }
       });
     };
@@ -96,31 +109,22 @@ rekodiApp.controller('rkVideoFilesCtrl', ['$scope', 'kodiApiService', 'rkEnumsSe
       $scope.filter.value = '';
     };
 
-    function initConnectionChange() {
-      if(kodiApi) {
-        $scope.getSources();
-      }
-    }
-
-    $scope.init = function() {
+    var init = function() {
       filesService = new rkFilesService.instance('video');
-      kodiApi = kodiApiService.getConnection();
-      initConnectionChange();
-      
+
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
-        initConnectionChange();
+        
+        if(kodiApi) {
+          $scope.getSources();
+        }
       });
-
-      $scope.status.isInitialized = true;
     };
-    
-    $scope.$root.$on('rkVideoFilesCtrlInit', function (event) {
-      if($scope.status.isInitialized) {
-        return;
-      }
 
-      $scope.init();
+    $scope.$evalAsync(function() {
+      $timeout(function() {
+        init();
+      });
     });
   }
 ]);

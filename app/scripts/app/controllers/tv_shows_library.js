@@ -1,5 +1,5 @@
-rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVideoLibraryService', 'rkSettingsService', 'rkDialogService', 'rkNotificationService',
-  function($scope, kodiApiService, rkVideoLibraryService, rkSettingsService, rkDialogService, rkNotificationService) {
+rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVideoLibraryService', 'rkSettingsService', 'rkDialogService', 'rkNotificationService', '$timeout',
+  function($scope, kodiApiService, rkVideoLibraryService, rkSettingsService, rkDialogService, rkNotificationService, $timeout) {
     $scope.displayLimit = 5;
     var kodiApi = null;
     $scope.tvShowsCategorised = {};
@@ -21,10 +21,7 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVid
       filterValue: '',
       selectedIndex: null
     };
-    $scope.status = {
-      isInitalized: false
-    };
-
+    
     function refreshData() {
       if($scope.currentLevel === 'tvShows') {
         $scope.getTvShowsCategorised();
@@ -330,27 +327,21 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVid
       }
     };
 
-    function initConnectionChange() {
-      if(kodiApi) {
-        $scope.getTvShowsCategorised();
-        
-        kodiApi.VideoLibrary.OnCleanFinished(function(data) {
-          refreshData();
-        });
-
-        kodiApi.VideoLibrary.OnScanFinished(function(data) {
-          refreshData();
-        });
-      }
-    }
-
-    $scope.init = function() {
-      kodiApi = kodiApiService.getConnection();
-      initConnectionChange();
-
+    var init = function() {
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
-        initConnectionChange();
+        
+        if(kodiApi) {
+          $scope.getTvShowsCategorised();
+
+          kodiApi.VideoLibrary.OnCleanFinished(function(data) {
+            refreshData();
+          });
+
+          kodiApi.VideoLibrary.OnScanFinished(function(data) {
+            refreshData();
+          });
+        }
       });
 
       $scope.$watchCollection('settings', function(newData, oldData) {
@@ -366,16 +357,12 @@ rekodiApp.controller('rkTvShowsLibraryCtrl', ['$scope', 'kodiApiService', 'rkVid
           refreshData();
         }
       });
-
-      $scope.status.isInitialized = true;
     };
-    
-    $scope.$root.$on('rkTvShowsLibraryCtrlInit', function (event) {
-      if($scope.status.isInitialized) {
-        return;
-      }
 
-      $scope.init();
+    $scope.$evalAsync(function() {
+      $timeout(function() {
+        init();
+      });
     });
   }
 ]);

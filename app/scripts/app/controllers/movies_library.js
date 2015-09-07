@@ -1,5 +1,5 @@
-rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVideoLibraryService', 'rkSettingsService', 'rkDialogService', 'rkNowPlayingService',
-  function($scope, kodiApiService, rkVideoLibraryService, rkSettingsService, rkDialogService, rkNowPlayingService) {
+rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'rkVideoLibraryService', 'rkSettingsService', 'rkDialogService', '$timeout',
+  function($scope, rkVideoLibraryService, rkSettingsService, rkDialogService, $timeout) {
     $scope.displayLimit = 5;
     var kodiApi = null;
     $scope.moviesCategorised = {};
@@ -11,9 +11,6 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
     $scope.guiModels = {
       filterValue: '',
       selectedIndex: null
-    };
-    $scope.status = {
-      isInitalized: false
     };
 
     function getDefaultIndex(moviesIndex) {
@@ -48,7 +45,6 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
     
     $scope.getMoviesCategorised = function() {
       $scope.clearFilter();
-      
       $scope.moviesCategorised = rkVideoLibraryService.getMoviesCategorisedFromCache();
       
       if($scope.settings.hideWatched) {
@@ -61,8 +57,9 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
       if(!$scope.$$phase){
         $scope.$apply();
       }
-      
+
       rkVideoLibraryService.getMoviesCategorised(function(moviesCategorised) {
+        
         if(moviesCategorised === null) {
           return;
         }
@@ -125,31 +122,25 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
       });
     };
 
-    function initConnectionChange() {
-      if(kodiApi) {
-        $scope.getMoviesCategorised();
-        
-        kodiApi.VideoLibrary.OnCleanFinished(function(data) {
-          $scope.getMoviesCategorised();
-        });
-
-        kodiApi.VideoLibrary.OnScanFinished(function(data) {
-          $scope.getMoviesCategorised();
-        });
-
-        kodiApi.VideoLibrary.OnRemove(function(data) {
-          $scope.getMoviesCategorised();
-        });
-      }
-    }
-
-    $scope.init = function() {
-      kodiApi = kodiApiService.getConnection();
-      initConnectionChange();
-
+    var init = function() {
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
-        initConnectionChange();
+        
+        if(kodiApi) {
+          $scope.getMoviesCategorised();
+
+          kodiApi.VideoLibrary.OnCleanFinished(function(data) {
+            $scope.getMoviesCategorised();
+          });
+
+          kodiApi.VideoLibrary.OnScanFinished(function(data) {
+            $scope.getMoviesCategorised();
+          });
+
+          kodiApi.VideoLibrary.OnRemove(function(data) {
+            $scope.getMoviesCategorised();
+          });
+        }
       });
 
       $scope.$watchCollection('settings', function(newData, oldData) {
@@ -166,16 +157,12 @@ rekodiApp.controller('rkMoviesLibraryCtrl', ['$scope', 'kodiApiService', 'rkVide
           $scope.getMoviesCategorised();
         }
       });
-
-      $scope.status.isInitialized = true;
     };
-    
-    $scope.$root.$on('rkMoviesLibraryCtrlInit', function (event) {
-      if($scope.status.isInitialized) {
-        return;
-      }
 
-      $scope.init();
+    $scope.$evalAsync(function() {
+      $timeout(function() {
+        init();
+      });
     });
   }
 ]);

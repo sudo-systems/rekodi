@@ -1,5 +1,5 @@
-rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudioLibraryService', 'rkDialogService',
-  function($scope, kodiApiService, rkAudioLibraryService, rkDialogService) {
+rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'rkAudioLibraryService', 'rkDialogService', '$timeout',
+  function($scope, rkAudioLibraryService, rkDialogService, $timeout) {
     $scope.displayLimit = 15;
     var kodiApi = null;
     $scope.currentLevel = null;
@@ -19,9 +19,6 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
     $scope.guiModels = {
       filterValue: '',
       selectedIndex: null
-    };
-    $scope.status = {
-      isInitalized: false
     };
 
     function refreshData() {
@@ -214,38 +211,28 @@ rekodiApp.controller('rkMusicLibraryCtrl', ['$scope', 'kodiApiService', 'rkAudio
       }
     };
 
-    function initConnectionChange() {
-      if(kodiApi) {
-        $scope.getArtistsCategorised();
-        
-        kodiApi.AudioLibrary.OnCleanFinished(function(data) {
-          refreshData();
-        });
-
-        kodiApi.AudioLibrary.OnScanFinished(function(data) {
-          refreshData();
-        });
-      }
-    }
-
-    $scope.init = function() {
-      kodiApi = kodiApiService.getConnection();
-      initConnectionChange();
-
+    var init = function() {
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
-        initConnectionChange();
+        
+        if(kodiApi) {
+          $scope.getArtistsCategorised();
+
+          kodiApi.AudioLibrary.OnCleanFinished(function(data) {
+            refreshData();
+          });
+
+          kodiApi.AudioLibrary.OnScanFinished(function(data) {
+            refreshData();
+          });
+        }
       });
-
-      $scope.status.isInitialized = true;
     };
-    
-    $scope.$root.$on('rkMusicLibraryCtrlInit', function (event) {
-      if($scope.status.isInitialized) {
-        return;
-      }
 
-      $scope.init();
+    $scope.$evalAsync(function() {
+      $timeout(function() {
+        init();
+      });
     });
   }
 ]);

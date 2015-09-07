@@ -1,11 +1,8 @@
-rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'kodiApiService', 'rkLogService', 'rkConfigService', 'rkNotificationService',
-  function($rootScope, rkCacheService, rkHelperService, kodiApiService, rkLogService, rkConfigService, rkNotificationService) {
+rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkHelperService', 'rkLogService', 'rkConfigService', 'rkNotificationService',
+  function($rootScope, rkCacheService, rkHelperService, rkLogService, rkConfigService, rkNotificationService) {
     var kodiApi = null;
     var cache = new rkCacheService.create('videoLibrary');
     var requestProperties = rkConfigService.get('apiRequestProperties', 'videoLibrary');
-
-
-
 
     var getMoviesFromCache = function() {
       var _data = cache.get({key: 'movies'});
@@ -257,9 +254,7 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
       callback([]);
     };
     
-    
-    
-    
+
     
     var getEpisodesFromCache = function(tvShowId, season) {
       var _data = cache.get({key: 'episodes', index: tvShowId+'_'+season});
@@ -412,39 +407,32 @@ rekodiApp.factory('rkVideoLibraryService', ['$rootScope', 'rkCacheService', 'rkH
         callback(false);
       }
     };
-    
-    function initConnectionChange() {
-      if(kodiApi) {
-        kodiApi.VideoLibrary.OnCleanStarted(function(data) {
-          rkNotificationService.notifyCleanDatabase('Video library cleanup has been started...');
-        });
-        
-        kodiApi.VideoLibrary.OnCleanFinished(function(data) {
-          rkNotificationService.notifyCleanDatabase('Video library cleanup has been completed');
-        });
-        
-        kodiApi.VideoLibrary.OnScanStarted(function(data) {
-          rkNotificationService.notifyDatabaseAdd('Video library has update has started...');
-        });
-        
-        kodiApi.VideoLibrary.OnScanFinished(function(data) {
-          rkNotificationService.notifyDatabaseAdd('The video library has been updated');
-        });
-        
-        kodiApi.VideoLibrary.OnRemove(function(data) {
-          console.dir(data);
-          rkNotificationService.notifyDatabaseAdd(' has been removed from your library.');
-        });
-      }
-    }
- 
+
     function init() {
-      kodiApi = kodiApiService.getConnection();
-      initConnectionChange();
-      
       $rootScope.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
-        initConnectionChange();
+
+        if(kodiApi) {
+          kodiApi.VideoLibrary.OnCleanStarted(function(data) {
+            rkNotificationService.notifyCleanDatabase('Video library cleanup has been started...');
+          });
+
+          kodiApi.VideoLibrary.OnCleanFinished(function(data) {
+            rkNotificationService.notifyCleanDatabase('Video library cleanup has been completed');
+          });
+
+          kodiApi.VideoLibrary.OnScanStarted(function(data) {
+            rkNotificationService.notifyDatabaseAdd('Video library has update has started...');
+          });
+
+          kodiApi.VideoLibrary.OnScanFinished(function(data) {
+            rkNotificationService.notifyDatabaseAdd('The video library has been updated');
+          });
+
+          kodiApi.VideoLibrary.OnRemove(function(data) {
+            rkNotificationService.notifyDatabaseAdd(' has been removed from your library.');
+          });
+        }
       });
     };
 

@@ -3,22 +3,16 @@ var Tray = require('tray');
 var Menu = require('menu');
 var MenuItem = require('menu-item');
 var BrowserWindow = require('browser-window');
+require('crash-reporter').start();
 
 require('wiredep')({ 
   cwd: __dirname,
   src: 'app/index.html'
 });
-require('crash-reporter').start();
 
 var mainWindow = null;
 var settingsWindow = null;
-var appIcon = null;
-
-app.on('window-all-closed', function() {
-  if (process.platform != 'darwin') {
-    app.quit();
-  }
-});
+var trayIcon = null;
 
 app.on('ready', function() {
   createMainWindow();
@@ -43,27 +37,20 @@ function createMainWindow() {
     mainWindow.show();
   });
 
-  mainWindow.on('closed', function() {
+  mainWindow.on('window-all-closed', function() {
     mainWindow = null;
     app.quit();
   });
 }
 
 function createTaryIcon() {
-  appIcon = new Tray(__dirname+ '/assets/icon_tray.png');
+  trayIcon = new Tray(__dirname+ '/assets/icon_tray.png');
   var taryContextMenu = new Menu();
   
   taryContextMenu.append(new MenuItem({ 
     label: 'Show', 
     click: function() { 
       mainWindow.focus();
-    } 
-  }));
-  
-  taryContextMenu.append(new MenuItem({ 
-    label: 'Open development tools', 
-    click: function() { 
-      mainWindow.openDevTools();
     } 
   }));
 
@@ -74,6 +61,6 @@ function createTaryIcon() {
     } 
   }));
   
-  appIcon.setToolTip('ReKodi, the Kodi remote');
-  appIcon.setContextMenu(taryContextMenu);
+  trayIcon.setToolTip('ReKodi, the Kodi remote');
+  trayIcon.setContextMenu(taryContextMenu);
 }

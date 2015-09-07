@@ -1,5 +1,5 @@
-rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 'rkAudioLibraryService', '$timeout', 'kodiApiService', 'rkVideoLibraryService', 'rkDialogService',
-  function($scope, rkVideoLibraryService, rkAudioLibraryService, $timeout, kodiApiService, rkVideoLibraryService, rkDialogService) {
+rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 'rkAudioLibraryService', '$timeout', 'rkVideoLibraryService', 'rkDialogService',
+  function($scope, rkVideoLibraryService, rkAudioLibraryService, $timeout, rkVideoLibraryService, rkDialogService) {
     var itemsLimit = 10;
     var kodiApi = null;
     $scope.selected = {};
@@ -82,34 +82,28 @@ rekodiApp.controller('rkRecentlyAddedCtrl', ['$scope', 'rkVideoLibraryService', 
       $scope.getRecentlyAddedMovies();
       $scope.getRecentlyAddedEpisodes();
     }
-    
-    function initConnectionChange() {
-      if(kodiApi) {
-        updateAllData();
-        
-        kodiApi.VideoLibrary.OnCleanFinished(function(data) {
-          updateAllData();
-        });
 
-        kodiApi.VideoLibrary.OnScanFinished(function(data) {
-          updateAllData();
-        });
-
-        kodiApi.VideoLibrary.OnRemove(function(data) {
-          updateAllData();
-        });
-      }
-    }
-    
-    function init() {
-      kodiApi = kodiApiService.getConnection();
-      initConnectionChange();
-      
+    var init = function() {
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
-        initConnectionChange();
+        
+        if(kodiApi) {
+          updateAllData();
+
+          kodiApi.VideoLibrary.OnCleanFinished(function(data) {
+            updateAllData();
+          });
+
+          kodiApi.VideoLibrary.OnScanFinished(function(data) {
+            updateAllData();
+          });
+
+          kodiApi.VideoLibrary.OnRemove(function(data) {
+            updateAllData();
+          });
+        }
       });
-    }
+    };
     
     $scope.$evalAsync(function() {
       $timeout(function() {

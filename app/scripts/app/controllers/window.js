@@ -1,7 +1,6 @@
 rekodiApp.controller('rkWindowCtrl', ['$scope', 'rkNowPlayingService', '$timeout', '$localStorage', 'rkDialogService', 'rkSettingsService',
   function($scope, rkNowPlayingService, $timeout, $localStorage, rkDialogService, rkSettingsService) {
     var remote = require('remote');
-    var rimraf = require('rimraf');
     var mainWindow = remote.getCurrentWindow();
     var defaultWallpaperApplied = false;
     var isClosing = false;
@@ -100,8 +99,6 @@ rekodiApp.controller('rkWindowCtrl', ['$scope', 'rkNowPlayingService', '$timeout
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         $scope.isConnected = (connection);
       });
-      
-      $scope.$root.rkRequiredControllers.window.loaded = true;
     }
     
     $scope.$evalAsync(function() {

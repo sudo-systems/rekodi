@@ -138,8 +138,6 @@ rekodiApp.controller('rkNowPlayingCtrl', ['$scope', '$timeout', 'rkHelperService
       $('.seek-slider-wrapper input[type="range"]').on('mouseup', function() {
         this.blur();
       });
-
-      $scope.$root.rkRequiredControllers.now_playing.loaded = true;
     }
     
     $scope.$evalAsync(function() {

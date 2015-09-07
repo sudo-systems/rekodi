@@ -1,5 +1,5 @@
-rekodiApp.controller('rkPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkConfigService', 'rkDialogService', 'rkRemoteControlService', 'rkHelperService',
-  function($scope, kodiApiService, rkEnumsService, rkLogService, rkConfigService, rkDialogService, rkRemoteControlService, rkHelperService) {
+rekodiApp.controller('rkPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsService', 'rkLogService', 'rkConfigService', 'rkDialogService', 'rkRemoteControlService', 'rkHelperService', '$timeout',
+  function($scope, kodiApiService, rkEnumsService, rkLogService, rkConfigService, rkDialogService, rkRemoteControlService, rkHelperService, $timeout) {
     var kodiApi = null;
     $scope.displayLimit = 15;
     var requestPropertiesConfig = rkConfigService.get('apiRequestProperties', 'playlist');
@@ -38,10 +38,6 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsServ
       };
       $scope.filter[id] = {
         value: ''
-      };
-      $scope.status[id] = {
-        isInitialized: false,
-        isLoading: false
       };
       itemDrag[id] = {
         startPosition: null,
@@ -115,45 +111,38 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsServ
       $scope.filter[playlistId].value = '';
     };
 
-    function initConnectionChange(playlistId) {
-      if(kodiApi) {
-        if($scope.items[playlistId] && $scope.items[playlistId].length === 0) {
-          $scope.get(playlistId);
-        }
-
-        kodiApi.Playlist.OnAdd(function(serverData) {
-          if(serverData.data.playlistid === playlistId) {
-            $scope.get(playlistId);
-          }
-        });
-
-        kodiApi.Playlist.OnRemove(function(serverData) {
-          if(serverData.data.playlistid === playlistId) {
-            $scope.get(playlistId);
-          }
-        });
-
-        kodiApi.Playlist.OnClear(function(serverData) {
-          if(serverData.data.playlistid === playlistId) {
-            $scope.scrollItems[playlistId] = [];
-
-            if(!$scope.$$phase){
-              $scope.$apply();
-            }
-          }
-        });
-      }
-    }
-
-    $scope.init = function(playlistId) {
-      kodiApi = kodiApiService.getConnection();
-      initConnectionChange(playlistId);
-
+    var init = function(playlistId) {
       $scope.$root.$on('rkWsConnectionStatusChange', function (event, connection) {
         kodiApi = connection;
         
-        for(var key in $scope.playlistIds) {
-          initConnectionChange($scope.playlistIds[key]);
+        if(kodiApi) {
+          for(var key in $scope.playlistIds) {
+            if($scope.items[key] && $scope.items[key].length === 0) {
+              $scope.get(key);
+            }
+
+            kodiApi.Playlist.OnAdd(function(serverData) {
+              if(serverData.data.playlistid === key) {
+                $scope.get(key);
+              }
+            });
+
+            kodiApi.Playlist.OnRemove(function(serverData) {
+              if(serverData.data.playlistid === key) {
+                $scope.get(key);
+              }
+            });
+
+            kodiApi.Playlist.OnClear(function(serverData) {
+              if(serverData.data.playlistid === key) {
+                $scope.scrollItems[key] = [];
+
+                if(!$scope.$$phase){
+                  $scope.$apply();
+                }
+              }
+            });
+          }
         }
       });
       
@@ -170,16 +159,14 @@ rekodiApp.controller('rkPlaylistCtrl', ['$scope', 'kodiApiService', 'rkEnumsServ
           }
         }
       });
-
-      $scope.status[playlistId].isInitialized = true;
     };
-    
-    $scope.$root.$on('rkPlaylistCtrlInit', function (event) {
-      for(var key in $scope.playlistIds) {
-        if(!$scope.status[$scope.playlistIds[key]].isInitialized) {
-          $scope.init($scope.playlistIds[key]);
+
+    $scope.$evalAsync(function() {
+      $timeout(function() {
+        for(var key in $scope.playlistIds) {
+          init($scope.playlistIds[key]);
         }
-      }
+      });
     });
   }
 ]);

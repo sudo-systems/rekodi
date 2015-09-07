@@ -159,8 +159,6 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
           }
         }
       });
-
-      $scope.$root.rkRequiredControllers.playback_controls.loaded = true;
     }
 
     $scope.$evalAsync(function() {

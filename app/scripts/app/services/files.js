@@ -112,8 +112,7 @@ rekodiApp.factory('rkFilesService', ['$rootScope', 'rkCacheService', 'rkHelperSe
 
       function init() {
         cache = new rkCacheService.create(type+'Files');
-        kodiApi = kodiApiService.getConnection();
-        
+
         $rootScope.$on('rkWsConnectionStatusChange', function (event, connection) {
           kodiApi = connection;
         });
