@@ -52,11 +52,6 @@ rekodiApp.controller('rkPlaybackControlsCtrl', ['$scope', '$timeout', 'rkRemoteC
     };
     
     $scope.togglePartymode = function() {
-      if($scope.status.isPlaying && !$scope.playerProperties.partymode) {
-        rkRemoteControlService.stop();
-      }
-      
-      $scope.playerProperties.partymode = (!$scope.playerProperties.partymode);
       rkRemoteControlService.togglePartymode();
     };
     

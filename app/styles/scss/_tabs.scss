@@ -246,19 +246,22 @@ section.tabsContainer {
       .controls {
         position: absolute;
         top: 0;
-        right: 0;
+        right: 0px;
+        width: 36px;
         bottom: 0;
         display: none;
         color: #FFF;
         text-align: center;
         @include backgroundGradientVertical(#2A2A2A, #242424);
-        padding: 0 8px;
+        padding: 0;
         border-left: 1px solid #333;
         opacity: 0.7;
+        @include transitionAll(.3s);
         
         i.mdi {
-          width: 26px;
-          font-size: 18px;
+          width: 100%;
+          font-size: 16px;
+          line-height: 32px;
           @include transitionAll(.3s);
         }
         
@@ -307,48 +310,54 @@ section.tabsContainer {
         line-height: normal;
         margin-bottom: 6px;
         
-        td {
-          vertical-align: top;
-          white-space: normal;
+        table {
+          width: 100%;
+          
+          td {
+            vertical-align: top;
+            white-space: normal;
+            width: inherit;
+            
+            &.title {
+              margin: 6px 0 3px 0;
+              color: #FFF;
+              padding-left: 3px;
+              font-weight: 300;
+              font-size: 18px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              @include transitionAll(map-get($global, transition-speed));
+
+              .watched-label {
+                color: #FFF;
+              }
+
+              .partially-watched-label {
+                color: #FFF;
+              }
+
+              .track {
+                font-size: 16px;
+                color: #AAA;
+              }
+            }
+            
+            &.infoLabel {
+              color: #666;
+              text-align: right;
+              width: 55px;
+              padding-right: 6px;
+              line-height: 18px;
+              white-space: nowrap;
+            }
+            
+            &.infoContent {
+              line-height: 18px;
+            }
+          }
         }
         
-        td.title h2 {
-          margin: 6px 0 3px 0;
-          color: #FFF;
-          padding-left: 3px;
-          font-weight: 300;
-          font-size: 18px;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          @include transitionAll(map-get($global, transition-speed));
-          
-          .watched-label {
-            color: #FFF;
-          }
-          
-          .partially-watched-label {
-            color: #FFF;
-          }
-          
-          .track {
-            font-size: 16px;
-            color: #AAA;
-          }
-        }
-        
-        td.infoLabel {
-          color: #666;
-          text-align: right;
-          width: 55px;
-          padding-right: 6px;
-          line-height: 18px;
-          white-space: nowrap;
-        }
-        
-        td.infoContent {
-          line-height: 18px;
-        }
       }
     }
 
@@ -368,7 +377,7 @@ section.tabsContainer {
       }
       
       .details {
-        td.title h2 {
+        .title {
           color: map-get($global, highlight-color);
           @include transitionAll(map-get($global, transition-speed));
         }
@@ -388,7 +397,7 @@ section.tabsContainer {
         display: inline-block;
       }
     }
-    
+
     li:active {
       .label {
         i.mdi {

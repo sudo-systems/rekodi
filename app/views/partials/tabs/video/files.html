@@ -82,9 +82,8 @@
           </tr>
         </table>
       </div>
-      <div class="controls">
-        <i class="mdi mdi-play-box-outline" ng-show="file.filetype === 'file' || file.filetype === 'directory'" title="Play" ng-click="play(file)"></i>
-        <i class="mdi mdi-playlist-plus" title="Append to playlist" ng-click="addToPlaylist(file)"></i>
+      <div class="controls" ng-click="showDirectoryOptionsDialog(file)" ng-if="file.filetype === 'directory'">
+        <i class="mdi mdi-settings"></i>
       </div>
     </li>
   </ul>

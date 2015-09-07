@@ -32,9 +32,12 @@
   su-endless-scroll-offset="50" 
   su-endless-scroll-output="scrollItems[currentLevel]">
   <ul class="vertical">
-    <li ng-repeat="artist in scrollItems[currentLevel] track by $index" class="clearfix" ng-click="getAlbums(artist.artistid)">
-      <div class="label">
+    <li ng-repeat="artist in scrollItems[currentLevel] track by $index" class="clearfix">
+      <div class="label" ng-click="getAlbums(artist.artistid)">
         <i class="mdi mdi-worker"></i> {{artist.label}}
+      </div>
+      <div class="controls" ng-click="showArtistOptionsDialog(artist)">
+        <i class="mdi mdi-settings"></i>
       </div>
     </li>
   </ul>
@@ -51,18 +54,18 @@
         <i class="mdi mdi-worker"></i> [back to artists] ..
       </div>
     </li>
-    <li ng-repeat="album in scrollItems[currentLevel] track by $index" class="clearfix" ng-click="getSongs(album.albumid)">
-      <div class="thumbnail">
+    <li ng-repeat="album in scrollItems[currentLevel] track by $index" class="clearfix">
+      <div class="thumbnail" ng-click="getSongs(album.albumid)">
         <div ng-if="album.thumbnail_src">
           <img ng-src="{{album.thumbnail_src}}" alt="" />
         </div>
         <i class="mdi mdi-album" ng-if="!album.thumbnail_src"></i>
       </div>
-      <div class="details">
-        <table width="100%" cellspacing="0" cellpadding="0">
+      <div class="details" ng-click="getSongs(album.albumid)">
+        <table cellspacing="0" cellpadding="0">
           <tr>
             <td colspan="2" class="title">
-              <h2>{{album.label}}</h2>
+              {{album.label}}
             </td>
           </tr>
           <tr ng-if="album.displayartist">
@@ -91,6 +94,9 @@
           </tr>
         </table>
       </div>
+      <div class="controls" ng-click="showAlbumOptionsDialog(album)">
+        <i class="mdi mdi-settings"></i>
+      </div>
     </li>
   </ul>
 </div>
@@ -117,7 +123,7 @@
         <table width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td colspan="2" class="title">
-              <h2><span class="track" ng-if="song.track">{{song.track}}. </span>{{song.label}}</h2>
+              <span class="track" ng-if="song.track">{{song.track}}. </span>{{song.label}}
             </td>
           </tr>
           <tr ng-if="song.duration_readable">

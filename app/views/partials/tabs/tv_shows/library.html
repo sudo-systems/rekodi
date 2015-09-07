@@ -50,10 +50,8 @@
         <table width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td colspan="2" class="title">
-              <h2>
                 <i class="mdi mdi-eye watched-label" ng-if="tvShow.is_watched" title="Watched"></i>
                 {{tvShow.label}}
-              </h2>
             </td>
           </tr>
           <tr ng-if="tvShow.display_genre">
@@ -97,6 +95,9 @@
             </td>
           </tr>
         </table>
+      </div>
+      <div class="controls" ng-click="showTvShowOptionsDialog(tvShow)">
+        <i class="mdi mdi-settings"></i>
       </div>
     </li>
   </ul>

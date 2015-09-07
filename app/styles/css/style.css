@@ -1357,7 +1357,8 @@ section.tabsContainer {
       section.tabsContainer .data-list-wrapper li .controls {
         position: absolute;
         top: 0;
-        right: 0;
+        right: 0px;
+        width: 36px;
         bottom: 0;
         display: none;
         color: #FFF;
@@ -1370,12 +1371,17 @@ section.tabsContainer {
         background: -ms-linear-gradient(top, #2A2A2A 0, #242424 100%);
         background: linear-gradient(to bottom, #2A2A2A 0, #242424 100%);
         filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$startColor, endColorstr=$endColor, GradientType=0);
-        padding: 0 8px;
+        padding: 0;
         border-left: 1px solid #333;
-        opacity: 0.7; }
+        opacity: 0.7;
+        -moz-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        -webkit-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out; }
         section.tabsContainer .data-list-wrapper li .controls i.mdi {
-          width: 26px;
-          font-size: 18px;
+          width: 100%;
+          font-size: 16px;
+          line-height: 32px;
           -moz-transition: all 0.3s ease-in-out;
           -o-transition: all 0.3s ease-in-out;
           -webkit-transition: all 0.3s ease-in-out;
@@ -1427,38 +1433,41 @@ section.tabsContainer {
         font-size: 12px;
         line-height: normal;
         margin-bottom: 6px; }
-        section.tabsContainer .data-list-wrapper li .details td {
-          vertical-align: top;
-          white-space: normal; }
-        section.tabsContainer .data-list-wrapper li .details td.title h2 {
-          margin: 6px 0 3px 0;
-          color: #FFF;
-          padding-left: 3px;
-          font-weight: 300;
-          font-size: 18px;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          -moz-transition: all 0.2s ease-in-out;
-          -o-transition: all 0.2s ease-in-out;
-          -webkit-transition: all 0.2s ease-in-out;
-          transition: all 0.2s ease-in-out; }
-          section.tabsContainer .data-list-wrapper li .details td.title h2 .watched-label {
-            color: #FFF; }
-          section.tabsContainer .data-list-wrapper li .details td.title h2 .partially-watched-label {
-            color: #FFF; }
-          section.tabsContainer .data-list-wrapper li .details td.title h2 .track {
-            font-size: 16px;
-            color: #AAA; }
-        section.tabsContainer .data-list-wrapper li .details td.infoLabel {
-          color: #666;
-          text-align: right;
-          width: 55px;
-          padding-right: 6px;
-          line-height: 18px;
-          white-space: nowrap; }
-        section.tabsContainer .data-list-wrapper li .details td.infoContent {
-          line-height: 18px; }
+        section.tabsContainer .data-list-wrapper li .details table {
+          width: 100%; }
+          section.tabsContainer .data-list-wrapper li .details table td {
+            vertical-align: top;
+            white-space: normal;
+            width: inherit; }
+            section.tabsContainer .data-list-wrapper li .details table td.title {
+              margin: 6px 0 3px 0;
+              color: #FFF;
+              padding-left: 3px;
+              font-weight: 300;
+              font-size: 18px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              -moz-transition: all 0.2s ease-in-out;
+              -o-transition: all 0.2s ease-in-out;
+              -webkit-transition: all 0.2s ease-in-out;
+              transition: all 0.2s ease-in-out; }
+              section.tabsContainer .data-list-wrapper li .details table td.title .watched-label {
+                color: #FFF; }
+              section.tabsContainer .data-list-wrapper li .details table td.title .partially-watched-label {
+                color: #FFF; }
+              section.tabsContainer .data-list-wrapper li .details table td.title .track {
+                font-size: 16px;
+                color: #AAA; }
+            section.tabsContainer .data-list-wrapper li .details table td.infoLabel {
+              color: #666;
+              text-align: right;
+              width: 55px;
+              padding-right: 6px;
+              line-height: 18px;
+              white-space: nowrap; }
+            section.tabsContainer .data-list-wrapper li .details table td.infoContent {
+              line-height: 18px; }
     section.tabsContainer .data-list-wrapper li:hover,
     section.tabsContainer .data-list-wrapper li.playing {
       color: #EEE;
@@ -1481,8 +1490,8 @@ section.tabsContainer {
         -o-transition: all 0.5s ease-in-out;
         -webkit-transition: all 0.5s ease-in-out;
         transition: all 0.5s ease-in-out; }
-      section.tabsContainer .data-list-wrapper li:hover .details td.title h2,
-      section.tabsContainer .data-list-wrapper li.playing .details td.title h2 {
+      section.tabsContainer .data-list-wrapper li:hover .details .title,
+      section.tabsContainer .data-list-wrapper li.playing .details .title {
         color: #E6802E;
         -moz-transition: all 0.2s ease-in-out;
         -o-transition: all 0.2s ease-in-out;
